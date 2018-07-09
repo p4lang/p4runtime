@@ -1,12 +1,12 @@
 
 SPEC=P4Runtime-Spec
 
-all: build/${SPEC}.pdf
+all: html pdf
 
-html:
+html: ${SPEC}.mdk p4.json assets/*
 	madoko -vv --png --odir=build ${SPEC}.mdk
 
-build/${SPEC}.pdf: ${SPEC}.mdk
+pdf: ${SPEC}.mdk p4.json assets/*
 	madoko --pdf -vv --png --odir=build $<
 
 clean:
