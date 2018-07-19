@@ -1,8 +1,21 @@
 # P4Runtime Specification
 This directory contains protobuf files, specifications and related artifacts for
-all versions of the P4Runtime API. A separate directory is assigned to each
-major version, e.g. v1. Therein, tags are used to mark minor and patch release
-versions.
+all versions of the P4Runtime API. Documentation and protobuf definitions are
+placed into two distinct top-level directories. In each of these directories,
+files are organized based on the P4Runtime major version number (e.g. v1) as
+follows:
+```
+.
+├── docs
+│   └── v1  # documentation for P4Runtime v1
+├── proto
+│   └── p4
+│       ├── config
+│       │   └── v1  # p4.config.v1 protobuf package (P4Info message definition)
+│       └── v1  # p4.v1 protobuf package (P4Runtime service definition)
+```
+
+Git tags are used to mark minor and patch release versions.
 
 ## Overview
 P4 is a language for programming the data plane of network devices. The
