@@ -21,7 +21,6 @@ title,titlenote,titlefooter,authors,h1,h2,h3,h4,h5 {
   font-weight: bold;
 }
 pre, code {
-  language: p4;
   font-family: monospace;
   font-size: 10pt;
 }
@@ -36,13 +35,16 @@ title,titlenote,titlefooter,authors {
   font-weight: bold;
 }
 pre, code {
-  language: p4;
   font-family: LuxiMono;
   font-size: 75%;
 }
 }
 
 Colorizer: p4
+Colorizer: proto
+Colorizer: prototext
+Colorizer: cpp
+
 .token.keyword    {
     font-weight: bold;
 }
@@ -50,7 +52,7 @@ Colorizer: p4
 @if html {
 p4example {
   replace: "~ Begin P4ExampleBlock&nl;\
-                 ````&nl;&source;&nl;````&nl;\
+                 ````p4&nl;&source;&nl;````&nl;\
                  ~ End P4ExampleBlock";
   padding:6pt;
   margin-top: 6pt;
@@ -64,7 +66,7 @@ p4example {
 @if tex {
 p4example {
   replace: "~ Begin P4ExampleBlock&nl;\
-                 ````&nl;&source;&nl;````&nl;\
+                 ````p4&nl;&source;&nl;````&nl;\
                  ~ End P4ExampleBlock";
   breakable: true;
   padding: 6pt;
@@ -106,9 +108,38 @@ pseudo {
 }
 
 @if html {
+cpp {
+  replace: "~ Begin CPPblock&nl;\
+                 ````cpp&nl;&source;&nl;````&nl;\
+                 ~ End CPPblock";
+  border: solid;
+  margin-top: 6pt;
+  margin-bottom: 6pt;
+  padding: 6pt;
+  background-color: #e9fce9;
+  border-width: 0.5pt;
+}
+}
+
+@if tex {
+cpp {
+  replace: "~ Begin CPPblock&nl;\
+                 ````cpp&nl;&source;&nl;````&nl;\
+                 ~ End CPPblock";
+  breakable: true;
+  margin-top: 6pt;
+  margin-bottom: 6pt;
+  padding: 6pt;
+  background-color: #e9fce9;
+  border: solid;
+  border-width: 0.5pt;
+}
+}
+
+@if html {
 proto {
   replace: "~ Begin Protoblock&nl;\
-                 ````&nl;&source;&nl;````&nl;\
+                 ````proto&nl;&source;&nl;````&nl;\
                  ~ End Protoblock";
   border: solid;
   margin-top: 6pt;
@@ -122,8 +153,37 @@ proto {
 @if tex {
 proto {
   replace: "~ Begin Protoblock&nl;\
-                 ````&nl;&source;&nl;````&nl;\
+                 ````proto&nl;&source;&nl;````&nl;\
                  ~ End Protoblock";
+  breakable: true;
+  margin-top: 6pt;
+  margin-bottom: 6pt;
+  padding: 6pt;
+  background-color: #e6ffff;
+  border: solid;
+  border-width: 0.5pt;
+}
+}
+
+@if html {
+prototext {
+  replace: "~ Begin Prototextblock&nl;\
+                 ````prototext&nl;&source;&nl;````&nl;\
+                 ~ End Prototextblock";
+  border: solid;
+  margin-top: 6pt;
+  margin-bottom: 6pt;
+  padding: 6pt;
+  background-color: #e6ffff;
+  border-width: 0.5pt;
+}
+}
+
+@if tex {
+prototext {
+  replace: "~ Begin Prototextblock&nl;\
+                 ````prototext&nl;&source;&nl;````&nl;\
+                 ~ End Prototextblock";
   breakable: true;
   margin-top: 6pt;
   margin-bottom: 6pt;
@@ -1138,7 +1198,8 @@ header PacketIn_t {
   bit<1> is_clone;     /* 1 if this is a clone of the
                           original packet */
 }
-...
+~ End P4Example
+~ Begin Prototext
 controller_packet_metadata {
   preamble {
     id: 2868916615
@@ -1174,7 +1235,7 @@ controller_packet_metadata {
     bitwidth: 1
   }
 }
-~End P4Example
+~End Prototext
 
 ### ValueSet
 
@@ -1421,7 +1482,7 @@ state parse_ipv4 {
        default: accept;
    }
 }
-...
+// ...
 header_union ip_t {
    ipv4_t ipv4;
    ipv6_t ipv6;
@@ -1512,7 +1573,7 @@ Register<ip_t, bit<32> >(128) register_ip;
 
 Here's the corresponding entry in the P4Info message:
 
-~ Begin Proto
+~ Begin Prototext
 registers {
   preamble {
     id: 369119267
@@ -1539,7 +1600,7 @@ type_info {
             bitwidth: 4
           }
         }
-      } …
+      } # ...
   headers {
     key: "ipv6_t"
     value {
@@ -1550,7 +1611,7 @@ type_info {
             bitwidth: 4
           }
         }
-      } …
+      } # ...
   header_unions {
     key: "ip_t"
     value {
@@ -1569,10 +1630,10 @@ type_info {
     }
   }
 }
-~ End Proto
+~ End Prototext
 Here's a p4.WriteRequest to set the value of register_ip[12]:
 
-~ Begin Proto
+~ Begin Prototext
 update {
   type: INSERT
   entity {
@@ -1587,14 +1648,14 @@ update {
           valid_header {
             is_valid: true
             bitstrings: "\x04"
-            bitstrings: …
+            bitstrings: # ...
           }
         }
       }
     }
   }
 }
-~ End Proto
+~ End Prototext
 
 ### enum and error
 
@@ -1846,7 +1907,7 @@ be used to select and filter results:
 For example, in order to read all entries from all tables from device 3, the
 client can use the following ReadRequest message.
 
-~ Begin Proto
+~ Begin Prototext
 device_id: 3
 entities {
   table_entry {
@@ -1855,12 +1916,12 @@ entities {
     controller_metadata: 0
   }
 }
-~ End Proto
+~ End Prototext
 
 In order to read all entries with priority 11 from a specific table (with id
 0x0212ab34) from device 3, the client can use the following ReadRequest message:
 
-~ Begin Proto
+~ Begin Prototext
 device_id: 3
 entities {
   table_entry {
@@ -1869,7 +1930,7 @@ entities {
     controller_metadata: 0
   }
 }
-~ End Proto
+~ End Prototext
 
 ### Direct resources
 
@@ -2413,7 +2474,7 @@ control arp_multicast(inout H hdr, inout M smeta) {
 At runtime, the client writes the following update in the target (shown in
 protobuf text format).
 
-~ Begin Proto
+~ Begin Prototext
 type: INSERT
 entity {
   packet_replication_engine_entry {
@@ -2426,7 +2487,7 @@ entity {
     }
   }
 }
-~ End Proto
+~ End Prototext
 
 As a result of the above P4Runtime programming, the target device will create
 four replicas of an ARP packet. These replicas will appear in the egress
@@ -2488,7 +2549,7 @@ control clone_low_ttl(inout H hdr, inout M smeta) {
 At runtime, the client writes the following update in the target (shown in
 protobuf text format).
 
-~ Begin Proto
+~ Begin Prototext
 type: INSERT
 entity {
   packet_replication_engine_entry {
@@ -2500,7 +2561,7 @@ entity {
     }
   }
 }
-~ End Proto
+~ End Prototext
 
 As a result of the above P4Runtime programming, the target device will create
 one replica of a low TTL packet from the ingress to the egress. Note that the
@@ -2724,7 +2785,7 @@ mastership change.
 Here is some pseudo-code implementing the handling of digest messages in the
 P4Runtime server:
 
-~ Begin Pseudo
+~ Begin CPP
 DigestStream stream;
 DigestCache cache;
 DigestBuffer buffers;
@@ -2754,7 +2815,7 @@ handle_stream_ack(DigestListAck ack) {
 }
 
 // loop to enforce timeouts
-while (TRUE) {
+while (true) {
   now = now();
   // check for buffers that need to be sent
   for ((digest_id, buffer) in buffers) {
@@ -2768,7 +2829,7 @@ while (TRUE) {
   }
   sleep(X);
 }
-~ End Pseudo
+~ End CPP
 
 ## ExternEntry
 
@@ -2800,11 +2861,11 @@ gRPC uses
 [grpc::Status](https://github.com/grpc/grpc/blob/master/include/grpc%2B%2B/impl/codegen/status.h)
 class to represent the status returned by an RPC. It has 3 attributes:
 
-~ Begin Proto
+~ Begin CPP
 StatusCode code_;
 grpc::string error_message_;
 grpc::string binary_error_details_;
-~ End Proto
+~ End CPP
 
 The `code_` represents a canonical error (see
 [Code](https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto)
@@ -2816,11 +2877,11 @@ developer-facing error message, which should be in English. The
 [google.rpc.Status](https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
 message, which has 3 fields:
 
-~ Begin Pseudo
+~ Begin Proto
 int32 code = 1;  // see code.proto
 string message = 2;
 repeated google.protobuf.Any details = 3;
-~ End Pseudo
+~ End Proto
 
 The code and message fields must be the same as `code_` and `error_message_`
 fields from `*grpc::Status*` above. The details field is a list that consists of
@@ -3019,33 +3080,32 @@ therefore always match the number of updates in the WriteRequest. If some of the
 updates were successful, the corresponding p4.Error should set the code to OK
 and omit other fields.
 
-~ Begin Proto
+~ Begin Prototext
 # Example of a grpc::Status returned for a Write RPC with a batch of 3 updates.
 # The first and third updates encountered an error, while the second update
 # succeeded.
-
-  code_ = 2  # UNKNOWN
-  error_message_ = "Write failure."
-  binary_error_details {
-    code: 2  # UNKNOWN
-    message: "Write failure."
-    details {
-      canonical_code: 8  # RESOURCE_EXHAUSTED
-      message: "Table is full."
-      space: "targetX-psa-vendorY"
-      code: 500  # ERR_TABLE_FULL
-    }
-    details {
-      canonical_code: 0  # OK
-    }
-    details {
-      canonical_code: 6  # ALREADY_EXISTS
-      message: "Entity already exists."
-      space: "targetX-psa-vendorY"
-      code: 600  # ERR_ENITTY_ALREADY_EXISTS
-    }
+code_ = 2  # UNKNOWN
+error_message_ = "Write failure."
+binary_error_details {
+  code: 2  # UNKNOWN
+  message: "Write failure."
+  details {
+    canonical_code: 8  # RESOURCE_EXHAUSTED
+    message: "Table is full."
+    space: "targetX-psa-vendorY"
+    code: 500  # ERR_TABLE_FULL
   }
-~ End Proto
+  details {
+    canonical_code: 0  # OK
+  }
+  details {
+    canonical_code: 6  # ALREADY_EXISTS
+    message: "Entity already exists."
+    space: "targetX-psa-vendorY"
+    code: 600  # ERR_ENTITY_ALREADY_EXISTS
+  }
+}
+~ End Prototext
 # Read RPC
 
 The *Read* RPC retrieves one or more P4 entities from the P4Runtime server. The
@@ -3114,26 +3174,25 @@ A P4Runtime server will process the batch as follows:
 
 1. Lock state (preventing new Writes) and validate each *request* in the batch
 
-    1.1 If it is a valid *request*, perform the read
+    1. If it is a valid *request*, perform the read
 
-        1.1.1 If the read was successful, return the entities read in
-        ReadResponse stream
-
-        1.1.2. If the read failed (exception/critical-error), prepare a p4.Error
+        1. If the read was successful, return the entities read in ReadResponse
+        stream
+        2. If the read failed (exception/critical-error), prepare a p4.Error
         with code set to INTERNAL
 
-    1.2. If the *request* is invalid (invalid-argument, not-supported, etc.),
+    2. If the *request* is invalid (invalid-argument, not-supported, etc.),
     prepare a p4.Error with relevant canonical code to capture the error
 
 2. Unlock the state (allowing new Writes)
 
 3. Close the ReadResponse stream and return a grpc::Status as follows:
 
-    3.1 If no errors were encountered, set code to OK and do not populate any
+    1. If no errors were encountered, set code to OK and do not populate any
     other field.
 
-    3.2. Otherwise, the overall code should be set to UNKNOWN. See section
-    [Error Reporting Messages](#heading=h.ct7nepyfmt5n) for information on error
+    2. Otherwise, the overall code should be set to UNKNOWN. See section [Error
+    Reporting Messages](#heading=h.ct7nepyfmt5n) for information on error
     reporting messages and guidelines. Assemble a list of p4.Error messages
     (from step 1 above) such that each element reflects the status of the
     request in the batch at the same location (1:1 correspondence). This list
@@ -3433,15 +3492,15 @@ server software, the channel or the client can handle.
 Here is a reasonable pseudo-code implementation for idle timeout for table
 entries:
 
-~ Begin Pseudo
+~ Begin CPP
 IdleTimeoutStream stream;
 
 scanning_interval = 10ms;
 
-while (TRUE) {
+while (true) {
   // iterate over all tables which support idle timeout
   for (table in tables) {
-    if (NOT table.idle_timeout_supported) continue;
+    if (!table.idle_timeout_supported) continue;
     // we coalesce all idle notifications for the same table in one
     // message
     IdleTimeoutNotification msg;
@@ -3459,7 +3518,7 @@ while (TRUE) {
   }
   sleep(scanning_interval);
 }
-~ End Pseudo
+~ End CPP
 
 # Portability considerations
 
@@ -3514,7 +3573,7 @@ its CPU and recirculate ports in the device specific port number space.
 P4Runtime reserves device-independent and controller-specific 32-bit constants
 for the CPU port and the recirculate port as follows:
 
-~ Begin Pseudo
+~ Begin Proto
 enum SdnPort {
   SDN_PORT_UNSPECIFIED = 0;
 
@@ -3529,7 +3588,7 @@ enum SdnPort {
   SDN_PORT_RECIRCULATE = 0xFFFFFFFA;
   SDN_PORT_CPU = 0xFFFFFFFD;
 }
-~ End Pseudo
+~ End Proto
 
 The sub-sections below detail the translation mechanics for different usage of
 PSA port types in P4 programs.

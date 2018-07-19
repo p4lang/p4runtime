@@ -1,77 +1,50 @@
 {
-    "displayName": "P4",
-    "name": "p4",
+    "displayName": "Protobuf",
+    "name": "proto",
 
     "lineComment":      "//",
     "blockCommentStart": "/*",
     "blockCommentEnd":   "*/",
 
-    "keywords": [ "action", "apply", "control", "default", "else",
-        "extern", "exit", "false", "if",
-        "package", "parser", "return", "select", "state", "switch",
-        "table", "transition", "true", "typedef", "verify"
+    "keywords": [
+        "syntax", "import", "package", "service",
+        "rpc", "returns",
+        "message", "oneof", "repeated",
+        "reserved",
+        "="
     ],
 
-    "extraKeywords": [],
+    "extraKeywords": ["optimize_for", "cc_enable_arenas", "objc_class_prefix", "deprecated"],
 
     "typeKeywords": [
-        "bool", "bit", "const", "enum", "entries", "error", "header", "header_union", "in", "inout", "int", "match_kind", "out", "tuple", "struct", "varbit", "void"
+        "enum",
+        "double", "float",
+        "int32", "int64", "uint32", "uint64", "sint32", "sint64",
+        "fixed32", "fixed64", "sfixed32", "sfixed64",
+        "bool",
+        "string", "bytes"
     ],
 
-    "extraTypeKeywords": [],
-
-    "directives": [
-        "include","if","endif","ifdef","define","ifndef","undef","line"
-    ],
-
-    "annotations": [
-        "atomic", "defaultonly", "name", "priority", "tableonly", "hidden", "globalname"
-    ],
-
-    "operators": [
-        "=", ">", "<", "!", "~", "?", ":",
-        "==", "<=", ">=", "!=", "&&", "||", "++",
-        "+", "-", "*", "/", "&", "|", "^", "%", "<<",
-        ">>", "&&&", ".."
-    ],
-
-    "extraOperators": [],
+    "directives": [],
 
     "symbols":  "[=><!~?:&|+\\-*\\/\\^%]+",
     "escapes":  "\\\\(?:[abfnrtv\\\\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})",
 
-
     "tokenizer": {
         "root": [
             ["__\\w+", "identifier.predefined"],
-            ["\\w+::(?=\\w)", "namespace" ],
-            ["(namespace)(\\s*)((?:\\w+::)*\\w+)", ["keyword","white","namespace"] ],
 
             ["[a-z_$][\\w]*",  { "cases": {
                 "@typeKeywords": "keyword.type",
-                "@extraTypeKeywords": "keyword.type.extra",
                 "@keywords": "keyword",
                 "@extraKeywords": "keyword.extra",
                 "@default": "identifier" } } ],
 
-            ["^(\\s*#)(\\w+)(.*)", { "cases": {
-                "$2@directives": ["namespace","namespace","string"],
-                "@default": ["meta","meta","string"]
-            } } ],
-
-            ["^(\\s*@)(\\w+)(.*)", { "cases": {
-                "$2@annotations": ["namespace","namespace","string"],
-                "@default": ["meta","meta","string"]
-            } } ],
-
             { "include": "@whitespace" },
 
             ["[{}()\\[\\]]", "@brackets"],
-            ["[<>](?!@symbols)", "@brackets"],
-            ["@symbols", { "cases": {
-                "@operators": "operator",
-                "@extraOperators": "operator.extra",
-                "@default"  : "" } } ],
+            ["@symbols", { "cases": { "@keywords" : "keyword",
+                                      "@default"  : "" } } ],
 
             ["\\d*\\.\\d+([eE][\\-+]?\\d+)?[fFdD]?", "number.float"],
             ["0[xX][0-9a-fA-F_]*[0-9a-fA-F][Ll]?", "number.hex"],
@@ -81,9 +54,9 @@
 
             ["[;,.]", "delimiter"],
 
+
             ["[lL]\"([^\"\\\\]|\\\\.)*$", "string.invalid"],
             ["\"",  "string", "@string" ],
-
 
             ["'[^\\\\']'", "string"],
             ["(')(@escapes)(')", ["string","string.escape","string"]],
