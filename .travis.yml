@@ -1,0 +1,38 @@
+branches:
+  only:
+  - master
+
+env:
+  - secure: JfFtatML3NdpnJtgUa/F82oMxpWjkDzG8yZwrbWP1FTNpMzSLlz8Cs5Lp9UqpHiOKBjF1WznqjqBUH5pfUZ3AsfxcM04/10G+trZ33x8R6e9+dxfPLKITEsWp0+vTME94SABjLbHjkxjQCma1+SDZJ0p5czbxygjy1+wgNIK0qwSa4ku2gGl8g23/kdCj7D+O5Q5YGdHAFRQ6fSbHw2BAXiceaYkyokkpbYJK0dpNYVWr3Jt11KnrqH3ZN09pK4p6Z526yu9JBCIoAuAsoEXw89WH1Yj0CLEMNe9te5oEgklB2g0iAYelJt0feNCdxxhxf2qsl/k4/fi1O/EjLZMO3AZh1aoayKKqVAT5QqAaW8pWmM4Gii3sre7N40lLfYUqEVSQ1DOZpvCrvOw5nO71FgRTFaWJYLbuTPrayoud1zozEURIpcnocugaPG84Pa3jbXC6WeZmQrE3rXN743jsoVm3wDiRSqomgv2y8c09M5thig79PtNqFP74jFMUhFAjpWZP/y6Jl7K5niK83ERir0ZNcWNoL6VABUx1puLSk9Fd7JIWWnUWvg6x7KZW1ZbaW1g5VLJ+OJ7ypATzWu2iLKRsoucN46ZkUgascmrAZ+M/NUmqtVn6STDEyaNtL4DDMHtRYVoJjllFt8Dv41BIFXmV09d0slbMZ5+Rxqt/0A=
+
+services:
+  - docker
+
+script:
+  - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/madoko-debian:sid-with-fonts make html
+
+after_success:
+  - ls docs/v1/build
+
+deploy:
+  - provider: s3
+    access_key_id: "AKIAITTUWUIUSUJNCD3A"
+    secret_access_key:
+      secure: qvVZFlZ9KWS9pKwpcb+lnMeCsqIDTOU3vIT8N99c/zooBzMmhcjVBL6Gxx+e4ANm82skMUUfpKVu3h+pNnE2XHuKe9+lwMw4wqnuuI4aACZqyvDowU3xWwahdrJ5EzdWUgjX5r9RxYzIN3y+jyGjxLNVs3p2aT6AuiPxOAg59DrJs1knsqCDsNpk9grpnI72ihl9fnnsjmUQVC8xkV2CKkj/rBaICVqIdp8W8Ox58VRzZw+MEaC9mr9Ee3MkXnGkMJND6r1oCgkyM+0WlSmIt7XCY93pmOSIbWlkIhmfvl9jnC6jGGUdQn732nBsjBISf7Rncd6YqDB57Bvs/qrF20nMCl1JrF1IhNC8QRHc3ed94HwH0vuOXZpyaFkp8wi60J3XqBch7xanmGf14pjkTtYOBRVVfOpiVXX09Hn16GpgsiXaZpt3+igo1JIMXhhb8K/LsjgA3B6AWZHLAqHV7Ttwgw1NGKMH0c1mSJbvnxHpCfD+70JVRQF4uPVWLBN7zADiIl4RsW6mrvMKhn5/3NtQT5RG/v4JhrEZMz7L2nDFWLbTZyZmWWFOIR1xY+Q7qe2cWchhH58v1EtmZu3FbSpU066B/AdfCQysU69sX+bthIm6ccmBosRVUcZySTrGypNx+maiwU4e/O1NJgFHDgVq2GgrtgzqxuIFtv0s5HE=
+    bucket: "p4runtime"
+    skip_cleanup: true
+    upload-dir: docs
+    local_dir: docs/v1/build
+    on:
+      branch: master
+      condition: $TRAVIS_PULL_REQUEST = false
+  - provider: s3
+    access_key_id: "AKIAITTUWUIUSUJNCD3A"
+    secret_access_key:
+      secure: qvVZFlZ9KWS9pKwpcb+lnMeCsqIDTOU3vIT8N99c/zooBzMmhcjVBL6Gxx+e4ANm82skMUUfpKVu3h+pNnE2XHuKe9+lwMw4wqnuuI4aACZqyvDowU3xWwahdrJ5EzdWUgjX5r9RxYzIN3y+jyGjxLNVs3p2aT6AuiPxOAg59DrJs1knsqCDsNpk9grpnI72ihl9fnnsjmUQVC8xkV2CKkj/rBaICVqIdp8W8Ox58VRzZw+MEaC9mr9Ee3MkXnGkMJND6r1oCgkyM+0WlSmIt7XCY93pmOSIbWlkIhmfvl9jnC6jGGUdQn732nBsjBISf7Rncd6YqDB57Bvs/qrF20nMCl1JrF1IhNC8QRHc3ed94HwH0vuOXZpyaFkp8wi60J3XqBch7xanmGf14pjkTtYOBRVVfOpiVXX09Hn16GpgsiXaZpt3+igo1JIMXhhb8K/LsjgA3B6AWZHLAqHV7Ttwgw1NGKMH0c1mSJbvnxHpCfD+70JVRQF4uPVWLBN7zADiIl4RsW6mrvMKhn5/3NtQT5RG/v4JhrEZMz7L2nDFWLbTZyZmWWFOIR1xY+Q7qe2cWchhH58v1EtmZu3FbSpU066B/AdfCQysU69sX+bthIm6ccmBosRVUcZySTrGypNx+maiwU4e/O1NJgFHDgVq2GgrtgzqxuIFtv0s5HE=
+    bucket: "p4runtime"
+    skip_cleanup: true
+    upload-dir: travis/$TRAVIS_PULL_REQUEST
+    local_dir: docs/v1/build
+    on:
+      condition: $TRAVIS_PULL_REQUEST != false
