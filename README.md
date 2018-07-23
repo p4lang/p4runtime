@@ -1,4 +1,5 @@
 # P4Runtime Specification
+
 This directory contains protobuf files, specifications and related artifacts for
 all versions of the P4Runtime API. Documentation and protobuf definitions are
 placed into two distinct top-level directories. In each of these directories,
@@ -25,6 +26,24 @@ provides a precise definition of the P4Runtime API via protobuf (.proto) files
 and accompanying documentation. The target audience for this includes system
 architects and developers who want to write controller applications for P4
 devices or switches.
+
+# Compiling P4Runtime Protobuf files
+
+You can use Docker to run the protoc compiler on the P4Runtime Protobuf files
+and generate the Protobuf & gRPC bindings for C++ and Python:
+
+```
+docker build -t p4runtime -f CI/Dockerfile .
+docker run -v <OUT>:/out/ -t p4runtime /p4runtime/CI/compile_protos.sh /out/
+```
+
+This will generate the bindings in the local `<OUT>` directory. **You need to
+provide the absolute path for `<OUT>`.** The default Docker user is root, so you
+may need to change the permissions manually for the generated files after the
+`docker run` command exits.
+
+These commands are the ones used by our CI system to ensure that the Protobuf
+files stay semantically valid.
 
 # Modification Policy
 
