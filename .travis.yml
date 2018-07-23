@@ -1,7 +1,13 @@
 services:
   - docker
 
+install:
+  - docker build -t p4runtime-ci -f CI/Dockerfile .
+
+# We check that the P4Runtime Protobuf files are correct (by compiling them with
+# protoc), then we generate the HTML for the spec.
 script:
+  - docker run -t p4runtime-ci /p4runtime/CI/compile_protos.sh /tmp/
   - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/madoko-debian:sid-with-fonts make html
 
 after_success:
