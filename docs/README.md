@@ -22,6 +22,14 @@ indent each nested level with 4 spaces:
 ...
 ```
 
+#### When to use Madoko tables?
+
+Madoko tables are pretty limited. In particular, according to the documentation,
+"Every row can be on one line only". Tables tend to render pretty well in HTML,
+but not in PDF: by default it seems that text inside a cell never gets
+wrapped. There may be a solution to this, but to avoid having to deal with Tex
+directly too much, we tend to use lists instead.
+
 #### What determines how code blocks are rendered?
 
 Quite a few thing actually.

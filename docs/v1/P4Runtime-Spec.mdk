@@ -254,55 +254,79 @@ implementation of these APIs is also in progress as part of Stratum project
 
 # Terms and definitions
 
-+-------------{width:3cm}--------------+------------{width:13cm}-------+
-| **Term**                        | **Meaning**                        |
-+---------------------------------+------------------------------------+
-| arbitration                 | Refers to the process through which P4Runtime ensures that at any given time, there is a single master (i.e. a client with write access) for a given role. Also referred to as “master-slave arbitration”. |
-+---------------------------------+------------------------------------+
-| client                      | The gRPC client is the software entity which controls the P4 target or device by communicating with the gRPC agent or server. The client may be local (within the device) or remote (for example, an SDN controller)   |
-+---------------------------------+------------------------------------+
-| COS                         | Class of Service |
-+---------------------------------+------------------------------------+
-| device                      | Synonymous with target, although device usually connotes a physical appliance or other hardware, whereas target can signify hardware or software. |
-+---------------------------------+------------------------------------+
-| entity                      | An instantiated P4 program object such as a table, register, counter, meter, action profile, extern, etc. |
-+---------------------------------+------------------------------------+
-| gRPC                        | gRPC Remote Procedure Calls, an open-source client-server RPC framework. See [*\[2\]*](https://grpc.io).  |
-+---------------------------------+------------------------------------+
-| HA                          | High-Availability. Refers to a redundancy architecture.  |
-+---------------------------------+------------------------------------+
-| Instrumentation             | The part of the P4Runtime server which implements the calls to the device or target native “SDK” or backend.     |
-+---------------------------------+------------------------------------+
-| IPC                         | Inter-process Communications   |
-+---------------------------------+------------------------------------+
-| P4 Blob                     | A common nickname for P4 Device Config (Blob = Binary Large Object)   |
-+---------------------------------+------------------------------------+
-| P4 Device Config            | The output of the P4 compiler which comprises the Forwarding Pipeline Configuration. This is opaque, architecture- and target-specific binary data which can be loaded onto the device to change its “program.”     |
-+---------------------------------+------------------------------------+
-| P4Info                      | Metadata which specifies the P4 entities which can be accessed via the P4Runtime. These entities have a one-for-one correspondence with instantiated objects in the P4 source code.    |
-+---------------------------------+------------------------------------+
-| P4RT                        | Abbreviation for P4Runtime      |
-+---------------------------------+------------------------------------+
-| P4 Source                   | The P4\_16 source code which describes the Forwarding Pipeline, and can be compiled by a P4 Compiler to produce both a P4 device config and P4Info.         |
-+---------------------------------+------------------------------------+
-| Protobuf (Protocol Buffers) | The wire serialization format for P4Runtime. Protobuf version 3 (proto3) is used to define the P4Runtime interface. See [*\[3\]*](https://developers.google.com/protocol-buffers/).    |
-+---------------------------------+------------------------------------+
-| PSA                         | Portable Switch Architecture: a target architecture that describes common capabilities of network switch devices that process and forward packets across multiple interface ports.   |
-+---------------------------------+------------------------------------+
-| RPC                         | Remote Procedure Call    |
-+---------------------------------+------------------------------------+
-| RTT                         | Round-trip time   |
-+---------------------------------+------------------------------------+
-| SDN Port                    | A 32-bit port number defined by a remote Software-Defined Network (SDN) controller. The SDN port number maps to a unique device port id, which may be in a different number space.  |
-+---------------------------------+------------------------------------+
-| server                      | The gRPC server which accepts P4Runtime requests on the device or target. It uses instrumentation to translate P4Runtime API calls into target-specific actions.  |
-+---------------------------------+------------------------------------+
-| stream                      | Refers to a gRPC Stream, which is a RPC on which several messages can be sent and received. P4Runtime defines one Stream RPC (StreamChannel), which is a bidirectional stream (both the client and the server can send messages) which is used for packet I/O and master-slave arbitration, among other things. |
-+---------------------------------+------------------------------------+
-| switch config               | Refers to non-forwarding config (different from P4 forwarding config) that is delivered to the switch via a different interface. For example, the switch config may be captured using OpenConfig models and delivered through a gNMI interface.    |
-+---------------------------------+------------------------------------+
-| target                      | The hardware or software entity which “executes” the P4 pipeline and hosts the P4Runtime Service; often used interchangeably with “device”.    |
-|---------------------------------|--------------|
+* arbitration
+  : Refers to the process through which P4Runtime ensures that at any given
+    time, there is a single master (i.e. a client with write access) for a given
+    role. Also referred to as "master-slave arbitration".
+* client
+  : The gRPC client is the software entity which controls the P4 target or
+    device by communicating with the gRPC agent or server. The client may be
+    local (within the device) or remote (for example, an SDN controller).
+* COS
+  : Class of Service.
+* device
+  : Synonymous with target, although device usually connotes a physical
+    appliance or other hardware, whereas target can signify hardware or
+    software.
+* entity
+  : An instantiated P4 program object such as a table or an extern (from PSA or
+    any other architecture).
+* gRPC
+  : gRPC Remote Procedure Calls, an open-source client-server RPC framework. See
+    [*\[2\]*](https://grpc.io).
+* HA
+  : High-Availability. Refers to a redundancy architecture.
+* Instrumentation
+  : The part of the P4Runtime server which implements the calls to the device or
+    target native "SDK" or backend.
+* IPC
+  : Inter-process Communication.
+* P4 Blob
+  : A more colloquial term for P4 Device Config (Blob = Binary Large Object).
+* P4 Device Config
+  : The output of the P4 compiler which comprises the Forwarding Pipeline
+    Configuration. This is opaque, architecture- and target-specific binary data
+    which can be loaded onto the device to change its "program."
+* P4Info
+  : Metadata which specifies the P4 entities which can be accessed via
+    P4Runtime. These entities have a one-for-one correspondence with
+    instantiated objects in the P4 source code.
+* P4RT
+  : Abbreviation for P4Runtime.
+* Protobuf (Protocol Buffers)
+  : The wire serialization format for P4Runtime. Protobuf version 3 (proto3) is
+    used to define the P4Runtime interface. See
+    [*\[3\]*](https://developers.google.com/protocol-buffers/).
+* PSA
+  : Portable Switch Architecture; a target architecture that describes common
+    capabilities of network switch devices that process and forward packets
+    across multiple interface ports.
+* RPC
+  : Remote Procedure Call.
+* RTT
+  : Round-trip time.
+* SDN port
+  : A 32-bit port number defined by a remote Software-Defined Network (SDN)
+    controller. The SDN port number maps to a unique device port id, which may
+    be in a different number space.
+* server
+  : The gRPC server which accepts P4Runtime requests on the device or target. It
+    uses instrumentation to translate P4Runtime API calls into target-specific
+    actions.
+* stream
+  : Refers to a gRPC Stream, which is a RPC on which several messages can be
+    sent and received. P4Runtime defines one Stream RPC (StreamChannel), which
+    is a bidirectional stream (both the client and the server can send messages)
+    which is used for packet I/O and master-slave arbitration, among other
+    things.
+* switch config
+  : Refers to non-forwarding config (different from P4 forwarding config) that
+    is delivered to the switch via a different interface. For example, the
+    switch config may be captured using OpenConfig models and delivered through
+    a gNMI interface.
+* target
+  : The hardware or software entity which "executes" the P4 pipeline and hosts
+    the P4Runtime Service; often used interchangeably with "device".
 
 # Reference Architecture
 Figure [#fig-reference-architecture] below represents
@@ -827,71 +851,74 @@ P4Info objects receive a unique ID, which is used to identify the object in
 P4Runtime messages. IDs are 32-bit unsigned integers which are assigned by the
 compiler during the P4Info generation process. IDs are assigned in such a way
 that is is possible based on the ID value alone to deduce the type of the object
-(e.g. table, action, counter, …). The most significant 8 bits of the ID encodes
-the object type. The p4info.proto file includes a mapping from object type to
-8-bit prefix value, encoded as an enum definition `(p4.config.v1.P4Ids.Prefix)`.
-These values must be used (e.g. by the compiler) when allocating IDs. The
-remaining 24-bits must be generated in such a way that the resultings IDs must
-be globally unique in the scope of the P4Info message.
-
-
-~ TableFigure { #tab-format-p4-obj-ids; \
-    caption: "Format of P4Info object IDs"; }
-|-------------------------------|-----------------------------------------------|
-| MSB bit 31 ... bit 24        | bit 23 ... bit 0 LSB                          |
-+-------------------------------+-----------------------------------------------+
-| Object type prefix            | Generated suffix (e.g. by the compiler)       |
-+-------------------------------+-----------------------------------------------+
-~
+(e.g. table, action, counter, ...). The most significant 8 bits of the ID
+encodes the object type (as per table [#tab-mapping-p4-obj-ids]. The
+p4info.proto file includes a mapping from object type to 8-bit prefix value,
+encoded as an enum definition `(p4.config.v1.P4Ids.Prefix)`. These values must
+be used (e.g. by the compiler) when allocating IDs. The remaining 24-bits must
+be generated in such a way that the resultings IDs must be globally unique in
+the scope of the P4Info message. See table [#tab-format-p4-obj-ids].
 
 ~ TableFigure { #tab-mapping-p4-obj-ids; \
     caption: "Mapping of P4Info object type to 8-bit ID prefix value"; }
-|-------------------------------|-----------------------------------------------|
-| 8-bit prefix value            |                           | P4 object type    |
-+-------------------------------+-----------------------------------------------+
-| 0x00                                                     | Reserved (unspecified)                                              |
-| 0x01                                                     | Action                                                              |
-| 0x02                                                     | Table                                                               |
-| 0x03                                                     | Value-set                                                           |
-| 0x04                                                     | Controller header (header type with @controller\_header annotation) |
-| 0x05…0x0f                                                | Reserved (for future P4 built-in objects)                           |
-| 0x10                                                     | Reserved (start of PSA extern types)                                |
-| 0x11                                                     | PSA Action profiles / selectors                                     |
-| 0x12                                                     | PSA Counter                                                         |
-| 0x13                                                     | PSA Direct counter                                                  |
-| 0x14                                                     | PSA Meter                                                           |
-| 0x15                                                     | PSA Direct meter                                                    |
-| 0x16                                                     | PSA Register                                                        |
-| 0x17                                                     | PSA Digest                                                          |
-| 0x18…0x7f                                                | Reserved (for future PSA extern types)                              |
-| 0x80                                                     | Reserved (start of vendor-specific extern types)                    |
-| 0x81…0xfe                                                | Vendor-specific extern types                                        |
-| 0xff                                                     | Reserved (max prefix value)                                         |
-+-------------------------------+-----------------------------------------------+
+|--------------------|----------------------------------------------------------------------|
+| 8-bit prefix value | P4 object type                                                       |
++--------------------+----------------------------------------------------------------------+
+| 0x00               | Reserved (unspecified)                                               |
+| 0x01               | Action                                                               |
+| 0x02               | Table                                                                |
+| 0x03               | Value-set                                                            |
+| 0x04               | Controller header (header type with `@controller_header` annotation) |
+| 0x05...0x0f        | Reserved (for future P4 built-in objects)                            |
+| 0x10               | Reserved (start of PSA extern types)                                 |
+| 0x11               | PSA Action profiles / selectors                                      |
+| 0x12               | PSA Counter                                                          |
+| 0x13               | PSA Direct counter                                                   |
+| 0x14               | PSA Meter                                                            |
+| 0x15               | PSA Direct meter                                                     |
+| 0x16               | PSA Register                                                         |
+| 0x17               | PSA Digest                                                           |
+| 0x18...0x7f        | Reserved (for future PSA extern types)                               |
+| 0x80               | Reserved (start of vendor-specific extern types)                     |
+| 0x81...0xfe        | Vendor-specific extern types                                         |
+| 0xff               | Reserved (max prefix value)                                          |
++--------------------+----------------------------------------------------------------------+
+~
+
+~ TableFigure { #tab-format-p4-obj-ids; \
+    caption: "Format of P4Info object IDs"; }
+|----------------------------|------------------------------------------|
+| MSB bit 31 ........ bit 24 | bit 23 ....................... bit 0 LSB |
++:--------------------------:+:----------------------------------------:+
+| Object type prefix         | Generated suffix (e.g. by the compiler)  |
++----------------------------+------------------------------------------+
 ~
 
 It is possible to statically set the least-significant 24 bits of the ID in the
-P4 program source by annotating the object with @id. The compiler must honor the
-@id annotations when generating the P4Info message and must fail the compilation
-if statically-assigned ID suffixes lead to non-unique IDs (i.e. if the P4
+P4 program source by annotating the object with @id (see table
+[#tab-exmpl-p4-obj-ids]. The compiler must honor the @id annotations when
+generating the P4Info message and must fail the compilation if
+statically-assigned ID suffixes lead to non-unique IDs (i.e. if the P4
 programmer tries to assign the same ID suffix to two different P4 objects of the
 same type by annotating them with the same @id value). Note that it is not
 possible for the P4 programmer to change the value of the 8-bit ID prefix, which
 encodes the object type.
 
-
 ~ TableFigure { #tab-exmpl-p4-obj-ids; \
     caption: "Example of statically-assigned P4Info object IDs"; }
-|----------------------------------------------------|---------------------------------------------------------|
-| P4 declaration(s)                                  | Compiler-allocated ID(s)                                |
-+----------------------------------------------------+---------------------------------------------------------+
-| @id(0x12ab34) table tA { … }                       | 0x0212ab34                                              |
-+----------------------------------------------------+---------------------------------------------------------+
-| @id(0x12ab34) table tA { … } <br> @id(0x12ab34) table tB { … }   | **Error**<br>(same ID suffixes for 2 objects of the same type) |
-+----------------------------------------------------+---------------------------------------------------------+
-| @id(0x12ab34) table tA { … }<br> @id(0x12ab34) action actA { … }   | 0x0212ab34<br>0x0112ab34 |
-+----------------------------------------------------+---------------------------------------------------------+
+|---------------------------------|------------------------------------------------------------|
+| P4 declaration(s)               | Compiler-allocated ID(s)                                   |
++---------------------------------+------------------------------------------------------------+
+| `@id(0x12ab34) table tA { }`    | 0x0212ab34                                                 |
++---------------------------------+------------------------------------------------------------+
+| `@id(0x12ab34) table tA { }`    | **Error**(same ID suffixes for 2 objects of the same type) |
+| `@id(0x12ab34) table tB { }`    |                                                            |
++---------------------------------+------------------------------------------------------------+
+| `@id(0x12ab34) table tA { }`    | 0x0212ab34                                                 |
+| `@id(0x12ab34) action actA { }` | 0x0112ab34                                                 |
++---------------------------------+------------------------------------------------------------+
 ~
+
 ## P4Info objects
 
 ### Table
@@ -987,7 +1014,8 @@ entries that cannot be modified by the control plane at runtime
 
 ### Action
 
-Action messages are used to specify all possible actions of all match-action tables.
+Action messages are used to specify all possible actions of all match-action
+tables.
 
 The Action message defines the following fields:
 
@@ -1321,7 +1349,7 @@ changed by loading a new *FowardingPipelineConfig* on that target.
 
 # General principles for message formatting
 
-## Set / unset Protobuf field
+## Set / Unset Protobuf field
 
 In Protobuf version 3 (proto3), the default value for a message field is "unset"
 [[9]](https://developers.google.com/protocol-buffers/docs/proto3#default). An
@@ -1332,24 +1360,58 @@ on which of its message fields are set. For example, when reading values from an
 indirect PSA counter using the CounterEntry message, an "unset" index field
 means that all entries in the counter array should be read and returned to the
 P4Runtime client (we refer to this as a wildcard read). On the other hand, if
-the index message field is set, a single entry will be read. The following table
-shows the distinction between reading a single counter entry vs. reading all
-entries in a counter array:
+the index message field is set, a single entry will be read.
 
-~ TableFigure { #tab-set-unset-proto-fields; \
-    caption: "Set vs. Unset Protobuf Fields"; width:100% }
-|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|                                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                      |
-+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Client code (C++) | `p4::v1::CounterEntry entry;`<br>`entry.set_counter_id(<id>);`<br>`entry.mutable_index();`<br>`// The above line sets the`<br>`// index field; it is`<br>`// equivalent to:`<br>`// auto *index =`<br>`//   entry.mutable_index()`<br>`// index->set_index(0);`                                                                                           |`p4::v1::CounterEntry entry;`<br>`entry.set_counter_id(<id>);`                                                                                                                                        +
-+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Protobuf message  | `counter_id: <id>`<br>`index {}`                                                                                                                                                                                                                                                                                                                          | `counter_id: <id>`                                                                                                                                                                                  +
-+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Expected behavior | Counter entry at index 0 is read. Notice that the index subfield is missing under the index field message of CounterEntry in the text dump of the message. This is because the subfield is a scalar numeric type and 0 is therefore its default value. Scalar fields with default values are omitted from the textual representation of Protobuf messages.|All counter entries for the provided counter instance are read. Notice that the index message field is unset (default value) and is therefore omitted from the textual representation of the message.+
-+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Server code (C++) | `auto *counter_entry = …`<br>`if (counter_entry->has_index()) {`<br>`  auto index = counter_entry->index().index();`<br>`  read_one_entry(counter_entry->id(), index);`<br>`} else {`<br>`  read_all_entries(counter_entry->id());`<br>`}`                                                                                                                                                                                                                                                                                                                     ||
-|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-~
+Let's look at the counter example in more details. Based on this specification
+document, the C++ server code which processes `CounterEntry` messages may look
+like this:
+~ Begin CPP
+auto *counter_entry = ...
+if (counter_entry->has_index()) {
+  auto index = counter_entry->index().index();
+  read_one_entry(counter_entry->id(), index);
+} else {
+  read_all_entries(counter_entry->id());
+}
+~ End CPP
+
+1. Reading a single counter entry at index 0 in the counter array with id
+`<id>`:
+    * Here is the C++ client code:
+~ Begin CPP
+p4::v1::CounterEntry entry;
+entry.set_counter_id(<id>);
+entry.mutable_index();
+// The above line sets the index field; it is equivalent to:
+// auto *index = entry.mutable_index();
+// index->set_index(0);
+~ End CPP
+    * Here is the corresponding Protobuf message in text format:
+~ Begin Prototext
+counter_id: <id>
+index {}
+~ End Prototext
+    * **Expected behavior**: Counter entry at index 0 is read. Notice that the
+      index subfield is missing under the index field message of CounterEntry in
+      the text dump of the message. This is because the subfield is a scalar
+      numeric type and 0 is therefore its default value. Scalar fields with
+      default values are omitted from the textual representation of Protobuf
+      messages.
+
+2. Reading all counter entries by leaving the index field unset
+    * Here is the C++ client code:
+~ Begin CPP
+p4::v1::CounterEntry entry;
+entry.set_counter_id(<id>);
+~ End CPP
+    * Here is the corresponding Protobuf message in text format:
+~ Begin Prototext
+counter_id: <id>
+~ End Prototext
+    * **Expected behavior**: All counter entries for the provided counter
+      instance are read. Notice that the index message field is unset (default
+      value) and is therefore omitted from the textual representation of the
+      message.
 
 ## Read-write symmetry
 
@@ -1408,23 +1470,23 @@ before the most-significant bit of the value.
 For signed integer values (`int<W>` P4 type), P4Runtime uses the same two's
 complement bitwise representation as P4.
 
-Here are examples of integer values encoded as valid binary strings for
-P4Runtime:
+Table [#tab-exmpl-bytestring-encoding] shows examples of integer values encoded
+as valid binary strings for P4Runtime.
 
 ~ TableFigure { #tab-exmpl-bytestring-encoding; \
     caption: "Examples of Bytestring Encoding"; }
-|---------------|-------------------|-----------------------------|
-| **P4 type**   | **Integer value** | **P4Runtime binary string** |
-+---------------+-------------------+-----------------------------+
-| bit&lt;8&gt;  | 99 (0x63)         | “\\x63”                     |
-| bit&lt;16&gt; | 99 (0x63)         | “\\x00\\x63”                |
-| bit&lt;16&gt; | 12388 (0x3064)    | “\\x30\\x64”                |
-| bit&lt;12&gt; | 99 (0x63)         | “\\x00\\x63”                |
-| int&lt;8&gt;  | 99 (0x63)         | “\\x63”                     |
-| int&lt;8&gt;  | -99 (-0x63)       | “\\x9d”                     |
-| int&lt;12&gt; | -739 (-0x2e3)     | “\\x0d\\x1d”                |
-| int&lt;16&gt; | 0 (0x0)           | “\\x00\\x00”                |
-|---------------|-------------------|-----------------------------|
+|-----------|----------------|-------------------------|
+| P4 type   | Integer value  | P4Runtime binary string |
++-----------+----------------+-------------------------+
+| `bit<8>`  | 99 (0x63)      | `\x63`                  |
+| `bit<16>` | 99 (0x63)      | `\x00\x63`              |
+| `bit<16>` | 12388 (0x3064) | `\x30\x64`              |
+| `bit<12>` | 99 (0x63)      | `\x00\x63`              |
+| `int<8>`  | 99 (0x63)      | `\x63`                  |
+| `int<8>`  | -99 (-0x63)    | `\x9d`                  |
+| `int<12>` | -739 (-0x2e3)  | `\x0d\x1d`              |
+| `int<16>` | 0 (0x0)        | `x00\x00`               |
+|-----------|----------------|-------------------------|
 ~
 
 Representation of variable-length integer values (varbit<W> P4 type) is similar
@@ -1442,33 +1504,36 @@ The P4_16 language includes more complex types than just binary strings
 [[8]](https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type). Most of
 these complex data types can be exposed to the control-plane through table key
 expressions, value set lookup expressions, Register (PSA extern type) value
-types, etc… Not supporting these more complex types can be very limiting. Here
-are the different P4_16 types and how they are allowed to be used, as per the
-P4_16 specification:
+types, etc... Not supporting these more complex types can be very
+limiting. Table [#tab-p4-type-usage] shows the different P4_16 types and how
+they are allowed to be used, as per the P4_16 specification.
 
 ~ TableFigure { #tab-p4-type-usage; \
     caption: "P4 Type Usage"; }
-|-----------------|---------|---------------|----------------|
-|                 | Container type |||
-+-----------------+---------+---------------+----------------+
-| **Element type**| header  | header_union  | struct / tuple |
-+-----------------+---------+---------------+----------------+
-| bit&lt;W&gt;    | allowed | error         | allowed        |
-| int&lt;W&gt;    | allowed | error         | allowed        |
-| varbit&lt;W&gt; | allowed | error         | allowed        |
-| int             | error   | error         | error          |
-| void            | error   | error         | error          |
-| error           | error   | error         | error          |
-| match\_kind     | error   | error         | error          |
-| bool            | error   | error         | allowed        |
-| enum            | error   | error         | allowed        |
-| header          | error   | allowed       | allowed        |
-| header\_stack   | error   | error         | allowed        |
-| header\_union   | error   | error         | allowed        |
-| struct          | error   | error         | allowed        |
-| tuple           | error   | error         | allowed        |
-|-----------------|---------|---------------|----------------|
+|----------------|-----------------------|--------------|-----------------|
+|                | Container type                                       |||
+|                |-----------------------|--------------|-----------------|
+| Element type   | header                | header_union | struct or tuple |
++:---------------+:----------------------+:-------------+:----------------+
+| `bit<W>`       | allowed               | error        | allowed         |
+| `int<W>`       | allowed               | error        | allowed         |
+| `varbit<W>`    | allowed               | error        | allowed         |
+| `int`          | error                 | error        | error           |
+| `void`         | error                 | error        | error           |
+| `error`        | error                 | error        | allowed         |
+| `match_kind`   | error                 | error        | error           |
+| `bool`         | error                 | error        | allowed         |
+| `enum`         | allowed[^enum_header] | error        | allowed         |
+| `header`       | error                 | allowed      | allowed         |
+| header stack   | error                 | error        | allowed         |
+| `header_union` | error                 | error        | allowed         |
+| `struct`       | error                 | error        | allowed         |
+| `tuple`        | error                 | error        | allowed         |
+|----------------|-----------------------|--------------|-----------------|
 ~
+
+[^enum_header]: an `enum` type used as a field in a `header` must specify a
+    underlying type and representation for `enum` elements.
 
 For example, the following P4_16 objects involve complex types that need to be
 exposed in P4Runtime in order to support runtime operations on these objects.
@@ -1493,7 +1558,7 @@ Register<ip_t, bit<32> >(128) register_ip;
 One solution would be to use only binary string (bytes type) in p4runtime.proto
 and to define a custom serialization format for complex P4_16 types. The
 serialization would maybe be trivial for header types but would require some
-work for header unions, header stacks, etc… For example, in the case of a PSA
+work for header unions, header stacks, etc... For example, in the case of a PSA
 Register storing header unions, a client reading from that Register would need
 to receive information about which member header is valid, in addition to the
 binary contents of this header. Rather than coming-up with a serialization
@@ -1772,49 +1837,67 @@ match fields can never be omitted from the TableEntry message.
 For every member of the TableEntry repeated match field, field_id must be a
 valid id for the table as per the P4Info and one of the field in
 field_match_type must be set. We summarize additional constraints which depend
-on the match-type in the following table. If any one of them is violated, the
+on the match-type in the following list. If any one of them is violated, the
 P4Runtime server must return an INVALID_ARGUMENT error code.
 
-~ TableFigure { #tab-constraints-on-match-types; \
-    caption: "Constraints on FieldMatch message match based on the match type."; width=100%}
-|------------|-------------------------------------------------------|---------------------------------------|
-| Match type | Constraints | Explanation |
-+------------+-------------------------------------------------------+---------------------------------------+
-| exact      | `assert(match.exact().value().size() == field_bytes)` | Bytestring is invalid (wrong length). |
-+------------+-------------------------------------------------------+---------------------------------------+
-| lpm        | `assert(match.exact().value().size() == field_bytes)` | Bytestring is invalid (wrong length). |
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `pLen = match.lpm().prefix_len()`                     ||
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `assert(pLen > 0)`                                    |"Don't care" match should have been omitted.|
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `trailing_zeros = countTrailingZeros(match.lpm().value())`|Some don't care bits are set in value.|
-|            |                                                       |                                       |
-|            | `assert(trailing_zeros >= field_bits-pLen)`           |                                       |
-+------------+-------------------------------------------------------+---------------------------------------+
-| ternary    | `assert(match.ternary().value().size() == field_bytes)` | Bytestring is invalid (wrong length). |
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `assert(match.ternary().mask().size() == field_bytes)`  | Bytestring is invalid (wrong length). |
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `value = parseInteger(match.ternary().value())`||
-|            | `mask = parseInteger(match.ternary().mask())`||
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `assert(mask != 0)`                                   |"Don't care" match should have been omitted.|
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `assert(value & mask == value)`                       |Some don't care bits are set in value. |
-+------------+-------------------------------------------------------+---------------------------------------+
-| range      | `assert(match.range().low().size() == field_bytes)`  | Bytestring is invalid (wrong length). |
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `assert(match.range().high().size() == field_bytes)`  | Bytestring is invalid (wrong length). |
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `low = parseInteger(match.range().low())`||
-|            | `high = parseInteger(match.range().high())`||
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `assert(low <= high)`                                   |Invalid range.|
-|            |-------------------------------------------------------+---------------------------------------+
-|            | `assert(low != min_field_value` <code>&#124;&#124;</code> `high != max_field_value)`|"Don't care" match should have been omitted. |
-|------------|-------------------------------------------------------|---------------------------------------|
-~
+* Exact match
+    * Bytestring length of the value must match the width of the P4 field.
+
+~ Begin Pseudo
+assert(match.exact().value().size() == field_bytes)
+~ End Pseudo
+
+* Lpm match
+    * Bytestring length of the value (when present) must match the width of the
+      P4 field.
+    * "Don't care" match must be omitted.
+    * "Don't care" bits must not be set in value.
+
+~ Begin Pseudo
+assert(match.lpm().value().size() == field_bytes)
+
+pLen = match.lpm().prefix_len()
+assert(pLen > 0)
+
+trailing_zeros = countTrailingZeros(match.lpm().value())
+assert(trailing_zeros >= field_bits - pLen)
+~ End Pseudo
+
+* Ternary match
+    * Bytestring length of the value (when present) and mask (when present) must
+      match the width of the P4 field.
+    * "Don't care" match must be omitted.
+    * "Don't care" bits must not be set in value.
+
+~ Begin Pseudo
+assert(match.ternary().value().size() == field_bytes)
+assert(match.ternary().mask().size() == field_bytes)
+
+value = parseInteger(match.ternary().value())
+mask = parseInteger(match.ternary().mask())
+
+assert(mask != 0)
+
+assert(value & mask == value)
+~ End Pseudo
+
+* Range match
+    * Bytestring length of the low bound (when present) and high bound (when
+      present) must match the width of the P4 field.
+    * Low bound must be less than or equal to the high bound
+    * "Don't care" match must be omitted.
+
+~ Begin Pseudo
+assert(match.range().low().size() == field_bytes)
+assert(match.range().high().size() == field_bytes)
+
+low = parseInteger(match.range().low())
+high = parseInteger(match.range().high())
+
+assert(low <= high)
+
+assert(low != min_field_value && high != max_field_value)
+~ End Pseudo
 
 ### Action specification
 
@@ -1885,24 +1968,29 @@ field to act as a wildcard. This default value is zero for scalar fields such as
 priority and "unset" for message fields such as match. The following fields may
 be used to select and filter results:
 
-~ TableFigure { #tab-wildcard-read-filtering; \
-    caption: "Wildcard Read Filtering"; }
-|----------------------|------------------------------------------|
-| Field name           | Description of usage to filter entries   |
-+----------------------+------------------------------------------+
-| table\_id            | If default (0), entries from all tables will be selected and no other filter can be used. Otherwise only the specified table will be considered.  |
-+----------------------+------------------------------------------+
-| match                | If default (unset), all entries from the specified table will be considered. Otherwise, results will be filtered based on the provided match key, which must be a valid match key for the table. The match will be exact, which means at most one entry will be returned.      |
-+----------------------+------------------------------------------+
-| action               | If default (unset), all entries from the specified table will be considered. Otherwise, the client can provide an action\_id (for direct tables), which will be use to filter table entries. For this P4Runtime release, this is the only kind of action-based filtering we support: the client cannot filter based on action parameter values and cannot filter indirect table entries based on action profile member id / action profile group id. |
-+----------------------+------------------------------------------+
-| priority             | If default (0), all entries from the specified table will be considered. Otherwise, results will be filtered based on the provided priority value.   |
-+----------------------+------------------------------------------+
-| controller\_metadata | If default (0), all entries from the specified table will be considered. Otherwise, results will be filtered based on the provided controller\_metadata value.   |
-+----------------------+------------------------------------------+
-| is\_default\_action  | If default (false), all non-default entries from the specified table will be considered. Otherwise, only the default entry will be considered. 
-|----------------------|------------------------------------------|
-~
+* `table_id`: If default (0), entries from all tables will be selected and no
+  other filter can be used. Otherwise only the specified table will be
+  considered.
+* `match`: If default (unset), all entries from the specified table will be
+  considered. Otherwise, results will be filtered based on the provided match
+  key, which must be a valid match key for the table. The match will be exact,
+  which means at most one entry will be returned.
+* `action`: If default (unset), all entries from the specified table will be
+  considered. Otherwise, the client can provide an `action_id` (for direct
+  tables), which will be use to filter table entries. For this P4Runtime
+  release, this is the only kind of action-based filtering we support: the
+  client cannot filter based on action parameter values and cannot filter
+  indirect table entries based on action profile member id / action profile
+  group id.
+* `priority`: If default (0), all entries from the specified table will be
+  considered. Otherwise, results will be filtered based on the provided priority
+  value.
+* `controller_metadata`: If default (0), all entries from the specified table
+  will be considered. Otherwise, results will be filtered based on the provided
+  controller\_metadata value.
+* `is_default_action`: If default (false), all non-default entries from the
+  specified table will be considered. Otherwise, only the default entry will be
+  considered.
 
 For example, in order to read all entries from all tables from device 3, the
 client can use the following ReadRequest message.
@@ -1966,44 +2054,47 @@ error code.
 
 We leverage Protobuf's ability to differentiate between set and unset fields to
 give the P4Runtime client fined-grained control over how direct resources are
-read and written through the TableEntry message. The table below describes how
+read and written through the TableEntry message. The list below describes how
 the server must handle the meter_config and counter_data fields for read and
 write requests, based on whether the fields are set or not. We do not cover
-error cases in the table, i.e. we assume that we are dealing with a table which
+error cases in the list, i.e. we assume that we are dealing with a table which
 is assigned a direct counter / a direct meter, and that the action being used
 for the table entry "executes" the direct resource appropriately.
 
-~ TableFigure { #tab-meter-counter-unset-fields; \
-    caption: "Meter and Counter Unset Field Handling"; width:100%}
-|-----------------------|---------------------------|------------|-----------------------------------------------------------------------------------------------------|
-| Direct resource field | Request type              | Set/unset? | Required server behavior                                                                            |
-+-----------------------+---------------------------+------------+-----------------------------------------------------------------------------------------------------+
-| meter_config          | WriteRequest<br>`(INSERT)`| unset      | The initial configuration for the meter entry is the default (meter returns GREEN for all packets). |
-|                       |                           |------------+-----------------------------------------------------------------------------------------------------+
-|                       |                           | set        | The initial configuration for the meter entry is the one provided by the client.                    |
-|                       |---------------------------+------------+-----------------------------------------------------------------------------------------------------+
-|                       | WriteRequest<br>`(MODIFY)`| unset      | The meter entry's configuration is reset to the default (meter returns GREEN for all packets).      |
-|                       |                           |------------+-----------------------------------------------------------------------------------------------------+
-|                       |                           | set        | The value provided by the client is used to re-configure the meter entry.                           |
-|                       |---------------------------+------------+-----------------------------------------------------------------------------------------------------+
-|                       |ReadRequest                | unset      | The response does not include the meter entry's configuration (meter_config is unset in the response).|
-|                       |                           |------------+-----------------------------------------------------------------------------------------------------+
-|                       |                           | set        | If the meter entry's configuration is the default configuration, meter_config is unset in the response. Otherwise, the response includes the meter entry's configuration that was written by the client earlier. This respects the "read-write symmetry" principle.|
-+-----------------------+---------------------------+------------+-----------------------------------------------------------------------------------------------------+
-| counter_data          | WriteRequest<br>`(INSERT)`| unset      | The initial value for the counter entry is the default (0).                                         |
-|                       |                           |------------+-----------------------------------------------------------------------------------------------------+
-|                       |                           | set        | The initial value for the counter entry is the one provided by the client.                          |
-|                       |---------------------------+------------+-----------------------------------------------------------------------------------------------------+
-|                       | WriteRequest<br>`(MODIFY)`| unset      | The counter entry's value is not changed.                                                           |
-|                       |                           |------------+-----------------------------------------------------------------------------------------------------+
-|                       |                           | set        | The value provided by the client is written to the counter entry.                                   |
-|                       |---------------------------+------------+-----------------------------------------------------------------------------------------------------+
-|                       |ReadRequest                | unset      | The response does not include the counter entry's value (counter_data is unset in the response).    |
-|                       |                           |------------+-----------------------------------------------------------------------------------------------------+
-|                       |                           | set        | The response includes the counter entry's value read from the target.                               |
-|-----------------------|---------------------------|------------|-----------------------------------------------------------------------------------------------------|
+* `meter_config` field
+    * `WriteRequest (INSERT)`
+        * if **unset**: The initial configuration for the meter entry is the
+          default (meter returns GREEN for all packets).
+        * if **set**: The initial configuration for the meter entry is the one
+          provided by the client.
+    * `WriteRequest (MODIFY)`
+        * if **unset**: The meter entry's configuration is reset to the default
+          (meter returns GREEN for all packets).
+        * if **set**: The value provided by the client is used to re-configure
+          the meter entry.
+    * `ReadRequest`
+        * if **unset**: The response does not include the meter entry's
+          configuration (`meter_config` is unset in the response).
+        * if **set**: If the meter entry's configuration is the default
+          configuration, `meter_config` is unset in the response. Otherwise, the
+          response includes the meter entry's configuration that was written by
+          the client earlier. This respects the "read-write symmetry" principle.
 
-~ 
+* `counter_data` field
+    * `WriteRequest (INSERT)`
+        * if **unset**: The initial value for the counter entry is the default
+          (0).
+        * if **set**: The initial value for the counter entry is the one
+          provided by the client.
+    * `WriteRequest (MODIFY)`
+        * if **unset**: The counter entry's value is not changed.
+        * if **set**: The value provided by the client is written to the counter
+          entry.
+    * `ReadRequest`
+        * if **unset**: The response does not include the counter entry's value
+          (`counter_data` is unset in the response).
+        * if **set**: The response includes the counter entry's value read from
+          the target.
 
 In its default configuration, a meter returns the GREEN color for every packet
 when it is executed. This default configuration can be achieved by leaving the
@@ -2137,18 +2228,21 @@ profile member entry.
 An action profle member may be inserted, modified or deleted as per the
 following semantics.
 
-~ TableFigure { #tab-actionProfileMember-semantics; \
-    caption: "ActionProfileMember Semantics"; }
-|-----------------------|-----------------------------------------------------|
-| P4Runtime Update type | Update semantics for the ActionProfileMember entity |
-+-----------------------+-----------------------------------------------------+
-| INSERT                | Add a new member entry bound to an eligible P4 action specification. The member id must be different from ids of already programmed entries for that extern. The action specification must be provided. The total number of members should not exceed the maximum specified in the P4 extern specification, as a result of this insertion. |
-+-----------------------+-----------------------------------------------------+
-| MODIFY                | Modify the action specification of an existing member entry. An entry with the member id must exist and the action specification must be provided. If the member is part of an action profile group, then the bound action must be of the same action type as actions bound to other members of the group. See the condition on bound actions for members belonging to a group. |
-+-----------------------+-----------------------------------------------------+
-| DELETE                | Delete the member entry and deallocate the member id. The member should not be part of an action profile group. If needed, the action profile group should first be modified to remove the member from the group. The member should not be referenced in the table action of any table entry.|
-|-----------------------|-----------------------------------------------------|
-~
+* `INSERT`: Add a new member entry bound to an eligible P4 action
+  specification. The member id must be different from ids of already programmed
+  entries for that extern. The action specification must be provided. The total
+  number of members should not exceed the maximum specified in the P4 extern
+  specification, as a result of this insertion.
+* `MODIFY`: Modify the action specification of an existing member entry. An
+  entry with the member id must exist and the action specification must be
+  provided. If the member is part of an action profile group, then the bound
+  action must be of the same action type as actions bound to other members of
+  the group. See the condition on bound actions for members belonging to a
+  group.
+* `DELETE`: Delete the member entry and deallocate the member id. The member
+  should not be part of an action profile group. If needed, the action profile
+  group should first be modified to remove the member from the group. The member
+  should not be referenced in the table action of any table entry.
 
 ### Action Profile Group Programming
 
@@ -2159,43 +2253,46 @@ to actions of the same type.
 
 An ActionProfileGroup entity update message has the following fields:
 
-* action_profile_id is a uint32 identifier of the PSA ActionSelector extern
+* `action_profile_id` is a uint32 identifier of the PSA ActionSelector extern
 instance, as defined in P4Info.
 
-* group_id is a uint32 identifier of the action profile group entry being
+* `group_id` is a uint32 identifier of the action profile group entry being
 updated. 
 
-* members is  a repeated field defining the set of members that are part of the
+* `members` is a repeated field defining the set of members that are part of the
 group. For each member in a group, the controller must define the following
 fields
 
-    * member_id for looking up the member table in the selector.
+    * `member_id` for looking up the member table in the selector.
 
-    * weight specifying the probability of the member's selection at runtime.
+    * `weight` specifying the probability of the member's selection at runtime.
 
-    * watch is the controller defined 32-bit port number that the member's
+    * `watch` is the controller defined 32-bit port number that the member's
     liveness depends on. At runtime, the member must be excluded from selection
     if the this watch port is down.
 
-* max_size is the maximum sum of all member weights for the group. This field is
-defined when the group is inserted, but it must not be changed in a MODIFY
-update. 
+* `max_size` is the maximum sum of all member weights for the group. This field
+is defined when the group is inserted, but it must not be changed in a `MODIFY`
+update.
 
 An action profile group may be inserted, modified or deleted as per the
 following semantics.
 
-~ TableFigure { #tab-ActionProfileGroup-semantics; \
-    caption: "ActionProfileGroup Semantics"; }
-|-----------------------|----------------------------------------------------|
-| P4Runtime Update type | Update semantics for the ActionProfileGroup entity |
-+-----------------------+----------------------------------------------------+
-| INSERT                | Add a new group entry bound to a set of existing action profile members. The group\_id must be different from ids of already programmed groups for that selector. P4Runtime does not limit the number of groups, however, such limits may be imposed out-of-band by the target. The value of max\_size should not exceed the static maximum size defined for the selector in P4Info, otherwise an INVALID\_ARGUMENT error is returned. If the client does not set max\_size, the default value (0) implies that the statically-defined maximum size should be used for this group.  |
-+-----------------------+----------------------------------------------------+
-| MODIFY                | Modify the member set specification of an existing group entry. An entry with the group\_id must exist. All members specified in the group entry must exist in the selector. The value of max\_size must be identical to the value used when inserting the group, otherwise an INVALID\_ARGUMENT error is returned. |
-+-----------------------+----------------------------------------------------+
-| DELETE                | Delete the group entry and deallocate the group\_id. The group should not be referenced in the table action of any table entry. |
-|-----------------------|----------------------------------------------------|
-~
+* `INSERT`: Add a new group entry bound to a set of existing action profile
+  members. `The group_id` must be different from ids of already programmed
+  groups for that selector. P4Runtime does not limit the number of groups,
+  however, such limits may be imposed out-of-band by the target. The value of
+  `max_size` should not exceed the static maximum size defined for the selector
+  in P4Info, otherwise an `INVALID_ARGUMENT` error is returned. If the client
+  does not set `max_size`, the default value (0) implies that the
+  statically-defined maximum size should be used for this group.
+- `MODIFY`: Modify the member set specification of an existing group entry. An
+  entry with the `group_id` must exist. All members specified in the group entry
+  must exist in the selector. The value of `max_size` must be identical to the
+  value used when inserting the group, otherwise an `INVALID_ARGUMENT` error is
+  returned.
+- `DELETE`: Delete the group entry and deallocate the `group_id`. The group
+  should not be referenced in the table action of any table entry.
 
 ## CounterEntry and DirectCounterEntry
 
@@ -2290,18 +2387,13 @@ The P4Runtime server must return an INVALID_ARGUMENT error code for update types
 INSERT and DELETE. By default all the counter entries in the array have default
 value 0.
 
-~ TableFigure { #tab-CounterEntry-semantics; \
-    caption: "CounterEntry Semantics"; }
-|-----------------------|----------------------------------------------|
-| P4Runtime Update type | Update semantics for the CounterEntry entity |
-+-----------------------+----------------------------------------------+
-| INSERT                | Server returns the error code INVALID\_ARGUMENT. |
-+-----------------------+---------------------------------------------+
-| MODIFY                | Modify an indirect counter instance whose unique id is counter\_id and array index is specified by index. The counter value is set to the value specified by the client in the data field. Note that the counter value is not modified if this protobuf field is not set. If index is omitted all counter values in the array will be set to the value provided by the client. |
-+-----------------------+---------------------------------------------+
-| DELETE                | Server returns the error code INVALID\_ARGUMENT. |
-|-----------------------|----------------------------------------------|
-~
+* `INSERT`: Server returns the error code `INVALID_ARGUMENT`.
+* `MODIFY`: Modify an indirect counter instance whose unique id is `counter_id`
+  and array index is specified by index. The counter value is set to the value
+  specified by the client in the data field. Note that the counter value is not
+  modified if this protobuf field is not set. If index is omitted all counter
+  values in the array will be set to the value provided by the client.
+* `DELETE`: Server returns the error code `INVALID_ARGUMENT`.
 
 A P4Runtime client may request to read the counter values of one or more
 indirect counter instances with a ReadRequest by including a CounterEntry entity
@@ -2418,18 +2510,15 @@ The P4Runtime server must return an INVALID_ARGUMENT error code for update types
 INSERT and DELETE. By default all the meter entries in the array have a default
 configuration (GREEN for all packets).
 
-~ TableFigure { #tab-MeterEntry-semantics; \
-    caption: "MeterEntry Semantics"; }
-|-----------------------|--------------------------------------------|
-| P4Runtime Update type | Update semantics for the MeterEntry entity |
-+-----------------------+--------------------------------------------+
-| INSERT                | INVALID\_ARGUMENT  |
-+-----------------------+--------------------------------------------+
-| MODIFY                | Modify an indirect meter instance whose unique id is meter\_id and array index is specified by index. The meter is reconfigured using the config field specified by the client. Note that the meter configuration is set to the default behavior (GREEN for all packets) if this protobuf field is not set. If the index field is omitted all meter configurations in the array will be set to the value provided by the client (or reset to the default value if config is unset). |
-+-----------------------+--------------------------------------------+
-| DELETE                | INVALID\_ARGUMENT  |
-|-----------------------|--------------------------------------------|
-~
+* `INSERT`: `INVALID_ARGUMENT` error
+* `MODIFY`: Modify an indirect meter instance whose unique id is `meter_id` and
+  array index is specified by index. The meter is reconfigured using the config
+  field specified by the client. Note that the meter configuration is set to the
+  default behavior (GREEN for all packets) if this protobuf field is not set. If
+  the index field is omitted all meter configurations in the array will be set
+  to the value provided by the client (or reset to the default value if config
+  is unset).
+* `DELETE`: `INVALID_ARGUMENT` error
 
 A P4Runtime client may request to read the configuration of one or more indirect
 meter instances with a ReadRequest by including a MeterEntry entity for each of
@@ -2503,18 +2592,21 @@ a value that is not programmed in the PRE, then the packet is dropped.
 A multicast group may be inserted, modified or deleted as per the following
 semantics.
 
-~ TableFigure { #tab-MulticastGroupEntry-semantics; \
-    caption: "MulticastGroupEntry Semantics"; }
-|-----------------------|-----------------------------------------------------|
-| P4Runtime Update type | Update semantics for the MulticastGroupEntry entity |
-+-----------------------+-----------------------------------------------------+
-| INSERT                | Add a new multicast group entry bound to a set of egress ports and replica IDs. The multicast\_group\_id is uint32 type, must be unique across all multicast group entries, and its value may not exceed the maximum allowed by the target PSA device's MulticastGroupId\_t bitwidth. Similarly, the replica ID is also uint32, but its value may not exceed the maximum allowed by the target PSA device's EgressInstance\_t bitwidth. The egress port must be a 32-bit SDN port number and must refer to a singleton port. No two replicas may have identical values of *both* egress\_port and replica\_id. |
-+-----------------------+-----------------------------------------------------+
-| MODIFY                | Modify the set of replicas for a given multicast group entry, indexed by the given multicast\_group\_id. Same restrictions as INSERT apply here. |
-+-----------------------+-----------------------------------------------------+
-| DELETE                | Delete the multicast group indexed by the given multicast\_group\_id. The replicas need not be provided for this operation. Any packets with their multicast\_group metadata in the dataplane set to the deleted multicast\_group\_id will be dropped. |
-|-----------------------|-----------------------------------------------------|
-~
+* `INSERT`: Add a new multicast group entry bound to a set of egress ports and
+  replica IDs. The `multicast_group_id` is `uint32` type, must be unique across
+  all multicast group entries, and its value may not exceed the maximum allowed
+  by the target PSA device's `MulticastGroupId_t` bitwidth. Similarly, the
+  replica ID is also uint32, but its value may not exceed the maximum allowed by
+  the target PSA device's `EgressInstance_t` bitwidth. The egress port must be a
+  32-bit SDN port number and must refer to a singleton port. No two replicas may
+  have identical values of *both* `egress_port` and `replica_id`.
+* `MODIFY`: Modify the set of replicas for a given multicast group entry,
+  indexed by the given `multicast_group_id`. Same restrictions as `INSERT` apply
+  here.
+* `DELETE`: Delete the multicast group indexed by the given
+  `multicast_group_id`. The replicas need not be provided for this
+  operation. Any packets with their `multicast_group` metadata in the dataplane
+  set to the deleted `multicast_group_id` will be dropped.
 
 ### CloneSessionEntry
 
@@ -2586,18 +2678,26 @@ PRE, then the clone is simply not created.
 A clone session may be inserted, modified or deleted as per the following
 semantics.
 
-~ TableFigure { #tab-CloneSessionEntry-semantics; \
-    caption: "CloneSessionEntry Semantics"; }
-|-----------------------|--------------------------------------------------|
-| P4Runtime Update type | Update semantics for the CloneSessionEntry entity|
-+-----------------------+--------------------------------------------------+
-| INSERT                | Add a new clone session entry bound to an egress port. The clone\_session\_id is uint32 type, must be unique across all clone session entries, and its value may not exceed the maximum allowed by the target PSA device's CloneSessionId\_t bitwidth. Similarly, the replica ID is also uint32, but its value may not exceed the maximum allowed by the target PSA device's EgressInstance\_t bitwidth. The egress port in the replica must be a 32-bit SDN port number and must refer to a singleton port. A target may reject a clone session entry with more than one replica specified.<br><br>The class\_of\_service field of the clone's egress input metadata will be set to the respective value programmed in the clone session entry. The packet\_length\_bytes field must be set to a non-zero value if the clone packet should be truncated to the given value (in bytes). If the packet\_length\_bytes field is 0 (default), no truncation on the clone will be performed. |
-+-----------------------+--------------------------------------------------+
-| MODIFY                | Modify the attributes of a given clone session entry, indexed by the given clone\_session\_id. Same restrictions as INSERT apply here. |
-+-----------------------+--------------------------------------------------+
-| DELETE                | Delete the clone session indexed by the given clone\_session\_id. Other fields need not be provided for this operation. Any packet with their clone\_session\_id metadata in the dataplane set to the deleted clone\_session\_id will no longer be cloned.|
-|-----------------------|--------------------------------------------------|
-~
+* `INSERT`: Add a new clone session entry bound to an egress port. The
+  `clone_session_id` is `uint32` type, must be unique across all clone session
+  entries, and its value may not exceed the maximum allowed by the target PSA
+  device's `CloneSessionId_t` bitwidth. Similarly, the replica ID is also
+  `uint32`, but its value may not exceed the maximum allowed by the target PSA
+  device's `EgressInstance_t` bitwidth. The egress port in the replica must be a
+  32-bit SDN port number and must refer to a singleton port. A target may reject
+  a clone session entry with more than one replica specified. The
+  `class_of_service` field of the clone's egress input metadata will be set to
+  the respective value programmed in the clone session entry. The
+  `packet_length_bytes` field must be set to a non-zero value if the clone
+  packet should be truncated to the given value (in bytes). If the
+  `packet_length_bytes` field is 0 (default), no truncation on the clone will be
+  performed.
+* `MODIFY`: Modify the attributes of a given clone session entry, indexed by the
+  given `clone_session_id`. Same restrictions as `INSERT` apply here.
+* `DELETE`: Delete the clone session indexed by the given
+  `clone_session_id`. Other fields need not be provided for this operation. Any
+  packet with their `clone_session_id` metadata in the dataplane set to the
+  deleted `clone_session_id` will no longer be cloned.
 
 ## ValueSetEntry
 
@@ -2610,7 +2710,7 @@ transition the parser state machine to the parse_trill_types state.
 ~ Begin P4Example
 state parse_l2 {
   @size(MAX_TRILL_TYPES)
-  @id (1) value_set<ETH_TYPE_BITWIDTH> trill_types;
+  @id(1) value_set<ETH_TYPE_BITWIDTH> trill_types;
   extract(hdr.ethernet);
   select (hdr.ethernet.eth_type) {
     ETH_TYPE_IPV4: parse_ipv4;
@@ -2649,18 +2749,14 @@ P4Info.
 A parser value set may be inserted, modified or deleted as per the following
 semantics.
 
-~ TableFigure { #tab-ValueSetEntry-semantics; \
-    caption: "ValueSetEntry Semantics"; }
-|-----------------------|-----------------------------------------------|
-| P4Runtime Update type | Update semantics for the ValueSetEntry entity |
-+-----------------------+-----------------------------------------------+
-| INSERT                | Write the given matches in the repeated field to the value set entry indexed by the given value\_set\_id. The maximum number of matches should not exceed the maximum size given by the size field in P4Info of the value set. |
-+-----------------------+-----------------------------------------------+
-| MODIFY                | Modify the match fields of a given value set entry, indexed by the given value\_set\_id. Same restrictions as INSERT apply here. |
-+-----------------------+-----------------------------------------------+
-| DELETE                | Delete all matches in the value set indexed by the given value\_set\_id. Other fields need not be provided for this operation. Any parser transitions depending on the value set will no longer be taken. |
-|-----------------------|-----------------------------------------------|
-~
+* `INSERT`: Write the given matches in the repeated field to the value set entry
+  indexed by the given `value_set_id`. The maximum number of matches should not
+  exceed the maximum size given by the `size` field in P4Info of the value set.
+* `MODIFY`: Modify the match fields of a given value set entry, indexed by the
+  given `value_set_id`. Same restrictions as `INSERT` apply here.
+* `DELETE`: Delete all matches in the value set indexed by the given
+  `value_set_id`. Other fields need not be provided for this operation. Any
+  parser transitions depending on the value set will no longer be taken.
 
 ## RegisterEntry
 
@@ -2729,18 +2825,12 @@ these parameters are:
 
 Here is the significance of the different Update types for DigestEntry:
 
-~ TableFigure { #tab-DigestEntry-semantics; \
-    caption: "DigestEntry Semantics"; }
-|-----------------------|-----------------------------------------|
-| P4Runtime Update type | Significance for the DigestEntry entity |
-+-----------------------+-----------------------------------------+
-| INSERT                | Enable server generation of DigestList messages for given digest instance and use provided configuration parameters |
-+-----------------------+-----------------------------------------+
-| MODIFY                | Use provided configuration parameters for given digest instance, learning must have been previously enabled for the instance |
-+-----------------------+-----------------------------------------+
-| DELETE                | Disable server generation of DigestList messages for given digest instance |
-|-----------------------|-----------------------------------------|
-~
+* `INSERT`: Enable server generation of DigestList messages for given digest
+  instance and use provided configuration parameters.
+* `MODIFY`: Use provided configuration parameters for given digest instance,
+  learning must have been previously enabled for the instance.
+* `DELETE`: Disable server generation of DigestList messages for given digest
+  instance.
 
 A server should buffer digest messages until either:
 

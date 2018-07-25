@@ -18,6 +18,13 @@ follows:
 
 Git tags are used to mark minor and patch release versions.
 
+## Reading the latest version of the documentation
+
+The HTML for the latest version (working draft) of the P4Runtime v1
+specification is available
+[here](https://s3-us-west-2.amazonaws.com/p4runtime/docs/master/P4Runtime-Spec.html). It
+is updated every time a new commit is pushed to the master branch.
+
 ## Overview
 P4 is a language for programming the data plane of network devices. The
 P4Runtime API is a control-plane specification for controlling the data plane
