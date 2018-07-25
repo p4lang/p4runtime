@@ -67,16 +67,10 @@ over as a result of converting from Google Docs to Madoko for the initial
 1.0.0-rc1 version. Others are Madoko-PDF rendering issues which may require
 hand-tweaking or workarounds.
 
-* Correct internal links e.g. to Section references. Reference tags need to be
+* Correct internal links e.g. to section references. Reference tags need to be
   added to sections, and the links to them need to be replaced.
-* Surround `tokens` with backtics - or not. All the Courier font formatting in
-  the gDocs was lost.
-* PDF Formatting problems:
-  * Some tables exceed the page width.
-  * Some tables appear in the middle of code-formatted blocks
-  * Some nested lists didn't translate well and need adjusting, especially when
-    a code block exists inside a list entry. I reccommend that authors consider
-    using an alternate style, to circumvent markdown limitations.
+* Surround `tokens` with backticks. All the Courier font formatting in the gDocs
+  was lost.
 
 ## Content TODO
 Following are major content items which are missing or incomplete:
