@@ -900,12 +900,12 @@ the scope of the P4Info message. See Table [#tab-format-p4-obj-ids].
 ~
 
 It is possible to statically set the least-significant 24 bits of the ID in the
-P4 program source by annotating the object with @id (see Table
-[#tab-exmpl-p4-obj-ids]. The compiler must honor the @id annotations when
+P4 program source by annotating the object with `@id` (see Table
+[#tab-exmpl-p4-obj-ids]. The compiler must honor the `@id` annotations when
 generating the P4Info message and must fail the compilation if
 statically-assigned ID suffixes lead to non-unique IDs (i.e. if the P4
 programmer tries to assign the same ID suffix to two different P4 objects of the
-same type by annotating them with the same @id value). Note that it is not
+same type by annotating them with the same `@id` value). Note that it is not
 possible for the P4 programmer to change the value of the 8-bit ID prefix, which
 encodes the object type.
 
@@ -1183,7 +1183,7 @@ specify additional information used by the device to process the data packet.
 
 Such additional information for packet-in and packet-out can be expressed by
 means of P4 headers carrying P4 standard annotations
-@controller_metadata("packet_in") and @controller_metadata("packet_out"),
+`@controller_header("packet_in")` and `@controller_header("packet_out")`,
 respectively. ControllerPacketMetadata messages capture the information
 contained within these special headers and are needed by the P4Runtime server to
 process packet-in and packet-out stream messages (see section on Packet I/O
@@ -3453,7 +3453,7 @@ PacketOut messages are sent by the client to the server.
 
 As introduced in the [Packet I/O](#sec-packet-i_o) section, such messages can
 carry arbitrary metadata specified by means of P4 headers with P4 standard
-annotation @controller_metadata. The expected metadata is also described in the
+annotation `@controller_header`. The expected metadata is also described in the
 P4Info using the ControllerPacketMetadata messages.
 
 Both PacketIn and PacketOut stream messages share the same fields and are
@@ -3714,7 +3714,7 @@ header PacketIn_t {
 }
 ~ End P4Example
 
-The header-level annotation @controller_header is a standard P4Runtime
+The header-level annotation `@controller_header` is a standard P4Runtime
 annotation that identifies a header type for a controller packet-out or
 packet-in. When the P4Runtime server in the target receives a packet-out from
 the controller over the P4Runtime stream channel, the server will expect
