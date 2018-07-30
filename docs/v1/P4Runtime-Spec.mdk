@@ -273,7 +273,7 @@ implementation of these APIs is also in progress as part of Stratum project
     any other architecture).
 * gRPC
   : gRPC Remote Procedure Calls, an open-source client-server RPC framework. See
-    [*\[2\]*](https://grpc.io).
+    [\[2\]](https://grpc.io).
 * HA
   : High-Availability. Refers to a redundancy architecture.
 * Instrumentation
@@ -296,7 +296,7 @@ implementation of these APIs is also in progress as part of Stratum project
 * Protobuf (Protocol Buffers)
   : The wire serialization format for P4Runtime. Protobuf version 3 (proto3) is
     used to define the P4Runtime interface. See
-    [*\[3\]*](https://developers.google.com/protocol-buffers/).
+    [\[3\]](https://developers.google.com/protocol-buffers/).
 * PSA
   : Portable Switch Architecture; a target architecture that describes common
     capabilities of network switch devices that process and forward packets
@@ -328,29 +328,29 @@ implementation of these APIs is also in progress as part of Stratum project
   : The hardware or software entity which "executes" the P4 pipeline and hosts
     the P4Runtime Service; often used interchangeably with "device".
 
-# Reference Architecture
-Figure [#fig-reference-architecture] below represents
-the P4Runtime Reference Architecture. The device or target to be controlled is
-at the bottom, and one or more Controllers is shown at the top. A multi-master
-protocol allows more than one controller to participate, and a role-based
-arbitration scheme ensures only one controller has write access to each r/w
-entity, or the pipeline config itself. Any controller may perform read access to
-any entity or the pipeline config. Later sections describe this in detail. For
-the sake of brevity, the term Controller may refer to one or more controllers.
+# Reference Architecture { #sec-reference-architecture}
+Figure [#fig-reference-architecture] below represents the P4Runtime Reference
+Architecture. The device or target to be controlled is at the bottom, and one or
+more Controllers is shown at the top. A multi-master protocol allows more than
+one controller to participate, and a role-based arbitration scheme ensures only
+one controller has write access to each r/w entity, or the pipeline config
+itself. Any controller may perform read access to any entity or the pipeline
+config. Later sections describe this in detail. For the sake of brevity, the
+term Controller may refer to one or more controllers.
 
 The P4Runtime API defines the messages and semantics of the interface between
 the client(s) and the server. The API is specified by the p4runtime.proto
 protobuf file, which is available on GitHub as part of the standard
-[[1](https://github.com/p4lang/PI/tree/master/proto)]. It may be compiled via
+[[1](https://github.com/p4lang/p4runtime)]. It may be compiled via
 protoc to produce both client and server implementation stubs in a variety
 of languages. It is the responsibility of target implementers to instrument the
 server.
 
 Reference implementations of a P4 Target supporting P4Runtime, as well as sample
-clients, may be available on the P4.org GitHub repository
-[[1]](https://github.com/p4lang). A future goal may be to produce a reference
-gRPC server which can be instrumented in a generic way, e.g. via callbacks, thus
-reducing the burden of reinventing the wheel.
+clients, may be available on the GitHub repository
+[[10]](https://github.com/p4lang/PI). A future goal may be to produce a
+reference gRPC server which can be instrumented in a generic way, e.g. via
+callbacks, thus reducing the burden of reinventing the wheel.
 
 The Controller can access the P4 entities which are declared in the P4Info
 metadata. The P4Info structure is defined by p4info.proto,another protobuf
@@ -516,7 +516,8 @@ Controller might manage the contents of routing tables.
 caption: "Use-Case: Embedded Plus Single Remote Controller" }
 ![embedded-plus-single-remote-controller]
 ~
-[embedded-plus-single-remote-controller]: assets/embedded-plus-single-remote-controller.png \
+[embedded-plus-single-remote-controller]: \
+assets/embedded-plus-single-remote-controller.png \
 { height: 10cm; page-align: here }
 
 ## Embedded + Two Remote Controllers
@@ -531,7 +532,8 @@ entities, perhaps statistics tables. Role-based access divides the ownership.
 caption: "Use-Case: Embedded Plus Two Remote Controllers" }
 ![embedded-plus-two-remote-controllers]
 ~
-[embedded-plus-two-remote-controllers]: assets/embedded-plus-two-remote-controllers.png \
+[embedded-plus-two-remote-controllers]: \
+assets/embedded-plus-two-remote-controllers.png \
 { height: 10cm; page-align: here }
 
 ## Embedded Controller + Two High-Availability Remote Controllers
@@ -551,7 +553,8 @@ caption: "Use-Case: Embedded Plus Two Remote High-Availability Controllers" }
 [embedded-plus-two-remote-ha-controllers]: assets/embedded-plus-two-remote-ha-controllers.png \
 { height: 10cm; page-align: here }
 
-# Master-slave arbitration and controller replication
+# Master-Slave Arbitration and Controller Replication {\
+  #sec-master-slave-arbitration-and-controller-replication}
 
 P4Runtime interface allows multiple controllers to be connected to the P4Runtime
 server running on the switch at the same time for the following reasons:
@@ -636,7 +639,8 @@ message StreamMessageResponse {
 
   b. **Packet I/O:** The same streaming channel will be used for packet in and
   packet out as well. Note that only the master controller can participate in
-  packet I/O. This feature is explained in more details [here](#packet-i_o).
+  packet I/O. This feature is explained in more details in the
+ [Packet I/O](#sec-packet-i_o) section.
 
 
 * Note that the stream is opened per device. In case a switch platform has
@@ -752,7 +756,8 @@ ALREADY_EXISTS status code) for slaves.
 # The P4Info Message
 
 The purpose of P4Info was described under
-[Reference Architecture](#reference-architecture). Here we describe the various
+[Reference Architecture](#sec-reference-architecture).
+Here we describe the various
 components.
 
 ## Common Messages
@@ -852,12 +857,12 @@ P4Runtime messages. IDs are 32-bit unsigned integers which are assigned by the
 compiler during the P4Info generation process. IDs are assigned in such a way
 that is is possible based on the ID value alone to deduce the type of the object
 (e.g. table, action, counter, ...). The most significant 8 bits of the ID
-encodes the object type (as per table [#tab-mapping-p4-obj-ids]. The
+encodes the object type (as per Table [#tab-mapping-p4-obj-ids]. The
 p4info.proto file includes a mapping from object type to 8-bit prefix value,
 encoded as an enum definition `(p4.config.v1.P4Ids.Prefix)`. These values must
 be used (e.g. by the compiler) when allocating IDs. The remaining 24-bits must
 be generated in such a way that the resultings IDs must be globally unique in
-the scope of the P4Info message. See table [#tab-format-p4-obj-ids].
+the scope of the P4Info message. See Table [#tab-format-p4-obj-ids].
 
 ~ TableFigure { #tab-mapping-p4-obj-ids; \
     caption: "Mapping of P4Info object type to 8-bit ID prefix value"; }
@@ -895,7 +900,7 @@ the scope of the P4Info message. See table [#tab-format-p4-obj-ids].
 ~
 
 It is possible to statically set the least-significant 24 bits of the ID in the
-P4 program source by annotating the object with @id (see table
+P4 program source by annotating the object with @id (see Table
 [#tab-exmpl-p4-obj-ids]. The compiler must honor the @id annotations when
 generating the P4Info message and must fail the compilation if
 statically-assigned ID suffixes lead to non-unique IDs (i.e. if the P4
@@ -944,7 +949,7 @@ is defined with the following fields:
 
     * bitwidth, an int32 value describing the size in bits of this match field.
 
-    * match_type, describing the match behaviour applied to this field. Value
+    * match_type, describing the match behavior applied to this field. Value
     can be any from the MatchType enum which describes all possible PSA match
     kinds, such as
 
@@ -996,10 +1001,9 @@ should support for the table.  See the "Size" subsection within the "Table
 Properties" section of the P4_16 language specification version 1.1.0 for
 details.
 
-* idle_timeout_behavior, which describes the behaviour of the data plane when
-the idle timeout of a table entry expires (see [idle- imeout
-section](#heading=h.ltifp7ix124)). Value can be any of the IdleTimeoutBehavior
-enum:
+* idle_timeout_behavior, which describes the behavior of the data plane when the
+idle timeout of a table entry expires (see [Idle-Timeout](#sec-idle-timeout)
+section). Value can be any of the IdleTimeoutBehavior enum:
 
     * UNSPECIFIED, reserved
 
@@ -1007,7 +1011,7 @@ enum:
 
     * NOTIFY_CONTROL, means that the control plane should be notified of the
     expiration of a table entry by means of a notification (see section on
-    [table idle timeout notifications](#heading=h.dw463dpde6as))
+    [Table Idle Timeout Notifications](#sec-table-idle-timeout-notification))
 
 * is_const_table, a boolean flag indicating that the table is filled with static
 entries that cannot be modified by the control plane at runtime
@@ -1294,8 +1298,8 @@ The Register message defines the following fields:
 * preamble, a Preamble message with ID, name, and alias of this register instance.
 
 * type_spec, which specifies the data type hold by this register, expressed
-using a P4DataTypeSpec message (see section on [representation of  arbitrary P4
-types](#heading=h.ky0b5edu0l2x)).
+using a P4DataTypeSpec message (see section on [Representation of  Arbitrary P4
+Types](#sec-representation-of-arbitrary-p4-types)).
 
 * size, an int32 value representing the total number of independent register
 cells available.
@@ -1319,12 +1323,13 @@ The Digest message defines the following fields:
 * preamble, a Preamble message with ID, name, and alias of this digest instance
 
 * type_spec, which specifies the data type of a digest notification using a
-P4DataTypeSpec message (see section on [representation of  arbitrary P4
-types](#heading=h.ky0b5edu0l2x))
+P4DataTypeSpec message (see section on [Representation of  Arbitrary P4
+Types](#sec-representation-of-arbitrary-p4-types)).
 
 ## Support for arbitrary P4 types with P4TypeInfo
 
-See [Representation of arbitrary P4 types](#heading=h.ky0b5edu0l2x).
+See (see section on [Representation of  Arbitrary P4
+Types](#sec-representation-of-arbitrary-p4-types)).
 
 # P4 Forwarding-Pipeline Configuration
 
@@ -1413,7 +1418,7 @@ counter_id: <id>
       value) and is therefore omitted from the textual representation of the
       message.
 
-## Read-write symmetry
+## Read-Write Symmetry { #sec-read-write-symmetry}
 
 The reads and writes a client issues towards a server should be symmetrical and
 unambiguous. More specifically, if a client writes a P4 entity and then reads it
@@ -1447,7 +1452,7 @@ those fields to mean unset. In particular, 0 is not a valid P4 object ID and it
 is an error to specify 0 for any P4 object ID in a non-read request towards the
 switch, such as in a WriteRequest or a SetForwardingPipelineConfigRequest.
 
-## Bytestrings
+## Bytestrings { #sec-bytestrings}
 
 P4Runtime integer values may be too large to fit in Protobuf primitive data
 types (32-bit and 64-bit words). The P4 language does not put any limit on the
@@ -1496,7 +1501,7 @@ the P4Runtime client, the server must verify that the length of the binary
 string is less than the maximum length specified in the P4 program, and return
 an INVALID_ARGUMENT error code otherwise.
 
-## Representation of arbitrary P4 types
+## Representation of arbitrary P4 types { #sec-representation-of-arbitrary-p4-types}
 
 ### Problem statement
 
@@ -1780,19 +1785,19 @@ entry.
 
 * meter_config, which is used to read and write the configuration for the direct
 meter entry attached to this table entry, if any. See [Direct
-resources](#heading=h.3rjuxc1zdvon) section for more information.
+resources](#sec-direct-resources) section for more information.
 
 * counter_data, which is used to read and write the value for the direct counter
 entry attached to this table entry, if any. See [Direct
-resources](#heading=h.3rjuxc1zdvon) section for more information.
+resources](#sec-direct-resources) section for more information.
 
 * is_default_action, a boolean flag which indicates whether the table entry is
-the default entry for the table. See [Default entry](#heading=h.294k2v1af848)
+the default entry for the table. See [Default entry](#sec-default-entry)
 section for more information.
 
 * idle_timeout_ns and time_since_last_hit, which are two fields used to
 implement idle-timeout support for the table, if applicable. See
-[Idle-timeout](#heading=h.ltifp7ix124) section for more information.
+[Idle-timeout](#sec-idle-timeout) section for more information.
 
 The priority field must be set to a non-zero value if the match key includes a
 ternary match, i.e. if the P4Info entry for the table indicates that one or more
@@ -1814,14 +1819,14 @@ nonsensical values (such as an invalid action field).
 
 ### Match format
 
-The bytes fields in the FieldMatch message follows the format described in [8.4
-Bytestrings](#heading=h.3wq2pmr7yoq6).
+The bytes fields in the FieldMatch message follows the format described in [
+Bytestrings](#sec-bytestrings).
 
 For "don't care" matches, the P4Runtime client must omit the match value when
 building the match repeated field of the TableEntry message. This requirement
 leads to smaller Protobuf messages overall, while enabling a canonical
 representation for "don't care" matches, which is needed to ensure [read-write
-symmetry](#heading=h.s2228dusjghg). A "don't care" match for a specific match
+symmetry](#sec-read-write-symmetry). A "don't care" match for a specific match
 key field is defined as follows:
 
 * For a ternary match, it is logically equivalent to a mask of zeros.
@@ -1922,8 +1927,8 @@ table.
 
 * params: a repeated Protobuf field of action parameter values, each encoded as
 a Param message. For each parameter, param_id must be valid for the action (as
-per the P4Info)  and value must follow the format described in [8.4
-Bytestrings](#heading=h.3wq2pmr7yoq6). The P4Runtime client must provide a valid
+per the P4Info)  and value must follow the format described in [
+Bytestrings](#sec-bytestrings). The P4Runtime client must provide a valid
 value for each parameter of the P4 action; we do not support default values for
 action parameters.
 
@@ -1931,7 +1936,7 @@ For indirect tables, if the P4Runtime client provides a member or group id which
 has not been inserted in the corresponding action profile instance yet, the
 P4Runtime server must return a NOT_FOUND error code.
 
-### Default entry
+### Default Entry { #sec-default-entry}
 
 According to the P4 specification, the default entry for a table is always set.
 It can be set at compile-time by the P4 programmer - or defaults to NoAction
@@ -1951,7 +1956,7 @@ constant (as indicated by the P4 program and the P4Info message), the server
 must return an PERMISSION_DENIED error code if the client attempts to modify it.
 
 Apart from the above restrictions, the default entry is treated like a regular
-entry, including with regards to [direct resources](#heading=h.3rjuxc1zdvon).
+entry, including with regards to [direct resources](#sec-direct-resources).
 
 In this P4Runtime release, we have decided to restrict the default entry for
 indirect tables - tables with an ActionProfile or ActionSelector implementation
@@ -2020,7 +2025,7 @@ entities {
 }
 ~ End Prototext
 
-### Direct resources
+### Direct resources { #sec-direct-resources}
 
 In addition to the DirectCounterEntry and DirectMeterEntry entities, P4Runtime
 support reading and writing direct resources as part of the TableEntry message.
@@ -2103,7 +2108,7 @@ modifying a table entry, if the P4Runtime client wishes to maintain the same
 meter configuration, it needs to be provided again in the TableEntry message
 (i.e. the meter_config field must be set to match the existing configuration).
 
-### Idle-timeout
+### Idle-timeout { #sec-idle-timeout }
 
 P4Runtime supports idle timeout for table entries. When adding a table entry,
 the client can specify a Time-To-Live (TTL) value. If at any time during its
@@ -2148,7 +2153,7 @@ values for time_since_last_hit.
 
 For more information about idle timeout, in particular regarding
 IdleTimeoutNotification, please refer to the [Table idle timeout
-notifications](#heading=h.n8fm3w43rq15) section.
+notifications](#sec-table-idle-timeout-notification) section.
 
 ## ActionProfileMember and ActionProfileGroup
 
@@ -2321,8 +2326,8 @@ defined as Direct or Indirect (indexed) instances.
 
 ### DirectCounterEntry
 
-A direct counter is a direct resource associated with a TableEntry (see [9.1.5
-Direct resources](#heading=h.3rjuxc1zdvon)). The counter_data field of the
+A direct counter is a direct resource associated with a TableEntry
+see [Direct Resources](#sec-direct-resources)). The counter_data field of the
 TableEntry message can be used to initialize the counter value at the same time
 as the table entry is inserted. Once the table entry has been created, the
 P4Runtime client may modify the associated direct counter entry using the
@@ -2355,7 +2360,7 @@ DirectCounter.
 
 * As a direct resource associated with a table entry, request the server to
 return the counter value in the counter_data field of the TableEntry message
-(see [9.1.5 Direct resources](#heading=h.3rjuxc1zdvon)).
+(see [Direct resources](#sec-direct-resources)).
 
 * Explicitly request the counter value by including the DirectCounterEntry in
 the ReadRequest. The table_entry.match field must match the TableEntry whose
@@ -2370,7 +2375,8 @@ P4Runtime CounterEntry message whose fields are defined as follows:
 
 * counter_id is a uint32, a unique identifier for the counter.
 
-* index is a protobuf that encapsulates a int64, used to index into the counter array.
+* index is a protobuf that encapsulates a int64, used to index into the counter
+array.
 
 * data is a message of type CounterData, which represents the counter value.
 
@@ -2440,8 +2446,8 @@ The protobuf fields are defined as follows:
 
 ### DirectMeterEntry
 
-A direct meter is a direct resource associated with a TableEntry (see [9.1.5
-Direct resources](#heading=h.3rjuxc1zdvon)). The meter_config field of the
+A direct meter is a direct resource associated with a TableEntry
+(see [Direct resources](#sec-direct-resources)). The meter_config field of the
 TableEntry message can be used to initialize the meter configuration at the same
 time as the table entry is inserted. Once the table entry has been created, the
 P4Runtime client may modify the associated direct meter entry using the
@@ -2475,7 +2481,7 @@ A client may use ReadRequest in two ways to read a DirectMeter config.
 
 * As a direct resource associated with a table entry, request the server to
 return the meter config in the meter_config field of the TableEntry message (see
-[9.1.5 Direct resources](#heading=h.3rjuxc1zdvon)).
+[Direct resources](#sec-direct-resources)).
 
 * Explicitly request the meter configuration by including the DirectMeterEntry
 in the ReadRequest. The table_entry.match field must match the TableEntry whose
@@ -2582,8 +2588,10 @@ As a result of the above P4Runtime programming, the target device will create
 four replicas of an ARP packet. These replicas will appear in the egress
 pipeline as independent packets with egress port set to PSA device port numbers
 corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
-translation between SDN ports and PSA device ports, refer to the [translation of
-PSA metadata](#heading=h.pq3nwzn9rei). The egress packets may be distinguished
+translation between SDN ports and PSA device ports, refer to the
+[PSA Metadata Translation](#sec-translation-of-port-numbers) section.
+
+The egress packets may be distinguished
 for further processing in the egress using the replica_id metadata. Note that a
 packet may not be both unicast and multicast; if the multicast group is set, it
 will override the unicast egress port. If the multicast_group metadata is set to
@@ -2663,8 +2671,9 @@ of service value of 2. If the packet is larger than 4096 bytes, it will be
 truncated to carry at most 4096 bytes.
 
 The cloned replica will appear in the egress pipeline as independent packet with
-egress port set to CPU (corresponding to SDN [reserved CPU port
-number](#heading=h.pq3nwzn9rei) 0xFFFFFFFD). Note that the egress port must be a
+egress port set to CPU (corresponding to SDN or `0xFFFFFFFD`;
+see [Translation of Port Numbers](#sec-translation-of-port-numbers)).
+Note that the egress port must be a
 32-bit SDN port number and must refer to a singleton port.
 
 Furthermore, even though the protobuf representation for clone session entry
@@ -2781,7 +2790,7 @@ of a ReadResponse message). The data field is a P4Data message and must match
 the format described by the type_spec field of the corresponding Register entry
 in the P4Info.
 
-## DigestEntry
+## DigestEntry { #sec-digestentry }
 
 A digest is one mechanism to send a message from the data-plane to the
 control-plane. It is traditionally used for MAC address learning: when a packet
@@ -2941,7 +2950,7 @@ embedded as a proto
 [Any](https://developers.google.com/protocol-buffers/docs/proto3#any) to keep
 the protocol extensible.
 
-# Error Reporting Messages
+# Error Reporting Messages { #sec-error-reporting-messages}
 
 P4Runtime is based on gRPC and all RPCs return a status to indicate success or
 failure. gRPC supports multiple language bindings; we use C++ binding below to
@@ -2989,9 +2998,10 @@ Figure [#fig-error-report] below illustrates how these messages fit together.
 
 gRPC provides utility functions ExtractErrorDetails() and SetErrorDetails() (see
 [error_details.h](https://github.com/grpc/grpc/blob/master/include/grpc%2B%2B/support/error_details.h))
-to easily convert between grpc::Status and google.rpc.Status.
+to easily convert between `grpc::Status` and `google.rpc.Status`.
 
-Please see sections on individual P4Runtime RPCs for details on how grpc::Status is populated for reporting errors.
+Please see sections on individual P4Runtime RPCs for details on how `grpc::Status`
+is populated for reporting errors.
 
 # Write RPC
 
@@ -3013,9 +3023,10 @@ message WriteRequest {
 }
 ~ End Proto
 
-The devide_id uniquely identifies the target P4 device. The role_id and
-election_id define the client role and election-id as described in the
-*Controller Roles and Mastership Arbitration* section.
+The `device_id` uniquely identifies the target P4 device. The `role_id` and
+`election_id` define the client role and election-id as described in the
+[Master-Slave Arbitration and Controller Replication](#sec-master-slave-arbitration-and-controller-replication)
+section.
 
 The updates field is a list of P4 entity updates to be applied. Each update is
 defined as:
@@ -3148,7 +3159,7 @@ decide to use DATAPLANE_ATOMIC at one time and default behavior
 
 ## Error Reporting
 
-Please see section [Error Reporting Messages](#heading=h.ct7nepyfmt5n) for
+Please see section [Error Reporting Messages](#sec-error-reporting-messages) for
 information on error reporting messages and guidelines. P4Runtime server will
 populate grpc::Status as follows:
 
@@ -3282,7 +3293,7 @@ A P4Runtime server will process the batch as follows:
     other field.
 
     2. Otherwise, the overall code should be set to UNKNOWN. See section [Error
-    Reporting Messages](#heading=h.ct7nepyfmt5n) for information on error
+    Reporting Messages](#sec-error-reporting-messages) for information on error
     reporting messages and guidelines. Assemble a list of p4.Error messages
     (from step 1 above) such that each element reflects the status of the
     request in the batch at the same location (1:1 correspondence). This list
@@ -3406,7 +3417,8 @@ error is returned if the device_id is not recognized the P4Runtime server.
 
 The response contains the *P4ForwardingPipelineConfig* for the specified device:
 
-~ Begin Proto message GetForwardingPipelineConfigResponse {
+~ Begin Proto
+ message GetForwardingPipelineConfigResponse {
   ForwardingPipelineConfig config = 1;
 }
 ~ End Proto
@@ -3431,7 +3443,7 @@ SetForwardingPipelineConfig and GetForwardingPipelineConfig RPCs.
 
 # P4Runtime Stream Messages
 
-## Packet I/O
+## Packet I/O { #sec-packet-i_o}
 
 P4Runtime supports controller packet-in and packet-out by means of PacketIn and
 PacketOut stream messages, respectively.
@@ -3439,7 +3451,7 @@ PacketOut stream messages, respectively.
 PacketIn messages are sent by the P4Runtime server to the client. Conversely,
 PacketOut messages are sent by the client to the server.
 
-As introduced in [Section 6.4.6](#heading=h.x8xfdbvwhluy), such messages can
+As introduced in the [Packet I/O](#sec-packet-i_o) section, such messages can
 carry arbitrary metadata specified by means of P4 headers with P4 standard
 annotation @controller_metadata. The expected metadata is also described in the
 P4Info using the ControllerPacketMetadata messages.
@@ -3491,8 +3503,9 @@ controller first opens a bidirectional stream channel to the switch via
 StreamChannel RPC for each device (aka target or node or switching chip) and
 sends a StreamMessageRequest message to the switch. The controller populates the
 MasterArbitrationUpdate field in this message using its role_id and election_id
-and the device_id of the device, as explained in detail
-[here](#heading=h.yrvo1g4o9vcj). For any (device_id, role_id), the controller
+and the device_id of the device, as explained in detail in the 
+[Master-Slave Arbitration and Controller Replication](#sec-master-slave-arbitration-and-controller-replication)
+section. For any (device_id, role_id), the controller
 with the highest election_id is the master and the rest are slaves.
 MasterArbitrationUpdate message is defined as follows:
 
@@ -3539,13 +3552,13 @@ is determined to be a slave for a given (device_id, role_id).
 
 ### DigestListAck
 
-See [DigestEntry](#heading=h.aptuqnda65p4) section.
+See [DigestEntry](#sec-digestentry) section.
 
-## Table Idle Timeout Notification
+## Table Idle Timeout Notification { #sec-table-idle-timeout-notification}
 
 When a table supports idle timeout (as per the P4Info message), the master
 client can specify a TTL value for each entry in the table (see
-[Idle-timeout](#heading=h.ltifp7ix124) section). If the data-plane entry is not
+[Idle-timeout](#sec-idle-timeout) section). If the data-plane entry is not
 hit for a lapse of time greater or equal to the TTL, the P4Runtime server must
 generate a IdleTimeoutNotification message on the StreamChannel bi-directional
 stream to the master client. The master client can then take the action of its
@@ -3612,7 +3625,7 @@ while (true) {
 
 # Portability considerations
 
-## PSA metadata translation
+## PSA Metadata Translation { #sec-psa-metadata-translation}
 
 The **Portable Switch Architecture** (PSA) defines standard metadata, whose
 dataplane types are different on different PSA targets. In order to enable
@@ -3641,6 +3654,7 @@ of all targets in its domain. A mapping from the controller's 32 bit port
 numbers to a target's 9-bit or 10-bit port numbers is input to the switch via
 the non-forwarding switch config data that is delivered separately to the
 switch.
+### Translation of Port Numbers { #sec-translation-of-port-numbers}
 
 In order to support the above SDN use case, P4Runtime requires translation of
 port metadata values between the controller's space and the PSA device's space
@@ -3830,12 +3844,12 @@ known at compile-time
 
 # References
 
-\[1\] [https://github.com/p4lang/PI/tree/master/proto](https://github.com/p4lang/PI/tree/master/proto) -
+\[1\] [https://github.com/p4lang/PI/tree/master/proto](https://github.com/p4lang/p4runtime) -
 code repository for reference implementation
 
 \[2\] [https://grpc.io](https://grpc.io) - gRPC main site
 
-\[3\] [https://developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers) -
+\[3\] [https://developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers) - 
 protobufs code repository
 
 \[4\] [https://p4.org](https://p4.org/) - P4.org main site
@@ -3844,11 +3858,14 @@ protobufs code repository
 
 \[6\] [www.stratumproject.org](www.stratumproject.org) - the Stratum Project
 
-\[7\] [https://github.com/p4lang/PI/tree/master/proto/p4info/xform](https://github.com/p4lang/PI/tree/master/proto/p4info/xform -
+\[7\] [https://github.com/p4lang/PI/tree/master/proto/p4info/xform](https://github.com/p4lang/PI/tree/master/proto/p4info/xform) - 
 P4Info transform utility
 
-\[8\] [https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type](https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type) -
+\[8\] [https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type](https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type) - 
 Complex types in P4_16
 
-\[9\] [https://developers.google.com/protocol-buffers/docs/proto3#default](https://developers.google.com/protocol-buffers/docs/proto3#default) - Default values for proto3 fields
+\[9\] [https://developers.google.com/protocol-buffers/docs/proto3#default](https://developers.google.com/protocol-buffers/docs/proto3#default) - 
+Default values for proto3 fields
 
+
+\[10\] [https://github.com/p4lang/PI](https://github.com/p4lang/PI) - Legacy P4 Runtime repo
