@@ -3844,28 +3844,34 @@ known at compile-time
 
 # References
 
-\[1\] [https://github.com/p4lang/PI/tree/master/proto](https://github.com/p4lang/p4runtime) -
-code repository for reference implementation
+* \[1\]
+  [https://github.com/p4lang/p4runtime](https://github.com/p4lang/p4runtime) -
+  code repository for reference implementation
 
-\[2\] [https://grpc.io](https://grpc.io) - gRPC main site
+* \[2\] [https://grpc.io](https://grpc.io) - gRPC main site
 
-\[3\] [https://developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers) - 
-protobufs code repository
+* \[3\]
+  [https://developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers) -
+  Protocol buffers site
 
-\[4\] [https://p4.org](https://p4.org/) - P4.org main site
+* \[4\] [https://p4.org](https://p4.org/) - P4.org main site
 
-\[5\] [http://openconfig.net](http://openconfig.net) - the OpenConfig project
+* \[5\] [http://openconfig.net](http://openconfig.net) - the OpenConfig project
 
-\[6\] [www.stratumproject.org](www.stratumproject.org) - the Stratum Project
+* \[6\] [www.stratumproject.org](www.stratumproject.org) - the Stratum Project
 
-\[7\] [https://github.com/p4lang/PI/tree/master/proto/p4info/xform](https://github.com/p4lang/PI/tree/master/proto/p4info/xform) - 
-P4Info transform utility
+* \[7\]
+  [https://github.com/p4lang/PI/tree/master/proto/p4info/xform](https://github.com/p4lang/PI/tree/master/proto/p4info/xform) -
+  P4Info transform utility
 
-\[8\] [https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type](https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type) - 
-Complex types in P4_16
+* \[8\]
+  [https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type](https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type) -
+  complex types in P4_16
 
-\[9\] [https://developers.google.com/protocol-buffers/docs/proto3#default](https://developers.google.com/protocol-buffers/docs/proto3#default) - 
-Default values for proto3 fields
+* \[9\]
+  [https://developers.google.com/protocol-buffers/docs/proto3#default](https://developers.google.com/protocol-buffers/docs/proto3#default) -
+  default values for proto3 fields
 
-
-\[10\] [https://github.com/p4lang/PI](https://github.com/p4lang/PI) - Legacy P4 Runtime repo
+* \[10\] [https://github.com/p4lang/PI](https://github.com/p4lang/PI) - Legacy
+  repository for P4Runtime Protobuf definitions, includes reference
+  implementation
