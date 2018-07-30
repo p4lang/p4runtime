@@ -368,7 +368,7 @@ caption: "P4Runtime Reference Architecture." }
 ![reference-architecture]
 ~
 [reference-architecture]: assets/reference-architecture.png \
-{ width: 100%; page-align: here }
+{ height: 7cm; page-align: here }
 
 ## Idealized Workflow
 
@@ -482,7 +482,7 @@ caption: "Use-Case: Single Embedded Controller" }
 ![single-embedded-controller]
 ~
 [single-embedded-controller]: assets/single-embedded-controller.png \
-{ height: 10cm; page-align: here }
+{ height: 7cm; page-align: forcehere }
 
 ## Single Remote Controller
 
@@ -496,7 +496,7 @@ caption: "Use-Case: Single Remote Controller" }
 ![single-remote-controller]
 ~
 [single-remote-controller]: assets/single-remote-controller.png \
-{ height: 10cm; page-align: here }
+{ height: 7cm; page-align: forcehere }
 
 ## Embedded + Single Remote Controller
 
@@ -518,7 +518,7 @@ caption: "Use-Case: Embedded Plus Single Remote Controller" }
 ~
 [embedded-plus-single-remote-controller]: \
 assets/embedded-plus-single-remote-controller.png \
-{ height: 10cm; page-align: here }
+{ height: 7cm; page-align: forcehere }
 
 ## Embedded + Two Remote Controllers
 
@@ -534,7 +534,7 @@ caption: "Use-Case: Embedded Plus Two Remote Controllers" }
 ~
 [embedded-plus-two-remote-controllers]: \
 assets/embedded-plus-two-remote-controllers.png \
-{ height: 10cm; page-align: here }
+{ height: 7cm; page-align: forcehere }
 
 ## Embedded Controller + Two High-Availability Remote Controllers
 
@@ -551,7 +551,7 @@ caption: "Use-Case: Embedded Plus Two Remote High-Availability Controllers" }
 ![embedded-plus-two-remote-ha-controllers]
 ~
 [embedded-plus-two-remote-ha-controllers]: assets/embedded-plus-two-remote-ha-controllers.png \
-{ height: 10cm; page-align: here }
+{ height: 7cm; page-align: forcehere }
 
 # Master-Slave Arbitration and Controller Replication {\
   #sec-master-slave-arbitration-and-controller-replication}
@@ -2994,7 +2994,7 @@ Figure [#fig-error-report] below illustrates how these messages fit together.
 ~ Figure { #fig-error-report; caption: "P4Runtime Error Report Mesage Format" }
 ![error-report]
 ~
-[error-report]: assets/error-report.png { width: 100%; page-align: here }
+[error-report]: assets/error-report.png { width: 80%; page-align: here }
 
 gRPC provides utility functions ExtractErrorDetails() and SetErrorDetails() (see
 [error_details.h](https://github.com/grpc/grpc/blob/master/include/grpc%2B%2B/support/error_details.h))
@@ -3642,7 +3642,7 @@ caption: "P4Runtime Metadata Translation for the Portable Switch Architeccture" 
 ![psa-metadata-translation]
 ~
 [psa-metadata-translation]: assets/psa-metadata-translation.png \
-{ height: 8cm; page-align: here }
+{ height: 7cm; page-align: here }
 
 Figure [#fig-psa-metadata-translation] above illustrates a motivating example,
 where a centralized controller is controlling two P4Runtime targets in a fabric.
