@@ -329,14 +329,14 @@ implementation of these APIs is also in progress as part of Stratum project
     the P4Runtime Service; often used interchangeably with "device".
 
 # Reference Architecture { #sec-reference-architecture}
-Figure [#fig-reference-architecture] below represents
-the P4Runtime Reference Architecture. The device or target to be controlled is
-at the bottom, and one or more Controllers is shown at the top. A multi-master
-protocol allows more than one controller to participate, and a role-based
-arbitration scheme ensures only one controller has write access to each r/w
-entity, or the pipeline config itself. Any controller may perform read access to
-any entity or the pipeline config. Later sections describe this in detail. For
-the sake of brevity, the term Controller may refer to one or more controllers.
+Figure [#fig-reference-architecture] below represents the P4Runtime Reference
+Architecture. The device or target to be controlled is at the bottom, and one or
+more Controllers is shown at the top. A multi-master protocol allows more than
+one controller to participate, and a role-based arbitration scheme ensures only
+one controller has write access to each r/w entity, or the pipeline config
+itself. Any controller may perform read access to any entity or the pipeline
+config. Later sections describe this in detail. For the sake of brevity, the
+term Controller may refer to one or more controllers.
 
 The P4Runtime API defines the messages and semantics of the interface between
 the client(s) and the server. The API is specified by the p4runtime.proto
@@ -348,9 +348,9 @@ server.
 
 Reference implementations of a P4 Target supporting P4Runtime, as well as sample
 clients, may be available on the GitHub repository
-[[10]](https://github.com/p4lang/PI). A future goal may be to produce a reference
-gRPC server which can be instrumented in a generic way, e.g. via callbacks, thus
-reducing the burden of reinventing the wheel.
+[[10]](https://github.com/p4lang/PI). A future goal may be to produce a
+reference gRPC server which can be instrumented in a generic way, e.g. via
+callbacks, thus reducing the burden of reinventing the wheel.
 
 The Controller can access the P4 entities which are declared in the P4Info
 metadata. The P4Info structure is defined by p4info.proto,another protobuf
@@ -516,7 +516,8 @@ Controller might manage the contents of routing tables.
 caption: "Use-Case: Embedded Plus Single Remote Controller" }
 ![embedded-plus-single-remote-controller]
 ~
-[embedded-plus-single-remote-controller]: assets/embedded-plus-single-remote-controller.png \
+[embedded-plus-single-remote-controller]: \
+assets/embedded-plus-single-remote-controller.png \
 { height: 10cm; page-align: here }
 
 ## Embedded + Two Remote Controllers
@@ -531,7 +532,8 @@ entities, perhaps statistics tables. Role-based access divides the ownership.
 caption: "Use-Case: Embedded Plus Two Remote Controllers" }
 ![embedded-plus-two-remote-controllers]
 ~
-[embedded-plus-two-remote-controllers]: assets/embedded-plus-two-remote-controllers.png \
+[embedded-plus-two-remote-controllers]: \
+assets/embedded-plus-two-remote-controllers.png \
 { height: 10cm; page-align: here }
 
 ## Embedded Controller + Two High-Availability Remote Controllers
@@ -551,7 +553,8 @@ caption: "Use-Case: Embedded Plus Two Remote High-Availability Controllers" }
 [embedded-plus-two-remote-ha-controllers]: assets/embedded-plus-two-remote-ha-controllers.png \
 { height: 10cm; page-align: here }
 
-# Master-Slave Arbitration and Controller Replication { #sec-master-slave-arbitration-and-controller-replication}
+# Master-Slave Arbitration and Controller Replication {\
+  #sec-master-slave-arbitration-and-controller-replication}
 
 P4Runtime interface allows multiple controllers to be connected to the P4Runtime
 server running on the switch at the same time for the following reasons:
@@ -636,7 +639,8 @@ message StreamMessageResponse {
 
   b. **Packet I/O:** The same streaming channel will be used for packet in and
   packet out as well. Note that only the master controller can participate in
-  packet I/O. This feature is explained in more details in the [Packet I/O](#sec-packet-i_o) section.
+  packet I/O. This feature is explained in more details in the
+ [Packet I/O](#sec-packet-i_o) section.
 
 
 * Note that the stream is opened per device. In case a switch platform has
@@ -752,7 +756,8 @@ ALREADY_EXISTS status code) for slaves.
 # The P4Info Message
 
 The purpose of P4Info was described under
-[Reference Architecture](#sec-reference-architecture). Here we describe the various
+[Reference Architecture](#sec-reference-architecture).
+Here we describe the various
 components.
 
 ## Common Messages
@@ -996,9 +1001,9 @@ should support for the table.  See the "Size" subsection within the "Table
 Properties" section of the P4_16 language specification version 1.1.0 for
 details.
 
-* idle_timeout_behavior, which describes the behavior of the data plane when
-the idle timeout of a table entry expires (see [Idle-Timeout](#sec-idle-timeout) section). Value can be any of the IdleTimeoutBehavior
-enum:
+* idle_timeout_behavior, which describes the behavior of the data plane when the
+idle timeout of a table entry expires (see [Idle-Timeout](#sec-idle-timeout)
+section). Value can be any of the IdleTimeoutBehavior enum:
 
     * UNSPECIFIED, reserved
 
@@ -2321,7 +2326,8 @@ defined as Direct or Indirect (indexed) instances.
 
 ### DirectCounterEntry
 
-A direct counter is a direct resource associated with a TableEntry (see [Direct resources](#sec-direct-resources)). The counter_data field of the
+A direct counter is a direct resource associated with a TableEntry
+see [Direct Resources](#sec-direct-resources)). The counter_data field of the
 TableEntry message can be used to initialize the counter value at the same time
 as the table entry is inserted. Once the table entry has been created, the
 P4Runtime client may modify the associated direct counter entry using the
@@ -2369,7 +2375,8 @@ P4Runtime CounterEntry message whose fields are defined as follows:
 
 * counter_id is a uint32, a unique identifier for the counter.
 
-* index is a protobuf that encapsulates a int64, used to index into the counter array.
+* index is a protobuf that encapsulates a int64, used to index into the counter
+array.
 
 * data is a message of type CounterData, which represents the counter value.
 
@@ -2439,7 +2446,8 @@ The protobuf fields are defined as follows:
 
 ### DirectMeterEntry
 
-A direct meter is a direct resource associated with a TableEntry (see [Direct resources](#sec-direct-resources)). The meter_config field of the
+A direct meter is a direct resource associated with a TableEntry
+(see [Direct resources](#sec-direct-resources)). The meter_config field of the
 TableEntry message can be used to initialize the meter configuration at the same
 time as the table entry is inserted. Once the table entry has been created, the
 P4Runtime client may modify the associated direct meter entry using the
@@ -2580,7 +2588,10 @@ As a result of the above P4Runtime programming, the target device will create
 four replicas of an ARP packet. These replicas will appear in the egress
 pipeline as independent packets with egress port set to PSA device port numbers
 corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
-translation between SDN ports and PSA device ports, refer to the [PSA Metadata Translation](##sec-translation-of-port-numbers) section. The egress packets may be distinguished
+translation between SDN ports and PSA device ports, refer to the
+[PSA Metadata Translation](#sec-translation-of-port-numbers) section.
+
+The egress packets may be distinguished
 for further processing in the egress using the replica_id metadata. Note that a
 packet may not be both unicast and multicast; if the multicast group is set, it
 will override the unicast egress port. If the multicast_group metadata is set to
@@ -2660,7 +2671,9 @@ of service value of 2. If the packet is larger than 4096 bytes, it will be
 truncated to carry at most 4096 bytes.
 
 The cloned replica will appear in the egress pipeline as independent packet with
-egress port set to CPU (corresponding to SDN or `0xFFFFFFFD`; see [Translation of Port Numbers](#sec-translation-of-port-numbers)). Note that the egress port must be a
+egress port set to CPU (corresponding to SDN or `0xFFFFFFFD`;
+see [Translation of Port Numbers](#sec-translation-of-port-numbers)).
+Note that the egress port must be a
 32-bit SDN port number and must refer to a singleton port.
 
 Furthermore, even though the protobuf representation for clone session entry
@@ -2985,9 +2998,10 @@ Figure [#fig-error-report] below illustrates how these messages fit together.
 
 gRPC provides utility functions ExtractErrorDetails() and SetErrorDetails() (see
 [error_details.h](https://github.com/grpc/grpc/blob/master/include/grpc%2B%2B/support/error_details.h))
-to easily convert between grpc::Status and google.rpc.Status.
+to easily convert between `grpc::Status` and `google.rpc.Status`.
 
-Please see sections on individual P4Runtime RPCs for details on how grpc::Status is populated for reporting errors.
+Please see sections on individual P4Runtime RPCs for details on how `grpc::Status`
+is populated for reporting errors.
 
 # Write RPC
 
@@ -3009,9 +3023,10 @@ message WriteRequest {
 }
 ~ End Proto
 
-The devide_id uniquely identifies the target P4 device. The role_id and
-election_id define the client role and election-id as described in the
-[Master-Slave Arbitration and Controller Replication](#sec-master-slave-arbitration-and-controller-replication) section.
+The `device_id` uniquely identifies the target P4 device. The `role_id` and
+`election_id` define the client role and election-id as described in the
+[Master-Slave Arbitration and Controller Replication](#sec-master-slave-arbitration-and-controller-replication)
+section.
 
 The updates field is a list of P4 entity updates to be applied. Each update is
 defined as:
@@ -3402,7 +3417,8 @@ error is returned if the device_id is not recognized the P4Runtime server.
 
 The response contains the *P4ForwardingPipelineConfig* for the specified device:
 
-~ Begin Proto message GetForwardingPipelineConfigResponse {
+~ Begin Proto
+ message GetForwardingPipelineConfigResponse {
   ForwardingPipelineConfig config = 1;
 }
 ~ End Proto
@@ -3488,7 +3504,8 @@ StreamChannel RPC for each device (aka target or node or switching chip) and
 sends a StreamMessageRequest message to the switch. The controller populates the
 MasterArbitrationUpdate field in this message using its role_id and election_id
 and the device_id of the device, as explained in detail in the 
-[Master-Slave Arbitration and Controller Replication](#sec-master-slave-arbitration-and-controller-replication) section. For any (device_id, role_id), the controller
+[Master-Slave Arbitration and Controller Replication](#sec-master-slave-arbitration-and-controller-replication)
+section. For any (device_id, role_id), the controller
 with the highest election_id is the master and the rest are slaves.
 MasterArbitrationUpdate message is defined as follows:
 
@@ -3832,7 +3849,7 @@ code repository for reference implementation
 
 \[2\] [https://grpc.io](https://grpc.io) - gRPC main site
 
-\[3\] [https://developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers) -
+\[3\] [https://developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers) - 
 protobufs code repository
 
 \[4\] [https://p4.org](https://p4.org/) - P4.org main site
@@ -3841,13 +3858,14 @@ protobufs code repository
 
 \[6\] [www.stratumproject.org](www.stratumproject.org) - the Stratum Project
 
-\[7\] [https://github.com/p4lang/PI/tree/master/proto/p4info/xform](https://github.com/p4lang/PI/tree/master/proto/p4info/xform) -
+\[7\] [https://github.com/p4lang/PI/tree/master/proto/p4info/xform](https://github.com/p4lang/PI/tree/master/proto/p4info/xform) - 
 P4Info transform utility
 
-\[8\] [https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type](https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type) -
+\[8\] [https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type](https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html#sec-p4-type) - 
 Complex types in P4_16
 
-\[9\] [https://developers.google.com/protocol-buffers/docs/proto3#default](https://developers.google.com/protocol-buffers/docs/proto3#default) - Default values for proto3 fields
+\[9\] [https://developers.google.com/protocol-buffers/docs/proto3#default](https://developers.google.com/protocol-buffers/docs/proto3#default) - 
+Default values for proto3 fields
 
 
 \[10\] [https://github.com/p4lang/PI](https://github.com/p4lang/PI) - Legacy P4 Runtime repo
