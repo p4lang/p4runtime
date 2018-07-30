@@ -301,7 +301,7 @@ message DirectMeter {
 
 // Any metadata associated with controller Packet-IO (Packet-In or Packet-Out)
 // is modeled as P4 headers carrying special annotations
-// @controller_metadata("packet_out") and @controller_metadata("packet_in")
+// @controller_header("packet_out") and @controller_header("packet_in")
 // respectively. There can be at most one header each with these annotations.
 // This message captures the info contained within these special headers,
 // and used in p4runtime.proto to supply the metadata.
