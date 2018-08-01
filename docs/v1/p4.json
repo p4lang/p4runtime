@@ -15,7 +15,7 @@
     "extraKeywords": [],
 
     "typeKeywords": [
-        "bool", "bit", "const", "enum", "entries", "error", "header", "header_union", "in", "inout", "int", "match_kind", "out", "tuple", "struct", "varbit", "void"
+        "bool", "bit", "const", "enum", "entries", "error", "header", "header_union", "in", "inout", "int", "match_kind", "out", "tuple", "struct", "varbit", "void", "type"
     ],
 
     "extraTypeKeywords": [],
