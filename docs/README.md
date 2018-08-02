@@ -117,6 +117,12 @@ extra pass when trying to fit an overfull box. See
 [StackExchange](https://tex.stackexchange.com/a/241355) for more
 information. Not sure what the "optimal" setting is.
 
+### bibref_no_title.js
+
+It is a jQuery script that removes the `title` attribute for bibliography
+links. The title is not correct when the BibTeX title includes inline math and
+also contains "n.d." (for "no date") which is confusing for inline references.
+
 #### List formatting
 
 Indent each line in such a way that text is aligned for each bullet point:
