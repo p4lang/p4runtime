@@ -402,7 +402,7 @@ P4 can be considered a behavioral description of a switching device which may or
 may not execute "P4" natively. There is no requirement that a P4 compiler be
 used in the production of either the P4 device config or the P4Info. There is no
 absolute requirement that the target accept a `SetForwardingPipelineRequest` to
-change its pipeline "program", as ome devices may be fixed in function.
+change its pipeline "program", as some devices may be fixed in function.
 Furthermore, it is not necessary to have a P4 source program to begin with,
 since the controller does not use it. From the standpoint of controller (not
 pipeline) implementers, the P4 source code is just helpful documentation. Some
@@ -1010,9 +1010,9 @@ PSA Action Profiles are used to describe implementations of match-action tables
 where multiple table entries can share the same action instance. Indeed,
 differently from a regular match-action table where each entry contains the
 action specification, when using Action Profile-based tables, the control plane
-can insert entries poiting to an Action Profile *member*, where each member then
-points to an action instance. The control plane is responsible for creating,
-modifying, or deleting members at runtime.
+can insert entries pointing to an Action Profile *member*, where each member
+then points to an action instance. The control plane is responsible for
+creating, modifying, or deleting members at runtime.
 
 PSA Action Selectors extend Action Profiles with the capability of bundling
 together multiple members into *groups*. Match-action table entries can point to
@@ -1807,7 +1807,7 @@ for a specific match key field is defined as follows:
 
 * For a `TERNARY` match, it is logically equivalent to a mask of zeros.
 
-* For a `LPM` match, it is logically equivalent to a prefix_len of zero.
+* For an `LPM` match, it is logically equivalent to a prefix_len of zero.
 
 * For a `RANGE` match, it is logically equivalent to a range which includes all
   possible values for the field.
@@ -3817,8 +3817,6 @@ dataplane.
 
 * The default action for indirect match tables is restricted to a `const
   NoAction` known at compile-time.
-
-# Acknowledgements
 
 # References
 

@@ -7,6 +7,10 @@ this FAQ.
 
 ### FAQ
 
+#### Should I wrap lines in the Madoko source files?
+
+Yes, at 80 charcters.
+
 #### How to write nested numbered lists in Madoko?
 
 It's easy but you cannot us x.y.z. to number the nested items otherwise it won't
