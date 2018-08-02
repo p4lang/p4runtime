@@ -7,6 +7,10 @@ this FAQ.
 
 ### FAQ
 
+#### Should I wrap lines in the Madoko source files?
+
+Yes, at 80 charcters.
+
 #### How to write nested numbered lists in Madoko?
 
 It's easy but you cannot us x.y.z. to number the nested items otherwise it won't
@@ -96,6 +100,55 @@ header PacketOut_t {
 It seems that when defining the replacement rule, the name of the rule and the
 name of the block tag have to match, but the case doesn't matter (`p4example`
 and `P4Example`).
+
+#### Comments on Tex Header
+
+We have the following in Tex Header:
+```
+\setlength{\emergencystretch}{2em}
+```
+Without this, lines which include inline code tended to spill into the
+right-side margin (we do have some long names in P4Runtime) since `\texttt` does
+not allow hyphenation. Even after enabling hyphenation (see
+[StackExchange](https://tex.stackexchange.com/a/44362)), we were still seeing
+the same issue (except when setting the `font-size` to 100% instead of 75% for
+some reason). By setting `emergencystretch` we give Tex the option to do an
+extra pass when trying to fit an overfull box. See
+[StackExchange](https://tex.stackexchange.com/a/241355) for more
+information. Not sure what the "optimal" setting is.
+
+#### List formatting
+
+Indent each line in such a way that text is aligned for each bullet point:
+```
+1. aaaa
+   bbbb
+   cccc
+```
+or
+```
+* aaaa
+  bbbb
+```
+
+#### Inline code with backticks
+
+Use backticks for:
+
+* names of Protobuf messages / fields / RPCs / enum symbols
+* P4 code
+* name of variables when describing examples (pseudo-code or P4)
+
+Do not use backticks for:
+
+* PSA extern names
+* "P4Runtime" & "P4Info"
+
+#### What to capitalize?
+
+* "Protobuf"
+* Each significant word in a heading / section name
+* PSA extern names
 
 ## CI upload of built documents
 
