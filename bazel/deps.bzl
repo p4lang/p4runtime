@@ -17,5 +17,5 @@ def p4runtime_deps():
            name = "com_github_googleapis",
            remote = "https://github.com/googleapis/googleapis",
            commit = "37cc0e5acae50ee91f00827a7010c3b07dfa5311",
-           build_file = "bazel/external/googleapis.BUILD",
+           build_file = "@com_github_p4lang_p4runtime//bazel/external:googleapis.BUILD",
        )
