@@ -12,6 +12,9 @@ Tex Header:
   \setlength{\headheight}{30pt}
   \setlength{\emergencystretch}{2em}
 
+Bib: references.bib
+Bib Search Url:
+
 @if html {
 body.madoko {
   font-family: utopia-std, serif;
@@ -223,8 +226,7 @@ repository].
 P4Runtime is designed to be implemented in conjunction with the P4~16~ language
 version or later. P4~14~ programs should be translated into P4~16~ to be made
 compatible with P4Runtime. This version of P4Runtime utilizes features which are
-not in P4~16~ 1.0, but were introduced in P4~16~ 1.1.0
-[[13]](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html).
+not in P4~16~ 1.0, but were introduced in P4~16~ 1.1.0 [@P4Spec].
 
 ## In Scope
 
@@ -247,12 +249,12 @@ The following are not in scope:
 * Descriptions of gRPC and Protobuf files in general
 
 * Control of elements outside the P4 language. For example,
-architecture-dependent elements such as ports, traffic management, etc. are
-outside of the P4 language and are thus not covered by P4Runtime. Efforts are
-underway to standardize the control of these via gNMI and gNOI APIs, defined and
-maintained by OpenConfig project [[5](http://openconfig.net)]. An open source
-implementation of these APIs is also in progress as part of Stratum project
-[[6]](https://stratumproject.org).
+  architecture-dependent elements such as ports, traffic management, etc. are
+  outside of the P4 language and are thus not covered by P4Runtime. Efforts are
+  underway to standardize the control of these via gNMI and gNOI APIs, defined
+  and maintained by OpenConfig project [@OpenConfig]. An open source
+  implementation of these APIs is also in progress as part of Stratum project
+  [@Stratum].
 
 # Terms and Definitions
 
@@ -275,7 +277,7 @@ implementation of these APIs is also in progress as part of Stratum project
     any other architecture).
 * gRPC
   : gRPC Remote Procedure Calls, an open-source client-server RPC framework. See
-    [[2]](https://grpc.io).
+    [@gRPC].
 * HA
   : High-Availability. Refers to a redundancy architecture.
 * Instrumentation
@@ -297,8 +299,7 @@ implementation of these APIs is also in progress as part of Stratum project
   : Abbreviation for P4Runtime.
 * Protobuf (Protocol Buffers)
   : The wire serialization format for P4Runtime. Protobuf version 3 (proto3) is
-    used to define the P4Runtime interface. See
-    [[3]](https://developers.google.com/protocol-buffers/).
+    used to define the P4Runtime interface. See [@Proto].
 * PSA
   : Portable Switch Architecture; a target architecture that describes common
     capabilities of network switch devices that process and forward packets
@@ -343,16 +344,16 @@ term controller may refer to one or more controllers.
 The P4Runtime API defines the messages and semantics of the interface between
 the client(s) and the server. The API is specified by the p4runtime.proto
 Protobuf file, which is available on GitHub as part of the standard
-[[1](https://github.com/p4lang/p4runtime)]. It may be compiled via protoc - the
-Protobuf compiler - to produce both client and server implementation stubs in a
-variety of languages. It is the responsibility of target implementers to
-instrument the server.
+[@P4RuntimeRepo].  It may be compiled via protoc - the Protobuf compiler - to
+produce both client and server implementation stubs in a variety of
+languages. It is the responsibility of target implementers to instrument the
+server.
 
 Reference implementations of a P4 Target supporting P4Runtime, as well as sample
-clients, may be available on the GitHub repository
-[[10]](https://github.com/p4lang/PI). A future goal may be to produce a
-reference gRPC server which can be instrumented in a generic way, &eg; via
-callbacks, thus reducing the burden of implementing P4Runtime.
+clients, may be available on the p4lang/PI GitHub repository [@PIRepo]. A future
+goal may be to produce a reference gRPC server which can be instrumented in a
+generic way, &eg; via callbacks, thus reducing the burden of implementing
+P4Runtime.
 
 The controller can access the P4 entities which are declared in the P4Info
 metadata. The P4Info structure is defined by p4info.proto, another Protobuf file
@@ -792,8 +793,7 @@ fields are recommended to be included.
 
 Note, the known P4 compilers as of this writing don't emit `PkgInfo` as part of
 the P4Info output. Until compiler support is added, a utility to post-process
-and insert `PkgInfo` can be used
-[[7]](https://github.com/p4lang/PI/tree/master/proto/p4info/xform).
+and insert `PkgInfo` can be used [@xform].
 
 ~ Begin Proto
 
@@ -963,7 +963,7 @@ control plane. This message contains the following fields:
 * `size`, an `int64` describing the desired number of table entries that the
   target should support for the table.  See the "Size" subsection within the
   "Table Properties" section of the P4~16~ language specification for details
-  [[11]](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-table-props).
+  [@P4TableProperties].
 
 * `idle_timeout_behavior`, which describes the behavior of the data plane when
   the idle timeout of a table entry expires (see
@@ -1234,8 +1234,7 @@ messages and for serializing the metadata when generating packet-out messages.
 Sets. Parser Value Sets can be used by the control plane to specify runtime
 matches used by the P4 parser to determine transitions from one state to
 another. For more information on Parser Value Sets, refer to the P4~16~
-specification
-[[12]](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-value-set).
+specification [@P4ValueSets].
 
 The `ValueSet` message defines the following fields:
 
@@ -1323,16 +1322,15 @@ changed by loading a new `FowardingPipelineConfig` on that target.
 ## Set / Unset Protobuf Field
 
 In Protobuf version 3 (*proto3*), the default value for a message field is
-"unset"
-[[9]](https://developers.google.com/protocol-buffers/docs/proto3#default). An
-application, such as the P4Runtime client or server, is able to distinguish
-between an unset field and a field set to its default value. We use this
-distinction quite a lot in P4Runtime and the meaning of a message can vary based
-on which of its message fields are set. For example, when reading values from an
-indirect PSA counter using the CounterEntry message, an "unset" index field
-means that all entries in the counter array should be read and returned to the
-P4Runtime client (we refer to this as a wildcard read). On the other hand, if
-the index message field is set, a single entry will be read.
+"unset" [@ProtoDefaults]. An application, such as the P4Runtime client or
+server, is able to distinguish between an unset field and a field set to its
+default value. We use this distinction quite a lot in P4Runtime and the meaning
+of a message can vary based on which of its message fields are set. For example,
+when reading values from an indirect PSA counter using the CounterEntry message,
+an "unset" index field means that all entries in the counter array should be
+read and returned to the P4Runtime client (we refer to this as a wildcard
+read). On the other hand, if the index message field is set, a single entry will
+be read.
 
 Let's look at the counter example in more details. Based on this specification
 document, the C++ server code which processes `CounterEntry` messages may look
@@ -1473,12 +1471,12 @@ return an `INVALID_ARGUMENT` error code otherwise.
 ### Problem Statement
 
 The P4~16~ language includes more complex types than just binary strings
-[[8]](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-p4-type). Most of
-these complex data types can be exposed to the control plane through table key
-expressions, Value Set lookup expressions, Register (PSA extern type) value
-types, etc... Not supporting these more complex types can be very
-limiting. Table [#tab-p4-type-usage] shows the different P4~16~ types and how
-they are allowed to be used, as per the P4~16~ specification.
+[@P4ComplexTypes]. Most of these complex data types can be exposed to the
+control plane through table key expressions, Value Set lookup expressions,
+Register (PSA extern type) value types, etc... Not supporting these more complex
+types can be very limiting. Table [#tab-p4-type-usage] shows the different
+P4~16~ types and how they are allowed to be used, as per the P4~16~
+specification.
 
 ~ TableFigure { #tab-p4-type-usage; \
     caption: "P4 Type Usage"; }
@@ -1699,11 +1697,11 @@ update {
 
 P4~16~ supports 2 different classes of enumeration types: without underlying
 type (safe enum) and with underlying type (serializable enum or "unsafe" enum)
-[[14]](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-enum-types). For
-`enum` types with no underlying type - as well as `error` - there is no integer
-value associated with each symbolic member entry (whether assigned automatically
-by the compiler or directly in the P4 source). We therefore use a human-readable
-string in `P4Data` to represent `enum` and `error` values.
+[@P4Enums]. For `enum` types with no underlying type - as well as `error` -
+there is no integer value associated with each symbolic member entry (whether
+assigned automatically by the compiler or directly in the P4 source). We
+therefore use a human-readable string in `P4Data` to represent `enum` and
+`error` values.
 
 Serializable `enum` types have an underlying fixed-width unsigned integer
 representation (`bit<W>`). Integer values must be assigned to each member entry
@@ -2920,9 +2918,8 @@ message ExternEntry {
 The `extern_type_id` is assigned during compilation. It is likely that this id
 will in fact come from a P4 annotation on the extern declaration and that each
 vendor will receive a prefix to avoid collisions. The extern entry itself is
-embedded as a proto
-[[15]](https://developers.google.com/protocol-buffers/docs/proto3#any) to keep
-the protocol extensible.
+embedded as a `Any` Protobuf message [@ProtoAny] to keep the protocol
+extensible.
 
 # Error Reporting Messages { #sec-error-reporting-messages}
 
@@ -2930,9 +2927,8 @@ P4Runtime is based on gRPC and all RPCs return a status to indicate success or
 failure. gRPC supports multiple language bindings; we use C++ binding below to
 explain how error reporting works in the failure case.
 
-gRPC uses `grpc::Status`
-[[16]](https://github.com/grpc/grpc/blob/master/include/grpcpp/impl/codegen/status.h)
-to represent the status returned by an RPC. It has 3 attributes:
+gRPC uses `grpc::Status` [@gRPCStatus] to represent the status returned by an
+RPC. It has 3 attributes:
 
 ~ Begin CPP
 StatusCode code_;
@@ -2940,13 +2936,10 @@ grpc::string error_message_;
 grpc::string binary_error_details_;
 ~ End CPP
 
-The `code_` represents a canonical error
-[[17]](https://developers.google.com/maps-booking/reference/grpc-api/status_codes)
-and describes the overall RPC status. The `error_message_` is a developer-facing
-error message, which should be in English. The `binary_error_details_` carries a
-serialized `google.rpc.Status` message
-[[18]](https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
-message, which has 3 fields:
+The `code_` represents a canonical error [@gRPCStatusCodes] and describes the
+overall RPC status. The `error_message_` is a developer-facing error message,
+which should be in English. The `binary_error_details_` carries a serialized
+`google.rpc.Status` message [@ProtoStatus] message, which has 3 fields:
 
 ~ Begin Proto
 int32 code = 1;  // see code.proto
@@ -2969,8 +2962,8 @@ Figure [#fig-error-report] illustrates how these messages fit together.
 [error-report]: assets/error-report.png { width: 70%; page-align: here }
 
 gRPC provides utility functions `ExtractErrorDetails()` and `SetErrorDetails()`
-[[19]](https://github.com/grpc/grpc/blob/master/include/grpcpp/support/error_details.h)
-to easily convert between `grpc::Status` and `google.rpc.Status`.
+[@gRPCErrorDetails] to easily convert between `grpc::Status` and
+`google.rpc.Status`.
 
 Please see sections on individual P4Runtime RPCs for details on how
 `grpc::Status` is populated for reporting errors.
@@ -3807,7 +3800,7 @@ dataplane.
 # Known-limitations of P4Runtime v1.0.0
 
 * `FieldMatch` and action `Param` only supports bitstrings (not the more general
-  P4Data).
+  `P4Data`).
 
 * Support for PSA Random & Timestamp externs is postponed to a future minor
   version update.
@@ -3818,62 +3811,5 @@ dataplane.
 * The default action for indirect match tables is restricted to a `const
   NoAction` known at compile-time.
 
-# References
 
-* \[1\]
-  [https://github.com/p4lang/p4runtime](https://github.com/p4lang/p4runtime) -
-  code repository for reference implementation
-
-* \[2\] [https://grpc.io](https://grpc.io) - gRPC main site
-
-* \[3\]
-  [https://developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers) -
-  Protocol buffers site
-
-* \[4\] [https://p4.org](https://p4.org/) - P4.org main site
-
-* \[5\] [http://openconfig.net](http://openconfig.net) - the OpenConfig project
-
-* \[6\] [www.stratumproject.org](www.stratumproject.org) - the Stratum Project
-
-* \[7\]
-  [https://github.com/p4lang/PI/tree/master/proto/p4info/xform](https://github.com/p4lang/PI/tree/master/proto/p4info/xform) -
-  P4Info transform utility
-
-* \[8\]
-  [https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-p4-type](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-p4-type) -
-  complex types in P4~16~
-
-* \[9\]
-  [https://developers.google.com/protocol-buffers/docs/proto3#default](https://developers.google.com/protocol-buffers/docs/proto3#default) -
-  default values for proto3 fields
-
-* \[10\] [https://github.com/p4lang/PI](https://github.com/p4lang/PI) - Legacy
-  repository for P4Runtime Protobuf definitions, includes reference
-  implementation
-
-* \[11\] [https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-table-props](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-table-props) -
-  table properties in P4~16~
-
-* \[12\] [https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-value-set](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-value-set) -
-  value sets in P4~16~
-
-* \[13\] [https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html) -
-  P4~16~ 1.1.0 specification
-
-* \[14\] [https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-enum-types](https://p4.org/p4-spec/docs/P4-16-v1.1.0-draft.html#sec-enum-types) -
-  enums in P4~16~
-
-* \[15\] [https://developers.google.com/protocol-buffers/docs/proto3#any](https://developers.google.com/protocol-buffers/docs/proto3#any) -
-  the Any Protobuf message
-
-* \[16\] [https://github.com/grpc/grpc/blob/master/include/grpcpp/impl/codegen/status.h](https://github.com/grpc/grpc/blob/master/include/grpcpp/impl/codegen/status.h) -
-  the gRPC `Status` class
-
-* \[17\] [https://developers.google.com/maps-booking/reference/grpc-api/status_codes](https://developers.google.com/maps-booking/reference/grpc-api/status_codes) -
-  the gRPC canonical status codes
-
-* \[18\] [https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto](https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto) -
-  status.proto
-
-* \[19\] [https://github.com/grpc/grpc/blob/master/include/grpcpp/support/error_details.h](https://github.com/grpc/grpc/blob/master/include/grpcpp/support/error_details.h)
+[BIB]

@@ -22,6 +22,11 @@ Files:
 
 ## Building
 
+The easiest way to render the Madoko specification documentation is to use the
+`p4lang/madoko-debian:sid-with-fonts` Docker` image:
+
+    docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/madoko-debian:sid-with-fonts make
+
 ### Linux
 ```
 sudo apt-get install nodejs
@@ -31,6 +36,10 @@ make [all | html | pdf ]
 In particular (on Ubuntu 16.04 at least), don't try `sudo apt-get install npm`
 because `npm` is already included and this will yield a bunch of confusing error
 messages from `apt-get`.
+
+`dvipng` is used to render "math" inside BibTex (used for bibliography)
+titles, so you will need to install it as well. On Debian-based Linux, it can be
+done with `sudo apt-get install dvipng`.
 
 ### MacOS
 
@@ -43,15 +52,6 @@ brew install node.js
 npm install madoko -g
 ```
 Note that to build the PDF you need a functional TeX version installed.
-
-If you check out the ```gh-pages``` branch of this repository, the
-following two files can be found in the root directory.  You may
-install them on a Mac using Font Book:
-
-```
-UtopiaStd-Regular.otf
-luximr.ttf
-```
 
 ### Windows
 
