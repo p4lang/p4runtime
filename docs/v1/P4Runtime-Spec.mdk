@@ -217,11 +217,12 @@ for P4 devices or switches.
 
 # Introduction and Scope
 
-This document presents the complete specification for the P4Runtime API, a
-control plane interface intended for forwarding planes which are designed or
-described using the P4 programming language. The textual specification in this
-document disambiguates and augments the programmatic API definition expressed in
-Protobuf format and available at [add a link to a "versioned" snapshot in the
+This document is published by the *P4.org API Working Group*, which was
+chartered [@P4APIWGCharter] to design and standardize vendor-independent,
+protocol-independent runtime APIs for P4-defined or P4-described data
+planes. This document specifies one such API, called *P4Runtime*. It is meant to
+disambiguate and augment the programmatic API definition expressed in Protobuf
+format and available at [add a link to a "versioned" snapshot in the
 repository].
 
 ## P4 Language Version Applicability
@@ -233,31 +234,52 @@ not in P4~16~ 1.0, but were introduced in P4~16~ 1.1.0 [@P4Spec].
 
 ## In Scope
 
-The following are in the scope of this document:
+This specification document defines the *semantics* of *P4Runtime* messages,
+whose syntax is defined in Protobuf format. The following are in scope of
+P4Runtime:
 
-* Rationale
+* Runtime control of P4 built-in objects (tables and Value Sets) and Portable
+  Switch Architecture (PSA) externs (&eg; Counters, Meters, Action Profiles,
+  ...).
+* Runtime control of architecture-specific (non-PSA) externs, through an
+  extensions mechanism.
+* Basic session management for Software-Defined Networking (SDN) use-cases,
+  including support for controller replication to enable control-plane
+  redundancy.
+* Partition of the P4 forwarding elements into different roles, which can be
+  assigned to different control entities.
+* Packet I/O to enable streaming packets to & from the control plane.
+* Batching support, with different atomicity guarantees.
+* In-the-field device-reconfiguration with a new P4 data plane.
 
-* Reference Architecture
+The following are in the scope of this specification document:
 
-* Use-Cases
-
-* Detailed API descriptions
+* Rationale for the P4Runtime design.
+* Reference architecture and use-cases for deploying a P4Runtime service.
+* Detailed description of the API semantics.
+* Requirements for conformant implementations of the API.
 
 ## Not In Scope
 
-The following are not in scope:
+The following are not in scope of P4Runtime:
 
-* P4 Programming language
-
-* Descriptions of gRPC and Protobuf files in general
-
-* Control of elements outside the P4 language. For example,
+* Runtime control of elements outside the P4 language. For example,
   architecture-dependent elements such as ports, traffic management, etc. are
   outside of the P4 language and are thus not covered by P4Runtime. Efforts are
-  underway to standardize the control of these via gNMI and gNOI APIs, defined
-  and maintained by OpenConfig project [@OpenConfig]. An open source
-  implementation of these APIs is also in progress as part of Stratum project
-  [@Stratum].
+  underway to standardize the control of these via gNMI and gNOI APIs, using
+  description models defined and maintained by the OpenConfig project
+  [@OpenConfig]. An open source implementation of these APIs is also in progress
+  as part of Stratum project [@Stratum].
+* Protobuf message definitions for runtime control of non-PSA externs. While
+  P4Runtime includes an extension mechanism to support addditional P4
+  architectures, it does not define the syntax or semantics of any additional
+  control message for externs introduced by non-PSA architectures.
+
+The following are not in scope of this specification document:
+
+* Description of the P4 programming language; it is assumed that the reader is
+  already familiar with P4~16~ [@P4Spec].
+* Descriptions of gRPC and Protobuf files in general.
 
 # Terms and Definitions
 
@@ -311,6 +333,13 @@ The following are not in scope:
   : Remote Procedure Call.
 * RTT
   : Round-trip time.
+* SDN
+  : Software-Defined Networking, an approach to networking that advocates the
+    separation of the control and forwarding planes, as well as the abstraction
+    of the networking infrastructure, in order to promote programmability of the
+    network control. SDN is often associated with OpenFlow, a communications
+    protocol that enables remote control of the network infrastructure through a
+    probrammable, centralized network *controller*.
 * SDN port
   : A 32-bit port number defined by a remote Software-Defined Network (SDN)
     controller. The SDN port number maps to a unique device port id, which may
