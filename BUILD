@@ -25,41 +25,41 @@ internal_copied_filegroup(
 load("@org_pubref_rules_protobuf//cpp:rules.bzl", "cpp_proto_library")
 
 cpp_proto_library(
-  name = "p4types_proto_cc",
+  name = "p4types_cc_proto",
   protos = ["p4/config/v1/p4types.proto"],
   with_grpc = False,
 )
 
 cpp_proto_library(
-  name = "p4info_proto_cc",
+  name = "p4info_cc_proto",
   protos = ["p4/config/v1/p4info.proto"],
-  proto_deps = [":p4types_proto_cc"],
+  proto_deps = [":p4types_cc_proto"],
   imports = ["external/com_google_protobuf/src/"],
   inputs = ["@com_google_protobuf//:well_known_protos"],
   with_grpc = False,
 )
 
 cpp_proto_library(
-  name = "p4data_proto_cc",
+  name = "p4data_cc_proto",
   protos = ["p4/v1/p4data.proto"],
   with_grpc = False,
 )
 
 cpp_proto_library(
-  name = "p4runtime_proto_cc",
+  name = "p4runtime_cc_proto",
   protos = ["p4/v1/p4runtime.proto"],
-  proto_deps = [":p4info_proto_cc", ":p4data_proto_cc",
-                "@com_github_googleapis//:status_proto_cc"],
+  proto_deps = [":p4info_cc_proto", ":p4data_cc_proto",
+                "@com_github_googleapis//:status_cc_proto"],
   imports = ["external/com_google_protobuf/src/"],
   inputs = ["@com_google_protobuf//:well_known_protos"],
   with_grpc = False,
 )
 
 cpp_proto_library(
-  name = "p4runtime_grpc_cc",
+  name = "p4runtime_cc_grpc",
   protos = ["p4/v1/p4runtime.proto"],
-  proto_deps = [":p4info_proto_cc", ":p4data_proto_cc",
-                "@com_github_googleapis//:status_proto_cc"],
+  proto_deps = [":p4info_cc_proto", ":p4data_cc_proto",
+                "@com_github_googleapis//:status_cc_proto"],
   imports = ["external/com_google_protobuf/src/"],
   inputs = ["@com_google_protobuf//:well_known_protos"],
   with_grpc = True,
@@ -67,18 +67,18 @@ cpp_proto_library(
 
 load("@org_pubref_rules_protobuf//python:rules.bzl", "py_proto_compile")
 
-# For some reasom, status_proto_py needs to be includes in both deps and
+# For some reasom, status_py_proto needs to be includes in both deps and
 # inputs. If it is not listed in inputs, the Python file is not generated for
 # status.proto.
 py_proto_compile(
-  name = "p4runtime_proto_py",
+  name = "p4runtime_py_grpc",
   protos = ["p4/config/v1/p4types.proto",
             "p4/config/v1/p4info.proto",
             "p4/v1/p4data.proto",
             "p4/v1/p4runtime.proto"],
-  deps = ["@com_github_googleapis//:status_proto_py"],
+  deps = ["@com_github_googleapis//:status_py_proto"],
   imports = ["external/com_google_protobuf/src/"],
   inputs = ["@com_google_protobuf//:well_known_protos",
-            "@com_github_googleapis//:status_proto_py"],
+            "@com_github_googleapis//:status_py_proto"],
   with_grpc = True,
 )
