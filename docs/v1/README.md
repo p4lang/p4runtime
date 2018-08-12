@@ -12,7 +12,9 @@ documentation are available at **[TODO]**
 
 Files:
 - `P4Runtime-spec.mdk` is the main file. 
-- `assets/*.png` Figures
+- assets: Figures
+  - `*.odg` - OfficeLibre master drawing file used to export images
+  - `*.png, *.svg` - exported images referenced in document file. `.svg` is used for HTML, `.png` is used for LaTex(PDF)
 - `Makefile` builds documentation in the build subdirectory
 - `p4.json` is providing custom syntax highlighting for P4. It is a rip off from
   the cpp.json provided by Madoko (the "extend" clause does not work, my version
