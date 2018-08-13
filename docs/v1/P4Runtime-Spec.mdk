@@ -280,6 +280,9 @@ The following are not in scope of this specification document:
 * Description of the P4 programming language; it is assumed that the reader is
   already familiar with P4~16~ [@P4Spec].
 * Descriptions of gRPC and Protobuf files in general.
+* Controller [role](#sec-arbitration-role-config) definition (for partition of
+  P4 entities); the P4.org API Working Group may publish a companion document in
+  the future describing one possible role definition scheme.
 
 # Terms and Definitions
 
@@ -598,7 +601,8 @@ reasons:
    non-overlapping, "roles" (or "realms") and should be able to push forwarding
    entitites simultaneously. The control plane can be partitioned into multiple
    roles and each role will have a set of controllers, one of which is the
-   master and the rest are slaves.
+   master and the rest are slaves. Role definition, &ie; how P4 entities get
+   assigned to each role, is **out-of-scope** of this document.
 
 2. Redundancy and fault tolerance: Supporting multiple controllers allows having
    one or more standby slave controllers, which take over controlling the
@@ -676,12 +680,17 @@ also implies that a default role has a `role.id` of 0 (default). If using a
 default role, all RPCs from the controller (&eg; `Write`) must set the `role_id`
 to 0.
 
-## Role Config
+## Role Config { #sec-arbitration-role-config}
 
 The `role.config` field in the `MasterArbitrationUpdate` message sent by the
 controller describes the role configuration, &ie; which operations, P4 entities,
 behaviors, etc. are in the scope of a given role. An unset `role.config` implies
-"full pipeline access" as well (similar to the default role explained above).
+"full pipeline access" as well (similar to the default role explained above). In
+order to support different role definition schemes, `role.config` is defined as
+a `Any` Protobuf message [@ProtoAny]. Such schemes are out-of-scope of this
+document. When partitioning of the control plane is desired, the P4Runtime
+client(s) and server need to agree on a role definition scheme in an
+out-of-band fashion.
 
 ## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers
 
