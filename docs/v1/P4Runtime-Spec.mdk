@@ -1456,40 +1456,131 @@ types (32-bit and 64-bit words). The P4 language does not put any limit on the
 size of integer values, whether unsigned (`bit<W>`) or signed (`int<W>`), and it
 is up to the P4 programmer to choose the appropriate sizes. Because of this
 flexibility, P4Runtime represents P4 integer values as binary strings, using the
-bytes Protobuf type. The correct bitwidth - as per the P4 program - of each
-integer variable exposed through P4Runtime is specified in the P4Info message
-and it is up to the server to ensure that the binary string provided by the
-client has the correct length. The server must return an `INVALID_ARGUMENT`
-error code otherwise. For each integer value, the expected length in bytes is
-obtained by rounding-up the bitwidth to the nearest byte:
-`p4runtime_binary_string_length = (p4_bitwidth + 7) / 8`.
+`bytes` Protobuf type. The correct bitwidth - as per the P4 program - of each
+integer variable exposed through P4Runtime is specified in the P4Info message.
 
-For all binary strings, P4Runtime uses big-endian (&ie; network) byte-order. If
-the P4 integer type is not byte-aligned (`p4runtime_binary_string_length !=
-p4_bitwidth * 8`), P4Runtime expects the client to pad the value with unset bits
-before the most-significant bit of the value.
+The canonical binary string representation uses the shortest string that
+fits the encoded integer value.  This representation achieves three goals:
 
+* It ensures that a properly encoded binary string's integer value conforms
+  to the P4Info-specified bitwidth.
+
+* It supports [read-write symmetry](#sec-read-write-symmetry).
+
+* It helps facilitate non-disruptive P4 program updates.
+
+The shortest possible binary string for an integer value with `high_bit`
+as the most-significant non-zero bit in the value is computed as:
+~ Begin CPP
+encoded_string_size = (high_bit + 8) / 8;
+~ End CPP
+
+Binary strings with the byte length computed as `encoded_string_size` promote
+P4Runtime read-write symmetry in both client-to-server requests and
+server-to-client replies.
+
+Upon receiving a binary string, the P4Runtime server does not impose any
+restrictions on the length of the string itself.  Instead, the server verifies
+that the highest-order non-zero bit position in the string is within the
+bounds established by the P4Info bitwidth.  If `p4_bitwidth` is the P4Info-
+specified bitwidth for a P4 object value, then the server computes the number of
+binary string bytes required to represent the maximum integer of `p4_bitwidth`
+bits as:
+~ Begin CPP
+binary_string_bytes = (p4_bitwidth + 7) / 8;
+~ End CPP
+The server's decision
+to accept or reject the binary string depends on the string's content and its
+actual length in the P4Runtime request, as follows:
+
+* If the string's actual byte length is shorter than `binary_string_bytes`
+  but greater than zero, the server always accepts the string and treats the
+  missing bytes as zeroes in the most-significant positions.
+
+* If the string's actual byte length is longer than `binary_string_bytes`, the
+  server rejects any string where the extra high-order bytes contain non-zero
+  values.  Otherwise, the server truncates the extra bytes from the front
+  of the string and processes the remainder of the string as if it contains
+  exactly `binary_string_bytes`, as described below.
+
+* If the string's original or truncated byte length is equal to
+  `binary_string_bytes`, then the server must also consider the P4 integer
+  type's byte alignment.  Byte-aligned strings that satisfy the expression:
+~ Begin CPP
+  (binary_string_bytes * 8 == p4_bitwidth)
+~ End CPP
+  are always valid.  For non-aligned strings, the server requires
+  the client to fill the high-order pad bits with zeroes, and the server
+  rejects any binary strings with non-zero pad bits.
+
+* If the string's byte length is zero, the server always rejects the string.
+
+When the server rejects a binary string due to any of the previous criteria,
+it returns an `OUT_OF_RANGE` error.
+
+For all binary strings, P4Runtime uses big-endian (&ie; network) byte-order.
 For signed integer values (`int<W>` P4 type), P4Runtime uses the same two's
-complement bitwise representation as P4.
+complement bitwise representation as P4.  Table [#tab-valid-bytestring-encoding]
+shows various examples of integer values that the server accepts as valid
+P4Runtime binary strings according to the criteria in the list above.
 
-Table [#tab-exmpl-bytestring-encoding] shows examples of integer values encoded
-as valid binary strings for P4Runtime.
-
-~ TableFigure { #tab-exmpl-bytestring-encoding; \
-    caption: "Examples of Bytestring Encoding"; }
-|-----------|----------------|-------------------------|
-| P4 type   | Integer value  | P4Runtime binary string |
-+-----------+----------------+-------------------------+
-| `bit<8>`  | 99 (0x63)      | `\x63`                  |
-| `bit<16>` | 99 (0x63)      | `\x00\x63`              |
-| `bit<16>` | 12388 (0x3064) | `\x30\x64`              |
-| `bit<12>` | 99 (0x63)      | `\x00\x63`              |
-| `int<8>`  | 99 (0x63)      | `\x63`                  |
-| `int<8>`  | -99 (-0x63)    | `\x9d`                  |
-| `int<12>` | -739 (-0x2e3)  | `\x0d\x1d`              |
-| `int<16>` | 0 (0x0)        | `x00\x00`               |
-|-----------|----------------|-------------------------|
+~ TableFigure { #tab-valid-bytestring-encoding; \
+    caption: "Examples of Valid Bytestring Encoding"; }
+|-----------|----------------|-------------------------|---------------------|
+| P4 type   | Integer value  | P4Runtime binary string | Read-write symmetry |
++-----------+----------------+-------------------------+---------------------+
+| `bit<8>`  | 99 (0x63)      | `\x63`                  | yes                 |
+| `bit<16>` | 99 (0x63)      | `\x00\x63`              | no                  |
+| `bit<16>` | 99 (0x63)      | `\x63`                  | yes                 |
+| `bit<16>` | 12388 (0x3064) | `\x30\x64`              | yes                 |
+| `bit<16>` | 12388 (0x3064) | `\x00\x30\x64`          | no                  |
+| `bit<12>` | 99 (0x63)      | `\x00\x63`              | no                  |
+| `bit<12>` | 99 (0x63)      | `\x63`                  | yes                 |
+| `bit<12>` | 99 (0x63)      | `\x00\x00\x63`          | no                  |
+| `int<8>`  | 99 (0x63)      | `\x63`                  | yes                 |
+| `int<8>`  | -99 (-0x63)    | `\x9d`                  | yes                 |
+| `int<8>`  | -99 (-0x63)    | `\x00\x9d`              | no                  |
+| `int<12>` | -739 (-0x2e3)  | `\x0d\x1d`              | yes                 |
+| `int<16>` | 0 (0x0)        | `\x00\x00`              | no                  |
+| `int<16>` | 0 (0x0)        | `\x00`                  | yes                 |
+|-----------|----------------|-------------------------|---------------------|
 ~
+
+Table [#tab-invalid-bytestring-encoding] shows some examples of invalid
+P4Runtime binary strings:
+
+~ TableFigure { #tab-invalid-bytestring-encoding; \
+    caption: "Examples of Invalid Bytestring Encoding"; }
+|-----------|-------------------------|
+| P4 type   | P4Runtime binary string |
++-----------+-------------------------+
+| `bit<8>`  | `\x01\x63`              |
+| `bit<8>`  | `empty string`          |
+| `bit<16>` | `\x01\x00\x63`          |
+| `bit<12>` | `\x10\x63`              |
+| `bit<12>` | `\x01\x00\x63`          |
+| `bit<12>` | `\x00\x40\x63`          |
+| `int<8>`  | `\xff\x9d`              |
+| `int<12>` | `\x8d\x1d`              |
+| `int<16>` | `empty string`          |
+|-----------|-------------------------|
+~
+
+As the preceding examples illustrate, a P4Runtime server must accept a wide
+assortment of possible binary string encodings for the same integer value.
+This requirement addresses P4 program upgrade scenarios where binary string
+widths can expand or contract.  In some P4Runtime environments, the changes
+cannot be deployed simultaneously to all P4Runtime clients and servers.  Given
+a hypothetical match field type change from `bit<8>` to `bit<9>`, a server
+running the `bit<9>` version of the P4 program will accept requests from
+clients that remain on the `bit<8>` P4Runtime version.
+
+Despite the server's binary string flexibility for P4 program update support,
+the client and server must both remain aware of the
+[read-write symmetry](#sec-read-write-symmetry)
+requirements.  As described earlier, read-write symmetry requires that
+the encoder of a P4Runtime request or reply uses the shortest strings that
+fit the encoded integer values.
 
 Representation of variable-length integer values (`varbit<W>` P4 type) is
 similar to the representation of fixed-width integers. We use a binary string,
