@@ -13,8 +13,7 @@ documentation are available at **[TODO]**
 Files:
 - `P4Runtime-spec.mdk` is the main file. 
 - assets: Figures
-  - `*.odg` - OfficeLibre master drawing file used to export images
-  - `*.png, *.svg` - exported images referenced in document file. `.svg` is used for HTML, `.png` is used for LaTex(PDF)
+  - `*.odg` - OfficeLibre master drawing file used to export images. These are bulk-rendered at build time into .svg and .png images via `soffice` command-line (required in build environment)
 - `Makefile` builds documentation in the build subdirectory
 - `p4.json` is providing custom syntax highlighting for P4. It is a rip off from
   the cpp.json provided by Madoko (the "extend" clause does not work, my version
@@ -33,6 +32,7 @@ The easiest way to render the Madoko specification documentation is to use the
 ```
 sudo apt-get install nodejs
 sudo npm install madoko -g
+sudo apt-get install libreoffice
 make [all | html | pdf ]
 ```
 In particular (on Ubuntu 16.04 at least), don't try `sudo apt-get install npm`
