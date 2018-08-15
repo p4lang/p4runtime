@@ -365,6 +365,9 @@ The following are not in scope of this specification document:
 * target
   : The hardware or software entity which "executes" the P4 pipeline and hosts
     the P4Runtime Service; often used interchangeably with "device".
+* URI
+  : Uniform Resource Identifier; a string of characters designed for unambiguous
+    identification of resources.
 
 # Reference Architecture { #sec-reference-architecture}
 Figure [#fig-reference-architecture] represents the P4Runtime Reference
@@ -971,6 +974,10 @@ control plane. This message contains the following fields:
 
     * `doc`, a `Documentation` message describing this match field.
 
+    * `type_name`, which indicates whether the action parameter has a
+      [user-defined type](#sec-user-defined-types); this is useful for
+      [translation](#sec-psa-metadata-translation).
+
 * `action_refs`, a repeated `ActionRef` field representing the set of possible
   actions for this table. The `ActionRef` message is used to reference an action
   specified in the same P4Info message and it includes the following fields:
@@ -1041,6 +1048,9 @@ The `Action` message defines the following fields:
       annotation associated to this parameter.
     * `bitwidth`, an `int32` value set to the size in bits of this parameter.
     * `doc`, which describes this parameter using a `Documentation` message.
+    * `type_name`, which indicates whether the action parameter has a
+      [user-defined type](#sec-user-defined-types); this is useful for
+      [translation](#sec-psa-metadata-translation).
 
 ### `ActionProfile`
 
@@ -1697,7 +1707,8 @@ client can provide a value for a P4~16~ expression. `P4DataTypeSpec` describes
 the compile-time of the expression as a Protobuf `oneof`, which can be:
 
 * a string representing the name of the type in case of a named type (`struct`,
-  `header`, `header_union`, `enum` or `serializable_enum`),
+  `header`, `header_union`, `enum`, `serializable_enum` or user-defined "new"
+  `type`),
 
 * an empty Protobuf message for `bool` and `error`, or
 
@@ -1844,15 +1855,93 @@ entry value. When providing serializable enum values through `P4Data`, one can
 either use the enum entry's name (`enum` human-readable string field) or its
 assigned value (`enum_value` bytestring field).
 
+### User-defined types { #sec-user-defined-types}
+
+P4~16~ enables programmers to introduce new types [@P4NewTypes]. While similar
+to `typedef`, this mechanism introduces in fact a new type, which is not
+strictly synonym with the original type. It is important to preserve this
+distinction in the P4Info message, in particular for the purposes of
+[translation](#sec-psa-metadata-translation). When introducing a new type, the
+declaration can be annotated with `@p4runtime_translation` to indicate that the
+type exposed to the P4Runtime client is different from the original P4 type. One
+important use-case if for [port numbers](#sec-translation-of-port-numbers),
+whose underlying dataplane representation may vary on different targets, but for
+which it may be convenient to present a unified representation and numbering
+scheme to the control-plane. **The `@p4runtime_translation` annotation can only
+be used if the underlying P4 built-in type is a fixed-width unsigned bitstring
+type (`bit<W>`)** and the type exposed to the control-plane will also be a
+fixed-width unsigned bitstring, with a potentially different bitwidth. It takes
+two parameters: a *URI* (Uniform Resource Identifier) which uniquely identifies
+the translation being performed on entities of the new type to the P4Runtime
+server and the *bitwidth* of the bitstring type exposed to the control-plane. It
+is recommended that the URI includes at least the P4 architecture name and the
+type name.
+
+User-defined types are specified using the `P4NewTypeSpec` message, which has
+the following fields:
+
+* `original_type`, which specifies the underlying type used in the P4 `type`
+  declaration, using the generic `P4DataTypeSpec` message. The `original_type`
+  can correspond to a P4~16~ built-in type or to another user-defined type.
+
+* `translation` of type `P4NewTypeTranslation`, which is set if and only if the
+  P4 type declaration was annotated with `@p4runtime_translation`. The
+  `P4NewTypeTranslation` message itself has two fields - `uri` and
+  `sdn_bitwidth`, which map to the two input parameters to the annotation.
+
+* `annotations`, a repeated field of strings, each one representing a P4
+  annotation associated to the type declaration.
+
+For example, an architecture - in this case PSA - may introduce a new type for
+port numbers:
+~ Begin P4Example
+@p4runtime_translation("p4.org/psa/v1/PortId_t", 32)
+type bit<9> PortId_t;
+~ End P4Example
+
+In this case, the P4Info message would include the following `P4TypeInfo`
+message:
+
+~ Begin Prototext
+type_info {
+  new_types {
+    key: "PortId_t"
+    value {  # P4NewTypeSpec
+      original_type {  # P4DataTypeSpec
+        type_spec {
+          bit {
+            bitwidth: 9
+          }
+        }
+      }
+      translation {  # P4NewTypeTranslation
+        uri: "p4.org/psa/v1/PortId_t"
+        sdn_bitwidth: 32
+      }
+    }
+  }
+}
+~ End Prototext
+
+Note that a P4 compiler may provide a mechanism external to the language to
+specify if and how a user-defined type is to be translated (e.g. through some
+configuration file passed on the command-line when invoking the compiler). This
+mechanism should take precedence over `@p4runtime_translation` to enable users
+to overwrite annotations included as part of the P4 architecture definition.
+
 ### Trade-off for v1.0 Release
 
 For the v1.0 release of P4Runtime, it was decided not to replace occurrences of
-`bytes` with `P4Data` in the `p4.FieldMatch` message, which is used to represent
-table and Value Set entries. This is to avoid breaking pre-release
+`bytes` with `P4Data` in the `p4.v1.FieldMatch` message, which is used to
+represent table and Value Set entries. This is to avoid breaking pre-release
 implementations of P4Runtime. Similarly it has been decided to keep using
 `bytes` to provide action parameter values. However `P4Data` is used whenever
 appropriate for PSA externs and we encourage the use of `P4Data` in
 architecture-specific extensions.
+
+In order to support [translation](#sec-psa-metadata-translation) for action
+parameters and match fields, we include a `type_name` field in
+`p4.config.v1.MatchField` and `p4.config.v1.Action.Param`.
 
 # P4 Entity Messages { #sec-p4-entity-msgs}
 
@@ -3942,17 +4031,25 @@ In order to support the above SDN use case, P4Runtime requires translation of
 port metadata values between the controller's space and the PSA device's space
 as needed. Such translation is enabled by identifying a P4 entity (match field,
 action parameter or header field) as being a PSA port metadata type. For this
-purpose, PSA defines the port metadata field type using special P4 types, namely
-`PortId_t` and `PortInHeader_t`, instead of standard P4 bitstrings. The P4Info
-for all P4 entities of the special PSA port types use a controller-defined
-32-bit type instead of the dataplane bitwidth defined in the P4 program. The
-following PSA port metadata types are defined in *psa.p4* for the PSA device in
-Switch 1.
+purpose, PSA defines the port metadata field type using special [user-defined P4
+types](#sec-user-defined-types), namely `PortId_t` and `PortInHeader_t`, instead
+of standard P4 bitstrings. The P4Info for all P4 entities of the special PSA
+port types use a controller-defined 32-bit type instead of the dataplane
+bitwidth defined in the P4 program. The following PSA port metadata types are
+defined in *psa.p4* for the PSA device in Switch 1.
 
 ~ Begin P4Example
+@p4runtime_translation("p4.org/psa/v1/PortId_t", 32)
 type PortId_t bit<9>;
+@p4runtime_translation("p4.org/psa/v1/PortIdInHeader_t", 32)
 type PortIdInHeader_t bit<32>;
 ~ End P4Example
+
+The first argument to the `@p4runtime_translation` annotation is a URI that
+indicates to the P4Runtime server which numerical mapping - provided by the
+out-of-band switch configuration mechanism - to use to translate between the SDN
+value and the dataplane value. The second argument is the bitwidth of the SDN
+representation of the transltaed entity (32-bit in the case of ports).
 
 Both PSA device port number 0 and SDN port number 0 are invalid. Any unicast
 packet with egress port 0 will be dropped in the PRE. A PSA device will define
@@ -4004,16 +4101,18 @@ the controller over the P4Runtime stream channel, the server will expect
 packet-out metadata (egress_port) value of type 32-bits from the given set of
 SDN port values in the switch config. The server will then translate the SDN
 port value into the device-specific port value from the mapping provided in the
-switch config. Note that even though the type of the header field is 32-bit
-(`PortIdInHeader_t`) to support byte aligned headers, the actual dataplane value
-will fit in the smaller device specific bitwidth. Any subsequent reference to
-the egress_port field in the dataplane will use the translated value.
+out-of-band switch configuration (the mapping can be identified using the
+translation URI - first argument to the `@p4runtime_translation`
+annotation). Any subsequent reference to the `egress_port` field in the
+dataplane will use the translated value. `PortIdInHeader_t` is used in the
+header definition instead of `PortId_t` to guarantee byte-aligned headers in
+case this is required by the target.
 
 A similar reverse translation is required in the P4Runtime server for packets
 punted from the target to the controller as shown by the packet-in header
 example above. A packet punted from the target's PSA device will be intercepted
 by the P4Runtime server before being sent to the controller.The server will
-first translate the device-specific value of the ingress_port field into the
+first translate the device-specific value of the `ingress_port` field into the
 controller-specific 32-bit value given by the port mapping defined in the switch
 config. The server will then insert the translated controller-specific value in
 the packet-in metadata fields before sending the packet over the stream channel

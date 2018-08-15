@@ -169,6 +169,8 @@ message MatchField {
   }
   // Documentation of the match field
   Documentation doc = 6;
+  // unset if not user-defined type
+  P4NamedType type_name = 8;
 }
 
 message Table {
@@ -226,6 +228,8 @@ message Action {
     int32 bitwidth = 4;
     // Documentation of the Param
     Documentation doc = 5;
+    // unset if not user-defined type
+    P4NamedType type_name = 6;
   }
   repeated Param params = 2;
 }
