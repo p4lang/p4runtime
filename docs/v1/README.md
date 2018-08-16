@@ -23,9 +23,9 @@ Files:
 ## Building
 
 The easiest way to render the Madoko specification documentation is to use the
-`p4lang/madoko-debian:sid-with-fonts` Docker` image:
+`p4lang/p4rt-madoko:latest` Docker` image:
 
-    docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/madoko-debian:sid-with-fonts make
+    docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make
 
 ### Linux
 ```

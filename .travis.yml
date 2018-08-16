@@ -8,7 +8,7 @@ install:
 # protoc), then we generate the HTML for the spec.
 script:
   - docker run -t p4runtime-ci /p4runtime/CI/compile_protos.sh /tmp/
-  - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/madoko-debian:sid-with-fonts make
+  - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make
 
 after_success:
   - ls docs/v1/build
