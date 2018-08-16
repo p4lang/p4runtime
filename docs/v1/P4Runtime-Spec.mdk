@@ -3064,7 +3064,7 @@ An `update` can be one of the following types:
   If the entity already exists, an `ALREADY_EXISTS` error is returned, and
   the existing entity remains unchanged.
   If the entity is malformed, an `INVALID_ARGUMENT` error is returned.
-  If the entity cannot be inserted because the table is already full,
+  If the entity cannot be inserted because the container is already full,
   a `RESOURCE_EXHAUSTED` error is returned.
 
 * `MODIFY`: Modifies the P4 entity to its new specified state. This uses
