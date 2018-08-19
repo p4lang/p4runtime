@@ -405,7 +405,7 @@ metadata. Furthermore, the controller can query the target for the
 caption: "P4Runtime Reference Architecture." }
 ![reference-architecture]
 ~
-[reference-architecture]: assets/reference-architecture.png \
+[reference-architecture]: build/reference-architecture.[svg,png] \
 { height: 7cm; page-align: here }
 
 ## Idealized Workflow
@@ -519,8 +519,8 @@ IPC.
 caption: "Use-Case: Single Embedded Controller" }
 ![single-embedded-controller]
 ~
-[single-embedded-controller]: assets/single-embedded-controller.png \
-{ height: 7cm; page-align: forcehere }
+[single-embedded-controller]: build/single-embedded-controller.[svg,png] \
+{ height: 6cm; page-align: forcehere }
 
 ## Single Remote Controller
 
@@ -533,7 +533,7 @@ practical to have a hybrid use-case as described in subsequent sections.
 caption: "Use-Case: Single Remote Controller" }
 ![single-remote-controller]
 ~
-[single-remote-controller]: assets/single-remote-controller.png \
+[single-remote-controller]: build/single-remote-controller.[svg,png] \
 { height: 7cm; page-align: forcehere }
 
 ## Embedded + Single Remote Controller
@@ -554,7 +554,7 @@ caption: "Use-Case: Embedded Plus Single Remote Controller" }
 ![embedded-plus-single-remote-controller]
 ~
 [embedded-plus-single-remote-controller]: \
-assets/embedded-plus-single-remote-controller.png \
+build/embedded-plus-single-remote-controller.[svg,png] \
 { height: 7cm; page-align: forcehere }
 
 ## Embedded + Two Remote Controllers
@@ -570,7 +570,7 @@ caption: "Use-Case: Embedded Plus Two Remote Controllers" }
 ![embedded-plus-two-remote-controllers]
 ~
 [embedded-plus-two-remote-controllers]: \
-assets/embedded-plus-two-remote-controllers.png \
+build/embedded-plus-two-remote-controllers.[svg,png] \
 { height: 7cm; page-align: forcehere }
 
 ## Embedded Controller + Two High-Availability Remote Controllers
@@ -587,7 +587,7 @@ arbitration scheme supports it.
 caption: "Use-Case: Embedded Plus Two Remote High-Availability Controllers" }
 ![embedded-plus-two-remote-ha-controllers]
 ~
-[embedded-plus-two-remote-ha-controllers]: assets/embedded-plus-two-remote-ha-controllers.png \
+[embedded-plus-two-remote-ha-controllers]: build/embedded-plus-two-remote-ha-controllers.[svg,png] \
 { height: 7cm; page-align: forcehere }
 
 # Master-Slave Arbitration and Controller Replication {\
@@ -3000,7 +3000,7 @@ Figure [#fig-error-report] illustrates how these messages fit together.
 ~ Figure { #fig-error-report; caption: "P4Runtime Error Report Mesage Format" }
 ![error-report]
 ~
-[error-report]: assets/error-report.png { width: 70%; page-align: here }
+[error-report]: build/error-report.[svg,png] { width: 70%; page-align: here }
 
 gRPC provides utility functions `ExtractErrorDetails()` and `SetErrorDetails()`
 [@gRPCErrorDetails] to easily convert between `grpc::Status` and
@@ -3655,7 +3655,7 @@ service.
 caption: "P4Runtime Metadata Translation for the Portable Switch Architeccture" }
 ![psa-metadata-translation]
 ~
-[psa-metadata-translation]: assets/psa-metadata-translation.png \
+[psa-metadata-translation]: build/psa-metadata-translation.[svg,png] \
 { height: 7cm; page-align: here }
 
 Figure [#fig-psa-metadata-translation] above illustrates a motivating example,
