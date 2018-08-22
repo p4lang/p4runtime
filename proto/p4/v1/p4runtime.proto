@@ -252,6 +252,7 @@ message TableAction {
     Action action = 1;
     uint32 action_profile_member_id = 2;
     uint32 action_profile_group_id = 3;
+    ActionProfileActionSet action_profile_action_set = 4;
   }
 }
 
@@ -262,6 +263,16 @@ message Action {
     bytes value = 3;
   }
   repeated Param params = 4;
+}
+
+message ActionProfileActionSet {
+  repeated ActionProfileAction action_profile_actions = 1;
+}
+
+message ActionProfileAction {
+  Action action = 1;
+  int32 weight = 2;
+  int32 watch = 3;
 }
 
 //------------------------------------------------------------------------------

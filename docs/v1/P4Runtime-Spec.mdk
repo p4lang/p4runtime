@@ -653,7 +653,7 @@ described as follows:
 
 * The streaming channel between the controller and the server defines the
   liveness of the controller session. The controller is considered "offline" or
-  "dead" as soon as its corresponding stream channel to the the switch is
+  "dead" as soon as its corresponding stream channel to the switch is
   broken, in which case the P4Runtime server quickly sets one of the slave
   controllers with the highest `election_id` as master.
 
@@ -2074,6 +2074,11 @@ in the `TableAction` message will either be:
 * an action profile member id or group id for indirect tables for which the
   `implementation` property is an action profile with selector.
 
+* an `ActionProfileActionSet` specification for indirect tables for
+  which the `implementation` property is an action profile with
+  selector. This usage is described in [One Shot Action Selector
+  Programming](#sec-oneshot)
+
 The `Action` Protobuf message, which is used for direct tables only, has the
 following fields:
 
@@ -2313,8 +2318,7 @@ For more information about idle timeout, in particular regarding
 `IdleTimeoutNotification`, please refer to the [Table idle timeout
 notifications](#sec-table-idle-timeout-notification) section.
 
-## `ActionProfileMember` & `ActionProfileGroup`
-
+## `ActionProfileMember` & `ActionProfileGroup` { #sec-action-profile-member-and-group }
 P4Runtime defines an API for programming a PSA ActionProfile extern using
 `ActionProfileMember` messages. PSA ActionSelector extern can be programmed
 using both `ActionProfileMember` and `ActionProfileGroup` messages. PSA supports
@@ -2431,7 +2435,7 @@ An `ActionProfileGroup` entity update message has the following fields:
     * `weight` specifying the probability of the member's selection at runtime.
     * `watch` is the controller defined 32-bit port number that the member's
       liveness depends on. At runtime, the member must be excluded from
-      selection if the this watch port is down.
+      selection if the watch port is down.
 
 * `max_size` is the maximum sum of all member weights for the group. This field
   is defined when the group is inserted, but it must not be changed in a
@@ -2459,6 +2463,129 @@ following semantics.
   returned.
 - `DELETE`: Delete the group entry and deallocate the `group_id`. The group
   should not be referenced in the table action of any table entry.
+
+### One Shot Action Selector Programming { #sec-oneshot }
+
+P4Runtime supports syntactic sugar to program a table, which is
+implemented with an action selector, in one shot. One shot means that a
+table entry, an action profile group, and a set of action profile
+members can be programmed with a single update message. Using one shots
+has the advantage that the controller does not need to keep track of
+group ids and member ids.
+
+One shots are programmed by choosing the `ActionProfileActionSet`
+message as the `TableAction`. The `ActionProfileActionSet` message
+consists of a set of `ActionProfileAction` messages, which in turn
+have the following fields:
+
+* `action` is one of the actions specified by the table that is being
+  programmed.
+
+* `weight` specifying the probability of the action's selection at
+  runtime.
+
+* `watch` is the controller defined 32-bit port number that the
+  action's liveness depends on. At runtime, the action must be
+  excluded from selection if the watch port is down.
+
+Semantically, one shots are equivalent to programming the table entry,
+group, and members individually; with the necessary group id and member ids
+bound to unused ids. An implementation is free to implement one shots in
+other ways, as long as the implementation matches the above semantics.
+
+To preserve read-write symmetry, an implementation must answer
+`ReadRequest`s with the original one shot messages. It may not return
+a desugared version of the one shot message.
+
+For example, consider the action selector table defined
+[here](#sec-action-profile-member-and-group). This table could be programmed
+with the following one shot update:
+
+~ Begin Prototext
+table_entry {
+  table_id: 1
+  match { /* lpm match */ }
+  action {
+    action_profile_action_set {
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 1
+        watch: 1
+      }
+      action_profile_actions {
+        action { /* set nexthop 2 */ }
+        weight: 2
+        watch: 2
+      }
+      action_profile_actions {
+        action { /* set nexthop 3 */ }
+        weight: 3
+        watch: 3
+      }
+    }
+  }
+}
+~ End Prototext
+
+Which would be equivalent to the following updates, where `GROUP_ID`,
+`MEMBER_ID_1`, `MEMBER_ID_2`, and `MEMBER_ID_3` are unused ids:
+
+~ Begin Prototext
+table_entry {
+  table_id: 1
+  match { /* lpm match */ }
+  action { action_profile_group_id: GROUP_ID }
+}
+action_profile_group {
+  action_profile_id: 1
+  group_id: GROUP_ID
+  members {
+    member_id: MEMBER_ID_1
+    weight: 1
+    watch: 1
+  }
+  members {
+    member_id: MEMBER_ID_2
+    weight: 2
+    watch: 2
+  }
+  members {
+    member_id: MEMBER_ID_3
+    weight: 3
+    watch: 3
+  }
+}
+action_profile_member {
+  action_profile_id: 1
+  member_id: MEMBER_ID_1
+  action { /* set nexthop 1 */ }
+}
+action_profile_member {
+  action_profile_id: 1
+  member_id: MEMBER_ID_2
+  action { /* set nexthop 2 */ }
+}
+action_profile_member {
+  action_profile_id: 1
+  member_id: MEMBER_ID_3
+  action {  /* set nexthop 3 */ }
+}
+~ End Prototext
+
+All the tables associated with an action selector may either be
+programmed exclusively with one shots, or exclusively with
+`ActionProfileMember` and `ActionProfileGroup` messages. Programming
+some entries with one shots, and other entries with
+`ActionProfileMember` and `ActionProfileGroup` messages is not
+allowed,  and the server must return the error code
+`INVALID_ARGUMENT` in that case.
+
+A P4Runtime server *must* support the one shot style of programming
+tables with an action selector implementation. Support for the
+`ActionProfileMember` and `ActionProfileGroup` style is *optional*.
+If `ActionProfileMember` and `ActionProfileGroup` are not supported
+by a server, it must return an `UNIMPLEMENTED` error for every
+`ActionProfileMember` or `ActionProfileGroup` message that it receives.
 
 ## `CounterEntry` & `DirectCounterEntry`
 
@@ -3642,7 +3769,7 @@ message PacketMetadata {
 
 * `metadata` is a repeated field of `PacketMetadata` messages used to carry the
   arbitrary controller metadata. The size and value of such metadata field needs
-  to consistent with what specified in the the corresponding P4Info
+  to consistent with what specified in the corresponding P4Info
   `ControllerPacketMetadata`. Indeed, when a P4Runtime client (or server)
   generates a `PacketOut` (or `PacketIn`) message, it needs to populate the
   metadata field with as many values as in `ControllerPacketMetadata.metadata`
