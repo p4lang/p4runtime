@@ -252,7 +252,7 @@ message TableAction {
     Action action = 1;
     uint32 action_profile_member_id = 2;
     uint32 action_profile_group_id = 3;
-    ActionProfileActions action_profile_actions = 4;
+    ActionProfileActionSet action_profile_action_set = 4;
   }
 }
 
@@ -265,8 +265,8 @@ message Action {
   repeated Param params = 4;
 }
 
-message ActionProfileActions {
-  repeated ActionProfileAction action_profile_action = 1;
+message ActionProfileActionSet {
+  repeated ActionProfileAction action_profile_actions = 1;
 }
 
 message ActionProfileAction {
