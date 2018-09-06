@@ -3408,7 +3408,7 @@ enum. A P4Runtime server is required to support only the modes marked as
   possibility is to create a shadow copy of both the software and hardware state
   at the start, and restore it upon failure.
 
-If this option is not supported, an `UNIMPLEMENTED` error is returned.
+  If this option is not supported, an `UNIMPLEMENTED` error is returned.
 
 * *Optional*: `DATAPLANE_ATOMIC`: This is the strictest requirement where the
   entire batch must be atomic from a dataplane point of view. Every dataplane
@@ -3423,10 +3423,10 @@ If this option is not supported, an `UNIMPLEMENTED` error is returned.
   simple pointer-swap like approach can be used to switch to this half of the
   table.
 
-If a P4Runtime server does not support this option at all, an `UNIMPLEMENTED`
-error is returned at all times. If a P4Runtime supports some batches in an
-atomic way but not others, an `UNIMPLEMENTED` error is returned when the batch
-cannot be executed in a dataplane-atomic way.
+  If a P4Runtime server does not support this option at all, an `UNIMPLEMENTED`
+  error is returned at all times. If a P4Runtime supports some batches in an
+  atomic way but not others, an `UNIMPLEMENTED` error is returned when the batch
+  cannot be executed in a dataplane-atomic way.
 
 There is no expectation that a given batch must always use the same `Atomicity`
 enum value. At any given time, the client is free to compose batches and assign
