@@ -196,10 +196,13 @@ message P4NewTypeTranslation {
 
 // New types introduced with the "type" keyword
 message P4NewTypeSpec {
-  P4DataTypeSpec original_type = 1;
-  // if @p4runtime_translation annotation present
-  P4NewTypeTranslation translation = 2;
-  // for other annotations
+  oneof representation {
+    // if no @p4runtime_translation annotation present
+    P4DataTypeSpec original_type = 1;
+    // if @p4runtime_translation annotation present
+    P4NewTypeTranslation translated_type = 2;
+  }
+  // for other annotations (not @p4runtime_translation)
   repeated string annotations = 3;
 }
 

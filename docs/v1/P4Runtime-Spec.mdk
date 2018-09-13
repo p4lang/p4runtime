@@ -1880,14 +1880,20 @@ type name.
 User-defined types are specified using the `P4NewTypeSpec` message, which has
 the following fields:
 
-* `original_type`, which specifies the underlying type used in the P4 `type`
-  declaration, using the generic `P4DataTypeSpec` message. The `original_type`
-  can correspond to a P4~16~ built-in type or to another user-defined type.
+* `representation`, a Protobuf `oneof` specifying how values of this type are
+  exchanged between client and server; it can be either:
 
-* `translation` of type `P4NewTypeTranslation`, which is set if and only if the
-  P4 type declaration was annotated with `@p4runtime_translation`. The
-  `P4NewTypeTranslation` message itself has two fields - `uri` and
-  `sdn_bitwidth`, which map to the two input parameters to the annotation.
+    * `original_type`, if and only if no `@p4runtime_translation` annotation is
+      present. It specifies the underlying built-in P4 type for the user-defined
+      type. If the underlying type used in the P4 `type` declaration is itself a
+      user-defined type, `original_type` is obtained by "walking" the chain of
+      `type` declarations recursively until a built-in type (e.g `bit<W>` is
+      found).
+
+    * `translated_type`, if and only if the P4 `type` declaration was annotated
+      with `@p4runtime_translation`. It is of type `P4NewTypeTranslation`, which
+      itself has two fields - `uri` and `sdn_bitwidth`, which map to the two
+      input parameters to the annotation.
 
 * `annotations`, a repeated field of strings, each one representing a P4
   annotation associated to the type declaration.
