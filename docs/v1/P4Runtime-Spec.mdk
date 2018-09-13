@@ -1858,13 +1858,13 @@ assigned value (`enum_value` bytestring field).
 ### User-defined types { #sec-user-defined-types}
 
 P4~16~ enables programmers to introduce new types [@P4NewTypes]. While similar
-to `typedef`, this mechanism introduces in fact a new type, which is not
-strictly synonym with the original type. It is important to preserve this
+to `typedef`, this mechanism introduces in fact a new type, which is not a
+strict synonym of the original type. It is important to preserve this
 distinction in the P4Info message, in particular for the purposes of
 [translation](#sec-psa-metadata-translation). When introducing a new type, the
 declaration can be annotated with `@p4runtime_translation` to indicate that the
 type exposed to the P4Runtime client is different from the original P4 type. One
-important use-case if for [port numbers](#sec-translation-of-port-numbers),
+important use-case is for [port numbers](#sec-translation-of-port-numbers),
 whose underlying dataplane representation may vary on different targets, but for
 which it may be convenient to present a unified representation and numbering
 scheme to the control-plane. **The `@p4runtime_translation` annotation can only
