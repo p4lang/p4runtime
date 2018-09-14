@@ -2211,10 +2211,12 @@ and the `priority` field must be set to zero, otherwise the P4Runtime server
 must return an `INVALID_ARGUMENT` error code. When performing a `MODIFY` update
 on the default entry, the client can either provide a valid action for the table
 or leave the action field unset, in which case the default entry will be reset
-to its original value, as defined in the P4 program. If the default entry is
-constant (as indicated by the P4 program and the P4Info message), the server
-must return an `PERMISSION_DENIED` error code if the client attempts to modify
-it.
+to its original value, as defined in the P4 program. When resetting the default
+entry, its `controller_metadata` value as well as the configurations for its
+[direct resources](#sec-direct-resources) will be reset to their defaults. If
+the default entry is constant (as indicated by the P4 program and the P4Info
+message), the server must return a `PERMISSION_DENIED` error code if the client
+attempts to modify it.
 
 Apart from the above restrictions, the default entry is treated like a regular
 entry, including with regards to [direct resources](#sec-direct-resources).
