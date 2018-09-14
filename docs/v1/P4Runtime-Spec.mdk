@@ -2009,7 +2009,7 @@ pair of table entries that the same packet matches.
 The `match` and `priority` fields are used to uniquely identify an entry within
 a table. Therefore, these fields cannot be modified after the entry has been
 inserted and must be provided for `MODIFY` and `DELETE` updates. When deleting
-an entry, these key fields (along with `is_default_entry`) are the only fields
+an entry, these key fields (along with `is_default_action`) are the only fields
 considered by the server. All other fields must be ignored, even if they have
 nonsensical values (such as an invalid action field).
 
@@ -2150,8 +2150,9 @@ assert(low != min_field_value && high != max_field_value)
 ### Action Specification
 
 The `TableEntry` `action` field must be set for every `INSERT` and `MODIFY`
-update. Based on the implementation property value of the P4 table, the `oneof`
-in the `TableAction` message will either be:
+update, except when resetting the [default entry](#sec-default-entry). Based on
+the implementation property value of the P4 table, the `oneof` in the
+`TableAction` message will either be:
 
 * an `Action` specification for direct tables (with no P4 `implementation`
   property)
@@ -2167,9 +2168,10 @@ in the `TableAction` message will either be:
   selector. This usage is described in [One Shot Action Selector
   Programming](#sec-oneshot)
 
-If the `action` field is not set or the `oneof` does not match the table
-description in the P4Info (e.g. the `oneof` is `action_profile_member_id` for a
-direct table), the server must return an `INVALID_ARGUMENT` error code.
+If the `action` field is not set (and if `is_default_action` is false) or if the
+`oneof` does not match the table description in the P4Info (e.g. the `oneof` is
+`action_profile_member_id` for a direct table), the server must return an
+`INVALID_ARGUMENT` error code.
 
 The `Action` Protobuf message, which is used for direct tables only, has the
 following fields:
