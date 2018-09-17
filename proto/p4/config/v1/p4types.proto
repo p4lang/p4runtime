@@ -57,6 +57,7 @@ message P4TypeInfo {
   map<string, P4EnumTypeSpec> enums = 4;
   P4ErrorTypeSpec error = 5;
   map<string, P4SerializableEnumTypeSpec> serializable_enums = 6;
+  map<string, P4NewTypeSpec> new_types = 7;
 }
 
 // Describes a P4_16 type.
@@ -73,6 +74,7 @@ message P4DataTypeSpec {
     P4NamedType enum = 9;
     P4ErrorType error = 10;
     P4NamedType serializable_enum = 11;
+    P4NamedType new_type = 12;
   }
 }
 
@@ -181,6 +183,27 @@ message P4SerializableEnumTypeSpec {
 // program.
 message P4ErrorTypeSpec {
   repeated string members = 1;
+}
+
+message P4NewTypeTranslation {
+  // the URI uniquely identifies the translation in order to enable the
+  // P4Runtime agent to perform value-mapping appropriately when required. It is
+  // recommended that the URI includes at least the P4 architecture name and the
+  // type name.
+  string uri = 1;
+  int32 sdn_bitwidth = 2;
+}
+
+// New types introduced with the "type" keyword
+message P4NewTypeSpec {
+  oneof representation {
+    // if no @p4runtime_translation annotation present
+    P4DataTypeSpec original_type = 1;
+    // if @p4runtime_translation annotation present
+    P4NewTypeTranslation translated_type = 2;
+  }
+  // for other annotations (not @p4runtime_translation)
+  repeated string annotations = 3;
 }
 
 // End of P4 type specs --------------------------------------------------------
