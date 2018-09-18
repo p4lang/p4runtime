@@ -2189,7 +2189,8 @@ following fields:
   for action parameters. The server must return an `INVALID_ARGUMENT` error code
   if a parameter id is missing, if an extra parameter - id not found in the
   P4Info - was provided by the client, if a parameter value is missing, or if
-  the value provided for one of the parameters does not have the correct format.
+  the value provided for one of the parameters does not conform to the
+  [Bytestrings](#sec-bytestrings) format.
 
 For indirect tables, if the P4Runtime client provides a member or group id which
 has not been inserted in the corresponding action profile instance yet, the
