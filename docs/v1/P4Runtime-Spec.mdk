@@ -4220,6 +4220,43 @@ dataplane.
 
 # P4Runtime Versioning
 
+P4Runtime follows the Google guidelines for versioning cloud APIs
+[@APIVersioning]. We use a `MAJOR.MINOR.PATCH` style version number scheme and
+we increment the:
+
+* `MAJOR` version when we make incompatible API changes,
+* `MINOR` version when we add functionality in a backwards-compatible manner,
+* `PATCH` version when we make backwards-compatible bug fixes.
+
+The major version number is encoded as the last component of the Protobuf
+package name for every P4Runtime version, including version 1 (v1), which is why
+currently the package name for the P4Runtime service is `p4.v1` and the package
+name for P4Info is `p4.config.v1`. Even though `p4` and `p4.config` are two
+different Protobuf packages, `p4` depends on `p4.config` and is not meant to be
+used without it, which is why both packages use the same versioning scheme and
+the same versioning cadence.
+
+As recommended in [@APIVersioning], we may consider using pre-GA release
+suffixes (such as *alpha* or *beta*) in the Protobuf package name for future
+major versions, although we have chosen not to do so when developing version 1
+(v1).
+
+Within a major version, the API must be evolved in a Protobuf
+backwards-compatible manner. [@APIVersioningBackwardsCompatibility] describes
+what constitute a backwards-compatible change. We expect `MAJOR` version bumps
+to be a **rare** event.
+
+Note that a P4Runtime server may support multiple major versions of P4Runtime,
+although a client is expected to use the same version of the P4Runtime service
+for all its operations with a given device, during the lifetime of its session
+with the device. A client can check if a major version is supported by
+attempting to connect to the corresponding service. We may consider including a
+P4Runtime RPC to query minor + patch version numbers in future releases.
+
+All versions of P4Runtime, including pre-release versions, are tagged in the
+P4Runtime Github repository [@P4RuntimeRepo] and the version label follows
+semantic versioning rules [@SemVer].
+
 # Extending P4Runtime for non-PSA Architectures
 
 # Lifetime of a Session
@@ -4237,6 +4274,10 @@ dataplane.
 
 * The default action for indirect match tables is restricted to a `const
   NoAction` known at compile-time.
+
+* There is no RPC to query the capabilities of a given P4Runtime implementation;
+  in particular, there is no way for a client to query the supported minor +
+  patch version numbers.
 
 
 [BIB]
