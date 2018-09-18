@@ -2009,7 +2009,7 @@ pair of table entries that the same packet matches.
 The `match` and `priority` fields are used to uniquely identify an entry within
 a table. Therefore, these fields cannot be modified after the entry has been
 inserted and must be provided for `MODIFY` and `DELETE` updates. When deleting
-an entry, these key fields (along with `is_default_entry`) are the only fields
+an entry, these key fields (along with `is_default_action`) are the only fields
 considered by the server. All other fields must be ignored, even if they have
 nonsensical values (such as an invalid action field).
 
@@ -2149,9 +2149,10 @@ assert(low != min_field_value && high != max_field_value)
 
 ### Action Specification
 
-The `TableEntry` action field must be set for every `INSERT` and `MODIFY`
-update.  Based on the implementation property value of the P4 table, the `oneof`
-in the `TableAction` message will either be:
+The `TableEntry` `action` field must be set for every `INSERT` and `MODIFY`
+update, except when resetting the [default entry](#sec-default-entry). Based on
+the implementation property value of the P4 table, the `oneof` in the
+`TableAction` message will either be:
 
 * an `Action` specification for direct tables (with no P4 `implementation`
   property)
@@ -2167,19 +2168,29 @@ in the `TableAction` message will either be:
   selector. This usage is described in [One Shot Action Selector
   Programming](#sec-oneshot)
 
+If the `action` field is not set (and if `is_default_action` is false) or if the
+`oneof` does not match the table description in the P4Info (e.g. the `oneof` is
+`action_profile_member_id` for a direct table), the server must return an
+`INVALID_ARGUMENT` error code.
+
 The `Action` Protobuf message, which is used for direct tables only, has the
 following fields:
 
 * `action_id`, which identifies the action instance; the `action_id` is
   determined by the P4Info message and must match one of the possible action
-  choices for the table.
+  choices for the table, or the server must return an `INVALID_ARGUMENT` error
+  code.
 
 * `params`: a repeated Protobuf field of action parameter values, each encoded
   as a `Param` message. For each parameter, `param_id` must be valid for the
   action (as per the P4Info) and value must follow the format described in
   [Bytestrings](#sec-bytestrings). The P4Runtime client must provide a valid
   value for each parameter of the P4 action; we do not support default values
-  for action parameters.
+  for action parameters. The server must return an `INVALID_ARGUMENT` error code
+  if a parameter id is missing, if an extra parameter - id not found in the
+  P4Info - was provided by the client, if a parameter value is missing, or if
+  the value provided for one of the parameters does not conform to the
+  [Bytestrings](#sec-bytestrings) format.
 
 For indirect tables, if the P4Runtime client provides a member or group id which
 has not been inserted in the corresponding action profile instance yet, the
@@ -2201,10 +2212,12 @@ and the `priority` field must be set to zero, otherwise the P4Runtime server
 must return an `INVALID_ARGUMENT` error code. When performing a `MODIFY` update
 on the default entry, the client can either provide a valid action for the table
 or leave the action field unset, in which case the default entry will be reset
-to its original value, as defined in the P4 program. If the default entry is
-constant (as indicated by the P4 program and the P4Info message), the server
-must return an `PERMISSION_DENIED` error code if the client attempts to modify
-it.
+to its original value, as defined in the P4 program. When resetting the default
+entry, its `controller_metadata` value as well as the configurations for its
+[direct resources](#sec-direct-resources) will be reset to their defaults. If
+the default entry is constant (as indicated by the P4 program and the P4Info
+message), the server must return a `PERMISSION_DENIED` error code if the client
+attempts to modify it.
 
 Apart from the above restrictions, the default entry is treated like a regular
 entry, including with regards to [direct resources](#sec-direct-resources).
