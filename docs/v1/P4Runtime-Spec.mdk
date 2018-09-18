@@ -4050,11 +4050,11 @@ out-of-band switch configuration mechanism - to use to translate between the SDN
 value and the dataplane value. The second argument is the bitwidth of the SDN
 representation of the translated entity (32-bit in the case of ports).
 
-Both PSA device port number 0 and SDN port number 0 are invalid. Any unicast
-packet with egress port 0 will be dropped in the PRE. A PSA device will define
-its CPU and recirculate ports in the device specific port number space.
-P4Runtime reserves device-independent and controller-specific 32-bit constants
-for the CPU port and the recirculate port as follows:
+An SDN port number of 0 is invalid (while 0 may be a valid device port number
+depending on the PSA device). A PSA device may define its CPU and recirculation
+ports in the device-specific port number space. P4Runtime reserves
+device-independent and controller-specific 32-bit constants for the CPU port and
+the recirculation port as follows:
 
 ~ Begin Proto
 enum SdnPort {
@@ -4072,6 +4072,11 @@ enum SdnPort {
   SDN_PORT_CPU = 0xFFFFFFFD;
 }
 ~ End Proto
+
+The switch config will map `SDN_PORT_RECIRCULATE` and `SDN_PORT_CPU` - as well
+as any SDN port number corresponding to a "regular" front-panel port - to the
+corresponding device-specific values, in order to enable the P4Runtime server to
+perform the translation.
 
 The sub-sections below detail the translation mechanics for different usage of
 PSA port types in P4 programs.
@@ -4188,7 +4193,7 @@ is used to implement fast-failover in the target, where the P4Runtime server can
 locally prune the member from the group if a port is down. This pruning does not
 require intervention from the controller. Conversely, if the port comes back up,
 the P4Runtime server can re-enable the member in the group. The watch field is
-of type uint32 to carry a 32-bit SDN number of the port being watched. The
+of type `uint32` to carry a 32-bit SDN number of the port being watched. The
 P4Runtime server will translate the given watch port number into the
 device-specific dataplane port number for implementing the fast-failover
 functionality on the target device.
