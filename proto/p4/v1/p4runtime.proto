@@ -639,10 +639,26 @@ message ForwardingPipelineConfig {
   config.v1.P4Info p4info = 1;
   // Target-specific P4 configuration.
   bytes p4_device_config = 2;
+  // Metadata (cookie) opaque to the target. A control plane may use this field
+  // to uniquely identify this config. There are no restrictions on how such
+  // value is computed, or where this is stored on the target, as long as it is
+  // returned with a `GetForwardingPipelineConfig` RPC.
+  uint64 cookie = 3;
 }
 
 message GetForwardingPipelineConfigRequest {
+  // Specifies the fields to populate in the response.
+  enum ResponseType {
+    // Default behaviour. Returns a ForwardingPipelineConfig with all fields set
+    // as stored by the target.
+    ALL = 0;
+    // Reply by setting only the cookie field, omitting all other fields.
+    COOKIE_ONLY = 1;
+    // Reply by setting only the p4info field.
+    P4INFO_ONLY = 2;
+  }
   uint64 device_id = 1;
+  ResponseType response_type = 2;
 }
 
 message GetForwardingPipelineConfigResponse {
