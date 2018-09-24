@@ -2954,10 +2954,10 @@ entity {
   packet_replication_engine_entry {
     multicast_group_entry {
       muticast_group_id : 1
-      replicas { egress_port : 5 replica_id: 1 }
-      replicas { egress_port : 12 replica_id: 2 }
-      replicas { egress_port : 18 replica_id: 3 }
-      replicas { egress_port : 24 replica_id: 4 }
+      replicas { egress_port : 5 instance: 1 }
+      replicas { egress_port : 12 instance: 2 }
+      replicas { egress_port : 18 instance: 3 }
+      replicas { egress_port : 24 instance: 4 }
     }
   }
 }
@@ -2971,7 +2971,7 @@ translation between SDN ports and PSA device ports, refer to the
 [PSA Metadata Translation](#sec-translation-of-port-numbers) section.
 
 The egress packets may be distinguished for further processing in the egress
-using the `replica_id` metadata. Note that a packet may not be both unicast and
+using the `instance` metadata. Note that a packet may not be both unicast and
 multicast; if the multicast group is set, it will override the unicast egress
 port. If the multicast_group metadata is set to a value that is not programmed
 in the PRE, then the packet is dropped.
@@ -2986,7 +2986,7 @@ semantics.
   replica ID is also uint32, but its value may not exceed the maximum allowed by
   the target PSA device's `EgressInstance_t` bitwidth. The egress port must be a
   32-bit SDN port number and must refer to a singleton port. No two replicas may
-  have identical values of *both* `egress_port` and `replica_id`.
+  have identical values of *both* `egress_port` and `instance`.
 * `MODIFY`: Modify the set of replicas for a given multicast group entry,
   indexed by the given `multicast_group_id`. Same restrictions as `INSERT` apply
   here.
@@ -3001,10 +3001,12 @@ PSA supports cloning of packets in both the ingress and egress pipeline. Ingress
 cloning creates a mirror of the packet as seen in the beginning of the ingress
 pipeline, while egress cloning creates a mirror of the packet as seen at the end
 of the egress pipeline. A packet is cloned in the dataplane by setting a
-`clone_session_id` identifier and a boolean flag clone in the packet
+`clone_session_id` identifier and a boolean flag `clone` in the packet
 metadata. The `clone_session_id` serves as a handle to the clone attributes,
-namely the egress port, replica id, packet length and class of service, that are
-programmed at runtime via the P4Runtime `CloneSessionEntry` API.
+namely a set `replicas` of `(egress port, instance)` pairs to which
+cloned packets should be sent, a packet length, and class of
+service. These are programmed at runtime via the P4Runtime
+`CloneSessionEntry` API.
 
 The following P4 program illustrates a possible dataplane behavior of sending
 clones of low TTL packets to the CPU for monitoring. Note that the dataplane
@@ -3033,10 +3035,10 @@ type: INSERT
 entity {
   packet_replication_engine_entry {
     clone_session_entry {
-      clone_session_id : 100
-      replicas { egress_port : 0xFFFFFFFD replica_id: 1 } # to CPU
+      session_id : 100
+      replicas { egress_port : 0xFFFFFFFD instance: 1 } # to CPU
       class_of_service : 2
-      packet_length_bytes : 4094
+      packet_length_bytes : 4096
     }
   }
 }
@@ -3049,26 +3051,26 @@ the dataplane. The clone will be treated for scheduling in the PRE with a class
 of service value of 2. If the packet is larger than 4096 bytes, it will be
 truncated to carry at most 4096 bytes.
 
-The cloned replica will appear in the egress pipeline as independent packet with
+The cloned replica will appear in the egress pipeline as an independent packet with
 egress port set to CPU (corresponding to SDN port `0xFFFFFFFD`; see [Translation
 of Port Numbers](#sec-translation-of-port-numbers)). Note that the egress port
 must be a 32-bit SDN port number and must refer to a singleton port.
 
 Furthermore, even though the Protobuf representation for clone session entry
 allows multiple clones to be specified (by the repeated `replicas` message
-field), the current version of PSA allows creating only 1 clone of a packet in
+field), PSA version 1.0 allows creating only 1 clone of a packet in
 the ingress and egress. Therefore, a target may reject a clone session entry
 update that carries more than one replica. Cloning does not impact the original
 packet. If the `clone_session_id` metadata is set to a value that is not
-programmed in the PRE, then the clone is simply not created.
+programmed in the PRE, then no clones are created.
 
 A clone session may be inserted, modified or deleted as per the following
 semantics:
 
 * `INSERT`: Add a new clone session entry bound to an egress port. The
-  `clone_session_id` is `uint32` type, must be unique across all clone session
+  `session_id` is `uint32` type, must be unique across all clone session
   entries, and its value may not exceed the maximum allowed by the target PSA
-  device's `CloneSessionId_t` bitwidth. Similarly, the replica ID is also
+  device's `CloneSessionId_t` bitwidth. Similarly, the `instance` is also
   `uint32`, but its value may not exceed the maximum allowed by the target PSA
   device's `EgressInstance_t` bitwidth. The egress port in the replica must be a
   32-bit SDN port number and must refer to a singleton port. A target may reject
@@ -3086,7 +3088,7 @@ semantics:
 * `DELETE`: Delete the clone session indexed by the given
   `clone_session_id`. Other fields need not be provided for this operation. Any
   packet with their `clone_session_id` metadata in the dataplane set to the
-  deleted `clone_session_id` will no longer be cloned.
+  deleted `session_id` will no longer be cloned.
 
 ## `ValueSetEntry`
 

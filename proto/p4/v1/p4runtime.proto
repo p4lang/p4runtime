@@ -418,7 +418,7 @@ message MulticastGroupEntry {
 // A packet may be cloned by setting the clone_session_id field of PSA
 // ingress/egress output metadata to session_id of a programmed clone session
 // entry. Multiple clones may be created via a single clone session entry by
-// using the replica message. The clones may be distinguished in the egress
+// using the replicas message. The clones may be distinguished in the egress
 // using the instance field. The class_of_service field of the clone's egress
 // input metadata will be set to the respective value programmed in the clone
 // session entry. Note that in case of multiple clones, all clones, defined
