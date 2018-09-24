@@ -133,9 +133,8 @@ message Preamble {
 
 // used to group all extern instances of the same type in one message
 message Extern {
-  // the extern_type_id is assigned during compilation. It is likely that this
-  // id will in fact come from a P4 annotation to the extern declaration and
-  // that each vendor will receive a prefix to avoid collisions.
+  // the extern_type_id is unique for a given architecture and must be in the
+  // range [0x81, 0xfe].
   uint32 extern_type_id = 1;
   string extern_type_name = 2;
   repeated ExternInstance instances = 3;

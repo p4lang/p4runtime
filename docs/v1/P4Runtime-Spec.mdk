@@ -242,7 +242,7 @@ P4Runtime:
   Switch Architecture (PSA) externs (&eg; Counters, Meters, Action Profiles,
   ...).
 * Runtime control of architecture-specific (non-PSA) externs, through an
-  extensions mechanism.
+  extension mechanism.
 * Basic session management for Software-Defined Networking (SDN) use-cases,
   including support for controller replication to enable control-plane
   redundancy.
@@ -690,7 +690,7 @@ controller describes the role configuration, &ie; which operations, P4 entities,
 behaviors, etc. are in the scope of a given role. An unset `role.config` implies
 "full pipeline access" as well (similar to the default role explained above). In
 order to support different role definition schemes, `role.config` is defined as
-a `Any` Protobuf message [@ProtoAny]. Such schemes are out-of-scope of this
+an `Any` Protobuf message [@ProtoAny]. Such schemes are out-of-scope of this
 document. When partitioning of the control plane is desired, the P4Runtime
 client(s) and server need to agree on a role definition scheme in an
 out-of-band fashion.
@@ -864,7 +864,7 @@ message PkgInfo {
   string description = 2;
 }
 ~ End Proto
-## ID Allocation for P4Info Objects
+## ID Allocation for P4Info Objects { #sec-id-allocation}
 
 P4Info objects receive a unique ID, which is used to identify the object in
 P4Runtime messages. IDs are 32-bit unsigned integers which are assigned by the
@@ -1026,6 +1026,10 @@ control plane. This message contains the following fields:
 
 * `is_const_table`, a boolean flag indicating that the table is filled with
   static entries and cannot be modified by the control plane at runtime.
+
+* `other_properties`, an `Any` Protobuf message [@ProtoAny] to embed
+  architecture-specific table properties [@P4TableProperties] which are not part
+  of the core P4 language or of the PSA architecture.
 
 ### `Action`
 
@@ -1335,10 +1339,45 @@ The `Digest` message defines the following fields:
   notification using a `P4DataTypeSpec` message (see section on [Representation
   of Arbitrary P4 Types](#sec-representation-of-arbitrary-p4-types)).
 
+### `Extern` { #sec-p4info-extern}
+
+`Extern` messages are used to specify all extern instances across all extern
+types for a non-PSA architecture. This is useful when extending P4Runtime to
+support a new architetcure. Each architecture-specific extern type corresponds
+to at most one `Extern` message instance in P4Info. The `Extern` message defines
+the following fields:
+
+* `extern_type_id`, a 32-bit unsigned integer which uniquely identifies the
+  extern type in the context of the architecture. It must be in the [reserved
+  range](#sec-id-allocation) `[0x81, 0xfe]`. Note that this value does not need
+  to be unique across all architectures from all organizations, since at any
+  given time every device managed by a P4Runtime server maps to a single P4Info
+  message and a single architecture.
+
+* `extern_type_name`, which specifies the fully-qualified P4 name of the extern
+  type.
+
+* `instances`, a repeated field of `ExternInstance` Protobuf messages, with each
+  entry corresponding to a separate P4 instance of the extern. The
+  `ExternInstance` in turn defines the following fields:
+
+  * `preamble`, a `Preamble` message with the ID, name, and alias of this digest
+    instance.
+  * `info`, an `Any` Protobuf message [@ProtoAny] which is used to embed
+    arbitrary information specific to the extern instance. Note that the
+    underlying Protobuf message type for `info` should be the same for all
+    instances of this extern type. That Protobuf message should be defined in a
+    separate architecture-specific Protobuf file. See section on [Extending
+    P4Runtime for non-PSA Architectures](#sec-extending-p4runtime) for more
+    information.
+
+If the P4 program does not include any instance of a given extern type, the
+`Extern` message instance for that type should be omitted from the P4Info.
+
 ## Support for Arbitrary P4 Types with P4TypeInfo
 
-See (see section on [Representation of Arbitrary P4
-Types](#sec-representation-of-arbitrary-p4-types)).
+See section on [Representation of Arbitrary P4
+Types](#sec-representation-of-arbitrary-p4-types).
 
 # P4 Forwarding-Pipeline Configuration { #sec-p4-fwd-pipe-config}
 
@@ -3305,7 +3344,7 @@ while (true) {
 }
 ~ End CPP
 
-## `ExternEntry`
+## `ExternEntry` { #sec-extern-entry}
 
 This is used to support a P4 extern entity that is not part of PSA. It is
 defined as:
@@ -3318,12 +3357,18 @@ message ExternEntry {
 }
 ~ End Proto
 
+Each `ExternEntry` entity maps to an `Extern` message in the
+[P4Info](#sec-p4info-extern) and an `ExternInstance` message within that
+message. The `extern_type_id` field must be equal to the one in
+`ExternEntry`. The `extern_id` field must be equal to the ID included in the
+`preamble` of the corresponding `ExternInstance` message.
 
-The `extern_type_id` is assigned during compilation. It is likely that this id
-will in fact come from a P4 annotation on the extern declaration and that each
-vendor will receive a prefix to avoid collisions. The extern entry itself is
-embedded as a `Any` Protobuf message [@ProtoAny] to keep the protocol
-extensible.
+`entry` itself is embedded as an `Any` Protobuf message [@ProtoAny] to keep the
+protocol extensible. It includes the extern-specific parameters required by the
+P4Runtime server to perform the read or write operation. The underlying Protobuf
+message should be defined in a separate architecture-specific Protobuf file. See
+section on [Extending P4Runtime for non-PSA
+Architectures](#sec-extending-p4runtime) for more information.
 
 # Error Reporting Messages { #sec-error-reporting-messages}
 
@@ -4252,7 +4297,126 @@ All versions of P4Runtime, including pre-release versions, are tagged in the
 P4Runtime Github repository [@P4RuntimeRepo] and the version label follows
 semantic versioning rules [@SemVer].
 
-# Extending P4Runtime for non-PSA Architectures
+# Extending P4Runtime for non-PSA Architectures { #sec-extending-p4runtime}
+
+P4Runtime includes native support for PSA programs and in particular support for
+runtime control of PSA extern instances. While the definition of Protobuf
+messages for runtime control of non-PSA externs is out-of-scope of this
+specification, P4Runtime provides an extension mechanism for other
+architectures, through different hooks in the protocol definition. These hooks
+are described in various parts of this document and the goal of this section is
+to offer a comprehensive list of them in a single place.
+
+When extending P4Runtime for a new P4 architecture, one will need to write two
+additional Protobuf files to extend p4info.proto and p4runtime.proto
+respectively. We suggest the following Protobuf package names:
+
+* `p4/[organization]/arch/config/<major version>/p4info.proto`
+* `p4/[organization]/arch/<major version>/p4runtime.proto`
+
+We also recommend that the major version number for these packages be the same
+as the major version number for the P4Runtime version they "extend".
+
+For the remainder of this section, we will refer to these two files as
+*p4info-ext* and *p4runtime-ext* respectively.
+
+## Extending P4Runtime for Architecture-Specific Externs
+
+Each P4 architecture can define its own set of extern types. Controlling them at
+runtime requires defining new Protobuf messages in both *p4info-ext* and
+*p4runtime-ext*. To make things more concrete for this section, we will assume
+that the new architecture we are trying to support in P4Runtime includes the
+following extern definition, which we will use as a running example:
+
+~ Begin P4Example
+// T must be a bit<W> type, it indicates the width of each counter cell
+extern MyNewPacketCounter<T> {
+  counter(bit<32> size);
+  increment(in bit<32> index);
+}
+~ End P4Example
+
+### Extending the P4Info message
+
+* Id prefixes `0x81` through `0xfe` are reserved for architecture-specific
+  externs. It is recommended that *p4info-ext* include a `P4Ids` message based
+  on the one in p4info.proto that the P4 compiler can refer to when [assigning
+  IDs](#sec-id-allocation) to each extern instance.
+
+~ Begin Proto
+message P4Ids {
+  enum Prefix {
+    UNSPECIFIED = 0;
+    MY_NEW_PACKET_COUNTER = 0x81;
+  }
+}
+~ End Proto
+
+* *p4info-ext* should include a Protobuf message definition for every extern
+  type that can be controlled at runtime. For every extern instance of this
+  type, the compiler will generate an instance of this Protobuf message and
+  embed it appropriately in the corresponding
+  [`p4.config.v1.ExternInstance`](#sec-p4info-extern) message as the `info`
+  field, which is of type `Any` [@ProtoAny].
+
+~ Begin Proto
+message MyNewPacketCounter {
+  // corresponds to the T type parameter in the P4 extern definition
+  p4.config.v1.P4DataTypeSpec type_spec = 1;
+  // constructor argument
+  int64 size = 2;
+}
+~ End Proto
+
+### Extending the P4Runtime Service
+
+Just like *p4info-ext*, *p4runtime-ext* should include a Protobuf message
+definition for every extern type that can be controlled at runtime. This message
+should include the extern-specific parameters defining the read or write
+operation to be peformed by the P4Runtime server on the corresponding extern
+instance. Instances of this architetcure-specific message are meant to be
+embedded in an [`ExternEntry`](#sec-extern-entry) message generated by the
+P4Runtime client.
+
+Here is a possible Protobuf message for our `MyNewPacketCounter` P4 extern:
+~ Begin Proto
+// This message enables reading / writing data to the counter at the provided
+// index
+message MyNewPacketCounter {
+  int64 index = 1;
+  p4.v1.P4Data data = 2;
+}
+~ End Proto
+
+## Architecture-Specific Table Extensions
+
+### New Match Types
+
+An architecture may introduce new table match types [@P4MatchTypes]. P4Runtime
+accounts for this by providing the following hooks:
+
+* The `match` field in `p4.config.v1.MatchField` (p4info.proto) is a `oneof`
+  which can be either one of the default match types (`EXACT`, `LPM`, `TERNARY`
+  or `RANGE`) or an architecture-specific match type encoded as a string.
+
+* The `field_match_type` field in `p4.v1.FieldMatch` (p4runtime.proto) is a
+  `oneof` which includes an `Any` Protobuf message [@ProtoAny] field
+  (`other`). *p4info-ext* should include a Protobuf message definition for each
+  architecture-specific match type, which can be used to encode values for match
+  key elements which use this match type type in the P4 table
+  declaration. These match values are embedded in `p4.v1.FieldMatch` as the
+  `other` field, which can then be decoded by the P4Runtime server using the
+  match type name included in P4Info.
+
+### New Table Properties
+
+An architecture may introduce additional table properties
+[@P4TableProperties]. In some instances, it can be desirable to include the
+information contained in table properties in P4Info, which is why the
+`p4.config.v1.Table` message includes the `other_properties` `Any` Protobuf
+field [@ProtoAny]. At the moment, there is not any mechanism to extend the
+`p4.v1.TableEntry` message based on the value of architecture-specific table
+properties, but we may include on in future versions of the API.
 
 # Lifetime of a Session
 
