@@ -249,12 +249,13 @@ message ActionProfile {
 }
 
 message CounterSpec {
-  // Corresponds to 'type' attribute for counter in P4 spec.
+  // Corresponds to 'type' constructor parameter for Counter / DirectCounter in
+  // PSA
   enum Unit {
     UNSPECIFIED = 0;
     BYTES = 1;
     PACKETS = 2;
-    BOTH = 3;  // not part of the P4 spec yet but will be in the future
+    BOTH = 3;
   }
   Unit unit = 1;
 }
@@ -274,19 +275,13 @@ message DirectCounter {
 }
 
 message MeterSpec {
-  // Corresponds to 'type' attribute for meter in P4 spec.
+  // Corresponds to 'type' constructor parameter for Meter / DirectMeter in PSA
   enum Unit {
     UNSPECIFIED = 0;
     BYTES = 1;
     PACKETS = 2;
   }
-  // Not part of the P4 spec yet but will be in the future.
-  enum Type {
-    COLOR_UNAWARE = 0;  // default value
-    COLOR_AWARE = 1;
-  }
   Unit unit = 1;
-  Type type = 2;
 }
 
 message Meter {

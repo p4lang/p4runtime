@@ -1152,20 +1152,13 @@ Both `Meter` and `DirectMeter` messages share the following fields:
   extern instance.
 
 * `spec`, a message of type `MeterSpec` used to describe the capabilities of
-  this meter extern instance. The `MeterSpec` message defines the following
-  fields:
-
-    * `unit`, the meter rate unit, whose value can be any of the
-      `MeterSpec.Unit` enum:
-        * `UNSPECIFIED`: reserved value.
-        * `BYTES`, which signifies that this meter can be configured with rates
-          expressed in bytes/second.
-        * `PACKETS`, for rates expressed in packets/second.
-
-    * `type`, the type of meter according to RFC 2698, color-blind or
-      color-aware.  The value can be any of the `MeterSpec.Type` enum:
-        * `COLOR_UNAWARE` for a color-blind meter.
-        * `COLOR_AWARE` for a color-aware meter.
+  this meter extern instance. Currently, the `MeterSpec` message is used to
+  carry only the meter unit, which can be any of the `MeterSpec.Unit` enum
+  values:
+    * `UNSPECIFIED`: reserved value.
+    * `BYTES`, which signifies that this meter can be configured with rates
+      expressed in bytes/second.
+    * `PACKETS`, for rates expressed in packets/second.
 
 For indexed meters, the `Meter` message contains also a `size` field, an `int64`
 representing the maximum number of independent cells that can be held by this
@@ -2806,10 +2799,10 @@ entity for each of the instances, specifying the `counter_id` and
 Meters are an advanced mechanism for keeping statistics, involving stateful
 "marking" and usually "throttling" of packets based on configured rates of
 traffic. The PSA metering function is based on the *Two Rate Three Color Marker*
-(trTCM) defined in RFC 2698. The trTCM meters an arbitrary packet stream using
-two configured rates - the Peak Information Rate (PIR) and Committed Information
-Rate (CIR), and their associated burst sizes - and "marks" its packets as GREEN,
-YELLOW or RED based on the observed rate.
+(trTCM) defined in RFC 2698 [@RFC2698]. The trTCM meters an arbitrary packet
+stream using two configured rates - the Peak Information Rate (PIR) and
+Committed Information Rate (CIR), and their associated burst sizes - and "marks"
+its packets as GREEN, YELLOW or RED based on the observed rate.
 
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
