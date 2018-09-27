@@ -1914,11 +1914,15 @@ therefore use a human-readable string in `P4Data` to represent `enum` and
 `error` values.
 
 Serializable `enum` types have an underlying fixed-width unsigned integer
-representation (`bit<W>`). Integer values must be assigned to each member entry
-by the P4 programmer. `P4TypeInfo` includes the mapping between entry name and
-entry value. When providing serializable enum values through `P4Data`, one can
-either use the enum entry's name (`enum` human-readable string field) or its
-assigned value (`enum_value` bytestring field).
+representation (`bit<W>`). All named enum members must be assigned an integer
+value by the P4 programmer, but *not all* valid numeric values for the
+underlying type need to have a corresponding name. `P4TypeInfo` includes the
+mapping between entry name and entry value. When providing serializable enum
+values through `P4Data`, one must use the assigned integer value (`enum_value`
+bytestring field). P4Runtime does not provide a way for the client to use the
+name - even when the enum member has one - instead of the value, as it makes it
+easier for the server to respect the [read-write
+symmetry](#sec-read-write-symmetry) principle.
 
 ### User-defined types { #sec-user-defined-types}
 
