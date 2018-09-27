@@ -642,8 +642,14 @@ message ForwardingPipelineConfig {
   // Metadata (cookie) opaque to the target. A control plane may use this field
   // to uniquely identify this config. There are no restrictions on how such
   // value is computed, or where this is stored on the target, as long as it is
-  // returned with a `GetForwardingPipelineConfig` RPC.
-  uint64 cookie = 3;
+  // returned with a GetForwardingPipelineConfig RPC. When reading the cookie,
+  // we need to distibuish those cases where a cookie is NOT present (e.g. not
+  // set in the SetForwardingPipelineConfigRequest, therefore we wrap the actual
+  // uint64 value in a protobuf message.
+  message Cookie {
+    uint64 cookie = 1;
+  }
+  Cookie cookie = 3;
 }
 
 message GetForwardingPipelineConfigRequest {
@@ -654,8 +660,10 @@ message GetForwardingPipelineConfigRequest {
     ALL = 0;
     // Reply by setting only the cookie field, omitting all other fields.
     COOKIE_ONLY = 1;
-    // Reply by setting only the p4info field.
-    P4INFO_ONLY = 2;
+    // Reply by setting the p4info and cookie fields.
+    P4INFO_AND_COOKIE = 2;
+    // Reply by setting the p4_device_config and cookie fields.
+    DEVICE_CONFIG_AND_COOKIE = 3;
   }
   uint64 device_id = 1;
   ResponseType response_type = 2;
