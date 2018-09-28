@@ -1375,7 +1375,7 @@ changed by loading a new `FowardingPipelineConfig` on that target.
 The `cookie` field is opaque data which may be used by a control plane to
 uniquely identify a forwarding-pipeline configuration among others managed by
 the same control plane. For example, a controller can compute its value using a
-hash function over the P4Info and target-specific binary data. However, there
+hash function over the P4Info and/or target-specific binary data. However, there
 are no restrictions on how such value is computed, or where this is stored on
 the target, as long as it is returned with a `GetForwardingPipelineConfig` RPC.
 When writing the config via a `SetForwardingPipelineConfig` RPC, the cookie
