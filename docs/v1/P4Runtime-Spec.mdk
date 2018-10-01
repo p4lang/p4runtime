@@ -871,16 +871,16 @@ P4Runtime messages. IDs are 32-bit unsigned integers which are assigned by the
 compiler during the P4Info generation process. IDs are assigned in such a way
 that is is possible based on the ID value alone to deduce the type of the object
 (&eg; table, action, counter, ...). The most significant 8 bits of the ID
-encodes the object type (as per Table [#tab-mapping-p4-obj-ids]. The
+encodes the object type (as per Table [#tab-mapping-p4-obj-ids]). The
 p4info.proto file includes a mapping from object type to 8-bit prefix value,
 encoded as an enum definition (`p4.config.v1.P4Ids.Prefix`). These values must
 be used (&eg; by the compiler) when allocating IDs. The remaining 24-bits must
 be generated in such a way that the resultings IDs must be globally unique in
-the scope of the P4Info message. See Table [#tab-format-p4-obj-ids].
+the scope of the P4Info message. Table [#tab-format-p4-obj-ids] shows the ID
+layout.
 
 ~ TableFigure { #tab-mapping-p4-obj-ids; \
     caption: "Mapping of P4Info object type to 8-bit ID prefix value"; \
-    breakable: true; \
     page-align: forcehere; }
 |--------------------|----------------------------------------------------------------------|
 | 8-bit prefix value | P4 object type                                                       |
@@ -907,7 +907,9 @@ the scope of the P4Info message. See Table [#tab-format-p4-obj-ids].
 ~
 
 ~ TableFigure { #tab-format-p4-obj-ids; \
-    caption: "Format of P4Info object IDs"; }
+    caption: "Format of P4Info object IDs"; \
+    breakable: true; \
+    page-align: forcehere; }
 |----------------------------|------------------------------------------|
 | MSB bit 31 ........ bit 24 | bit 23 ....................... bit 0 LSB |
 +:--------------------------:+:----------------------------------------:+
@@ -926,7 +928,8 @@ possible for the P4 programmer to change the value of the 8-bit ID prefix, which
 encodes the object type.
 
 ~ TableFigure { #tab-exmpl-p4-obj-ids; \
-    caption: "Example of statically-assigned P4Info object IDs"; }
+    caption: "Example of statically-assigned P4Info object IDs"; \
+    page-align: forcehere; }
 |---------------------------------|------------------------------------------------------------|
 | P4 declaration(s)               | Compiler-allocated ID(s)                                   |
 +---------------------------------+------------------------------------------------------------+
