@@ -157,8 +157,17 @@ Do not use backticks for:
 * PSA extern names
 
 ## Document Figures
-Each image in the specification has a corresponding `.odg` file under `assets/`. These are OfficeLibre drawing files. The files are rendered into `.svg` and `.png` images (for HTML and PDF output, resepectively) at build time, using the `soffice` command-line tool. The page size for each image should be adjusted manually by the author ("artist") to just fit the image on the apparrent "page," to minimize padding around the image in the rendered document. Use the menu item `Format | Page/Size Properties.` See the example screen shot below. (Do not check the "Fit object to paper format" box - it will change the object's aspect ratio.)
-![OfficeLibre](office-libre.png)
+Each image in the specification has a corresponding `.odg` file under
+`assets/`. These are LibreOffice drawing files. The files are rendered into
+`.svg` and `.png` images (for HTML and PDF output, resepectively) at build time,
+using the `soffice` command-line tool. The page size for each image should be
+adjusted manually by the author ("artist") to just fit the image on the
+apparrent "page," to minimize padding around the image in the rendered
+document. Use the menu item `Format | Page/Size Properties.` See the example
+screen shot below. (Do not check the "Fit object to paper format" box - it will
+change the object's aspect ratio.)
+![LibreOffice](libre-office.png)
+
 ## CI upload of built documents
 
 Travis takes care of uploading the built HTML version of the spec to AWS S3. The
