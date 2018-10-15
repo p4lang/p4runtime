@@ -686,14 +686,25 @@ to 0.
 ## Role Config { #sec-arbitration-role-config}
 
 The `role.config` field in the `MasterArbitrationUpdate` message sent by the
-controller describes the role configuration, &ie; which operations, P4 entities,
-behaviors, etc. are in the scope of a given role. An unset `role.config` implies
-"full pipeline access" as well (similar to the default role explained above). In
-order to support different role definition schemes, `role.config` is defined as
-an `Any` Protobuf message [@ProtoAny]. Such schemes are out-of-scope of this
-document. When partitioning of the control plane is desired, the P4Runtime
-client(s) and server need to agree on a role definition scheme in an
-out-of-band fashion.
+controller describes the role configuration, &ie; which operations are in the
+scope of a given role. In particular, the definition of a role may include the
+following:
+* A list of P4 entities for which the controller may issue `Write` updates and
+  receive notification messages (e.g. `DigestList` and
+  `IdleTimeoutNotification`).
+* Whether the controller is able to receive `PacketIn` messages, along with a
+  filtering mechanism based on the values of the `PacketMetadata` fields to
+  select which `PacketIn` messages should be sent to the controller.
+* Whether the controller is able to send `PacketOut` messages, along with a
+  filtering mechanism based on the values of the `PacketMetadata` fields to
+  select which `PacketOut` messages are allowed to be sent by the controller.
+
+An unset `role.config` implies "full pipeline access" (similar to the default
+role explained above). In order to support different role definition schemes,
+`role.config` is defined as an `Any` Protobuf message [@ProtoAny]. Such schemes
+are out-of-scope of this document. When partitioning of the control plane is
+desired, the P4Runtime client(s) and server need to agree on a role definition
+scheme in an out-of-band fashion.
 
 ## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers
 
