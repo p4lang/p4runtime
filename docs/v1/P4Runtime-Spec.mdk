@@ -686,14 +686,25 @@ to 0.
 ## Role Config { #sec-arbitration-role-config}
 
 The `role.config` field in the `MasterArbitrationUpdate` message sent by the
-controller describes the role configuration, &ie; which operations, P4 entities,
-behaviors, etc. are in the scope of a given role. An unset `role.config` implies
-"full pipeline access" as well (similar to the default role explained above). In
-order to support different role definition schemes, `role.config` is defined as
-an `Any` Protobuf message [@ProtoAny]. Such schemes are out-of-scope of this
-document. When partitioning of the control plane is desired, the P4Runtime
-client(s) and server need to agree on a role definition scheme in an
-out-of-band fashion.
+controller describes the role configuration, &ie; which operations are in the
+scope of a given role. In particular, the definition of a role may include the
+following:
+* A list of P4 entities for which the controller may issue `Write` updates and
+  receive notification messages (e.g. `DigestList` and
+  `IdleTimeoutNotification`).
+* Whether the controller is able to receive `PacketIn` messages, along with a
+  filtering mechanism based on the values of the `PacketMetadata` fields to
+  select which `PacketIn` messages should be sent to the controller.
+* Whether the controller is able to send `PacketOut` messages, along with a
+  filtering mechanism based on the values of the `PacketMetadata` fields to
+  select which `PacketOut` messages are allowed to be sent by the controller.
+
+An unset `role.config` implies "full pipeline access" (similar to the default
+role explained above). In order to support different role definition schemes,
+`role.config` is defined as an `Any` Protobuf message [@ProtoAny]. Such schemes
+are out-of-scope of this document. When partitioning of the control plane is
+desired, the P4Runtime client(s) and server need to agree on a role definition
+scheme in an out-of-band fashion.
 
 ## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers
 
@@ -702,7 +713,7 @@ out-of-band fashion.
 
     1. If `device_id` does not match any of the devices known to the P4Runtime
        server, the server shall terminate the stream by returning a
-       `FAILED_PRECONDITION` error.
+       `NOT_FOUND` error.
 
     2. If the `election_id` is already used by another controller for the same
        (`device_id`, `role_id`), the P4Runtime server shall terminate the stream
@@ -748,6 +759,9 @@ out-of-band fashion.
        if the client becomes master, in which case the server also follows the
        "mastership change rules" described in the [following
        section](#sec-master-change).
+
+If `role.config` does not match the "out-of-band" scheme previously agreed upon,
+the server must return an `INVALID_ARGUMENT` error.
 
 ## Mastership Change { #sec-master-change}
 
@@ -3457,7 +3471,18 @@ message WriteRequest {
 The `device_id` uniquely identifies the target P4 device. The `role_id` and
 `election_id` define the client role and election-id as described in the
 [Master-Slave Arbitration and Controller Replication](#sec-master-slave-arbitration-and-controller-replication)
-section.
+section. The server is expected to perform the following checks (in this order)
+before processing the `updates` list:
+
+1. If `device_id` does not match any of the devices known to the P4Runtime
+   server or if `role_id` does not match any of the roles for the device, the
+   server must return a `NOT_FOUND` error.
+
+2. If the client is not the master for (`device_id`, `role_id`) according to the
+   `election_id` value, the server must return a `PERMISSION_DENIED` error.
+
+3. If the `Write` is attempted before a `ForwardingPipelineConfig` has been set,
+   the server must return a `FAILED_PRECONDITION` error.
 
 The updates field is a list of P4 entity updates to be applied. Each update is
 defined as:
@@ -3482,7 +3507,7 @@ plane. Each entity in the container is uniquely identified by its *key*. Please
 refer to the [P4 Entity Messages](#sec-p4-entity-msgs) section for details on
 what parts of the entity specification make up the *key* for each P4 entity.
 
-An `update` can be one of the following types:
+An update can be one of the following types:
 
 * `INSERT`: Inserts the given P4 entity in the entity container.
   The `entity` field always specifies the full state of the P4 entity.
@@ -3506,6 +3531,9 @@ The `Write` RPC is idempotent, &ie; multiple invocations of the same RPC do not
 have any side effects. The end result (modified end state on P4Runtime server
 and P4 device) is always the same as the result of the initial invocation, even
 if the response differs.
+
+If an update is not allowed under the given controller role, the server must
+return a `PERMISSION_DENIED` error for this update.
 
 ## Batching and Ordering of Updates
 
@@ -3656,9 +3684,10 @@ message ReadRequest {
 }
 ~ End Proto
 
-The `device_id` uniquely identifies the target P4 device. The `entities`
-repeated field is a list of P4 entities, each acting as a query filter to be
-applied to P4 entity containers on the server.
+The `device_id` uniquely identifies the target P4 device. If it does not match
+any of the devices known to the P4Runtime server, the server must return a
+`NOT_FOUND` error. The `entities` repeated field is a list of P4 entities, each
+acting as a query filter to be applied to P4 entity containers on the server.
 
 The `Read `response consists of a sequence of messages (a gRPC `stream`) with
 each message defined as:
@@ -3788,16 +3817,15 @@ message SetForwardingPipelineConfigRequest {
 }
 ~ End Proto
 
-The `device_id` uniquely identifies the target P4 device. An `INVALID_ARGUMENT`
-error is returned if the `device_id` is not recognized the P4Runtime server.
+The server is expected to perform the following checks (in this order)
+before performing the required `action`:
 
-The `role_id` uniquely identifies a P4Runtime client role. More details on P4
-controller roles are provided in the section on multi-controller usage. An
-`INVALID_ARGUMENT` error is returned if the role_id does not match any `role_id`
-negotiated as part of master arbitration on the stream channel.
+1. If `device_id` does not match any of the devices known to the P4Runtime
+   server or if `role_id` does not match any of the roles for the device, the
+   server must return a `NOT_FOUND` error.
 
-The `election_id` is a 128-bit identifier used to determine the controller
-instance in case of replicated controllers.
+2. If the client is not the master for (`device_id`, `role_id`) according to the
+   `election_id` value, the server must return a `PERMISSION_DENIED` error.
 
 The action is the type of configuration action requested, it can be one of:
 
@@ -3863,8 +3891,8 @@ message GetForwardingPipelineConfigRequest {
 }
 ~ End Proto
 
-The `device_id` uniquely identifies the target P4 device. An `INVALID_ARGUMENT`
-error is returned if the `device_id` is not recognized by the P4Runtime server.
+The `device_id` uniquely identifies the target P4 device. A `NOT_FOUND` error is
+returned if the `device_id` is not recognized by the P4Runtime server.
 
 The `response_type` is used to specify which fields to populate in the response,
 its value can be one of:
