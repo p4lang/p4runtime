@@ -3481,7 +3481,7 @@ before processing the `updates` list:
 2. If the client is not the master for (`device_id`, `role_id`) according to the
    `election_id` value, the server must return a `PERMISSION_DENIED` error.
 
-3. If the `Write` is attempted begore a `ForwardingPipelineConfig` has been set,
+3. If the `Write` is attempted before a `ForwardingPipelineConfig` has been set,
    the server must return a `FAILED_PRECONDITION` error.
 
 The updates field is a list of P4 entity updates to be applied. Each update is
