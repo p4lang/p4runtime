@@ -1310,7 +1310,8 @@ The `ValueSet` message defines the following fields:
   parser state.
 
 * `size`, an int32 representing the maximum number of entries (values) in the
-  Value Set.
+  Value Set. It corresponds to the value of the size argument of the P4
+  `value_set` constructor call.
 
 ### `Register`
 
@@ -3163,8 +3164,7 @@ transition the parser state machine to the `parse_trill_types` state.
 
 ~ Begin P4Example
 state parse_l2 {
-  @size(MAX_TRILL_TYPES)
-  @id(1) value_set<ETH_TYPE_BITWIDTH> trill_types;
+  @id(1) value_set<ETH_TYPE_BITWIDTH>(MAX_TRILL_TYPES) trill_types;
   extract(hdr.ethernet);
   select (hdr.ethernet.eth_type) {
     ETH_TYPE_IPV4: parse_ipv4;
@@ -3204,8 +3204,9 @@ A `ValueSetEntry` may be inserted, modified or deleted as per the following
 semantics:
 
 * `INSERT`: Write the given matches in the repeated field to the value set entry
-  indexed by the given `value_set_id`. The maximum number of matches should not
-  exceed the maximum size given by the `size` field in P4Info of the value set.
+  indexed by the given `value_set_id`. The maximum number of matches must not
+  exceed the maximum size given by the `size` field in P4Info of the value set,
+  otherwise the server must return a `RESOURCE_EXHAUSTED` error.
 * `MODIFY`: Modify the match fields of a given value set entry, indexed by the
   given `value_set_id`. Same restrictions as `INSERT` apply here.
 * `DELETE`: Delete all matches in the value set indexed by the given
