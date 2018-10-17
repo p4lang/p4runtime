@@ -564,12 +564,13 @@ message MasterArbitrationUpdate {
 }
 
 message Role {
-  // Role IDs are defined offline in agreement across the entire control plane.
+  // Uniquely identifies this role.
   uint64 id = 1;
   // Describes the role configuration, i.e. what operations, P4 entities,
   // behaviors, etc. are in the scope of a given role. If config is not set
-  // (default case), it implies all P4 objects and control behaviors are in scope,
-  // i.e. full pipeline access.
+  // (default case), it implies all P4 objects and control behaviors are in
+  // scope, i.e. full pipeline access. The format of this message is
+  // out-of-scope of P4Runtime.
   google.protobuf.Any config = 2;
 }
 
