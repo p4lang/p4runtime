@@ -44,13 +44,14 @@ service P4Runtime {
 
   // Represents the bidirectional stream between the controller and the
   // switch (initiated by the controller), and is managed for the following
-  // purposes: - connection initiation through master arbitration -
-  // indicating switch session liveness: the session is live when switch
-  // sends
-  //   a positive master arbitration update to the controller, and is
+  // purposes:
+  // - connection initiation through master arbitration
+  // - indicating switch session liveness: the session is live when switch
+  //   sends a positive master arbitration update to the controller, and is
   //   considered dead when either the stream breaks or the switch sends a
   //   negative update for master arbitration
   // - the controller sending/receiving packets to/from the switch
+  // - streaming of notifications from the switch
   rpc StreamChannel(stream StreamMessageRequest)
       returns (stream StreamMessageResponse) {
   }
@@ -181,15 +182,16 @@ message TableEntry {
   //     the direct resources of this table (if any) will assume default values.
   //     For counters, the default value is 0, and for meters, the default value
   //     is always green.
-  //   - When updating a table entry, leaving these fields unset means that the
-  //     direct resources (if any) will not be updated.
+  //   - When updating a table entry, leaving meter_config unset will reset the
+  //     meter (if any) to its default configuration, while leaving counter_data
+  //     unset means that the counter (if any) will not be updated.
   // Table read:
   //   - If the table does not contain a direct resource, then the corresponding
   //     field will not be set in the read table entry.
-  //   - If the meter_config field has default value, it will not be set in the
-  //     read table entry.
-  //   - The counter_data field will always be set in a read table entry if the
-  //     table contains a direct counter.
+  //   - If meter_config is unset in the request, or if the meter has a default
+  //     configuration, meter_config will not be set in the response.
+  //   - If counter_data is unset in the request, it will be unset in the
+  //     response as well.
   MeterConfig meter_config = 6;
   CounterData counter_data = 7;
   // Set to true if the table entry is being used to update the non-const
@@ -441,17 +443,17 @@ message CloneSessionEntry {
 // value_set constructor in the P4 program.
 //
 // For Write Requests:
-//    INSERT will write the given matches in the repeated field to the value
-//    set.
-//    MODIFY will replace all matches in the value set with the given matches
-//    in the repeated field.
-//    DELETE should only specify the value_set_id and will delete all matches
-//    in the value set.
+//   - INSERT will write the given matches in the repeated field to the value
+//     set.
+//   - MODIFY will replace all matches in the value set with the given matches
+//     in the repeated field.
+//   - DELETE should only specify the value_set_id and will delete all matches
+//     in the value set.
 //
 // For Read Requests:
-//    All matches for all value-set entries if value_set_id = 0
-//    All matches of the value-set if a valid value_set_id is specified
-//    The 'match' field must never be set in the ReadRequest
+//   - All matches for all value-set entries if value_set_id = 0
+//   - All matches of the value-set if a valid value_set_id is specified
+//   - The 'match' field must never be set in the ReadRequest
 message ValueSetEntry {
   uint32 value_set_id = 1;
   repeated FieldMatch match = 2;
