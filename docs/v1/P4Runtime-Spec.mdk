@@ -3849,8 +3849,9 @@ The action is the type of configuration action requested, it can be one of:
 * `COMMIT`: realizes the last saved, but not yet committed, config. The
   forwarding state in the target is updated by replaying the write requests to
   the target device since the last config was saved. Config should not be
-  provided for this action type. Returns an `INVALID_ARGUMENT` error if no saved
-  config is found or if a config is provided with this message.
+  provided for this action type. Returns a `NOT_FOUND` error if no saved config
+  is found, &ie; if no `VERIFY_AND_SAVE` action preceded this one. Returns an
+  `INVALID_ARGUMENT` error if a config is provided with this message.
 
 * `RECONCILE_AND_COMMIT`: verifies, saves and realizes the given config, while
   preserving the forwarding state in the target. This is an advanced use case to
