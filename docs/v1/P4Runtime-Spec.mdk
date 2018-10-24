@@ -689,6 +689,7 @@ The `role.config` field in the `MasterArbitrationUpdate` message sent by the
 controller describes the role configuration, &ie; which operations are in the
 scope of a given role. In particular, the definition of a role may include the
 following:
+
 * A list of P4 entities for which the controller may issue `Write` updates and
   receive notification messages (e.g. `DigestList` and
   `IdleTimeoutNotification`).
