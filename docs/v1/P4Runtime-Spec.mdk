@@ -4496,8 +4496,6 @@ field [@ProtoAny]. At the moment, there is not any mechanism to extend the
 `p4.v1.TableEntry` message based on the value of architecture-specific table
 properties, but we may include on in future versions of the API.
 
-# Lifetime of a Session
-
 # Known-limitations of P4Runtime v1.0.0
 
 * `FieldMatch` and action `Param` only supports bitstrings (not the more general
