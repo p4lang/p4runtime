@@ -182,11 +182,6 @@ message Table {
   repeated ActionRef action_refs = 3;
   // 0 (default value) means that the table does not have a const default action
   uint32 const_default_action_id = 4;
-  // a table may have a const default action, whose action parameter values can
-  // be changed at runtime. However, in most cases the parameters of the default
-  // action are also bound at compile-time and cannot be changed by the runtime,
-  // which is what this boolean flag indicates.
-  bool const_default_action_has_mutable_params = 5;
   // P4 id of the "implementation" for this table (e.g. action profile id); 0
   // (default value) means that the table is a regular (direct) match table. As
   // of today, only action profiles are supported but other table
@@ -215,6 +210,12 @@ message Table {
 // used to list all possible actions in a Table
 message ActionRef {
   uint32 id = 1;
+  enum Scope {
+    TABLE_AND_DEFAULT = 0;
+    TABLE_ONLY = 1;
+    DEFAULT_ONLY = 2;
+  }
+  Scope scope = 3;
   repeated string annotations = 2;
 }
 

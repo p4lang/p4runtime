@@ -1000,6 +1000,16 @@ control plane. This message contains the following fields:
   actions for this table. The `ActionRef` message is used to reference an action
   specified in the same P4Info message and it includes the following fields:
     * `id`, the `uint32` identifier of the action.
+    * `scope`, an enum value which can take one of three values:
+       `TABLE_AND_DEFAULT`, `TABLE_ONLY` and `DEFAULT_ONLY`. The `scope` of the
+       action is determined by the use of the P4 standard annotations
+       `@tableonly` and `@defaultonly` [@P4ActionAnnotations]. `TABLE_ONLY`
+       (`@tableonly` annotation) means that the action can only appear within
+       the table, and never as the default action. `DEFAULT_ONLY`
+       (`@defaultonly` annotation) means that the action can only be used as the
+       default action. `TABLE_AND_DEFAULT` is the default value for the enum and
+       means that neither annotation was used in P4 and that the action can be
+       used both within the table and as the default action.
     * `annotations`, a repeated string field, each one representing a P4
       annotation associated to the action *reference* in this table.
 
@@ -1007,11 +1017,8 @@ control plane. This message contains the following fields:
   field will carry the `uint32` identifier of that action, otherwise its value
   will be 0. A default action is executed when a matching table entry is not
   found for a given packet. Being constant means that the control plane cannot
-  set a different default action at runtime.
-
-* `const_default_action_has_mutable_params`, a boolean flag indicating whether
-  the parameters of the constant default action can be changed at runtime by the
-  control plane.
+  set a different default action at runtime or change the default action's
+  arguments.
 
 * `implementation_id`, the `uint32` identifier of the "implementation" of this
   table. 0 (default value) means that the table is a regular (direct) match
@@ -2248,7 +2255,10 @@ following fields:
 * `action_id`, which identifies the action instance; the `action_id` is
   determined by the P4Info message and must match one of the possible action
   choices for the table, or the server must return an `INVALID_ARGUMENT` error
-  code.
+  code. If the client uses a valid `action_id` for the table but does not
+  respect the action scope specified in P4Info (e.g. tries to set a `TABLE_ONLY`
+  action as the default action), the server must return a `PERMISSION_DENIED`
+  error code.
 
 * `params`: a repeated Protobuf field of action parameter values, each encoded
   as a `Param` message. For each parameter, `param_id` must be valid for the
@@ -3708,7 +3718,8 @@ The `entities` repeated field is a list of P4 entities retrieved. The client
 reads from the returned stream until it is closed by the server when there are
 no more messages. In case of error, the stream is closed prematurely by the
 server and the client obtains the error status (in C++ the error status is
-obtained by calling the `Finish()` method on the stream object [gRPCStreamC++]).
+obtained by calling the `Finish()` method on the stream object
+[@gRPCStreamC]).
 
 ## Nomenclature
 
