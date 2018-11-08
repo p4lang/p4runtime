@@ -485,6 +485,7 @@ message StreamMessageRequest {
     MasterArbitrationUpdate arbitration = 1;
     PacketOut packet = 2;
     DigestListAck digest_ack = 3;
+    google.protobuf.Any other = 4;
   }
 }
 
@@ -512,6 +513,7 @@ message StreamMessageResponse {
     PacketIn packet = 2;
     DigestList digest = 3;
     IdleTimeoutNotification idle_timeout_notification = 4;
+    google.protobuf.Any other = 5;
   }
 }
 
