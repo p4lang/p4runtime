@@ -3701,15 +3701,14 @@ each message defined as:
 ~ Begin Proto
 message ReadResponse {
   repeated Entity entities = 1;
-  bool complete = 2;
 }
 ~ End Proto
 
 The `entities` repeated field is a list of P4 entities retrieved. The client
 reads from the returned stream until it is closed by the server when there are
-no more messages. To disambiguate that the stream was closed due to this success
-case (as opposed to the stream closing due to a transport error), the complete
-flag is set to true only if no response message will follow this one.
+no more messages. In case of error, the stream is closed prematurely by the
+server and the client obtains the error status (in C++ the error status is
+obtained by calling the `Finish()` method on the stream object [gRPCStreamC++]).
 
 ## Nomenclature
 

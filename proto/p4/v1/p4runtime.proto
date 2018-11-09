@@ -104,8 +104,6 @@ message ReadRequest {
 
 message ReadResponse {
   repeated Entity entities = 1;
-  // Set to true if no responses will follow this one.
-  bool complete = 2;
 }
 
 message Update {
