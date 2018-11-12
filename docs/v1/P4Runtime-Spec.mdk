@@ -239,8 +239,8 @@ whose syntax is defined in Protobuf format. The following are in scope of
 P4Runtime:
 
 * Runtime control of P4 built-in objects (tables and Value Sets) and Portable
-  Switch Architecture (PSA) externs (&eg; Counters, Meters, Action Profiles,
-  ...).
+  Switch Architecture (PSA) [@PSA] externs (&eg; Counters, Meters, Action
+  Profiles, ...).
 * Runtime control of architecture-specific (non-PSA) externs, through an
   extension mechanism.
 * Basic session management for Software-Defined Networking (SDN) use-cases,
@@ -329,9 +329,9 @@ The following are not in scope of this specification document:
   : The wire serialization format for P4Runtime. Protobuf version 3 (proto3) is
     used to define the P4Runtime interface. See [@Proto].
 * PSA
-  : Portable Switch Architecture; a target architecture that describes common
-    capabilities of network switch devices that process and forward packets
-    across multiple interface ports.
+  : Portable Switch Architecture [@PSA]; a target architecture that describes
+    common capabilities of network switch devices that process and forward
+    packets across multiple interface ports.
 * RPC
   : Remote Procedure Call.
 * RTT
