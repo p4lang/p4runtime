@@ -2581,20 +2581,20 @@ following semantics.
 * `INSERT`: Add a new member entry bound to an eligible P4 action
   specification. The member id must be different from ids of already programmed
   entries for that extern, or the server must return an `ALREADY_EXISTS` error
-  code. The action specification must be provided or the server must return
+  code. The action specification must be provided, or the server must return
   `INVALID_ARGUMENT`. The total number of members should not exceed the maximum
-  specified in the P4 extern specification as a result of this insertion or the
+  specified in the P4 extern specification as a result of this insertion, or the
   server should return `RESOURCE_EXHAUSTED`.
 * `MODIFY`: Modify the action specification of an existing member entry. An
-  entry with the member id must exist (or the server must return `NOT_FOUND`)
-  and the action specification must be provided (or the server must return
-  `INVALID_ARGUMENT`).
+  entry with the member id must exist, or the server must return `NOT_FOUND`,
+  and the action specification must be provided, or the server must return
+  `INVALID_ARGUMENT`.
 * `DELETE`: Delete the member entry and deallocate the member id. If the member
   id is not valid the server must return a `NOT_FOUND` error code. The member
-  must not be part of an action profile group or the server must return
+  must not be part of an action profile group, or the server must return
   `FAILED_PRECONDITION`. If needed, the action profile group should first be
   modified to remove the member from the group. The member must not be
-  referenced in the table action of any table entry or the server must also
+  referenced in the table action of any table entry, or the server must also
   return `FAILED_PRECONDITION`.
 
 ### Action Profile Group Programming
