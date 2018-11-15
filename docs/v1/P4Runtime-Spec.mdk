@@ -2303,7 +2303,7 @@ entry, including with regards to [direct resources](#sec-direct-resources).
 
 In this P4Runtime release, we have decided to restrict the default entry for
 indirect tables - tables with an ActionProfile or ActionSelector
-`implementation` property - to a constant NoAction action entry, with the hope
+`implementation` property - to a constant `NoAction` action entry, with the hope
 that it would simplify the implementation of the P4Runtime service.
 
 ### Wildcard Reads
@@ -2499,6 +2499,7 @@ For more information about idle timeout, in particular regarding
 notifications](#sec-table-idle-timeout-notification) section.
 
 ## `ActionProfileMember` & `ActionProfileGroup` { #sec-action-profile-member-and-group }
+
 P4Runtime defines an API for programming a PSA ActionProfile extern using
 `ActionProfileMember` messages. PSA ActionSelector extern can be programmed
 using both `ActionProfileMember` and `ActionProfileGroup` messages. PSA supports
@@ -2555,7 +2556,7 @@ metadata.
 
 Action profile members are entries in the ActionProfile or ActionSelector and
 are referenced by a `uint32` identifier that is bound to an action
-specification.  An action profile member for an ActionProfile or ActionSelector
+specification. An action profile member for an ActionProfile or ActionSelector
 extern instance may be bound only to the actions that appear in the actions
 attribute of the table implemented using the extern instance. If multiple table
 implementations share an extern instance, then the actions attributes of the
@@ -2574,24 +2575,27 @@ An `ActionProfileMember` entity update message has the following fields:
 * `action` is the specification of the P4 action instance bound to the action
   profile member entry.
 
-An action profle member may be inserted, modified or deleted as per the
+An action profile member may be inserted, modified or deleted as per the
 following semantics.
 
 * `INSERT`: Add a new member entry bound to an eligible P4 action
   specification. The member id must be different from ids of already programmed
-  entries for that extern. The action specification must be provided. The total
-  number of members should not exceed the maximum specified in the P4 extern
-  specification, as a result of this insertion.
+  entries for that extern, or the server must return an `ALREADY_EXISTS` error
+  code. The action specification must be provided, or the server must return
+  `INVALID_ARGUMENT`. The total number of members should not exceed the maximum
+  specified in the P4 extern specification as a result of this insertion, or the
+  server should return `RESOURCE_EXHAUSTED`.
 * `MODIFY`: Modify the action specification of an existing member entry. An
-  entry with the member id must exist and the action specification must be
-  provided. If the member is part of an action profile group, then the bound
-  action must be of the same action type as actions bound to other members of
-  the group. See the condition on bound actions for members belonging to a
-  group.
-* `DELETE`: Delete the member entry and deallocate the member id. The member
-  should not be part of an action profile group. If needed, the action profile
-  group should first be modified to remove the member from the group. The member
-  should not be referenced in the table action of any table entry.
+  entry with the member id must exist, or the server must return `NOT_FOUND`,
+  and the action specification must be provided, or the server must return
+  `INVALID_ARGUMENT`.
+* `DELETE`: Delete the member entry and deallocate the member id. If the member
+  id is not valid the server must return a `NOT_FOUND` error code. The member
+  must not be part of an action profile group, or the server must return
+  `FAILED_PRECONDITION`. If needed, the action profile group should first be
+  modified to remove the member from the group. The member must not be
+  referenced in the table action of any table entry, or the server must also
+  return `FAILED_PRECONDITION`.
 
 ### Action Profile Group Programming
 
@@ -2630,52 +2634,53 @@ following semantics.
 
 * `INSERT`: Add a new group entry bound to a set of existing action profile
   members. `The group_id` must be different from ids of already programmed
-  groups for that selector. P4Runtime does not limit the number of groups,
-  however, such limits may be imposed out-of-band by the target. The value of
-  `max_size` should not exceed the static maximum size defined for the selector
-  in P4Info, otherwise an `INVALID_ARGUMENT` error is returned. If the client
-  does not set `max_size`, the default value (0) implies that the
-  statically-defined maximum size should be used for this group.
+  groups for that selector, or the server must return an `ALREADY_EXISTS` error
+  code. P4Runtime does not explicitly limit the number of groups, however, such
+  limits may be imposed out-of-band by the target. The value of `max_size`
+  should not exceed the static maximum size defined for the selector in P4Info,
+  otherwise a `RESOURCE_EXHAUSTED` error should be returned. If the client does
+  not set `max_size`, the default value (0) implies that the statically-defined
+  maximum size should be used for this group.
 - `MODIFY`: Modify the member set specification of an existing group entry. An
-  entry with the `group_id` must exist. All members specified in the group entry
-  must exist in the selector. The value of `max_size` must be identical to the
-  value used when inserting the group, otherwise an `INVALID_ARGUMENT` error is
-  returned.
-- `DELETE`: Delete the group entry and deallocate the `group_id`. The group
-  should not be referenced in the table action of any table entry.
+  entry with the `group_id` must exist, or the server must return
+  `NOT_FOUND`. All members specified in the group entry must exist in the
+  selector, or the server must return `NOT_FOUND`. The value of `max_size` must
+  be identical to the value used when inserting the group, otherwise an
+  `INVALID_ARGUMENT` error is returned.
+- `DELETE`: Delete the group entry and deallocate the `group_id`. The group must
+  not be referenced in the table action of any table entry, or the server must
+  return a `FAILED_PRECONDITION` error code. If the `group_id` is invalid, the
+  server must return `NOT_FOUND`.
 
 ### One Shot Action Selector Programming { #sec-oneshot }
 
-P4Runtime supports syntactic sugar to program a table, which is
-implemented with an action selector, in one shot. One shot means that a
-table entry, an action profile group, and a set of action profile
-members can be programmed with a single update message. Using one shots
-has the advantage that the controller does not need to keep track of
-group ids and member ids.
+P4Runtime supports syntactic sugar to program a table, which is implemented with
+an action selector, in one shot. One shot means that a table entry, an action
+profile group, and a set of action profile members can be programmed with a
+single update message. Using one shots has the advantage that the controller
+does not need to keep track of group ids and member ids.
 
-One shots are programmed by choosing the `ActionProfileActionSet`
-message as the `TableAction`. The `ActionProfileActionSet` message
-consists of a set of `ActionProfileAction` messages, which in turn
-have the following fields:
+One shots are programmed by choosing the `ActionProfileActionSet` message as the
+`TableAction`. The `ActionProfileActionSet` message consists of a set of
+`ActionProfileAction` messages, which in turn have the following fields:
 
 * `action` is one of the actions specified by the table that is being
   programmed.
 
-* `weight` specifying the probability of the action's selection at
-  runtime.
+* `weight` specifying the probability of the action's selection at runtime.
 
-* `watch` is the controller defined 32-bit port number that the
-  action's liveness depends on. At runtime, the action must be
-  excluded from selection if the watch port is down.
+* `watch` is the controller defined 32-bit port number that the action's
+  liveness depends on. At runtime, the action must be excluded from selection if
+  the watch port is down.
 
-Semantically, one shots are equivalent to programming the table entry,
-group, and members individually; with the necessary group id and member ids
-bound to unused ids. An implementation is free to implement one shots in
-other ways, as long as the implementation matches the above semantics.
+Semantically, one shots are equivalent to programming the table entry, group,
+and members individually; with the necessary group id and member ids bound to
+unused ids. An implementation is free to implement one shots in other ways, as
+long as the implementation matches the above semantics.
 
-To preserve read-write symmetry, an implementation must answer
-`ReadRequest`s with the original one shot messages. It may not return
-a desugared version of the one shot message.
+To preserve read-write symmetry, an implementation must answer `ReadRequest`s
+with the original one shot messages. It may not return a desugared version of
+the one shot message.
 
 For example, consider the action selector table defined
 [here](#sec-action-profile-member-and-group). This table could be programmed
@@ -2752,20 +2757,58 @@ action_profile_member {
 }
 ~ End Prototext
 
-All the tables associated with an action selector may either be
-programmed exclusively with one shots, or exclusively with
-`ActionProfileMember` and `ActionProfileGroup` messages. Programming
-some entries with one shots, and other entries with
-`ActionProfileMember` and `ActionProfileGroup` messages is not
-allowed,  and the server must return the error code
-`INVALID_ARGUMENT` in that case.
+All the tables associated with an action selector may either be programmed
+exclusively with one shots, or exclusively with `ActionProfileMember` and
+`ActionProfileGroup` messages. Programming some entries with one shots, and
+other entries with `ActionProfileMember` and `ActionProfileGroup` messages is
+not allowed, and the server must return the error code `INVALID_ARGUMENT` in
+that case.
 
-A P4Runtime server *must* support the one shot style of programming
-tables with an action selector implementation. Support for the
-`ActionProfileMember` and `ActionProfileGroup` style is *optional*.
-If `ActionProfileMember` and `ActionProfileGroup` are not supported
-by a server, it must return an `UNIMPLEMENTED` error for every
-`ActionProfileMember` or `ActionProfileGroup` message that it receives.
+A P4Runtime server *must* support the one shot style of programming tables with
+an action selector implementation. Support for the `ActionProfileMember` and
+`ActionProfileGroup` style is *optional*.  If `ActionProfileMember` and
+`ActionProfileGroup` are not supported by a server, it must return an
+`UNIMPLEMENTED` error for every `ActionProfileMember` or `ActionProfileGroup`
+message that it receives.
+
+### Constraints on action selector programming
+
+The PSA specification states that the following features are *optional* in
+action selector implementations [@PSAActionSelector]:
+
+1. Support for non-empty groups where in the same group, different members are
+   bound to different actions.
+2. Predictable data plane behavior when a matched table entry points to an empty
+   group.
+
+For 1., if a client tries to `INSERT` or `MODIFY` a group with members bound to
+different actions, the server should return `UNIMPLEMENTED` if not supported by
+the target. This applies to the one shot style of programming as well. We
+recommend that control-plane implementations take into account this possible
+limitation and be designed so as not to rely on this feature for the sake of
+portability.
+
+PSA 1.1 introduces the `psa_empty_group_action` table property in order to
+enable the P4 programmer to specify the action to perform on the packet when the
+matched table entry points to an empty action selector group. This action may be
+different from the default action, which is performed in case of table
+miss. `psa_empty_group_action` is one possible way to achieve property 2. in the
+list above. We recommend that all P4Runtime implementations support this
+property. Note that this version of P4Runtime does not provide any mechanism to
+modify the value of `psa_empty_group_action` at runtime, so the value will be
+constant and will either be provided by the P4 programmer or will default to
+`NoAction`. Even when `psa_empty_group_action` is not implemented by the target,
+P4Runtime does not require the server to return an error code when the client
+performs an operation which results in an empty group, despite the possibility
+for undeterministic or target-specific behavior. It is likely that future PSA
+versions will make the implementation of `psa_empty_group_action` mandatory and
+that future P4Runtime versions will provide a mechanism to change the property
+value dynamically. Note that the discussion above also applies to the one shot
+style of programming.
+
+The PSA specification includes a discussion on how to implement
+`psa_empty_group_action` in software in the P4Runtime server
+[@PSAEmptyGroupActionAppendix].
 
 ## `CounterEntry` & `DirectCounterEntry`
 
@@ -3446,9 +3489,11 @@ repeated google.protobuf.Any details = 3;
 The code and message fields must be the same as `code_` and `error_message_`
 fields from `grpc::Status` above. The `details` field is a list that consists of
 `p4.Error` messages that carry error details for individual elements inside
-batch-request RPCs (&eg; `Write` and `Read`). The `p4.Error` also enables
-different target vendors to additionally express their own error codes in their
-chosen error-space.
+batch-request RPCs (&eg; `Write` and `Read`). `p4.Error` includes a canonical
+error code but also enables different target vendors to additionally express
+their own error codes in their chosen error-space. This specification document
+tries to cover all possible generic error cases and to provide the appropriate
+value for the canonical error code based on best practices [@gRPCStatusCodes].
 
 Figure [#fig-error-report] illustrates how these messages fit together.
 
@@ -4537,6 +4582,9 @@ properties, but we may include on in future versions of the API.
 
 * The default action for indirect match tables is restricted to a `const
   NoAction` known at compile-time.
+
+* There is no mechanism for changing the value of the `psa_empty_group_action`
+  table property at runtime.
 
 * There is no RPC to query the capabilities of a given P4Runtime implementation;
   in particular, there is no way for a client to query the supported minor +
