@@ -3509,6 +3509,88 @@ gRPC provides utility functions `ExtractErrorDetails()` and `SetErrorDetails()`
 Please see sections on individual P4Runtime RPCs for details on how
 `grpc::Status` is populated for reporting errors.
 
+# Atomicity of Individual `Write` and `Read` Operations
+
+Each individual entity in a batch is guaranteed to be read or written atomically
+relative to packet forwarding. For example, for every table dataplane `apply`
+operation, and every single `Write` operation on a table that inserts, deletes,
+or modifies one table entry, the `apply` operation should behave as if that
+`Write` operation has not yet occurred, or as if the `Write` operation is
+complete. The P4 program should never behave as if the `Write` operation is
+partially complete. These guarantees also apply to extern instances: `Read` and
+`Write` operations on extern entities must execute atomically relative to extern
+dataplane methods.
+
+The atomicity guarantees provided by P4Runtime for individual `Read` and `Write`
+operations are the same as the guarantees required by PSA and are described in
+details in the PSA specification [@PSAAtomicityOfControlPlaneOps].
+
+The P4~16~ language introduces an `@atomic` annotation [@P4Concurrency], to
+guarantee atomic dataplane execution of entire blocks of P4 code. P4Runtime
+implementations are required to honor the `@atomic` annotation for `Write`
+operations, as well as [non-wildcard `Read` operations](#wildcard-reads),
+relative to dataplane execution. Consider the following P4 example written for
+PSA:
+
+~ Begin P4Example
+control C1 {
+  typedef bit<10> Index_t;
+  typedef bit<32> Value_t;
+  Register<Value_t, Index_t>(32w1024) r1;
+
+  apply {
+    // ...
+    @atomic {
+        Value_t v = r1.read((Index_t)1);
+        v = v + 1;
+        r1.write((Index_t)1, v);
+    }
+  }
+}
+~ End P4Example
+
+If a P4Runtime server is processing messages which write to Register `r1` at
+index `1`, these writes must not happen between the dataplane `read` and
+`write`.
+
+Now let's consider the following example:
+
+~ Begin P4Example
+control C1 {
+  typedef bit<10> Index_t;
+  typedef bit<32> Value_t;
+  Register<Value_t, Index_t>(32w1024, (Value_t)0 /* initial value */) r1;
+
+  apply {
+    @atomic {
+        r1.write((Index_t)1, (Value_t)100);
+        r1.write((Index_t)2, (Value_t)100);
+    }
+    @atomic {
+        r1.write((Index_t)1, (Value_t)200);
+        r1.write((Index_t)2, (Value_t)200);
+    }
+  }
+}
+~ End P4Example
+
+If a P4Runtime client issues a *wildcard* `Read` on Register `r1`, there is no
+guarantee that `r1[1] == r1[2]` in the response, as the read for `r1[1]` may
+occur after the data plane executes the first atomic block, but before the
+second atomic block, and the read for `r1[2]` may occur after the data plane
+executes the second atomic block. In other words, the server is explicitly
+allowed to read `r1[1]` and `r1[2]` separately, while allowing the data plane to
+perform operations on the register between those two reads. The atomicity
+guarantees for a wildcard read are the same as for the equivalent batch (as one
+`ReadRequest` message) of individual read requests. Similar to a batch
+`ReadRequest`, a wildcard read of a register can execute the reads of the
+register array elements (`r1[1]`, `r1[2]`, ...) in an arbitrary order relative
+to each other.
+
+If the `@atomic` annotation cannot be honored with the above guarantees by the
+P4Runtime implementation for a P4-programmable target, we expect the P4 compiler
+to reject the program.
+
 # `Write` RPC
 
 The `Write` RPC updates one or more P4 entities on the target. The request is
@@ -3778,7 +3860,7 @@ specifies the entity key, the `Read` operation should retrieve a single P4
 entity.  Please refer to the [P4 Entity Messages](#sec-p4-entity-msgs) section
 for details on what parts of the entity specification make up the entity *key.*
 
-## Wildcard Reads
+## Wildcard Reads { #sec-wildcard-reads}
 
 P4Runtime allows wildcard read of P4 entities. A *request* may omit or use
 default values for parts of the entity key to achieve wildcard behavior. Please
