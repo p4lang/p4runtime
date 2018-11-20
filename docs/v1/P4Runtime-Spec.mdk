@@ -3575,9 +3575,13 @@ control C1 {
 ~ End P4Example
 
 If a P4Runtime client issues a *wildcard* `Read` on Register `r1`, there is no
-guarantee that `r1[1] == r1[2]` in the response, as the read for `r1[1]` and the
-read for `r1[2]` may not happen "within" the same atomic block. The server is
-also not required to read `r1[1]` and `r1[2]` sequentially and may report a more
+guarantee that `r1[1] == r1[2]` in the response, as the read for `r1[1]` may
+occur after the data plane executes the first atomic block, but before the
+second atomic block, and the read for `r1[2]` may occur after the data plane
+executes the second atomic block. In other words, the server is explicitly
+allowed to read `r1[1]` and `r1[2]` separately, while allowing the data plane to
+perform operations on the register between those two reads.The server is also
+not required to read `r1[1]` and `r1[2]` sequentially and may report a more
 recent value for `r1[2]` than for `r1[1]`. The atomicity guarantees for a
 wildcard read are the same as for the equivalent batch (as one `ReadRequest`
 message) of individual read requests.
