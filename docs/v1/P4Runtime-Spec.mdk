@@ -3580,11 +3580,12 @@ occur after the data plane executes the first atomic block, but before the
 second atomic block, and the read for `r1[2]` may occur after the data plane
 executes the second atomic block. In other words, the server is explicitly
 allowed to read `r1[1]` and `r1[2]` separately, while allowing the data plane to
-perform operations on the register between those two reads.The server is also
-not required to read `r1[1]` and `r1[2]` sequentially and may report a more
-recent value for `r1[2]` than for `r1[1]`. The atomicity guarantees for a
-wildcard read are the same as for the equivalent batch (as one `ReadRequest`
-message) of individual read requests.
+perform operations on the register between those two reads. The atomicity
+guarantees for a wildcard read are the same as for the equivalent batch (as one
+`ReadRequest` message) of individual read requests. Similar to a batch
+`ReadRequest`, a wildcard read of a register can execute the reads of the
+register array elements (`r1[1]`, `r1[2]`, ...) in an arbitrary order relative
+to each other.
 
 If the `@atomic` annotation cannot be honored with the above guarantees by the
 P4Runtime implementation for a P4-programmable target, we expect the P4 compiler
