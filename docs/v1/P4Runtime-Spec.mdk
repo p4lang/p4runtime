@@ -2087,7 +2087,21 @@ a table. Therefore, these fields cannot be modified after the entry has been
 inserted and must be provided for `MODIFY` and `DELETE` updates. When deleting
 an entry, these key fields (along with `is_default_action`) are the only fields
 considered by the server. All other fields must be ignored, even if they have
-nonsensical values (such as an invalid action field).
+nonsensical values (such as an invalid action field). In the case of a *keyless*
+table (the table has an empty match key), the server must reject all attempts to
+`INSERT` a match entry and return an `INVALID_ARGUMENT` error.
+
+The number of match entries that a table *should* support is indicated in P4Info
+(`size` field of `Table` message). The guarantees provided to the P4Runtime
+client are the same as the ones described in the P4~16~ specification for the
+`size` property [@P4TableProperties]. In particular, some implementations may
+not be able to always accommodate an arbitrary set of entries up to the
+requested size, and other implementations may provide the P4Runtime client with
+more entries than requested. The P4Runtime server must return
+`RESOURCE_EXHAUSTED` when a table entry cannot be inserted because of a size
+limitation. It is recommended that, for the sake of portability, P4Runtime
+clients do not try to insert additional entries once the size indicated in
+P4Info has been reached.
 
 ### Match Format
 
