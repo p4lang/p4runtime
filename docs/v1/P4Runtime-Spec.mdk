@@ -240,7 +240,8 @@ P4Runtime:
 
 * Runtime control of P4 built-in objects (tables and Value Sets) and Portable
   Switch Architecture (PSA) [@PSA] externs (&eg; Counters, Meters, Action
-  Profiles, ...).
+  Profiles, ...). We recommend that this version of P4Runtime be used with
+  targets that are compliant with PSA version 1.1.0.
 * Runtime control of architecture-specific (non-PSA) externs, through an
   extension mechanism.
 * Basic session management for Software-Defined Networking (SDN) use-cases,
@@ -3187,17 +3188,12 @@ the dataplane. The clone will be treated for scheduling in the PRE with a class
 of service value of 2. If the packet is larger than 4096 bytes, it will be
 truncated to carry at most 4096 bytes.
 
-The cloned replica will appear in the egress pipeline as an independent packet with
-egress port set to CPU (corresponding to SDN port `0xFFFFFFFD`; see [Translation
-of Port Numbers](#sec-translation-of-port-numbers)). Note that the egress port
-must be a 32-bit SDN port number and must refer to a singleton port.
+The cloned replica will appear in the egress pipeline as an independent packet
+with egress port set to CPU (corresponding to SDN port `0xFFFFFFFD`; see
+[Translation of Port Numbers](#sec-translation-of-port-numbers)). Note that the
+egress port must be a 32-bit SDN port number and must refer to a singleton port.
 
-Furthermore, even though the Protobuf representation for clone session entry
-allows multiple clones to be specified (by the repeated `replicas` message
-field), PSA version 1.0 allows creating only 1 clone of a packet in
-the ingress and egress. Therefore, a target may reject a clone session entry
-update that carries more than one replica. Cloning does not impact the original
-packet. If the `clone_session_id` metadata is set to a value that is not
+If the `clone_session_id` data plane metadata is set to a value that is not
 programmed in the PRE, then no clones are created.
 
 A clone session may be inserted, modified or deleted as per the following
