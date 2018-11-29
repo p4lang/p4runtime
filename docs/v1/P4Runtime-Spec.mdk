@@ -3214,12 +3214,14 @@ semantics:
   `INVALID_ARGUMENT` error. The egress port in the replica must be a 32-bit SDN
   port number and must refer to a singleton port. The class of service for each
   clone packet instance will be set to the value programmed in the clone session
-  entry (`class_of_service` field). This value must not exceed the maximum value
-  supported by the target for the `CloneSessionId_t` type, or the server must
-  return `INVALID_ARGUMENT`. The `packet_length_bytes` field must be set to a
-  non-zero value if the clone packet should be truncated to the given value (in
-  bytes). If the `packet_length_bytes` field is 0 (default), no truncation on
-  the clone will be performed.
+  entry (`class_of_service` field). This value must be a valid value for the PSA
+  `CloneSessionId_t` type, which supports runtime translation by default
+  [@PSATranslation], or the server must return `INVALID_ARGUMENT`. See [PSA
+  Metadata Translation](#sec-translation-of-port-numbers) for more
+  information. The `packet_length_bytes` field must be set to a non-zero value
+  if the clone packet should be truncated to the given value (in bytes). If the
+  `packet_length_bytes` field is 0 (default), no truncation on the clone will be
+  performed.
 * `MODIFY`: Modify the attributes of a given clone session entry, indexed by the
   given `clone_session_id`. Same restrictions as `INSERT` apply here.
 * `DELETE`: Delete the clone session indexed by the given
