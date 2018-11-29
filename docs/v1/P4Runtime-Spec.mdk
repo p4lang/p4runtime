@@ -3117,13 +3117,18 @@ A multicast group may be inserted, modified or deleted as per the following
 semantics.
 
 * `INSERT`: Add a new multicast group entry bound to a set of egress ports and
-  replica IDs. The `multicast_group_id` is `uint32` type, must be unique across
-  all multicast group entries, and its value may not exceed the maximum allowed
-  by the target PSA device's `MulticastGroupId_t` bitwidth. Similarly, the
-  replica ID is also uint32, but its value may not exceed the maximum allowed by
-  the target PSA device's `EgressInstance_t` bitwidth. The egress port must be a
-  32-bit SDN port number and must refer to a singleton port. No two replicas may
-  have identical values of *both* `egress_port` and `instance`.
+  replica IDs. The `multicast_group_id` field is a `uint32` and must not exceed
+  the maximum value supported by the target. The PSA specification states that 0
+  is a special value which indicates that no multicast replication is to be
+  performed for a packet [@PSATranslation]. Therefore `multicast_group_id` must
+  never be set to 0. If one of these constraints is violated, the P4Runtime
+  server must return an `INVALID_ARGUMENT` error. The replica `instance` ID is
+  also a `uint32`, and its value may not exceed the maximum allowed by the
+  target for the `EgressInstance_t` type (0 is allowed), or the server must
+  return an `INVALID_ARGUMENT` error. The egress port must be a 32-bit SDN port
+  number and must refer to a singleton port. No two replicas may have identical
+  values of *both* `egress_port` and `instance`, or the server must return
+  INVALID_ARGUMENT`.
 * `MODIFY`: Modify the set of replicas for a given multicast group entry,
   indexed by the given `multicast_group_id`. Same restrictions as `INSERT` apply
   here.
@@ -3199,24 +3204,24 @@ programmed in the PRE, then no clones are created.
 A clone session may be inserted, modified or deleted as per the following
 semantics:
 
-* `INSERT`: Add a new clone session entry bound to an egress port. The
-  `session_id` is `uint32` type, must be unique across all clone session
-  entries, and its value may not exceed the maximum allowed by the target PSA
-  device's `CloneSessionId_t` bitwidth. Similarly, the `instance` is also
-  `uint32`, but its value may not exceed the maximum allowed by the target PSA
-  device's `EgressInstance_t` bitwidth. The egress port in the replica must be a
-  32-bit SDN port number and must refer to a singleton port. A target may reject
-  a clone session entry with more than one replica specified. The
-  `class_of_service` field of the clone's egress input metadata will be set to
-  the respective value programmed in the clone session entry. The
-  `packet_length_bytes` field must be set to a non-zero value if the clone
-  packet should be truncated to the given value (in bytes). If the
-  `packet_length_bytes` field is 0 (default), no truncation on the clone will be
-  performed.
-
+* `INSERT`: Add a new clone session entry bound to a set of egress ports and
+  replica IDs. The `session_id` is a `uint32`, must be unique across all clone
+  session entries, and its value may not exceed the maximum supported by the
+  target (0 is allowed), or the P4Runtime server must return an
+  `INVALID_ARGUMENT` error. The replica `instance` ID is also a `uint32`, and
+  its value may not exceed the maximum allowed by the target for the
+  `EgressInstance_t` type (0 is allowed), or the server must also return an
+  `INVALID_ARGUMENT` error. The egress port in the replica must be a 32-bit SDN
+  port number and must refer to a singleton port. The class of service for each
+  clone packet instance will be set to the value programmed in the clone session
+  entry (`class_of_service` field). This value must not exceed the maximum value
+  supported by the target for the `CloneSessionId_t` type, or the server must
+  return `INVALID_ARGUMENT`. The `packet_length_bytes` field must be set to a
+  non-zero value if the clone packet should be truncated to the given value (in
+  bytes). If the `packet_length_bytes` field is 0 (default), no truncation on
+  the clone will be performed.
 * `MODIFY`: Modify the attributes of a given clone session entry, indexed by the
   given `clone_session_id`. Same restrictions as `INSERT` apply here.
-
 * `DELETE`: Delete the clone session indexed by the given
   `clone_session_id`. Other fields need not be provided for this operation. Any
   packet with their `clone_session_id` metadata in the dataplane set to the
@@ -4287,12 +4292,12 @@ Architectures](#sec-extending-p4runtime) for more information.
 The *Portable Switch Architecture* (PSA) defines standard metadata, whose
 dataplane types are different on different PSA targets. In order to enable
 uniform programming of multiple PSA targets, a centralized remote controller may
-define its own types and numbering of such PSA standard metadata. For such
-metadata, a translation between the controller's metadata values and the
-corresponding target specific metadata values is required at runtime. In this
-section, we will base our discussions on port metadata, although the same
-translation principles apply to other standard PSA metadata such as class of
-service.
+define its own types and numbering of such PSA standard metadata
+[@PSATranslation]. For such metadata, a translation between the controller's
+metadata values and the corresponding target specific metadata values is
+required at runtime. In this section, we will base our discussions on port
+metadata, although the same translation principles apply to other standard PSA
+metadata such as class of service.
 
 ~ Figure { #fig-psa-metadata-translation; \
 caption: "P4Runtime Metadata Translation for the Portable Switch Architeccture" }
