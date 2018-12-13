@@ -270,7 +270,7 @@ The following are not in scope of P4Runtime:
   underway to standardize the control of these via gNMI and gNOI APIs, using
   description models defined and maintained by the OpenConfig project
   [@OpenConfig]. An open source implementation of these APIs is also in progress
-  as part of Stratum project [@Stratum].
+  as part of the Stratum project [@Stratum].
 * Protobuf message definitions for runtime control of non-PSA externs. While
   P4Runtime includes an extension mechanism to support addditional P4
   architectures, it does not define the syntax or semantics of any additional
@@ -317,9 +317,9 @@ The following are not in scope of this specification document:
 * P4 Blob
   : A more colloquial term for P4 Device Config (Blob = Binary Large Object).
 * P4 Device Config
-  : The output of the P4 compiler which comprises the Forwarding Pipeline
-    Configuration. This is opaque, architecture- and target-specific binary data
-    which can be loaded onto the device to change its "program."
+  : The output of the P4 compiler backend, which is included in the Forwarding
+    Pipeline Config. This is opaque, architecture- and target-specific binary
+    data which can be loaded onto the device to change its "program."
 * P4Info
   : Metadata which specifies the P4 entities which can be accessed via
     P4Runtime. These entities have a one-for-one correspondence with
@@ -354,15 +354,15 @@ The following are not in scope of this specification document:
     actions.
 * stream
   : Refers to a gRPC Stream, which is a RPC on which several messages can be
-    sent and received. P4Runtime defines one Stream RPC (StreamChannel), which
+    sent and received. P4Runtime defines one Stream RPC (`StreamChannel`), which
     is a bidirectional stream (both the client and the server can send messages)
     which is used for packet I/O and master-slave arbitration, among other
     things.
 * switch config
-  : Refers to non-forwarding config (different from P4 forwarding config) that
-    is delivered to the switch via a different interface. For example, the
-    switch config may be captured using OpenConfig models and delivered through
-    a gNMI interface.
+  : Refers to the non-forwarding config (different from the P4 Forwarding
+    Pipeline Config) that is delivered to the switch via a different
+    interface. For example, the switch config may be captured using OpenConfig
+    models and delivered through a gNMI interface.
 * target
   : The hardware or software entity which "executes" the P4 pipeline and hosts
     the P4Runtime Service; often used interchangeably with "device".
@@ -388,7 +388,7 @@ produce both client and server implementation stubs in a variety of
 languages. It is the responsibility of target implementers to instrument the
 server.
 
-Reference implementations of a P4 Target supporting P4Runtime, as well as sample
+Reference implementations of P4 targets supporting P4Runtime, as well as sample
 clients, may be available on the p4lang/PI GitHub repository [@PIRepo]. A future
 goal may be to produce a reference gRPC server which can be instrumented in a
 generic way, &eg; via callbacks, thus reducing the burden of implementing
@@ -400,7 +400,7 @@ available as part of the standard.
 
 The controller can also set the `ForwardingPipelineConfig`, which amounts to
 installing and running the compiled P4 program output, which is included in the
-`p4_device_config` Protobuf message) and installing the associated P4Info
+`p4_device_config` Protobuf message field, and installing the associated P4Info
 metadata. Furthermore, the controller can query the target for the
 `ForwardingPipelineConfig` to retrieve the device config and the P4Info.
 
@@ -453,15 +453,15 @@ the P4Info file, the underlying implementation is moot.
 
 This leads to the notion that a good P4Info file should be complete and
 self-sufficient in terms of documentation, specifically the metadata in the
-`PkgInfo` message as well as the embedded `doc` messages. Nevertheless,
-a P4 program which describes the pipeline and produces the device config via a
+`PkgInfo` message as well as the embedded `doc` fields. Nevertheless, a P4
+program which describes the pipeline and produces the device config via a
 compiler is ideally available. The contents of the P4Info file will be described
 in later sections.
 
 ## Alternative Workflows
 
 Given the notions above concerning P4 code as behavioral description and P4Info
-as API metadata, some other possible workflows are as follows. These are just
+as API metadata, some other workflows are possible. The scenarios below are just
 examples and actual situations may vary.
 
 ### P4 Source Available, Compiled into P4Info but not Compiled into P4 Device Config
@@ -502,10 +502,11 @@ controller may only need read access to statistics counters and nothing more.
 # Controller Use-cases
 
 P4Runtime allows for more than one controller. The mechanisms and semantics are
-described in a later section. Here we present a number of use-cases. Each
-use-case highlights a particular aspect of P4Runtime's flexibility and is not
-intended to be exhaustive. Real-world use-cases may combine various techniques
-and be more complex.
+described in a later
+[section](#sec-master-slave-arbitration-and-controller-replication). Here we
+present a number of use-cases. Each use-case highlights a particular aspect of
+P4Runtime's flexibility and is not intended to be exhaustive. Real-world
+use-cases may combine various techniques and be more complex.
 
 ## Single Embedded Controller
 
@@ -581,7 +582,7 @@ build/embedded-plus-two-remote-controllers.[svg,png] \
 
 Figure [#fig-embedded-plus-two-remote-ha-controllers] illustrates a single
 embedded controller plus two remote controllers in an active-standby HA
-(High-Availability) Configuration. Controller #1 is the active controller and is
+(High-Availability) configuration. Controller #1 is the active controller and is
 in charge of some entities. If it fails, Controller #2 takes over and manages
 the tables formerly owned by Controller #1. The mechanics of HA architectures
 are beyond the scope of this document, but the P4Runtime multi-master
@@ -636,16 +637,17 @@ described as follows:
     * **Session management:** As soon as the controller opens the stream
       channel, it sends a `StreamMessageRequest` message to the switch. The
       controller populates the `MasterArbitrationUpdate` field in this message
-      using its `role_id` and `election_id`. Note that `status` field in the
+      using its `role_id` and `election_id`. Note that the `status` field in the
       `MasterArbitrationUpdate` is not populated by the controller. This field
       is populated by the P4Runtime server when it sends a response back to the
       client, as explained below.
 
     * **Streaming of notifications (&eg; digests) and packet I/O:** The same
       streaming channel will be used for streaming notifications, as well as for
-      packet-in and packet-out messages. Note that only the master controller
-      can participate in packet I/O. This feature is explained in more details
-      in the [Packet I/O](#sec-packet-i_o) section.
+      packet-in and packet-out messages. Note that unless specified otherwise by
+      the role definitions, only the master controller can participate in packet
+      I/O. This feature is explained in more details in the [Packet
+      I/O](#sec-packet-i_o) section.
 
 * Note that the stream is opened per device. In case a switching platform has
   multiple devices (&eg; multi-ASIC line card) which are all controlled via the
@@ -776,12 +778,12 @@ the server must return an `INVALID_ARGUMENT` error.
 2. A streaming channel for a given master controller breaks, forcing a new
    master to be elected.
 
-In case of a mastership change, P4Runtime server shall send the `election_id` of
-the master to *all* the connected controllers for a given (`device_id`,
-`role_id`).  The `StreamMessageResponse` sent back to all the connected
-controllers has a `MasterArbitrationUpdate` message populated with `device_id`,
-`role_id`, and `election_id` of the master, as well as an OK status for the
-master and non-OK status (with `ALREADY_EXISTS` error code) for slaves.
+In case of a mastership change, the P4Runtime server shall send the
+`election_id` of the master to *all* the connected controllers for a given
+(`device_id`, `role_id`).  The `StreamMessageResponse` sent back to all the
+connected controllers has a `MasterArbitrationUpdate` message populated with the
+`device_id`, `role_id`, and `election_id` of the master, as well as an OK status
+for the master and non-OK status (with `ALREADY_EXISTS` error code) for slaves.
 
 # The P4Info Message
 
@@ -796,8 +798,8 @@ These messages appear nested within many other messages.
 
 ### `Documentation` Message
 
-Documentation is used to carry both brief and long descriptions of something.
-Good content within the Documentation is extremely helpful to P4Runtime
+`Documentation` is used to carry both brief and long descriptions of something.
+Good content within a documentation field is extremely helpful to P4Runtime
 application developers.
 
 ~ Begin Proto
@@ -935,7 +937,7 @@ layout.
 
 It is possible to statically set the least-significant 24 bits of the ID in the
 P4 program source by annotating the object with `@id` (see Table
-[#tab-exmpl-p4-obj-ids]. The compiler must honor the `@id` annotations when
+[#tab-exmpl-p4-obj-ids]). The compiler must honor the `@id` annotations when
 generating the P4Info message and must fail the compilation if
 statically-assigned ID suffixes lead to non-unique IDs (&ie; if the P4
 programmer tries to assign the same ID suffix to two different P4 objects of the
@@ -946,17 +948,17 @@ encodes the object type.
 ~ TableFigure { #tab-exmpl-p4-obj-ids; \
     caption: "Example of statically-assigned P4Info object IDs"; \
     page-align: forcehere; }
-|---------------------------------|------------------------------------------------------------|
-| P4 declaration(s)               | Compiler-allocated ID(s)                                   |
-+---------------------------------+------------------------------------------------------------+
-| `@id(0x12ab34) table tA { }`    | 0x0212ab34                                                 |
-+---------------------------------+------------------------------------------------------------+
-| `@id(0x12ab34) table tA { }`    | **Error**(same ID suffixes for 2 objects of the same type) |
-| `@id(0x12ab34) table tB { }`    |                                                            |
-+---------------------------------+------------------------------------------------------------+
-| `@id(0x12ab34) table tA { }`    | 0x0212ab34                                                 |
-| `@id(0x12ab34) action actA { }` | 0x0112ab34                                                 |
-+---------------------------------+------------------------------------------------------------+
+|--------------------------------|------------------------------------------------------------|
+| P4 declaration(s)              | Compiler-allocated ID(s)                                   |
++---{width:7cm}------------------+------------------------------------------------------------+
+| `@id(0x12ab34) table tA...`    | 0x0212ab34                                                 |
++--------------------------------+------------------------------------------------------------+
+| `@id(0x12ab34) table tA...`    | **Error**(same ID suffixes for 2 objects of the same type) |
+| `@id(0x12ab34) table tB...`    |                                                            |
++--------------------------------+------------------------------------------------------------+
+| `@id(0x12ab34) table tA...`    | 0x0212ab34                                                 |
+| `@id(0x12ab34) action act1...` | 0x0112ab34                                                 |
++--------------------------------+------------------------------------------------------------+
 ~
 
 ## P4Info Objects
@@ -975,7 +977,8 @@ control plane. This message contains the following fields:
     * id, the `uint32` identifier of this `MatchField`, unique in the scope of
       this table. No rules are prescribed on the way `MatchField` IDs should be
       allocated, as long as two `MatchField` of the same table do not have the
-      same ID.
+      same ID. Nonetheless, we recommend that the IDs be assigned incrementally,
+      starting from 1, in the same order as in the P4 key declaration.
 
     * `name`, the string representing the name of this `MatchField`.
 
@@ -1072,7 +1075,9 @@ The `Action` message defines the following fields:
   following fields:
     * `id`, the `uint32` identifier of this parameter. No rules are prescribed
       on the way `Param` IDs should be allocated, as long as two `Param` of the
-      same action do not have the same ID.
+      same action do not have the same ID. Nonetheless, we recommend that the
+      IDs be assigned incrementally, starting from 1, in the same order as in
+      the P4 action declaration.
     * `name`, the string representing the name of this parameter.
     * `annotations`, a repeated field of strings, each one representing a P4
       annotation associated to this parameter.
@@ -1116,7 +1121,7 @@ The `ActionProfile` message includes the following fields:
 * `table_ids`, a repeated field of uint32 identifiers used to reference tables
   whose implementation uses this Action Profile or Selector.
 
-* `with_selector`, a boolean flag indicating if this message describes an
+* `with_selector`, a boolean flag indicating whether this message describes an
   instance of a PSA Action Selector extern.
 
 * `size`, an `int64` representing the maximum number of *weighted* member
@@ -1129,7 +1134,7 @@ The `ActionProfile` message includes the following fields:
 ### `Counter` & `DirectCounter`
 
 `Counter` and `DirectCounter` messages are used to specify all possible
-instances of Counter and Direct Counter PSA externs, respectively. Both externs
+instances of Counter and Direct Counter PSA externs respectively. Both externs
 are used to represent data plane counters that keep statistics such as the
 number of packets or bytes. The main difference between (indexed) counters and
 direct counters is:
@@ -1193,8 +1198,8 @@ Both `Meter` and `DirectMeter` messages share the following fields:
 For indexed meters, the `Meter` message contains also a `size` field, an `int64`
 representing the maximum number of independent cells that can be held by this
 meter. Conversely, the `DirectMeter` message contains a `direct_table_id` field
-that carries the `uint32` identifier of the table to which this Direct Meter PSA
-extern is attached.
+that carries the `uint32` identifier of the table to which this direct meter is
+attached.
 
 ### `ControllerPacketMetadata` { #sec-controller-packet-meta}
 
@@ -1219,8 +1224,8 @@ process packet-in and packet-out stream messages (see section on Packet I/O
 stream messages).
 
 A P4Info message can contain at most two `ControllerPacketMetadata messages`,
-one describing the packet-in header, and packet-out the other. Each message
-contains the following fields:
+one describing the packet-in header, and the other the packet-out header. Each
+message contains the following fields:
 
 * `preamble`, a `Preamble` message where `preamble.name` is set to `"packet_in"`
   and `"packet_out"` for packet-in and packet-out metadata, respectively.
@@ -1229,7 +1234,10 @@ contains the following fields:
   includes the following fields:
     * `id`, a `uint32` identifier of this metadata. No rules are prescribed on
       the way metadata IDs should be allocated, as long as two `Metadata` of the
-      same `ControllerPacketMetadata` message do not have the same ID.
+      same `ControllerPacketMetadata` message do not have the same
+      ID. Nonetheless, if the P4Info message was generated from a P4 compiler,
+      we recommend that the IDs be assigned incrementally, starting from 1, in
+      the same order as the fields in the P4 header declaration.
     * `name`, a string representation of the name of this metadata. If the
       P4Info message was generated from a P4 compiler, then this field is
       expected to be set to the name of the P4 controller header field (see
@@ -1447,14 +1455,14 @@ message to clearly identify cases where a cookie is not present.
 
 In Protobuf version 3 (*proto3*), the default value for a message field is
 "unset" [@ProtoDefaults]. An application, such as the P4Runtime client or
-server, is able to distinguish between an unset field and a field set to its
-default value. We use this distinction quite a lot in P4Runtime and the meaning
-of a message can vary based on which of its message fields are set. For example,
-when reading values from an indirect PSA counter using the CounterEntry message,
-an "unset" index field means that all entries in the counter array should be
-read and returned to the P4Runtime client (we refer to this as a wildcard
-read). On the other hand, if the index message field is set, a single entry will
-be read.
+server, is able to distinguish between an unset message field and a message
+field set to its default value. We use this distinction quite a lot in P4Runtime
+and the meaning of a message can vary based on which of its message fields are
+set. For example, when reading values from an indirect PSA counter using the
+`CounterEntry` message, an "unset" `index` field means that all entries in the
+counter array should be read and returned to the P4Runtime client (we refer to
+this as a wildcard read). On the other hand, if the `index` message field is
+set, a single entry will be read.
 
 Let's look at the counter example in more details. Based on this specification
 document, the C++ server code which processes `CounterEntry` messages may look
@@ -1486,13 +1494,13 @@ counter_id: <id>
 index {}
 ~ End Prototext
     * **Expected behavior**: Counter entry at index 0 is read. Notice that the
-      index subfield is missing under the index field message of CounterEntry in
-      the text dump of the message. This is because the subfield is a scalar
-      numeric type and 0 is therefore its default value. Scalar fields with
-      default values are omitted from the textual representation of Protobuf
-      messages.
+      `index` subfield is missing under the `index` field message of
+      `CounterEntry` in the text dump of the message. This is because the
+      subfield is a scalar numeric type and 0 is therefore its default
+      value. Scalar fields with default values are omitted from the textual
+      representation of Protobuf messages.
 
-2. Reading all counter entries by leaving the index field unset
+2. Reading all counter entries by leaving the `index` field unset
     * Here is the C++ client code:
 ~ Begin CPP
 p4::v1::CounterEntry entry;
@@ -1503,7 +1511,7 @@ entry.set_counter_id(<id>);
 counter_id: <id>
 ~ End Prototext
     * **Expected behavior**: All counter entries for the provided counter
-      instance are read. Notice that the index message field is unset (default
+      instance are read. Notice that the `index` message field is unset (default
       value) and is therefore omitted from the textual representation of the
       message.
 
@@ -1681,7 +1689,7 @@ similar to the representation of fixed-width integers. We use a binary string,
 whose length is the *dynamic-length* of the expression. When the value is
 provided by the P4Runtime client, the server must verify that the length of the
 binary string is less than the maximum length specified in the P4 program, and
-return an `INVALID_ARGUMENT` error code otherwise.
+return an `OUT_OF_RANGE` error code otherwise.
 
 ## Representation of Arbitrary P4 Types { #sec-representation-of-arbitrary-p4-types}
 
@@ -1786,7 +1794,7 @@ the compile-time type of the expression as a Protobuf `oneof`, which can be:
 * an empty Protobuf message for `bool` and `error`, or
 
 * a Protobuf message for other anonymous types (`bit<W>`, `int<W>`, `varbit<W>`,
-  `tuple` or `stack`). The "binary string" types (`bit<W>`, `int<W>`, and
+  `tuple` or stack). The "binary string" types (`bit<W>`, `int<W>`, and
   `varbit<W>`) are grouped together in the `P4BitstringLikeTypeSpec` message,
   since they are the only sub-types allowed in headers and values with one of
   these types are represented similarly in P4Runtime (with the Protobuf `bytes`
@@ -1800,11 +1808,11 @@ P4~16~ declaration. The same goes for the order of members of an `enum`
 
 ### `P4Data` in p4runtime.proto
 
-P4Runtime uses the `P4Data` message to represent values with arbitrary
-types. The P4Runtime client must generate correct `P4Data` messages based on the
-type specification information included in P4Info. The `P4Data` message was
-designed to introduce little overhead compared to using binary strings in the
-most common case (P4~16~ `bit<W>` type).
+P4Runtime uses the `P4Data` message to represent values of arbitrary types. The
+P4Runtime client must generate correct `P4Data` messages based on the type
+specification information included in P4Info. The `P4Data` message was designed
+to introduce little overhead compared to using binary strings in the most common
+case (P4~16~ `bit<W>` type).
 
 Just like its P4Info counterpart - `P4DataTypeSpec` -, `P4Data` uses a Protobuf
 `oneof` to represent all possible values.
@@ -2235,7 +2243,7 @@ high = parseInteger(match.range().high())
 
 assert(low <= high)
 
-assert(low != min_field_value && high != max_field_value)
+assert(low != min_field_value || high != max_field_value)
 ~ End Pseudo
 
 ### Action Specification
@@ -2477,7 +2485,7 @@ to the master client, which can then take action, such as remove the idle table
 entry.
 
 Two fields of the `TableEntry` Protobuf message are used to implement idle
-timeout.
+timeout:
 
 * `idle_timeout_ns`: the configured TTL for the table entry in nanoseconds. A
   value of 0 means that the entry never expires, &ie; no
@@ -2516,7 +2524,7 @@ notifications](#sec-table-idle-timeout-notification) section.
 ## `ActionProfileMember` & `ActionProfileGroup` { #sec-action-profile-member-and-group }
 
 P4Runtime defines an API for programming a PSA ActionProfile extern using
-`ActionProfileMember` messages. PSA ActionSelector extern can be programmed
+`ActionProfileMember` messages. A PSA ActionSelector extern can be programmed
 using both `ActionProfileMember` and `ActionProfileGroup` messages. PSA supports
 tables that can be implemented with an action profile or selector instance. Such
 tables are referred to as indirect tables, in contrast to direct tables, whose
@@ -2551,14 +2559,14 @@ specify the `TableAction` in the `TableEntry` to be a reference to either an
 action profile member or group. The reference is a `uint32` identifier that
 uniquely identifies a member or group programmed in the action selector `as`.
 
-If a table entry in an indirect table with ActionProfile implementation is hit,
-then the corresponding table action gives a member id. The member table is
+If a table entry in an indirect table with an ActionProfile implementation is
+hit, then the corresponding table action gives a member id. The member table is
 looked up with the member id, and the corresponding action specification is used
 to modify the packet or its metadata.
 
-If a table entry in an indirect table with ActionSelector implementation is hit,
-then the corresponding table action gives either a member id or a group id. For
-a member id, the member table in the selector is looked up, and the
+If a table entry in an indirect table with an ActionSelector implementation is
+hit, then the corresponding table action gives either a member id or a group
+id. For a member id, the member table in the selector is looked up, and the
 corresponding action specification is used to modify the packet or its
 metadata. For a group id, a hash algorithm, defined in the P4 ActionSelector
 specification is used to obtain a member id from the set of members in the
@@ -2572,9 +2580,9 @@ metadata.
 Action profile members are entries in the ActionProfile or ActionSelector and
 are referenced by a `uint32` identifier that is bound to an action
 specification. An action profile member for an ActionProfile or ActionSelector
-extern instance may be bound only to the actions that appear in the actions
+extern instance may be bound only to the actions that appear in the `actions`
 attribute of the table implemented using the extern instance. If multiple table
-implementations share an extern instance, then the actions attributes of the
+implementations share an extern instance, then the `actions` attributes of the
 tables *must have an identical list of P4 actions*. The IDs of the tables
 implemented with a selector will appear in P4Info as part of the ActionProfile
 message for the selector.
@@ -2632,7 +2640,7 @@ An `ActionProfileGroup` entity update message has the following fields:
   fields:
     * `member_id` for looking up the member table in the selector.
     * `weight` specifying the probability of the member's selection at runtime.
-    * `watch` is the controller defined 32-bit port number that the member's
+    * `watch` is the controller-defined 32-bit port number that the member's
       liveness depends on. At runtime, the member must be excluded from
       selection if the watch port is down.
 
@@ -2684,7 +2692,7 @@ One shots are programmed by choosing the `ActionProfileActionSet` message as the
 
 * `weight` specifying the probability of the action's selection at runtime.
 
-* `watch` is the controller defined 32-bit port number that the action's
+* `watch` is the controller-defined 32-bit port number that the action's
   liveness depends on. At runtime, the action must be excluded from selection if
   the watch port is down.
 
@@ -2866,7 +2874,7 @@ message DirectCounterEntry {
 ~ End Proto
 
 A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
-`DirectCounterEntry`, whose fields are to be specified by the client as follows:
+`DirectCounterEntry`, whose fields are specified by the client as follows:
 
 * the `table_entry.match` field must match `TableEntry.match` of the table entry
   to which this direct counter entry is associated. If a matching `TableEntry`
@@ -2884,7 +2892,7 @@ A client may use `ReadRequest` in two ways to read the contents of a
 `DirectCounter`:
 
 * As a direct resource associated with a table entry, request the server to
-return the counter value in the counter_data field of the `TableEntry` message
+return the counter value in the `counter_data` field of the `TableEntry` message
 (see [Direct resources](#sec-direct-resources)).
 
 * Explicitly request the counter value by including the `DirectCounterEntry` in
@@ -2924,7 +2932,9 @@ array have default value 0.
   and array index is specified by `index`. The counter value is set to the value
   specified by the client in the `data` field. Note that the counter value is
   not modified if this Protobuf field is not set. If `index` is omitted all
-  counter values in the array will be set to the value provided by the client.
+  counter values in the array will be set to the value provided by the
+  client. The server must return `INVALID_ARGUMENT` for a negative index value
+  and `OUT_OF_RANGE` if the index value exceeds the size of the counter array.
 * `DELETE`: Server returns the error code `INVALID_ARGUMENT`.
 
 A P4Runtime client may request to read the counter values of one or more
@@ -2978,7 +2988,7 @@ message DirectMeterEntry {
 ~ End Proto
 
 A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
-`DirectMeterEntry`, whose fields are to be specified by the client as follows:
+`DirectMeterEntry`, whose fields are specified by the client as follows:
 
 * the `table_entry.match` field must match the match key of the `TableEntry`
   message used to insert the entry and the associated direct meter entry. The
@@ -3039,7 +3049,9 @@ array have a default configuration (GREEN for all packets).
   set to the default behavior (GREEN for all packets) if this Protobuf field is
   not set. If the `index` field is omitted all meter configurations in the array
   will be set to the value provided by the client (or reset to the default value
-  if `config` is unset).
+  if `config` is unset). The server must return `INVALID_ARGUMENT` for a
+  negative index value and `OUT_OF_RANGE` if the index value exceeds the size of
+  the meter array.
 * `DELETE`: Server returns the error code `INVALID_ARGUMENT`.
 
 A P4Runtime client may request to read the configuration of one or more indirect
@@ -3063,13 +3075,13 @@ replication of dataplane packets.
 
 ### `MulticastGroupEntry`
 
-Multicasting is achieved in PSA programs by setting the multicast_group ingress
-output metadata to a non-zero identifier. The number of replicas and their
-egress ports for the multicast group is programmed at runtime by the client
-using the `MulticastGroupEntry` API in P4Runtime. The following P4 program
-illustrates a possible dataplane behavior of multicasting ARP packets in the
-ingress. Note that the dataplane type of the multicast group metadata is 10 bits
-on the PSA device in this example.
+Multicasting is achieved in PSA programs by setting the `multicast_group`
+ingress output metadata to a non-zero identifier. The number of replicas and
+their egress ports for the multicast group is programmed at runtime by the
+client using the `MulticastGroupEntry` API in P4Runtime. The following P4
+program illustrates a possible dataplane behavior of multicasting ARP packets in
+the ingress. Note that the dataplane type of the multicast group metadata is 10
+bits on the PSA device in this example.
 
 ~ Begin P4Example
 control arp_multicast(inout H hdr, inout M smeta) {
@@ -3110,8 +3122,8 @@ translation between SDN ports and PSA device ports, refer to the
 The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
 multicast; if the multicast group is set, it will override the unicast egress
-port. If the multicast_group metadata is set to a value that is not programmed
-in the PRE, then the packet is dropped.
+port. If the P4 `multicast_group` metadata is set to a value that is not
+programmed in the PRE, then the packet is dropped.
 
 A multicast group may be inserted, modified or deleted as per the following
 semantics.
@@ -3128,7 +3140,7 @@ semantics.
   return an `INVALID_ARGUMENT` error. The egress port must be a 32-bit SDN port
   number and must refer to a singleton port. No two replicas may have identical
   values of *both* `egress_port` and `instance`, or the server must return
-  INVALID_ARGUMENT`.
+  `INVALID_ARGUMENT`.
 * `MODIFY`: Modify the set of replicas for a given multicast group entry,
   indexed by the given `multicast_group_id`. Same restrictions as `INSERT` apply
   here.
@@ -3189,9 +3201,11 @@ entity {
 As a result of the above P4Runtime programming, the target device will create
 one replica of a low TTL packet from the ingress to the egress. Note that the
 clone session ID of the programmed PRE entry is identical to the value used in
-the dataplane. The clone will be treated for scheduling in the PRE with a class
-of service value of 2. If the packet is larger than 4096 bytes, it will be
-truncated to carry at most 4096 bytes.
+the dataplane in this example (no numerical translation, which is the default
+for values of type `CloneSessionId_t` [@PSATranslation]). The clone will be
+treated for scheduling in the PRE with a class of service value of 2. If the
+packet is larger than 4096 bytes, it will be truncated to carry at most 4096
+bytes.
 
 The cloned replica will appear in the egress pipeline as an independent packet
 with egress port set to CPU (corresponding to SDN port `0xFFFFFFFD`; see
@@ -3256,7 +3270,7 @@ Protobuf text format).
 type: INSERT
 entity {
   value_set_entry {
-    value_set_id : 1
+    value_set_id : 0x03000001
     match { exact { value: 0x22F3 } } }
     match { exact { value: 0x893B } } }
   }
@@ -3269,7 +3283,7 @@ the `parse_trill_types` state.
 
 A `ValueSetEntry` entity update message has the following fields:
 
-* `value_set_id` is the `uint32` identifier of the value_set instance, as
+* `value_set_id` is the `uint32` identifier of the Value Set instance, as
   defined in P4Info.
 
 * `match` is a repeated field of type `FieldMatch` defining the set of matches
@@ -3304,13 +3318,16 @@ control plane operations.
 * `index`, which identifies the array offset which is being accessed. It is
   possible for the P4Runtime client to perform wildcard reads and writes on the
   register array by leaving the index field unset in the `RegisterEntry` message
-  used for the request.
+  used for the request. When an `index` is provided , the server must validate
+  its value, and return `INVALID_ARGUMENT` for a negative index or
+  `OUT_OF_RANGE` if the index exceeds the size of the register array.
 
 * `data`: the data to be written to the array (if `RegisterEntry` is part of a
   `WriteRequest` message) or the data read from the array (if `RegisterEntry` is
   part of a `ReadResponse` message). The `data` field is a `P4Data` message and
   must match the format described by the `type_spec` field of the corresponding
-  Register entry in the P4Info.
+  Register entry in the P4Info, or the server must return an `INVALID_ARGUMENT`
+  error.
 
 ## `DigestEntry` { #sec-digestentry }
 
@@ -3611,7 +3628,7 @@ to reject the program.
 # `Write` RPC
 
 The `Write` RPC updates one or more P4 entities on the target. The request is
-defined as:
+defined as follows:
 
 ~ Begin Proto
 message WriteRequest {
@@ -3680,8 +3697,9 @@ An update can be one of the following types:
 * `MODIFY`: Modifies the P4 entity to its new specified state. This uses
   *assign* or *full-snapshot* semantics, &ie; the entity field contains the
   complete new state of the entity, not a diff from its previous state. If
-  entity is malformed, an `INVALID_ARGUMENT` error is returned. If the entity
-  does not exist, a `NOT_FOUND` error is returned.
+  entity is malformed, an `INVALID_ARGUMENT` error is usually returned (unless a
+  more specific error code applies [@gRPCStatusCodes]). If the entity does not
+  exist, a `NOT_FOUND` error is returned.
 
 * `DELETE`: Deletes the specified P4 entity. If the entity does not exist, a
   `NOT_FOUND` error is returned. In order to delete, the entity specification
@@ -3870,7 +3888,7 @@ obtained by calling the `Finish()` method on the stream object
 * request
   : An element of the `p4.ReadRequest.entities` repeated field.
 * batch
-  : Refers to the p4.ReadRequest.entities repeated field.
+  : Refers to the `p4.ReadRequest.entities` repeated field.
 
 Each *request* acts as a query filter for that entity type. If a *request* fully
 specifies the entity key, the `Read` operation should retrieve a single P4
@@ -3884,7 +3902,7 @@ default values for parts of the entity key to achieve wildcard behavior. Please
 refer to the [P4 Entity Messages](#sec-p4-entity-msgs) section for details on
 what parts of the entity can be wildcarded in a given *request*.
 
-For example, in a *request* of type CounterEntry:
+For example, in a *request* of type `CounterEntry`:
 
 * A default `counter_id` implies a request to read all counter-entries for all
   indirect counters.
@@ -3950,7 +3968,7 @@ A P4Runtime server must be prepared to handle multiple concurrent `Read` RPCs.
 This could be from the same or multiple clients. P4Runtime is based on gRPC
 which provides a concurrent server design. A server implementation that supports
 concurrent RPC handlers may choose to maximize performance by using a
-multi-reader lock (also known as multiple readers/single-writer lock).
+multi-reader lock (also known as multiple-readers/single-writer lock).
 Conversely (&eg; in a single-threaded architecture), it may choose to serialize
 `Read` RPC processing.
 
@@ -4000,10 +4018,9 @@ The action is the type of configuration action requested, it can be one of:
   provided of if the provided config cannot be realized.
 
 * `VERIFY_AND_COMMIT`: saves and realizes the given config if the P4Runtime
-  target can realize it. The forwarding state in the target is cleared, and the
-  device stops forwarding action. Returns an `INVALID_ARGUMENT` error if the
-  forwarding config is not provided of if the provided config cannot be
-  realized.
+  target can realize it. The forwarding state in the target is cleared. Returns
+  an `INVALID_ARGUMENT` error if the forwarding config is not provided of if the
+  provided config cannot be realized.
 
 * `COMMIT`: realizes the last saved, but not yet committed, config. The
   forwarding state in the target is updated by replaying the write requests to
@@ -4029,7 +4046,7 @@ the P4Info, the opaque target-dependent forwarding-pipeline configuration data
 to uniquely identify such configuration. See the [Forwarding-Pipeline
 Configuration](#sec-p4-fwd-pipe-config) section for details.
 
-A P4Runtime server running on an atypical device may not support
+A P4Runtime server running on an a typical device may not support
 `SetForwardingPipelineConfig` (&eg; the forwarding-pipeline config is part of
 device software image, or is supplied using a different mechanism). In such
 cases, the RPC should return an `UNIMPLEMENTED` error.
@@ -4141,21 +4158,22 @@ message PacketMetadata {
 * `payload` is used to carry the full packet content, including the headers.
 
 * `metadata` is a repeated field of `PacketMetadata` messages used to carry the
-  arbitrary controller metadata. The size and value of such metadata field needs
-  to consistent with what specified in the corresponding P4Info
+  arbitrary controller metadata. The size and value of each metadata entry need
+  to be consistent with what is specified in the corresponding P4Info
   `ControllerPacketMetadata`. Indeed, when a P4Runtime client (or server)
   generates a `PacketOut` (or `PacketIn`) message, it needs to populate the
-  metadata field with as many values as in `ControllerPacketMetadata.metadata`
-  for the packet-out (or packet-in) case. Each `PacketMetadata.value` is
-  expected to have a length in bytes obtained by rounding-up the bitwidth value
-  of the corresponding `ControllerPacketMetadata.metadata` to the nearest byte.
+  `metadata` field with as many values as in `ControllerPacketMetadata.metadata`
+  for the packet-out (or packet-in) case. Each `PacketMetadata.value` is a
+  binary string and must conform to the [Bytestrings](#sec-bytestrings)
+  requirements based on the corresponding P4Info
+  `ControllerPacketMetadata.metadata` specification.
 
 ## Master Arbitration Update
 
 As explained earlier in this document, the controller uses the `StreamChannel`
 RPC for session management as well as Packet I/O. In fact, before a controller
 becomes able to do Packet I/O or program any forwarding entry (via `Write` RPC),
-it needs to start a controller session and becomes a "master". To do so, the
+it needs to start a controller session and become a "master". To do so, the
 controller first opens a bidirectional stream channel to the server via
 `StreamChannel` for each device and sends a `StreamMessageRequest` message. The
 controller populates the `MasterArbitrationUpdate` field in this message using
@@ -4191,12 +4209,12 @@ message MasterArbitrationUpdate {
 }
 ~ End Proto
 
-Note that `status` field in the `MasterArbitrationUpdate` is not populated by
-the controller. This field is populated by the P4Runtime server when it sends a
-`StreamMessageResponse` message back to the controller, in which it populates
-the `MasterArbitrationUpdate` message using the `device_id`, `role`, and
-`election_id` it previously received from the controller. The server also
-populates the `status` field in the `MasterArbitrationUpdate` as follows:
+Note that the `status` field in the `MasterArbitrationUpdate` message is not
+populated by the controller. This field is populated by the P4Runtime server
+when it sends a `StreamMessageResponse` message back to the controller, in which
+it populates the `MasterArbitrationUpdate` message using the `device_id`,
+`role`, and `election_id` it previously received from the controller. The server
+also populates the `status` field in the `MasterArbitrationUpdate` as follows:
 
 * OK (with `status.code` set to `google.rpc.OK`) when the controller is
   determined to be the master for a given (`device_id`, `role_id`).
@@ -4296,7 +4314,7 @@ dataplane types are different on different PSA targets. In order to enable
 uniform programming of multiple PSA targets, a centralized remote controller may
 define its own types and numbering of such PSA standard metadata
 [@PSATranslation]. For such metadata, a translation between the controller's
-metadata values and the corresponding target specific metadata values is
+metadata values and the corresponding target-specific metadata values is
 required at runtime. In this section, we will base our discussions on port
 metadata, although the same translation principles apply to other standard PSA
 metadata such as class of service.
@@ -4379,7 +4397,7 @@ PSA port types in P4 programs.
 ### Translation of Packet-IO Header Fields
 
 Port type fields can be part of header types. For example, ports may be part of
-Packet IO headers may be defined as follows.
+Packet IO headers, as in the following example:.
 
 ~ Begin P4Example
 @controller_header("packet_out")
@@ -4395,9 +4413,9 @@ header PacketIn_t {
 
 The header-level annotation `@controller_header` is a standard P4Runtime
 annotation that identifies a header type for a controller packet-out or
-packet-in. When the P4Runtime server in the target receives a packet-out from
-the controller over the P4Runtime stream channel, the server will expect
-packet-out metadata (egress_port) value of type 32-bits from the given set of
+packet-in header. When the P4Runtime server in the target receives a packet-out
+from the controller over the P4Runtime stream channel, the server will expect a
+packet-out metadata (`egress_port`) value of width 32-bit from the given set of
 SDN port values in the switch config. The server will then translate the SDN
 port value into the device-specific port value from the mapping provided in the
 out-of-band switch configuration (the mapping can be identified using the
@@ -4410,7 +4428,7 @@ case this is required by the target.
 A similar reverse translation is required in the P4Runtime server for packets
 punted from the target to the controller as shown by the packet-in header
 example above. A packet punted from the target's PSA device will be intercepted
-by the P4Runtime server before being sent to the controller.The server will
+by the P4Runtime server before being sent to the controller. The server will
 first translate the device-specific value of the `ingress_port` field into the
 controller-specific 32-bit value given by the port mapping defined in the switch
 config. The server will then insert the translated controller-specific value in
@@ -4441,13 +4459,13 @@ for a table entry in `t` from the controller will have the values of the match
 field set to the controller-specific port value. The P4Runtime server should
 intercept the write request and use the switch configuration data to translate
 the SDN port value to respective device-specific value. In the dataplane, the
-packet metadata will carry the device specific value and, hence, match the right
+packet metadata will carry the device-specific value and, hence, match the right
 table entry. Similarly, when a read response for table `t` is returned to the
 controller, the P4Runtime server should translate the device-specific port
 values to the corresponding controller-specific values.
 
 Note that it may be infeasible to translate the value-mask pair for ternary
-matches: `EXACT`, `TERNARY` or `RANGE` match kinds.  P4Runtime server may
+matches: `LPM`, `TERNARY` or `RANGE` match kinds.  The P4Runtime server may
 require that for these match kinds the port match be either *de facto* "exact"
 (0xFFFFFFFF mask for `TERNARY`, prefix-length of 32 for `LPM`, or same low and
 high bounds for `RANGE`) or "don't care".
@@ -4488,17 +4506,16 @@ is used to implement fast-failover in the target, where the P4Runtime server can
 locally prune the member from the group if a port is down. This pruning does not
 require intervention from the controller. Conversely, if the port comes back up,
 the P4Runtime server can re-enable the member in the group. The watch field is
-of type `uint32` to carry a 32-bit SDN number of the port being watched. The
-P4Runtime server will translate the given watch port number into the
-device-specific dataplane port number for implementing the fast-failover
+of type `uint32` to carry the 32-bit SDN representation of the port being
+watched. The P4Runtime server will translate the given watch port number into
+the device-specific dataplane port number for implementing the fast-failover
 functionality on the target device.
 
 The Packet Replication Engine (PRE) API in P4Runtime supports cloning and
 multicasting to a set of ports. The egress port fields defined in the PRE
-multicast entry and clone session entry are of type `uint32` to carry a 32-bit
-SDN number of the port(s). The P4Runtime server will translate these SDN port
-numbers to device-specific port numbers for multicasting and cloning in the
-dataplane.
+multicast entry and clone session entry are of type `uint32` to carry the 32-bit
+SDN port number(s). The P4Runtime server will translate these SDN port numbers
+to device-specific port numbers for multicasting and cloning in the dataplane.
 
 # P4Runtime Versioning
 
