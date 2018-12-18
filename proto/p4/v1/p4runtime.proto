@@ -33,11 +33,11 @@ service P4Runtime {
   rpc Read(ReadRequest) returns (stream ReadResponse) {
   }
 
-  // Sets the P4 fowarding-pipeline config.
+  // Sets the P4 forwarding-pipeline config.
   rpc SetForwardingPipelineConfig(SetForwardingPipelineConfigRequest)
       returns (SetForwardingPipelineConfigResponse) {
   }
-  // Gets the current P4 fowarding-pipeline config.
+  // Gets the current P4 forwarding-pipeline config.
   rpc GetForwardingPipelineConfig(GetForwardingPipelineConfigRequest)
       returns (GetForwardingPipelineConfigResponse) {
   }
@@ -68,24 +68,24 @@ message WriteRequest {
   repeated Update updates = 4;
   enum Atomicity {
     // Required. This is the default behavior. The batch is processed in a
-    // non-atomic manner from a dataplane point of view. Each operation within
+    // non-atomic manner from a data plane point of view. Each operation within
     // the batch must be attempted even if one or more encounter errors.
-    // Every dataplane packet is guaranteed to be processed according to
+    // Every data plane packet is guaranteed to be processed according to
     // table contents as they are between two individual operations of the
     // batch, but there could be several packets processed that see each of
     // these intermediate stages.
     CONTINUE_ON_ERROR = 0;
-    // Optional. Operations within the batch are committed to dataplane until
+    // Optional. Operations within the batch are committed to data plane until
     // an error is encountered. At this point, the operations must be rolled
-    // back such that both software and dataplane state is consistent with the
+    // back such that both software and data plane state is consistent with the
     // state before the batch was attempted. The resulting behavior is
     // all-or-none, except the batch is not atomic from a data plane point of
-    // view. Every dataplane packet is guaranteed to be processed according to
+    // view. Every data plane packet is guaranteed to be processed according to
     // table contents as they are between two individual operations of the
     // batch, but there could be several packets processed that see each of
     // these intermediate stages.
     ROLLBACK_ON_ERROR = 1;
-    // Optional. Every dataplane packet is guaranteed to be processed according
+    // Optional. Every data plane packet is guaranteed to be processed according
     // to table contents before the batch began, or after the batch completed
     // and the operations were programmed to the hardware.
     // The batch is therefore treated as a transaction. 
@@ -156,7 +156,7 @@ message TableEntry {
   // the match fields is Ternary or Range.
   // A higher number indicates higher priority.
   // Only the highest priority entry that matches the packet must be selected.
-  // Given an existing entry with prority k, if the controller tries to insert
+  // Given an existing entry with priority k, if the controller tries to insert
   // or modify another entry with priority k such that a packet may match both
   // entries, an error is returned. This will be the case if the overlap is
   // strict (entries are identical) or not.
@@ -201,10 +201,10 @@ message TableEntry {
   int64 idle_timeout_ns = 9;
   message IdleTimeout {
     // Time elapsed - in nanoseconds - since the table entry was last "hit" as
-    // part of a dataplane table lookup.
+    // part of a data plane table lookup.
     int64 elapsed_ns = 1;
   }
-  // Table wite: this field should be left unset.
+  // Table write: this field should be left unset.
   // Table read: if the table supports idle timeout and time_since_last_hit is
   // set in the request, this field will be set in the response.
   IdleTimeout time_since_last_hit = 10;
@@ -643,7 +643,7 @@ message ForwardingPipelineConfig {
   // to uniquely identify this config. There are no restrictions on how such
   // value is computed, or where this is stored on the target, as long as it is
   // returned with a GetForwardingPipelineConfig RPC. When reading the cookie,
-  // we need to distibuish those cases where a cookie is NOT present (e.g. not
+  // we need to distinguish those cases where a cookie is NOT present (e.g. not
   // set in the SetForwardingPipelineConfigRequest, therefore we wrap the actual
   // uint64 value in a protobuf message.
   message Cookie {

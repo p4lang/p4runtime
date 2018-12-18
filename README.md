@@ -30,7 +30,7 @@ It is updated every time a new commit is pushed to the master branch.
 
 ## Overview
 P4 is a language for programming the data plane of network devices. The
-P4Runtime API is a control-plane specification for controlling the data plane
+P4Runtime API is a control plane specification for controlling the data plane
 elements of a device or program defined by a P4 program. This repository
 provides a precise definition of the P4Runtime API via protobuf (.proto) files
 and accompanying documentation. The target audience for this includes system
