@@ -343,8 +343,6 @@ message DirectMeterEntry {
 // associated burst sizes to be either green, yellow, or red.  A packet is
 // marked red if it exceeds the PIR.  Otherwise it is marked either yellow or
 // green depending on whether it exceeds or doesn't exceed the CIR.
-//
-// TODO: This is not metering protocol-independent!
 message MeterConfig {
   // Committed information rate (units per sec)
   int64 cir = 1;

@@ -829,14 +829,14 @@ message Preamble {
   uint32 id = 1;
   // fully qualified name of the P4 object, e.g. c1.c2.ipv4_lpm
   string name = 2;
-  // an alias for the P4 object, probably shorter than its name. The only
-  // constraint is for it to be unique with respect to other P4 objects of the
-  // same type. By default, the compiler uses the shortest suffix of the name
-  // that uniquely identifies the object. For example if the P4 program
-  // contains two tables with names s.c1.t and s.c2.t, the default aliases will
-  // respectively be c1.t and c2.t. The P4 programmer may also override the
-  // default alias for any P4 object (TBD). When resolving a P4 object id, an
-  // application should be able to indiscriminately use the name or the alias.
+  // an alias (alternative name) for the P4 object, probably shorter than its
+  // fully qualified name. The only constraint is for it to be unique with
+  // respect to other P4 objects of the same type. By default, the compiler uses
+  // the shortest suffix of the name that uniquely identifies the object. For
+  // example if the P4 program contains two tables with names s.c1.t and s.c2.t,
+  // the default aliases will respectively be c1.t and c2.t. In the future, the
+  // P4 programmer may also be able to override the default alias for any P4
+  // object (TBD).
   string alias = 3;
   repeated string annotations = 4;
   // Documentation of the entity
@@ -858,7 +858,6 @@ the P4Info output. Until compiler support is added, a utility to post-process
 and insert `PkgInfo` can be used [@xform].
 
 ~ Begin Proto
-
 // Can be used to manage multiple P4 packages.
 message PkgInfo {
   // a definitive name for this configuration, e.g. switch.p4_v1.0
@@ -877,9 +876,6 @@ message PkgInfo {
   string contact = 7;
   // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
-}  // A more verbose description of something.
-   // Multiline is accepted. Markup format (if any) is TBD.
-  string description = 2;
 }
 ~ End Proto
 ## ID Allocation for P4Info Objects { #sec-id-allocation}
