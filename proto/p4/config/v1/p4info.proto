@@ -41,7 +41,8 @@ message P4Info {
 message Documentation {
   // A brief description of something, e.g. one sentence
   string brief = 1;
-  // A more verbose description of something. Multiline is accepted. Markup format (if any) is TBD.
+  // A more verbose description of something. Multiline is accepted. Markup
+  // format (if any) is TBD.
   string description = 2;
 }
 
@@ -162,7 +163,7 @@ message MatchField {
   }
   oneof match {
     MatchType match_type = 5;
-    // used for achitecture-specific match types which are not part of the core
+    // used for architecture-specific match types which are not part of the core
     // P4 language or of the PSA architecture.
     string other_match_type = 7;
   }
