@@ -4703,4 +4703,25 @@ properties, but we may include on in future versions of the API.
   patch version numbers.
 
 
+# Appendix: P4 Annotations {@h1:"A"}
+
+Table [#tab-p4-annotations] lists P4~16~ annotations introduced
+primarily for the purpose of adding features for the P4Runtime API.
+
+~ TableFigure { #tab-p4-annotations; \
+    caption: "P4 annotations introduced by P4Runtime"; \
+    page-align: forcehere; }
+|------------------------|---------------------------------------|
+| Annotation             | Description                           |
++------------------------+---------------------------------------+
+| @brief                 | |
+| @controller_header     | See section [#sec-controller-packet-meta] |
+| @description           | |
+| @id                    | See section [#sec-id-allocation] |
+| @pkginfo               | |
+| @p4runtime_translation | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
++------------------------+---------------------------------------+
+~
+
+
 [BIB]
