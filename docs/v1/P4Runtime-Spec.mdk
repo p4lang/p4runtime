@@ -3701,7 +3701,8 @@ An update can be one of the following types:
   `NOT_FOUND` error is returned. In order to delete, the entity specification
   only needs to include the key. Any non-key parts of entity are ignored.
 
-The `Write` RPC is idempotent, &ie; multiple invocations of the same RPC do not
+The `Write` RPC is idempotent, &ie; multiple invocations of the same RPC,
+with no intervening data plane operations, do not
 have any side effects. The end result (modified end state on P4Runtime server
 and P4 device) is always the same as the result of the initial invocation, even
 if the response differs.
