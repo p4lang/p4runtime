@@ -955,8 +955,8 @@ be appended to the `PkgInfo.annotations` list.
 Built for data-center profile.")
 @my_annotation1(...) // Not well-known, this will appear in PkgInfo annotations
 @my_annotation2(...) // Not well-known, this will appear in PkgInfo annotations
-PSA_Switch(IgPipeline, PacketReplicationEngine(), EgPipeline,\
-  BufferingQueueingEngine()) main;
+PSA_Switch(IgPipeline, PacketReplicationEngine(), EgPipeline,
+           BufferingQueueingEngine()) main;
 ~ End p4example
 
 ## ID Allocation for P4Info Objects { #sec-id-allocation}
