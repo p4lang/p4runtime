@@ -4043,10 +4043,11 @@ the P4Info, the opaque target-dependent forwarding-pipeline configuration data
 to uniquely identify such configuration. See the [Forwarding-Pipeline
 Configuration](#sec-p4-fwd-pipe-config) section for details.
 
-A P4Runtime server running on an a non-programmable device may not support
-`SetForwardingPipelineConfig` (&eg; the forwarding-pipeline config is part of
-the device's software image, or is supplied using a different mechanism). In such
-cases, the RPC should return an `UNIMPLEMENTED` error.
+A P4Runtime server running on a non-programmable device may not
+support `SetForwardingPipelineConfig` (&eg; the forwarding-pipeline
+config is part of the device's software image, or is supplied using a
+different mechanism). In such cases, the RPC should return an
+`UNIMPLEMENTED` error.
 
 # `GetForwardingPipelineConfig` RPC
 
