@@ -845,7 +845,8 @@ message Preamble {
 }
 ~ End Proto
 
-### Annotating P4 Entities with `Documentation`
+### Annotating P4 Entities with `Documentation` { #sec-annotating-p4-entities-with-documentation}
+
 P4 entities may be annotated using the following annotations:
 
 ~ Begin p4example
@@ -902,7 +903,8 @@ message PkgInfo {
 }
 ~ End Proto
 
-### Annotating P4 code with PkgInfo
+### Annotating P4 code with PkgInfo { #sec-annotating-p4-code-with-pkginfo}
+
 A P4 progam's `PkgInfo` may be declared using one or more of the following
 annotations, attached to the `main` block only:
 
@@ -4785,6 +4787,27 @@ properties, but we may include on in future versions of the API.
 * There is no RPC to query the capabilities of a given P4Runtime implementation;
   in particular, there is no way for a client to query the supported minor +
   patch version numbers.
+
+
+# Appendix: P4 Annotations {@h1:"A"}
+
+Table [#tab-p4-annotations] lists P4~16~ annotations introduced
+primarily for the purpose of adding features for the P4Runtime API.
+
+~ TableFigure { #tab-p4-annotations; \
+    caption: "P4 annotations introduced by P4Runtime"; \
+    page-align: forcehere; }
+|--------------------------|---------------------------------------|
+| Annotation               | Description                           |
++--------------------------+---------------------------------------+
+| `@brief`                 | See section [#sec-annotating-p4-entities-with-documentation] |
+| `@controller_header`     | See section [#sec-controller-packet-meta] |
+| `@description`           | See section [#sec-annotating-p4-entities-with-documentation] |
+| `@id`                    | See section [#sec-id-allocation] |
+| `@pkginfo`               | See section [#sec-annotating-p4-code-with-pkginfo] |
+| `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
++--------------------------+---------------------------------------+
+~
 
 
 [BIB]
