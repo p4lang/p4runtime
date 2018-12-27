@@ -844,6 +844,32 @@ message Preamble {
 }
 ~ End Proto
 
+### Annotating P4 Entities with `Documentation`
+P4 entities may be annotated using the following annotations:
+
+~ Begin p4example
+@brief(string...)
+@description(string...)
+~ End p4example
+
+Attaching either or both of these annotations to an entity will generate a
+P4Info [Documentation Message](#sec-documentation-message), which in turn will
+appear in the [Preamble Message](#sec-preamble-message) for the entity.
+
+The P4 compiler should not emit `annotation` messages in the P4Info for these specific
+cases; instead, it should generate the `Documentation` messages as described.
+
+The following example shows documentation annotations for a `table` entity:
+
+~ Begin p4example
+@brief("Match IPv4 addresses to next-hop MAC and port")
+@description("Match IPv4 addresses to next-hop MAC and port. \
+Uses LPM match type.")
+table my_ipv4_lkup {
+  ...
+}
+~ End p4example
+
 ## `PkgInfo` Message
 
 The `PkgInfo` message contains package-level metadata which describes the
@@ -852,10 +878,6 @@ and used to facilitate "browsing" of available P4 programs from a
 library. Although all fields are technically "optional," every implementation
 should include as a minimum the name, version, doc and arch fields. The other
 fields are recommended to be included.
-
-Note, the known P4 compilers as of this writing don't emit `PkgInfo` as part of
-the P4Info output. Until compiler support is added, a utility to post-process
-and insert `PkgInfo` can be used [@xform].
 
 ~ Begin Proto
 // Can be used to manage multiple P4 packages.
@@ -878,6 +900,65 @@ message PkgInfo {
   string url = 8;
 }
 ~ End Proto
+
+### Annotating P4 code with PkgInfo
+A P4 progam's `PkgInfo` may be declared using one or more of the following
+annotations, attached to the `main` block only:
+
+~ Begin p4example
+@pkginfo(key=value)
+@pkginfo(key=value[,key=value,...])
+@brief("A brief description")
+@description("A longer\
+description")
+@custom_annotation(...)
+@another_custom_annotation(...)
+~ End p4example
+
+Above we see several different types of annotations:
+
+* `@pkginfo` - This is used to populate a specific field within the `PkgInfo`
+message. Multiple `@pkginfo` annotations are allowed. For compactness, multiple
+key-value pairs can appear in a single `@pkginfo` annotation, separated by
+commas. Each key should only appear once, but if it appears multiple times, then
+the last value shall be used. The `key`s must be from among the message fields
+inside `PkgInfo`, for example, `name`, `version`, etc. Each key-value pair
+assigns a value to the corresponding field inside the single `PkgInfo` message
+for the program's P4Info. One exception is that the `Documentation` field of
+`PkgInfo` must be expressed as individual `@description` and `@brief`
+annotations, see next bullets. The key `arch` will be ignored (with a warning)
+by the compiler. The value for this should come from the compiler itself.
+
+* `@brief` - This will populate the `PkgInfo.doc.brief` message field.
+
+* `@description` - This will populate the `PkgInfo.doc.description` message field
+
+* `@<anything else>` - This will create a `PkgInfo.annotation` entry
+
+Declaring one or more of these annotations on `main` will
+generate a single corresponding `PkgInfo` message in the P4Info as described in
+[PkgInfo Message](#sec-pkginfo-message).
+
+The following example shows `@pkginfo` annotations using a mixture of single and
+multiple key-value pairs. It also shows `@brief` and `@description` annotations,
+plus some additional custom annotations. The well-known annotations will produce
+corresponding fields inside the `PkgInfo` message. The custom annotations will
+be appended to the `PkgInfo.annotations` list.
+
+~ Begin p4example
+@pkginfo(name="switch.p4",version="2")
+@pkginfo(organization="p4.org")
+@pkginfo(contact="info@p4.org")
+@pkginfo(url="www.p4.org")
+@brief("L2/L3 switch")
+@description("L2/L3 switch.\
+Built for data-center profile.")
+@my_annotation1(...) // Not well-known, this will appear in PkgInfo annotations
+@my_annotation2(...) // Not well-known, this will appear in PkgInfo annotations
+PSA_Switch(IgPipeline, PacketReplicationEngine(), EgPipeline,
+           BufferingQueueingEngine()) main;
+~ End p4example
+
 ## ID Allocation for P4Info Objects { #sec-id-allocation}
 
 P4Info objects receive a unique ID, which is used to identify the object in
