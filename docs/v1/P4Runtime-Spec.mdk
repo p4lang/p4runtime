@@ -375,7 +375,7 @@ Figure [#fig-reference-architecture] represents the P4Runtime Reference
 Architecture. The device or target to be controlled is at the bottom, and one or
 more controllers is shown at the top. A multi-master protocol allows more than
 one controller to participate, and a role-based arbitration scheme ensures only
-one controller has write access to each r/w entity, or the pipeline config
+one controller has write access to each read/write entity, or the pipeline config
 itself. Any controller may perform read access to any entity or the pipeline
 config. Later sections describe this in detail. For the sake of brevity, the
 term controller may refer to one or more controllers.
@@ -416,7 +416,7 @@ caption: "P4Runtime Reference Architecture." }
 
 In the idealized workflow, a P4 source program is compiled to produce both a P4
 device config and P4Info metadata. These comprise the `ForwardingPipelineConfig`
-message. A P4 controller chooses a configuration appropriate to a particular
+message. A P4Runtime controller chooses a configuration appropriate to a particular
 target and installs it via a `SetForwardingPipelineConfig` RPC. Metadata in the
 P4Info describes both the overall program itself (`PkgInfo`) as well as all
 entity instances derived from the P4 program - tables and extern instances. Each
@@ -429,8 +429,9 @@ is designed to be target and architecture-independent, although the specific
 contents are likely to be architecture-dependent. The compiler ensures the code
 is compatible with the specific target and rejects code which is incompatible.
 
-Presumably, a controller can access a library of P4 "packages" consisting of the
-P4 device config and P4Info and install them at will onto the target. A
+In some use cases, it is expected that a controller will store a
+collection of multiple P4 "packages", where each package consists of
+the P4 device config and P4Info, and install them at will onto the target. A
 controller can also query the `ForwardingPipelineConfig` from the target via the
 `GetForwardingPipelineRequest` RPC. This can be useful to obtain the pipeline
 configuration from a running device to synchronize the controller to its current
@@ -727,7 +728,7 @@ scheme in an out-of-band fashion.
        exceeds the supported limit, the P4Runtime server shall terminate the
        stream by returning a `RESOURCE_EXHAUSTED` error.
 
-    4. Otherwise, the controller is added to list of connected controllers for
+    4. Otherwise, the controller is added to a list of connected controllers for
        the given (`device_id`, `role_id`) and the controller is notified by
        sending a `StreamMessageResponse` message back to it, as explained
        earlier.
@@ -964,12 +965,12 @@ PSA_Switch(IgPipeline, PacketReplicationEngine(), EgPipeline,
 P4Info objects receive a unique ID, which is used to identify the object in
 P4Runtime messages. IDs are 32-bit unsigned integers which are assigned by the
 compiler during the P4Info generation process. IDs are assigned in such a way
-that is is possible based on the ID value alone to deduce the type of the object
+that it is possible based on the ID value alone to deduce the type of the object
 (&eg; table, action, counter, ...). The most significant 8 bits of the ID
 encodes the object type (as per Table [#tab-mapping-p4-obj-ids]). The
 p4info.proto file includes a mapping from object type to 8-bit prefix value,
 encoded as an enum definition (`p4.config.v1.P4Ids.Prefix`). These values must
-be used (&eg; by the compiler) when allocating IDs. The remaining 24-bits must
+be used (&eg; by the compiler) when allocating IDs. The remaining 24 bits must
 be generated in such a way that the resulting IDs must be globally unique in
 the scope of the P4Info message. Table [#tab-format-p4-obj-ids] shows the ID
 layout.
@@ -1609,9 +1610,9 @@ observed_value = server.read(p4_entity)
 assert(intended_value == observed_value)
 ~ End Pseudo
 
-To ensure read-write symmetry, the rest of the doc tries to offer canonical
+To ensure read-write symmetry, the rest of this document tries to offer canonical
 representations for various data types, but this principle should be thought of
-where it falls short. Ensuring this will allow a client software to recover
+where it falls short. Ensuring this will allow client software to recover
 programmatically from failures that can affect the switch stack software,
 communication channel, or the client replicas. If `Read` RPC returns a
 semantically-same but syntactically-different response then the client would
@@ -1811,7 +1812,7 @@ For example, the following P4~16~ objects involve complex types that need to be
 exposed in P4Runtime in order to support runtime operations on these objects.
 
 ~ Begin P4Example
-value_set<tuple<bit<16>, bit<8> > >(16) pvs_complex;
+value_set<tuple<bit<4>, bit<8> > >(16) pvs_complex;
 state parse_ipv4 {
    packet.extract<ipv4_t>(hdr.ipv4);
    transition select({ hdr.ipv4.version, hdr.ipv4.protocol }){
@@ -2134,7 +2135,7 @@ the `TableEntry` entity, which has the following fields:
   match and with which argument values.
 
 * `priority`, a 32-bit integer used to order entries when the table's match key
-  includes a ternary match.
+  includes a ternary or range match.
 
 * `controller_metadata`, a 64-bit cookie value which is opaque to the
   target. There is no requirement of where this is stored, but it must be
@@ -2268,7 +2269,7 @@ assert(BytestringValid(match.exact().value()))
     * The binary string encoding of the value (when present) must conform to the
       [Bytestrings](#sec-bytestrings) requirements.
     * "Don't care" match must be omitted.
-    * "Don't care" bits must not be set in value.
+    * "Don't care" bits must be 0 in value.
 
 ~ Begin Pseudo
 assert(BytestringValid(match.lpm().value()))
@@ -2284,7 +2285,7 @@ assert(trailing_zeros >= field_bits - pLen)
     * The binary string encoding of the value (when present) and mask (when
       present) must conform to the [Bytestrings](#sec-bytestrings) requirements.
     * "Don't care" match must be omitted.
-    * Masked bits must not be set in value.  This constraint taken together
+    * Masked bits must be 0 in value.  This constraint taken together
       with the [Bytestrings](#sec-bytestrings) requirements means that the
       value's binary string is never longer than the mask's binary string.
       When the value's string is shorter than the mask string, the
@@ -3243,7 +3244,7 @@ The following P4 program illustrates a possible data plane behavior of sending
 clones of low TTL packets to the CPU for monitoring. Note that the data plane
 type of the clone session metadata is 10 bits on the PSA device in this example.
 We assume that the `clone_low_ttl` control block is applied in the ingress
-pipeline to create and ingress-to-egress clone.
+pipeline to create an ingress-to-egress clone.
 
 ~ Begin P4Example
 control clone_low_ttl(inout H hdr, inout M smeta) {
@@ -3773,7 +3774,7 @@ An update can be one of the following types:
 
 * `MODIFY`: Modifies the P4 entity to its new specified state. This uses
   *assign* or *full-snapshot* semantics, &ie; the entity field contains the
-  complete new state of the entity, not a diff from its previous state. If
+  complete new state of the entity, not a diff from its previous state. If the
   entity is malformed, an `INVALID_ARGUMENT` error is usually returned (unless a
   more specific error code applies [@gRPCStatusCodes]). If the entity does not
   exist, a `NOT_FOUND` error is returned.
@@ -4027,7 +4028,7 @@ A P4Runtime server will process the batch as follows:
 ### Example
 
 If a client asked to read `{a,b,c,d}` and `b` and `d` *requests* didn't
-validate, switch will return entities corresponding to `a` and `c`, followed by
+validate, the server will return entities corresponding to `a` and `c`, followed by
 a status `{p4.Error(OK), p4.Error(xxx), p4.Error(yyy), p4.Error(OK)}` in the
 `details` field.
 
@@ -4093,7 +4094,7 @@ The action is the type of configuration action requested, it can be one of:
   it. The forwarding state in the target is not modified. However, any
   subsequent `Read` / `Write` requests must refer to fields in the new
   config. Returns an `INVALID_ARGUMENT` error if the forwarding config is not
-  provided of if the provided config cannot be realized.
+  provided or if the provided config cannot be realized.
 
 * `VERIFY_AND_COMMIT`: saves and realizes the given config if the P4Runtime
   target can realize it. The forwarding state in the target is cleared. Returns
@@ -4124,10 +4125,11 @@ the P4Info, the opaque target-dependent forwarding-pipeline configuration data
 to uniquely identify such configuration. See the [Forwarding-Pipeline
 Configuration](#sec-p4-fwd-pipe-config) section for details.
 
-A P4Runtime server running on an a typical device may not support
-`SetForwardingPipelineConfig` (&eg; the forwarding-pipeline config is part of
-device software image, or is supplied using a different mechanism). In such
-cases, the RPC should return an `UNIMPLEMENTED` error.
+A P4Runtime server running on a non-programmable device may not
+support `SetForwardingPipelineConfig` (&eg; the forwarding-pipeline
+config is part of the device's software image, or is supplied using a
+different mechanism). In such cases, the RPC should return an
+`UNIMPLEMENTED` error.
 
 # `GetForwardingPipelineConfig` RPC
 
@@ -4404,7 +4406,7 @@ caption: "P4Runtime Metadata Translation for the Portable Switch Architecture" }
 [psa-metadata-translation]: build/psa-metadata-translation.[svg,png] \
 { height: 7cm; page-align: here }
 
-Figure [#fig-psa-metadata-translation] above illustrates a motivating example,
+Figure [#fig-psa-metadata-translation] illustrates a motivating example,
 where a centralized controller is controlling two P4Runtime targets in a fabric.
 Switch 1 and Switch 2 use different PSA devices, each defining its own port type
 and number space. In this example, Switch 1 uses a device with 9-bit space for
