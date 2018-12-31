@@ -19,8 +19,6 @@ import "google/rpc/status.proto";
 import "p4/config/v1/p4info.proto";
 import "p4/v1/p4data.proto";
 
-// P4_14 spec: http://p4.org/wp-content/uploads/2015/04/p4-latest.pdf
-
 // This package and its contents are a work-in-progress.
 
 package p4.v1;
@@ -142,12 +140,6 @@ message ExternEntry {
   google.protobuf.Any entry = 3;
 }
 
-// From Section 11 of P4_14 spec:
-// At run time, the table entry insert operation (not part of P4) must specify:
-// - Values for each field specified in the reads entry.
-// - The name of the action from the action_specification or the
-//   action_profile_specification and the parameters to be passed to the action
-//   function when it is called.
 message TableEntry {
   uint32 table_id = 1;
   repeated FieldMatch match = 2;
