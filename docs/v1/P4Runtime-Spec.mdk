@@ -3848,7 +3848,7 @@ enum. A P4Runtime server is required to support only the modes marked as
   not atomic from a data plane point of view. Every data plane packet is
   guaranteed to be processed according to table contents as they are between two
   individual operations of the batch, but there could be several packets
-  processed that see* each of these intermediate stages. The details and design
+  processed that *see* each of these intermediate stages. The details and design
   of the rollback mechanism are outside the scope of this specification. One
   possibility is to create a shadow copy of both the software and hardware state
   at the start, and restore it upon failure.
@@ -3859,7 +3859,7 @@ enum. A P4Runtime server is required to support only the modes marked as
   entire batch must be atomic from a data plane point of view. Every data plane
   packet is guaranteed to be processed according to table contents before the
   batch began, or after the batch completes. The batch is therefore treated as a
-  transaction*. The details and design of how to achieve data plane-atomicity is
+  *transaction*. The details and design of how to achieve data plane-atomicity is
   outside the scope of this specification. One possibility is to limit the
   target to half of the data plane's table capacity at all times. At the start
   of the batch processing, the remaining half of the table capacity can be
@@ -3974,7 +3974,7 @@ obtained by calling the `Finish()` method on the stream object
 Each *request* acts as a query filter for that entity type. If a *request* fully
 specifies the entity key, the `Read` operation should retrieve a single P4
 entity.  Please refer to the [P4 Entity Messages](#sec-p4-entity-msgs) section
-for details on what parts of the entity specification make up the entity *key.*
+for details on what parts of the entity specification make up the entity *key*.
 
 ## Wildcard Reads { #sec-wildcard-reads}
 
