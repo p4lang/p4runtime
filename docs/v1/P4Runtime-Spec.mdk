@@ -1536,7 +1536,7 @@ message to clearly identify cases where a cookie is not present.
 In Protobuf version 3 (*proto3*), the default value for a message field is
 "unset" [@ProtoDefaults]. An application, such as the P4Runtime client or
 server, is able to distinguish between an unset message field and a message
-field set to its default value. We use this distinction quite a lot in P4Runtime
+field set to its default value. We often use this distinction in P4Runtime
 and the meaning of a message can vary based on which of its message fields are
 set. For example, when reading values from an indirect PSA counter using the
 `CounterEntry` message, an "unset" `index` field means that all entries in the
@@ -1778,7 +1778,7 @@ return an `OUT_OF_RANGE` error code otherwise.
 The P4~16~ language includes more complex types than just binary strings
 [@P4ComplexTypes]. Most of these complex data types can be exposed to the
 control plane through table key expressions, Value Set lookup expressions,
-Register (PSA extern type) value types, etc... Not supporting these more complex
+Register (PSA extern type) value types, etc. Not supporting these more complex
 types can be very limiting. Table [#tab-p4-type-usage] shows the different
 P4~16~ types and how they are allowed to be used, as per the P4~16~
 specification.
@@ -1833,7 +1833,7 @@ Register<ip_t, bit<32> >(128) register_ip;
 One solution would be to use only binary string (`bytes` type) in
 p4runtime.proto and to define a custom serialization format for complex P4~16~
 types. The serialization would maybe be trivial for header types but would
-require some work for header unions, header stacks, etc... For example, in the
+require some work for header unions, header stacks, etc. For example, in the
 case of a PSA Register storing header unions, a client reading from that
 Register would need to receive information about which member header is valid,
 in addition to the binary contents of this header. Rather than coming-up with a
@@ -3809,8 +3809,9 @@ different than what is received in the `WriteRequest`.
 
 The `Write` RPC demarcates the batch boundary, and can be used to ensure
 ordering between dependent updates. When the `Write` RPC returns, it is required
-that all operations in the batch have been committed to hardware (P4 data
-plane). If two updates from the client depend on each other (&eg; inserting an
+that all operations in the batch have been committed to the P4 data plane,
+with the exception of any operations that return an error status.
+If two updates from the client depend on each other (&eg; inserting an
 `ActionProfileMember` followed by pointing a `TableEntry` to it), they should be
 separated across two batches (and therefore two `Write` RPCs). In other words,
 the client must wait until the dependent `Write` RPC is acknowledged before
@@ -3853,7 +3854,13 @@ enum. A P4Runtime server is required to support only the modes marked as
   possibility is to create a shadow copy of both the software and hardware state
   at the start, and restore it upon failure.
 
-  If this option is not supported, an `UNIMPLEMENTED` error is returned.
+  If a P4Runtime server does not support this option at all, an
+  `UNIMPLEMENTED` error is returned at all times. If a P4Runtime
+  supports some batches in an rollback way but not others (e.g. it is
+  more straightforward to implement batches that contain only `INSERT`
+  operations, vs. those that contain `DELETE` operations), an
+  `UNIMPLEMENTED` error is returned when the batch cannot be executed
+  in a data plane-atomic way.
 
 * *Optional*: `DATAPLANE_ATOMIC`: This is the strictest requirement where the
   entire batch must be atomic from a data plane point of view. Every data plane
@@ -3873,7 +3880,7 @@ enum. A P4Runtime server is required to support only the modes marked as
   atomic way but not others, an `UNIMPLEMENTED` error is returned when the batch
   cannot be executed in a data plane-atomic way.
 
-There is no expectation that a given batch must always use the same `Atomicity`
+There is no expectation that a given client must always use the same `Atomicity`
 enum value. At any given time, the client is free to compose batches and assign
 atomicity mode as it sees fit. For example, for a set of entities, a client may
 decide to use `DATAPLANE_ATOMIC` at one time and default behavior
