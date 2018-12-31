@@ -3900,9 +3900,10 @@ populate `grpc::Status` as follows:
    `INVALID_ARGUMENT`. A `p4.Error` message is used to capture the status of
    each and every update in the batch. The number of `p4.Error` messages packed
    into `google.rpc.Status.details` field should therefore always match the
-   number of updates in the `WriteRequest`. If some of the updates were
-   successful, the corresponding `p4.Error` should set the code to `OK` and omit
-   other fields.
+   number of updates in the `WriteRequest`, and the order of
+   `p4.Error` messages must be in the same order as the corresponding
+   updates. If some of the updates were successful, the corresponding
+   `p4.Error` should set the code to `OK` and omit other fields.
 
 ~ Begin Prototext
 # Example of a grpc::Status returned for a Write RPC with a batch of 3 updates.
