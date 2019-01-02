@@ -2354,8 +2354,7 @@ If the `action` field is not set (and if `is_default_action` is false) or if the
 `action_profile_member_id` for a direct table), the server must return an
 `INVALID_ARGUMENT` error code.
 
-The `Action` Protobuf message, which is used for direct tables only, has the
-following fields:
+The `Action` Protobuf message has the following fields:
 
 * `action_id`, which identifies the action instance; the `action_id` is
   determined by the P4Info message and must match one of the possible action
