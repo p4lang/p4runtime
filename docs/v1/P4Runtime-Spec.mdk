@@ -695,7 +695,7 @@ scope of a given role. In particular, the definition of a role may include the
 following:
 
 * A list of P4 entities for which the controller may issue `Write` updates and
-  receive notification messages (e.g. `DigestList` and
+  receive notification messages (&eg; `DigestList` and
   `IdleTimeoutNotification`).
 * Whether the controller is able to receive `PacketIn` messages, along with a
   filtering mechanism based on the values of the `PacketMetadata` fields to
@@ -858,8 +858,9 @@ Attaching either or both of these annotations to an entity will generate a
 P4Info [Documentation Message](#sec-documentation-message), which in turn will
 appear in the [Preamble Message](#sec-preamble-message) for the entity.
 
-The P4 compiler should not emit `annotation` messages in the P4Info for these specific
-cases; instead, it should generate the `Documentation` messages as described.
+The P4 compiler should not emit `annotation` messages in the P4Info for these
+specific cases; instead, it should generate the `Documentation` messages as
+described.
 
 The following example shows documentation annotations for a `table` entity:
 
@@ -1126,9 +1127,8 @@ control plane. This message contains the following fields:
   the idle timeout of a table entry expires (see
   [Idle-Timeout](#sec-idle-timeout) section). Value can be any of the
   `IdleTimeoutBehavior` enum:
-    * `UNSPECIFIED`: reserved.
-    * `NO_TIMEOUT`, which means that idle timeout is not supported for this
-      table.
+    * `NO_TIMEOUT` (default value), which means that idle timeout is not
+      supported for this table.
     * `NOTIFY_CONTROL`, which means that the control plane should be notified of
       the expiration of a table entry by means of a notification (see section on
       [Table Idle Timeout Notifications](#sec-table-idle-timeout-notification)).
@@ -1863,9 +1863,11 @@ for named types, which is useful to identify well-known headers, such as IPv4 or
 IPv6.  `P4TypeInfo` also includes the list of parser errors for the program, as
 a `P4ErrorTypeSpec` message.
 
-`P4DataTypeSpec` is meant to be used in P4Info, everywhere where the P4Runtime
-client can provide a value for a P4~16~ expression. `P4DataTypeSpec` describes
-the compile-time type of the expression as a Protobuf `oneof`, which can be:
+`P4DataTypeSpec` is meant to be used in P4Info, to specify the expected format
+of the P4-dependent values being exchanged between the P4Runtime client and
+server. Each `P4DataTypeSpec` message corresponds to a compile-time type in the
+original P4~16~ program (&eg; the type parameter of an extern). This
+compile-time type is represented as a Protobuf `oneof`, which can be:
 
 * a string representing the name of the type in case of a named type (`struct`,
   `header`, `header_union`, `enum`, `serializable_enum` or user-defined "new"
@@ -2088,7 +2090,7 @@ type_info {
 ~ End Prototext
 
 Note that a P4 compiler may provide a mechanism external to the language to
-specify if and how a user-defined type is to be translated (e.g. through some
+specify if and how a user-defined type is to be translated (&eg; through some
 configuration file passed on the command-line when invoking the compiler). This
 mechanism should take precedence over `@p4runtime_translation` to enable users
 to overwrite annotations included as part of the P4 architecture definition.
@@ -2113,7 +2115,7 @@ P4Runtime covers P4 entities that are either part of the P4~16~ language, or
 defined as PSA externs. The sections below describe the messages for each
 supported entity.
 
-## `TableEntry`
+## `TableEntry` { #sec-table-entry}
 
 The match-action table is the core packet-processing construct of the P4
 language. It consists of a collection of table entries, or flow rules, each
@@ -2348,7 +2350,7 @@ the implementation property value of the P4 table, the `oneof` in the
   Programming](#sec-oneshot)
 
 If the `action` field is not set (and if `is_default_action` is false) or if the
-`oneof` does not match the table description in the P4Info (e.g. the `oneof` is
+`oneof` does not match the table description in the P4Info (&eg; the `oneof` is
 `action_profile_member_id` for a direct table), the server must return an
 `INVALID_ARGUMENT` error code.
 
@@ -2359,7 +2361,7 @@ following fields:
   determined by the P4Info message and must match one of the possible action
   choices for the table, or the server must return an `INVALID_ARGUMENT` error
   code. If the client uses a valid `action_id` for the table but does not
-  respect the action scope specified in P4Info (e.g. tries to set a `TABLE_ONLY`
+  respect the action scope specified in P4Info (&eg; tries to set a `TABLE_ONLY`
   action as the default action), the server must return a `PERMISSION_DENIED`
   error code.
 
@@ -2438,7 +2440,7 @@ fields may be used to select and filter results:
   value.
 * `controller_metadata`: If default (0), all entries from the specified table
   will be considered. Otherwise, results will be filtered based on the provided
-  controller\_metadata value.
+  `controller_metadata` value.
 * `is_default_action`: If default (false), all non-default entries from the
   specified table will be considered. Otherwise, only the default entry will be
   considered.
@@ -2458,7 +2460,8 @@ entities {
 ~ End Prototext
 
 In order to read all entries with priority 11 from a specific table (with id
-0x0212ab34) from device 3, the client can use the following ReadRequest message:
+0x0212ab34) from device 3, the client can use the following `ReadRequest`
+message:
 
 ~ Begin Prototext
 device_id: 3
@@ -2470,6 +2473,75 @@ entities {
   }
 }
 ~ End Prototext
+
+The canonical representation of "don't care" matches, combined with the ability
+to do a wildcard read on all table entries by leaving the `match` field unset,
+means that there exists a specific ambiguous case in which the same message
+could be used to either read a single "don't care" entry or to do a wildcard
+read. If a table has no fields with match kind `EXACT`, it is possible via
+P4Runtime to add an entry that is "don't care" for all fields (&ie; has an empty
+`match` field) but is not the default entry (&ie; `is_default_action` is
+false). When reading this entry from the table, there is no way to read *only*
+that entry from the table, because it would require providing an unset `match`
+field in the request, which in turn indicates that the client wishes to perform
+a wildcard read on all non-default entries. Consider the following example which
+uses a table with a single `LPM` match:
+
+~ Begin P4Example
+table t {
+  key = {
+    hdr.ipv4.dip: lpm;
+  }
+  actions = {
+    drop; fwd;
+  }
+}
+~ End P4Example
+
+The following `WriteRequest` message can be used to add 2 entries:
+~ Begin Prototext
+device_id: 3
+entities {
+  table_entry { # don't care entry
+    table_id: 0x0212ab34
+    # ...
+  }
+  table entry {
+    table_id: 0x0212ab34
+    match {
+      field_id: 1
+      lpm {
+        value: 0x0a000000
+        prefix_len: 8
+      }
+    # ...
+  }
+}
+~ End Prototext
+
+The first entry is a "don't care" entry, while the second one matches all
+`10.0.0.0/8` addresses. The second entry has higher priority than the first one.
+
+The following `ReadRequest` message will return *all* entries in the table, not
+just the "don't care" entry.
+~ Begin Prototext
+device_id: 3
+entities {
+  table_entry {
+    table_id: 0x0212ab34
+  }
+}
+~ End Prototext
+
+This issue also exists for tables with `TERNARY` and / or `RANGE`
+matches. However, in this case the priority is also taken into account for
+wildcard reads, and because a priority of 0 is not valid, in practice only the
+entries with the same priority as the "don't care" entry will be returned to the
+client. If the client uses distinct priority values for all entries - which is
+strongly recommended to achieve [deterministic behavior](#sec-table-entry) -,
+then there is no ambiguity because the wildcard read will actually return a
+single entry (the "don't care" entry) as long as the `priority` field is set to
+the correct value.
 
 ### Direct Resources { #sec-direct-resources}
 
@@ -2559,10 +2631,10 @@ meter configuration, it needs to be provided again in the `TableEntry` message
 P4Runtime supports idle timeout for table entries. When adding a table entry,
 the client can specify a Time-To-Live (TTL) value. If at any time during its
 lifetime, the data plane entry is not "hit" (&ie; not selected by any packet
-lookup) for a lapse of time greater or equal to its TTL, the P4Runtime must
-generate a stream notification - using the `IdleTimeoutNotification` message -
-to the master client, which can then take action, such as remove the idle table
-entry.
+lookup) for a lapse of time greater or equal to its TTL, the P4Runtime should,
+with best effort, generate a stream notification - using the
+`IdleTimeoutNotification` message - to the master client, which can then take
+action, such as remove the idle table entry.
 
 Two fields of the `TableEntry` Protobuf message are used to implement idle
 timeout:
@@ -2791,7 +2863,7 @@ with the following one shot update:
 
 ~ Begin Prototext
 table_entry {
-  table_id: 1
+  table_id: 0x0212ab34
   match { /* lpm match */ }
   action {
     action_profile_action_set {
@@ -2819,13 +2891,23 @@ Which would be equivalent to the following updates, where `GROUP_ID`,
 `MEMBER_ID_1`, `MEMBER_ID_2`, and `MEMBER_ID_3` are unused ids:
 
 ~ Begin Prototext
-table_entry {
-  table_id: 1
-  match { /* lpm match */ }
-  action { action_profile_group_id: GROUP_ID }
+action_profile_member {
+  action_profile_id: 1
+  member_id: MEMBER_ID_1
+  action { /* set nexthop 1 */ }
+}
+action_profile_member {
+  action_profile_id: 1
+  member_id: MEMBER_ID_2
+  action { /* set nexthop 2 */ }
+}
+action_profile_member {
+  action_profile_id: 1
+  member_id: MEMBER_ID_3
+  action {  /* set nexthop 3 */ }
 }
 action_profile_group {
-  action_profile_id: 1
+  action_profile_id: 0x11ab12cd
   group_id: GROUP_ID
   members {
     member_id: MEMBER_ID_1
@@ -2843,22 +2925,18 @@ action_profile_group {
     watch: 3
   }
 }
-action_profile_member {
-  action_profile_id: 1
-  member_id: MEMBER_ID_1
-  action { /* set nexthop 1 */ }
-}
-action_profile_member {
-  action_profile_id: 1
-  member_id: MEMBER_ID_2
-  action { /* set nexthop 2 */ }
-}
-action_profile_member {
-  action_profile_id: 1
-  member_id: MEMBER_ID_3
-  action {  /* set nexthop 3 */ }
+table_entry {
+  table_id: 0x0212ab34
+  match { /* lpm match */ }
+  action { action_profile_group_id: GROUP_ID }
 }
 ~ End Prototext
+
+Note that when using the above method (members and groups), the client also
+needs to use multiple messages to ensure [correct ordering between the dependent
+updates](#sec-batching-and-ordering-of-updates). Members need to be inserted
+first, then the group needs to be created, and finally the match entry can be
+inserted. Therefore, 3 distinct `WriteRequest` batches are required.
 
 All the tables associated with an action selector may either be programmed
 exclusively with one shots, or exclusively with `ActionProfileMember` and
@@ -3466,10 +3544,11 @@ A server should buffer digest messages until either:
 * `max_list_size` *distinct* digest messages have been received from the
   data plane and added to the buffer
 
-At which point the server must generate a `DigestList` stream message with the
-buffer contents and send it to the master client. All the messages in a digest
-list must be distinct, which means that duplicates must either be filtered-out
-directly by the device or in the P4Runtime server software.
+At which point the server should, with best effort, generate a `DigestList`
+stream message with the buffer contents and send it to the master client. All
+the messages in a digest list must be distinct, which means that duplicates must
+either be filtered-out directly by the device or in the P4Runtime server
+software.
 
 To avoid sending duplicate digest messages across different `DigestList`
 messages, which could make the channel busy, we define an acknowledgement
@@ -3489,12 +3568,12 @@ server software, the channel or the client can handle. P4Runtime does not impose
 a limit on the number of in-flight, unacknowledged `DigestList` messages.
 
 When `max_timeout_ns` is set to 0 and / or `max_list_size` is set to 1, the
-server must generate a `DigestList` message for every digest message generated
-by the data plane which is not already in the cache. If `ack_timeout_ns` is set
-to 0, the cache must always be an empty set. If `max_list_size` is set to 0,
-there is no limit on the maximum size of digest lists: the server can use any
-non-zero value as long as it honors the `max_timeout_ns` configuration
-parameter.
+server should, with best effort, generate a `DigestList` message for every
+digest message generated by the data plane which is not already in the cache. If
+`ack_timeout_ns` is set to 0, the cache must always be an empty set. If
+`max_list_size` is set to 0, there is no limit on the maximum size of digest
+lists: the server can use any non-zero value as long as it honors the
+`max_timeout_ns` configuration parameter.
 
 The P4Runtime server may empty the digest message cache in case of a client
 mastership change.
@@ -3794,7 +3873,7 @@ even if the response differs.
 If an update is not allowed under the given controller role, the server must
 return a `PERMISSION_DENIED` error for this update.
 
-## Batching and Ordering of Updates
+## Batching and Ordering of Updates { #sec-batching-and-ordering-of-updates}
 
 P4Runtime supports batching of `Write` operations. The list of updates in a
 `WriteRequest` is referred to as a *batch*. A batch can consist of arbitrary
@@ -3856,7 +3935,7 @@ enum. A P4Runtime server is required to support only the modes marked as
 
   If a P4Runtime server does not support this option at all, an
   `UNIMPLEMENTED` error is returned at all times. If a P4Runtime
-  supports some batches in an rollback way but not others (e.g. it is
+  supports some batches in an rollback way but not others (&eg; it is
   more straightforward to implement batches that contain only `INSERT`
   operations, vs. those that contain `DELETE` operations), an
   `UNIMPLEMENTED` error is returned when the batch cannot be executed
@@ -4321,10 +4400,10 @@ See the [DigestEntry](#sec-digestentry) section.
 When a table supports idle timeout (as per the P4Info message), the master
 client can specify a TTL value for each entry in the table (see
 [Idle-timeout](#sec-idle-timeout) section). If the data plane entry is not hit
-for a lapse of time greater or equal to the TTL, the P4Runtime server must
-generate an `IdleTimeoutNotification` message on the `StreamChannel`
-bidirectional stream to the master client. The master client can then take the
-action of its choice, most likely remove the idle entry.
+for a lapse of time greater or equal to the TTL, the P4Runtime server should,
+with best effort, generate an `IdleTimeoutNotification` message on the
+`StreamChannel` bidirectional stream to the master client. The master client can
+then take the action of its choice, most likely remove the idle entry.
 
 The `IdleTimeoutNotification` Protobuf message has the following fields:
 
