@@ -439,24 +439,32 @@ state.
 
 ## P4 as a Behavioral Description Language
 
-P4 can be considered a behavioral description of a switching device which may or
-may not execute "P4" natively. There is no requirement that a P4 compiler be
-used in the production of either the P4 device config or the P4Info. There is no
-absolute requirement that the target accept a `SetForwardingPipelineRequest` to
-change its pipeline "program", as some devices may be fixed in function.
-Furthermore, it is not necessary to have a P4 source program to begin with,
-since the controller does not use it. From the standpoint of controller (not
-pipeline) implementers, the P4 source code is just helpful documentation. Some
-parties may wish to keep their P4 source code private. The minimum requirement
-is a P4Info file which can be loaded by a controller in order to render the
-correct P4Runtime API. As long as the target supports the operations implied by
-the P4Info file, the underlying implementation is moot.
+P4 can be considered a behavioral description of a switching device
+which may or may not execute "P4" natively. There is no requirement
+that a P4 compiler be used in the production of either the P4 device
+config or the P4Info. There is no absolute requirement that the target
+accept a `SetForwardingPipelineRequest` to change its pipeline
+"program", as some devices may be fixed in function, or configured via
+means other than P4 programs. Furthermore, a controller can run
+without a P4 source program, since the P4Info file provides all of the
+information necessary to describe the P4Runtime API messages needed to
+configure such a device.
 
-This leads to the notion that a good P4Info file should be complete and
-self-sufficient in terms of documentation, specifically the metadata in the
-`PkgInfo` message as well as the embedded `doc` fields. Nevertheless, a P4
-program which describes the pipeline and produces the device config via a
-compiler is ideally available. The contents of the P4Info file will be described
+While a P4 program does provide a precise description of the data
+plane behavior, and this can prove invaluable in writing correct
+control plane software, in some cases it is enough for a control plane
+software developer to have the control plane API, plus good
+documentation of the data plane behavior. Some device vendors may wish
+to keep their P4 source code private. The minimum requirement for the
+controller and device to communicate properly is a P4Info file that
+can be loaded by a controller in order to render the correct P4Runtime
+API.
+
+In such scenarios, it is crucial to have detailed documentation,
+perhaps included in the P4Info file itself, specifically the metadata
+in the `PkgInfo` message as well as the embedded `doc`
+fields. Nevertheless, a P4 program which describes the pipeline is
+ideally available. The contents of the P4Info file will be described
 in later sections.
 
 ## Alternative Workflows
@@ -483,7 +491,7 @@ number of reasons, the most likely of which are:
    protect intellectual property or maintain security.
 
 2. The target was not implemented using P4 code to begin with, although it still
-   obeys the "contract" specified in the P4Info.
+   obeys the control plane API specified in the P4Info.
 
 ### Partial P4Info and P4 Source are Available
 
