@@ -679,6 +679,22 @@ described as follows:
       controller is determined to be a slave for a given (`device_id`,
       `role_id`).
 
+The gRPC libraries enable a server process to cause a function to be called when
+a new client creates a `StreamChannel` stream. This function should not return
+until the stream is closed and the server has done any cleanup required when a
+`StreamChannel` is closed normally (or broken, e.g. because a client process
+unexpectedly terminated). Thus the server can easily associate all
+`StreamChannel` messages received from the same client, because they are
+processed within the context of the same function call.
+
+A P4Runtime implementation need not rely on the gRPC library providing
+information with unary RPC messages that identify which client they came from.
+Unary RPC messages include requests to write table entries in the data plane, or
+read state from the data plane, among others described later. P4Runtime relies
+on clients identifying themselves in every write request, by including its
+`election_id` value in all write requests. The server trusts clients not to use
+an `election_id` value other than their own in their write requests.
+
 ## Default Role
 
 A controller can omit the role message in `MasterArbitrationUpdate`. This
