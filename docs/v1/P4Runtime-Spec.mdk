@@ -3418,6 +3418,7 @@ state parse_l2 {
     trill_types:   parse_trill_types;
     _:             reject;
   }
+}
 ~ End P4Example
 
 At runtime, the client writes the following update in the target (shown in
