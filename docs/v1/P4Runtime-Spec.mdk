@@ -1688,22 +1688,22 @@ bit to represent, regardless of whether it is signed or unsigned.
 The shortest possible binary string for an integer $V$ that needs $A$
 bits to represent it is computed as:
 ~ Begin CPP
-encoded_string_size = floor((A + 7) / 8)
+minimum_string_size = floor((A + 7) / 8)
 ~ End CPP
 
-Binary strings with the byte length computed as `encoded_string_size` promote
+Binary strings with the byte length computed as `minimum_string_size` promote
 P4Runtime read-write symmetry in both client-to-server requests and
 server-to-client replies.
 
 Any additional bits in the bytes sent for an unsigned integer value
 (type `bit<W>`) must be 0.  If additional bytes are transmitted above
-the `encoded_string_size` minimum required, they must be filled with
+the `minimum_string_size` minimum required, they must be filled with
 0.
 
 Any additional bits in the bytes sent for a signed integer value (type
 `int<W>`) must be copies of the sign bit, i.e. 0 for non-negative
 values, or 1 for negative values. If additional bytes are transmitted
-above the `encoded_string_size` minimum required, they must be filled
+above the `minimum_string_size` minimum required, they must be filled
 with copies of the sign bit, i.e. 0 for non-negative values, or 0xff
 for negative values. In 2's complement representation, this is called
 "sign extension", and leaves the numeric value represented unchanged.
@@ -1715,17 +1715,17 @@ encoded by the string fits within the expected type (signed or
 unsigned) and P4Info-specified bitwidth for the P4 object value.
 
 For received values expected to fit within a `bit<W>` type, the value
-is in range if, after removing all most significant 0 bits, the value
-remaining is `W` bits or less.
+is in range if, after removing all most significant 0 bits, the
+remaining value's width is `W` bits or less.
 
 For received values expected to fit within an `int<W>` type, the value
-is in range if, after "undoing sign extension", the value remaining is
-`W` bits or less. To undo sign extension, start by eliminating the
-most significant bit, but only if it is equal to the bit that follows
-it (otherwise removing the most significant bit would change the sign
-of the value). Repeat that process until either only a single bit
-remains, or until the two most significant bits are different from
-each other.
+is in range if, after "undoing sign extension", the remaining value's
+width is `W` bits or less. To undo sign extension, start by
+eliminating the most significant bit, but only if it is equal to the
+bit that follows it (otherwise removing the most significant bit would
+change the sign of the value). Repeat that process until either only a
+single bit remains, or until the two most significant bits are
+different from each other.
 
 If the string's byte length is zero, the server always rejects the string.
 
