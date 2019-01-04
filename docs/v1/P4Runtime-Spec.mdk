@@ -618,17 +618,18 @@ To support multiple controllers, P4Runtime uses the same streaming channel
 (available via `StreamChannel` RPC) for session management. The workflow is
 described as follows:
 
-* Each controller is assigned a `role_id` and an `election_id`. The `role_id`
-  defines the role (or realm) that the controller is part of. The `election_id`
-  is unique per role and identifies the master for a specific role. At any point
-  in time, the controller with the largest `election_id` for each role is the
-  master and the rest are slaves. Note that the device does not assign a
+* For each device, every controller is assigned a `role_id` and an
+  `election_id`. The `role_id` defines the role (or realm) that the controller
+  is part of. The `election_id` is unique per `(device_id, role_id)` pair, and
+  identifies the master for a specific device and role. At any point in time,
+  the controller with the largest `election_id` for each device/role is the
+  master and the rest are slaves. Note that the server does not assign a
   `role_id` and `election_id` to any controller. It is up to an arbitration
-  mechanism outside of the device to decide on the controller roles and the
+  mechanism outside of the server to decide on the controller roles and the
   master and slave controllers for each role. The P4Runtime server running on
   the device only keeps track of the `role_id` and `election_id` of the
-  controllers to determine which connected controller is master at any point of
-  time.
+  controllers (independently for each device) to determine which connected
+  controller is master at any point of time.
 
 * To start a controller session, a controller first opens a bidirectional stream
   channel to the server via the `StreamChannel` RPC for each device. This is the
