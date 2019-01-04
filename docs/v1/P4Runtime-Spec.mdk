@@ -691,9 +691,10 @@ A P4Runtime implementation need not rely on the gRPC library providing
 information with unary RPC messages that identify which client they came from.
 Unary RPC messages include requests to write table entries in the data plane, or
 read state from the data plane, among others described later. P4Runtime relies
-on clients identifying themselves in every write request, by including its
-`election_id` value in all write requests. The server trusts clients not to use
-an `election_id` value other than their own in their write requests.
+on clients identifying themselves in every write request, by including the
+values `device_id`, `role_id`, and `election_id` in all write requests. The
+server trusts clients not to use a triple of values other than their own in
+their write requests.
 
 ## Default Role
 
