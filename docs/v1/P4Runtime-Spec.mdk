@@ -680,8 +680,8 @@ described as follows:
       `role_id`).
 
 gRPC enables the server to identify which client originated each message in the
-`StreamChannel` stream.  For example, in synchronous mode, the gRPC libraries
-enables a server process to cause a function to be called when a new client
+`StreamChannel` stream. For example, in synchronous mode, the gRPC libraries
+enable a server process to cause a function to be called when a new client
 creates a `StreamChannel` stream. This function should not return until the
 stream is closed and the server has done any cleanup required when a
 `StreamChannel` is closed normally (or broken, e.g. because a client process
