@@ -1685,7 +1685,7 @@ representation facilitates are those where a P4Runtime server and
 client can continue to transmit P4Runtime messages between them when
 one has a P4Info file for version A of a P4 program, at the same time
 that the other has a P4Info file for version B of a P4 program, and
-those P4 programs differ in the bit widths of some values of type
+those P4 programs differ in the bitwidths of some values of type
 `bit<W>` and/or `int<W>`.
 
 Note that this representation does _not_ make it possible to
@@ -1693,7 +1693,7 @@ seamlessly change the type of a value from signed to unsigned, or vice
 versa.  If you attempt to do so, this mechanism can quietly change
 negative signed values to positive unsigned values, or vice versa.  It
 also limits the magnitude of the values transmitted to those that fit
-within the smaller of the bit widths supported by either end of the
+within the smaller of the bitwidths supported by either end of the
 message transmission.  If a message sender attempts to send a value
 larger than the receiver expects, the receiver will detect it as out
 of range.
