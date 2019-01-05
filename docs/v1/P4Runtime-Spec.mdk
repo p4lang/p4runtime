@@ -697,7 +697,8 @@ on clients identifying themselves in every write request, by including the
 values `device_id`, `role_id`, and `election_id` in all write requests. The
 server trusts clients not to use a triple of values other than their own in
 their write requests. gRPC provides authentication methods [@gRPCAuth] that can
-be deployed to prevent untrusted clients from making changes.
+be deployed to prevent untrusted clients from creating channels, and thus from
+making changes or even reading the state of the server.
 
 ## Default Role
 
