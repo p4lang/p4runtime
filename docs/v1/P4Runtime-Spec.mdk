@@ -680,11 +680,11 @@ described as follows:
       `role_id`).
 
 gRPC enables the server to identify which client originated each message in the
-`StreamChannel` stream. For example, in synchronous mode, the gRPC libraries
-enable a server process to cause a function to be called when a new client
-creates a `StreamChannel` stream. This function should not return until the
-stream is closed and the server has done any cleanup required when a
-`StreamChannel` is closed normally (or broken, e.g. because a client process
+`StreamChannel` stream. For example, the C++ gRPC library [@gRPCStreamC] in
+synchronous mode enables a server process to cause a function to be called when
+a new client creates a `StreamChannel` stream. This function should not return
+until the stream is closed and the server has done any cleanup required when a
+`StreamChannel` is closed normally (or broken, &eg; because a client process
 unexpectedly terminated). Thus the server can easily associate all
 `StreamChannel` messages received from the same client, because they are
 processed within the context of the same function call.
@@ -696,7 +696,8 @@ read state from the data plane, among others described later. P4Runtime relies
 on clients identifying themselves in every write request, by including the
 values `device_id`, `role_id`, and `election_id` in all write requests. The
 server trusts clients not to use a triple of values other than their own in
-their write requests.
+their write requests. gRPC provides authentication methods [@gRPCAuth] that can
+be deployed to prevent untrusted clients from making changes.
 
 ## Default Role
 
