@@ -1659,44 +1659,41 @@ fits the encoded integer value. This representation achieves three goals:
 
 * It helps facilitate non-disruptive P4 program updates.
 
-In particular, the kinds of P4 program updates that this
-representation facilitates are those where a P4Runtime server and
-client can continue to transmit P4Runtime messages between them when
-one has a P4Info file for version A of a P4 program, at the same time
-that the other has a P4Info file for version B of a P4 program, and
-those P4 programs differ in the bitwidths of some values of type
-`bit<W>` and/or `int<W>`.
+In particular, the kinds of P4 program updates that this representation
+facilitates are those where a P4Runtime server and client can continue to
+transmit P4Runtime messages between them when one has a P4Info file for version
+A of a P4 program, at the same time that the other has a P4Info file for version
+B of a P4 program, and those P4 programs differ in the bitwidths of some values
+of type `bit<W>` and/or `int<W>`.
 
-Note that this representation does _not_ make it possible to
-seamlessly change the type of a value from signed to unsigned, or vice
-versa.  If you attempt to do so, this mechanism can quietly change
-negative signed values to positive unsigned values, or vice versa.  It
-also limits the magnitude of the values transmitted to those that fit
-within the smaller of the bitwidths supported by either end of the
-message transmission.  If a message sender attempts to send a value
-larger than the receiver expects, the receiver will detect it as out
-of range.
+Note that this representation does _not_ make it possible to seamlessly change
+the type of a value from signed to unsigned, or vice versa.  If you attempt to
+do so, this mechanism can quietly change negative signed values to positive
+unsigned values, or vice versa.  It also limits the magnitude of the values
+transmitted to those that fit within the smaller of the bitwidths supported by
+either end of the message transmission.  If a message sender attempts to send a
+value larger than the receiver expects, the receiver will detect it as out of
+range.
 
-In the P4Runtime API version 1.0, values of table key fields, action
-parameters, and fields in packet-in and packet-out headers between a
-device and the controller (see [#sec-controller-packet-meta]), may not
-be of type `int<W>`.  The rules for encoding signed values thus only
-apply to messages of type `P4Data` (see
-[#sec-p4data-in-p4runtime-proto]).
+In the P4Runtime API version 1.0, values of table key fields, action parameters,
+and fields in packet-in and packet-out headers between a device and the
+controller (see [#sec-controller-packet-meta]), may not be of type `int<W>`.
+The rules for encoding signed values thus only apply to messages of type
+`P4Data` (see [#sec-p4data-in-p4runtime-proto]).
 
-For a value of type `bit<W>`, the fewest number of bits required to
-represent the integer value $V > 0$ is the smallest integer $A$ such
-that $V \leq 2^A - 1$.
+For a value of type `bit<W>`, the fewest number of bits required to represent
+the integer value $V > 0$ is the smallest integer $A$ such that $V \leq 2^A -
+1$.
 
-For a value of type `int<W>`, the fewest number of bits required to
-represent the integer value $V \neq 0$ in 2's complement form is the
-smallest integer $A$ such that $-2^{A-1} \leq V \leq 2^{A-1} - 1$.
+For a value of type `int<W>`, the fewest number of bits required to represent
+the integer value $V \neq 0$ in 2's complement form is the smallest integer $A$
+such that $-2^{A-1} \leq V \leq 2^{A-1} - 1$.
 
-As a special case, define that the value $V=0$ requires at least $A=1$
-bit to represent, regardless of whether it is signed or unsigned.
+As a special case, define that the value $V=0$ requires at least $A=1$ bit to
+represent, regardless of whether it is signed or unsigned.
 
-The shortest possible binary string for an integer $V$ that needs $A$
-bits to represent it is computed as:
+The shortest possible binary string for an integer $V$ that needs $A$ bits to
+represent it is computed as:
 ~ Begin CPP
 minimum_string_size = floor((A + 7) / 8)
 ~ End CPP
@@ -1705,37 +1702,35 @@ Binary strings with the byte length computed as `minimum_string_size` promote
 P4Runtime read-write symmetry in both client-to-server requests and
 server-to-client replies.
 
-Any additional bits in the bytes sent for an unsigned integer value
-(type `bit<W>`) must be 0.  If additional bytes are transmitted above
-the `minimum_string_size` minimum required, they must be filled with
-0.
+Any additional bits in the bytes sent for an unsigned integer value (type
+`bit<W>`) must be 0.  If additional bytes are transmitted above the
+`minimum_string_size` minimum required, they must be filled with 0.
 
-Any additional bits in the bytes sent for a signed integer value (type
-`int<W>`) must be copies of the sign bit, i.e. 0 for non-negative
-values, or 1 for negative values. If additional bytes are transmitted
-above the `minimum_string_size` minimum required, they must be filled
-with copies of the sign bit, i.e. 0 for non-negative values, or 0xff
-for negative values. In 2's complement representation, this is called
-"sign extension", and leaves the numeric value represented unchanged.
+Any additional bits in the bytes sent for a signed integer value (type `int<W>`)
+must be copies of the sign bit, i.e. 0 for non-negative values, or 1 for
+negative values. If additional bytes are transmitted above the
+`minimum_string_size` minimum required, they must be filled with copies of the
+sign bit, i.e. 0 for non-negative values, or 0xff for negative values. In 2's
+complement representation, this is called "sign extension", and leaves the
+numeric value represented unchanged.
 
-Upon receiving a binary string, the P4Runtime receiver (whether the
-server or the client) does not impose any restrictions on the length
-of the string itself. Instead, the receiver verifies that the value
-encoded by the string fits within the expected type (signed or
-unsigned) and P4Info-specified bitwidth for the P4 object value.
+Upon receiving a binary string, the P4Runtime receiver (whether the server or
+the client) does not impose any restrictions on the length of the string
+itself. Instead, the receiver verifies that the value encoded by the string fits
+within the expected type (signed or unsigned) and P4Info-specified bitwidth for
+the P4 object value.
 
-For received values expected to fit within a `bit<W>` type, the value
-is in range if, after removing all most significant 0 bits, the
-remaining value's width is `W` bits or less.
+For a received bit string expected to fit within a `bit<W>` type, the value it
+represents is in range if, after removing all most significant 0 bits, the
+remaining bit string's width is `W` bits or less.
 
-For received values expected to fit within an `int<W>` type, the value
-is in range if, after "undoing sign extension", the remaining value's
-width is `W` bits or less. To undo sign extension, start by
-eliminating the most significant bit, but only if it is equal to the
-bit that follows it (otherwise removing the most significant bit would
-change the sign of the value). Repeat that process until either only a
-single bit remains, or until the two most significant bits are
-different from each other.
+For a received bit string expected to fit within an `int<W>` type, the value it
+represents is in range if, after "undoing sign extension", the remaining bit
+string's width is `W` bits or less. To undo sign extension, start by eliminating
+the most significant bit, but only if it is equal to the bit that follows it
+(otherwise removing the most significant bit would change the sign of the
+value). Repeat that process until either only a single bit remains, or until the
+two most significant bits are different from each other.
 
 If the string's byte length is zero, the server always rejects the string.
 
