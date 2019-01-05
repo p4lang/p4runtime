@@ -1659,53 +1659,85 @@ fits the encoded integer value. This representation achieves three goals:
 
 * It helps facilitate non-disruptive P4 program updates.
 
-The shortest possible binary string for an integer `value` with `high_bit`
-as the most-significant non-zero bit in the value is computed as:
+In particular, the kinds of P4 program updates that this
+representation facilitates are those where a P4Runtime server and
+client can continue to transmit P4Runtime messages between them when
+one has a P4Info file for version A of a P4 program, at the same time
+that the other has a P4Info file for version B of a P4 program, and
+those P4 programs differ in the bit widths of some values of type
+`bit<W>` and/or `int<W>`.
+
+Note that this representation does _not_ make it possible to
+seamlessly change the type of a value from signed to unsigned, or vice
+versa.  If you attempt to do so, this mechanism can quietly change
+negative signed values to positive unsigned values, or vice versa.  It
+also limits the magnitude of the values transmitted to those that fit
+within the smaller of the bit widths supported by either end of the
+message transmission.  If a message sender attempts to send a value
+larger than the receiver expects, the receiver will detect it as out
+of range.
+
+In the P4Runtime API version 1.0, values of table key fields, action
+parameters, and fields in packet-in and packet-out headers between a
+device and the controller (see [#sec-controller-packet-meta]), may not
+be of type `int<W>`.  The rules for encoding signed values thus only
+apply to messages of type `P4Data` (see
+[#sec-p4data-in-p4runtime-proto]).
+
+For a value of type `bit<W>`, the fewest number of bits required to
+represent the integer value $V > 0$ is the smallest integer $A$ such
+that $V \leq 2^A - 1$.
+
+For a value of type `int<W>`, the fewest number of bits required to
+represent the integer value $V \neq 0$ in 2's complement form is the
+smallest integer $A$ such that $-2^{A-1} \leq V \leq 2^{A-1} - 1$.
+
+As a special case, define that the value $V=0$ requires at least $A=1$
+bit to represent, regardless of whether it is signed or unsigned.
+
+The shortest possible binary string for an integer $V$ that needs $A$
+bits to represent it is computed as:
 ~ Begin CPP
-if (value != 0)
-  encoded_string_size = (high_bit + 8) / 8;
-else
-  encoded_string_size = 1;
+minimum_string_size = floor((A + 7) / 8)
 ~ End CPP
 
-Binary strings with the byte length computed as `encoded_string_size` promote
+Binary strings with the byte length computed as `minimum_string_size` promote
 P4Runtime read-write symmetry in both client-to-server requests and
 server-to-client replies.
 
-Upon receiving a binary string, the P4Runtime server does not impose any
-restrictions on the length of the string itself. Instead, the server verifies
-that the highest-order non-zero bit position in the string is within the
-bounds established by the P4Info bitwidth. If `p4_bitwidth` is the P4Info-
-specified bitwidth for a P4 object value, then the server computes the number of
-binary string bytes required to represent the maximum integer of `p4_bitwidth`
-bits as:
-~ Begin CPP
-binary_string_bytes = (p4_bitwidth + 7) / 8;
-~ End CPP
-The server's decision to accept or reject the binary string depends on the
-string's content and its actual length in the P4Runtime request, as follows:
+Any additional bits in the bytes sent for an unsigned integer value
+(type `bit<W>`) must be 0.  If additional bytes are transmitted above
+the `minimum_string_size` minimum required, they must be filled with
+0.
 
-* If the string's actual byte length is shorter than `binary_string_bytes`
-  but greater than zero, the server always accepts the string and treats the
-  missing bytes as zeroes in the most-significant positions.
+Any additional bits in the bytes sent for a signed integer value (type
+`int<W>`) must be copies of the sign bit, i.e. 0 for non-negative
+values, or 1 for negative values. If additional bytes are transmitted
+above the `minimum_string_size` minimum required, they must be filled
+with copies of the sign bit, i.e. 0 for non-negative values, or 0xff
+for negative values. In 2's complement representation, this is called
+"sign extension", and leaves the numeric value represented unchanged.
 
-* If the string's actual byte length is longer than `binary_string_bytes`, the
-  server rejects any string where the extra high-order bytes contain non-zero
-  values. Otherwise, the server truncates the extra bytes from the front
-  of the string and processes the remainder of the string as if it contains
-  exactly `binary_string_bytes`, as described below.
+Upon receiving a binary string, the P4Runtime receiver (whether the
+server or the client) does not impose any restrictions on the length
+of the string itself. Instead, the receiver verifies that the value
+encoded by the string fits within the expected type (signed or
+unsigned) and P4Info-specified bitwidth for the P4 object value.
 
-* If the string's original or truncated byte length is equal to
-  `binary_string_bytes`, then the server must also consider the P4 integer
-  type's byte alignment. Byte-aligned strings that satisfy the expression:
-~ Begin CPP
-  (binary_string_bytes * 8 == p4_bitwidth)
-~ End CPP
-  are always valid. For non-aligned strings, the server requires
-  the client to fill the high-order pad bits with zeroes, and the server
-  rejects any binary strings with non-zero pad bits.
+For received values expected to fit within a `bit<W>` type, the value
+is in range if, after removing all most significant 0 bits, the
+remaining value's width is `W` bits or less.
 
-* If the string's byte length is zero, the server always rejects the string.
+For received values expected to fit within an `int<W>` type, the value
+is in range if, after "undoing sign extension", the remaining value's
+width is `W` bits or less. To undo sign extension, start by
+eliminating the most significant bit, but only if it is equal to the
+bit that follows it (otherwise removing the most significant bit would
+change the sign of the value). Repeat that process until either only a
+single bit remains, or until the two most significant bits are
+different from each other.
+
+If the string's byte length is zero, the server always rejects the string.
 
 When the server rejects a binary string due to any of the previous criteria,
 it returns an `OUT_OF_RANGE` error.
@@ -1731,8 +1763,8 @@ P4Runtime binary strings according to the criteria in the list above.
 | `bit<12>` | 99 (0x63)      | `\x00\x00\x63`          | no                  |
 | `int<8>`  | 99 (0x63)      | `\x63`                  | yes                 |
 | `int<8>`  | -99 (-0x63)    | `\x9d`                  | yes                 |
-| `int<8>`  | -99 (-0x63)    | `\x00\x9d`              | no                  |
-| `int<12>` | -739 (-0x2e3)  | `\x0d\x1d`              | yes                 |
+| `int<8>`  | -99 (-0x63)    | `\xff\x9d`              | no                  |
+| `int<12>` | -739 (-0x2e3)  | `\xfd\x1d`              | yes                 |
 | `int<16>` | 0 (0x0)        | `\x00\x00`              | no                  |
 | `int<16>` | 0 (0x0)        | `\x00`                  | yes                 |
 |-----------|----------------|-------------------------|---------------------|
@@ -1752,7 +1784,7 @@ P4Runtime binary strings:
 | `bit<12>` | `\x10\x63`              |
 | `bit<12>` | `\x01\x00\x63`          |
 | `bit<12>` | `\x00\x40\x63`          |
-| `int<8>`  | `\xff\x9d`              |
+| `int<8>`  | `\x00\x9d`              |
 | `int<12>` | `\x8d\x1d`              |
 | `int<16>` | `empty string`          |
 |-----------|-------------------------|
@@ -1775,7 +1807,7 @@ the encoder of a P4Runtime request or reply uses the shortest strings that
 fit the encoded integer values.
 
 Representation of variable-length integer values (`varbit<W>` P4 type) is
-similar to the representation of fixed-width integers. We use a binary string,
+similar to the representation of fixed-width unsigned integers. We use a binary string,
 whose length is the *dynamic-length* of the expression. When the value is
 provided by the P4Runtime client, the server must verify that the length of the
 binary string is less than the maximum length specified in the P4 program, and
@@ -1898,7 +1930,7 @@ is guaranteed to be the same as the order of the members in the corresponding
 P4~16~ declaration. The same goes for the order of members of an `enum`
 (serializable or not) or members of `error`.
 
-### `P4Data` in p4runtime.proto
+### `P4Data` in p4runtime.proto { #sec-p4data-in-p4runtime-proto }
 
 P4Runtime uses the `P4Data` message to represent values of arbitrary types. The
 P4Runtime client must generate correct `P4Data` messages based on the type
