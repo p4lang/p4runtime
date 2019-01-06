@@ -1741,11 +1741,11 @@ itself. Instead, the receiver verifies that the value encoded by the string fits
 within the expected type (signed or unsigned) and P4Info-specified bitwidth for
 the P4 object value.
 
-For a received bit string expected to fit within a `bit<W>` type, the value it
+For a received bitstring expected to fit within a `bit<W>` type, the value it
 represents is in range if, after removing all most significant 0 bits, the
-remaining bit string's width is `W` bits or less.
+remaining bitstring's width is `W` bits or less.
 
-For a received bit string expected to fit within an `int<W>` type, the value it
+For a received bitstring expected to fit within an `int<W>` type, the value it
 represents is in range if, after "undoing sign extension", the remaining bit
 string's width is `W` bits or less. To undo sign extension, start by eliminating
 the most significant bit, but only if it is equal to the bit that follows it
