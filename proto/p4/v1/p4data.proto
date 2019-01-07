@@ -43,6 +43,8 @@ message P4StructLike {
 }
 
 message P4Header {
+  // If the header is invalid (is_valid is "false"), then the repeated
+  // bitstrings must be empty.
   bool is_valid = 1;
   repeated bytes bitstrings = 2;
 }
@@ -55,9 +57,13 @@ message P4HeaderUnion {
 }
 
 message P4HeaderStack {
+  // The length of this repeated field must always be equal to the compile-time
+  // size of the header stack, which is specified in P4Info.
   repeated P4Header entries = 1;
 }
 
 message P4HeaderUnionStack {
+  // The length of this repeated field must always be equal to the compile-time
+  // size of the header union stack, which is specified in P4Info.
   repeated P4HeaderUnion entries = 1;
 }
