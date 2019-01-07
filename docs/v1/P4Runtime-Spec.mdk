@@ -1960,10 +1960,9 @@ Just like its P4Info counterpart - `P4DataTypeSpec` -, `P4Data` uses a Protobuf
 We define a canonical representation for `P4Data` messages - therefore
 guaranteeing read-write symmetry - by introducing the following requirements:
 
- * The order of `members` in `P4StructLike`, the order of `bitstrings` in
-   `P4Header`, and the order of `entries` in `P4HeaderStack` and
-   `P4HeaderUnionStack` must match the order in the corresponding p4info.proto
-   type specification and hence the order in the corresponding P4~16~ type
+ * The order of `members` in `P4StructLike` and the order of `bitstrings` in
+   `P4Header` must match the order in the corresponding p4info.proto type
+   specification and hence the order in the corresponding P4~16~ type
    declaration.
 
  * An invalid header is represented by a `P4Header` message where the `is_valid`
@@ -1973,11 +1972,12 @@ guaranteeing read-write symmetry - by introducing the following requirements:
    represented by a `P4HeaderUnion` message where the `valid_header_name` is the
    empty string (default value for the field) and the `valid_header` is unset.
 
- * The length of the `entries` field in `P4HeaderStack` and `P4HeaderUnionStack`
-   messages must always be equal to the compile-time size of the corresponding
-   P4 stack declaration. This size is included in the P4Info, in the
-   corresponding `P4HeaderStackTypeSpec` or `P4HeaderUnionStackTypeSpec`
-   message.
+ * The order of `entries` in `P4HeaderStack` and `P4HeaderUnionStack` is from
+   element at index 0 of the stack to last element of the stack, in ascending
+   order of index. The length of the `entries` field must always be equal to the
+   compile-time size of the corresponding P4 stack declaration. This size is
+   included in the P4Info, in the corresponding `P4HeaderStackTypeSpec` or
+   `P4HeaderUnionStackTypeSpec` message.
 
 ### Example
 
