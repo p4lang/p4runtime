@@ -424,6 +424,12 @@ message CloneSessionEntry {
   int32 packet_length_bytes = 4;
 }
 
+// A member in a P4 value set. Each member defines a list of matches, which can
+// have different match types.
+message ValueSetMember {
+  repeated FieldMatch match = 1;
+}
+
 //------------------------------------------------------------------------------
 // For writing and reading matches in a parser value set. A state transition
 // on an empty value set will never be taken. The number of matches must be at
@@ -431,12 +437,9 @@ message CloneSessionEntry {
 // value_set constructor in the P4 program.
 //
 // For Write Requests:
-//   - INSERT will write the given matches in the repeated field to the value
+//   - MODIFY will write the given matches in the repeated field to the value
 //     set.
-//   - MODIFY will replace all matches in the value set with the given matches
-//     in the repeated field.
-//   - DELETE should only specify the value_set_id and will delete all matches
-//     in the value set.
+//   - INSERT and DELETE are not allowed.
 //
 // For Read Requests:
 //   - All matches for all value-set entries if value_set_id = 0
@@ -444,7 +447,7 @@ message CloneSessionEntry {
 //   - The 'match' field must never be set in the ReadRequest
 message ValueSetEntry {
   uint32 value_set_id = 1;
-  repeated FieldMatch match = 2;
+  repeated ValueSetMember members = 2;
 }
 
 message RegisterEntry {

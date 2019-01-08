@@ -323,7 +323,7 @@ message ControllerPacketMetadata {
 
 message ValueSet {
   Preamble preamble = 1;
-  int32 bitwidth = 2;
+  repeated MatchField match = 2;
   // number of entries in the value_set, as per the P4 constructor call.
   int32 size = 3;
 }
