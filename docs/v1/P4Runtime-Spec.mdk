@@ -1496,7 +1496,8 @@ value_sets {
    the P4 struct declaration.
  * `name`: set to the name of the corresponding struct field.
  * `annotations`: set to the list of P4 annotations associated with the struct
-   field.
+   field, except for the `@match` annotation, if present (see the `match` field
+   below).
  * `bitwidth`: set to the value of `W` for the corresponding struct field.
  * `match`: by default `match_type` is set to `EXACT`; the P4 programmer can
    specify a different match type by using the `@match` annotation
@@ -1520,16 +1521,19 @@ value_sets {
   }
   match {
     id: 1
+    name: "f8"
     bitwidth: 8
     match_type: EXACT
   }
   match {
     id: 2
+    name: "f16"
     bitwidth: 16
     match_type: TERNARY
   }
   match {
     id: 3
+    name: "f32"
     bitwidth: 32
     other_match_type: "custom"
   }
@@ -1537,7 +1541,7 @@ value_sets {
 }
 ~ End Prototext
 
-Although not mentionned in the P4 specification, P4Runtime also supports the
+Although not mentioned in the P4 specification, P4Runtime also supports the
 cases where the Value Set type parameter is a [user-defined
 type](#sec-user-defined-types) that resolves to a `bit<W>`, or a `struct` where
 one or more fields is a [user-defined type](#sec-user-defined-types) that
@@ -5136,16 +5140,19 @@ value_sets {
   }
   match {
     id: 1
+    name: "f8"
     bitwidth: 8
     match_type: EXACT
   }
   match {
     id: 2
+    name: "f16"
     bitwidth: 16
     match_type: TERNARY
   }
   match {
     id: 3
+    name: "f32"
     bitwidth: 32
     other_match_type: "custom"
   }
