@@ -953,16 +953,17 @@ description")
 Above we see several different types of annotations:
 
 * `@pkginfo` - This is used to populate a specific field within the `PkgInfo`
-message. Multiple `@pkginfo` annotations are allowed. For compactness, multiple
-key-value pairs can appear in a single `@pkginfo` annotation, separated by
-commas. Each key should only appear once, but if it appears multiple times, then
-the last value shall be used. The `key`s must be from among the message fields
-inside `PkgInfo`, for example, `name`, `version`, etc. Each key-value pair
-assigns a value to the corresponding field inside the single `PkgInfo` message
-for the program's P4Info. One exception is that the `Documentation` field of
-`PkgInfo` must be expressed as individual `@description` and `@brief`
-annotations, see next bullets. The key `arch` will be ignored (with a warning)
-by the compiler. The value for this should come from the compiler itself.
+  message. Multiple `@pkginfo` annotations are allowed. For compactness,
+  multiple key-value pairs can appear in a single `@pkginfo` annotation,
+  separated by commas. Each key must only appear once and the compiler must
+  reject the program if one appears multiple times. The `key`s must be from
+  among the message fields inside `PkgInfo`, for example, `name`, `version`,
+  etc. Each key-value pair assigns a value to the corresponding field inside the
+  single `PkgInfo` message for the program's P4Info. One exception is that the
+  `Documentation` field of `PkgInfo` must be expressed as individual
+  `@description` and `@brief` annotations, see next bullets. The key `arch` will
+  be ignored (with a warning) by the compiler. The value for this should come
+  from the compiler itself.
 
 * `@brief` - This will populate the `PkgInfo.doc.brief` message field.
 
