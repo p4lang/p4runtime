@@ -1644,14 +1644,25 @@ observed_value = server.read(p4_entity)
 assert(intended_value == observed_value)
 ~ End Pseudo
 
-To ensure read-write symmetry, the rest of this document tries to offer canonical
-representations for various data types, but this principle should be thought of
-where it falls short. Ensuring this will allow client software to recover
-programmatically from failures that can affect the switch stack software,
-communication channel, or the client replicas. If `Read` RPC returns a
+To ensure read-write symmetry, the rest of this document tries to offer
+canonical representations for various data types, but this principle should be
+thought of where it falls short. Ensuring this will allow client software to
+recover programmatically from failures that can affect the switch stack
+software, communication channel, or the client replicas. If `Read` RPC returns a
 semantically-same but syntactically-different response then the client would
 have to canonicalize the read values to check its internal state, which only
 pushes the protocol's complexities to the client implementations.
+
+In order to avoid placing too much burden on the P4Runtime server
+implementation, we do not in general mandate that the order of values in a
+Protobuf repeated field be preserved. For example, the server is not required to
+preserve the order of the `match` fields in a `TableEntry` message. If there is
+a specific case for which the order is significant and / or needs to be
+preserved, it will be explicitly stated in this document. The
+`MessageDifferencer` class [@ProtoMessageDifferencer] included in the Protobuf
+C++ API supports comparing messages while treating repeated fields as sets, so
+that different orderings of the same elements are considered equal. This method
+of comparing Protobuf messages may come at a cost in performance.
 
 ## Zero as Reserved Value
 
@@ -2845,7 +2856,8 @@ following semantics.
   `FAILED_PRECONDITION`. If needed, the action profile group should first be
   modified to remove the member from the group. The member must not be
   referenced in the table action of any table entry, or the server must also
-  return `FAILED_PRECONDITION`.
+  return `FAILED_PRECONDITION`. `member_id` is the only field which is
+  considered when performing a `DELETE` and every other field will be ignored.
 
 ### Action Profile Group Programming
 
@@ -2900,7 +2912,13 @@ following semantics.
 - `DELETE`: Delete the group entry and deallocate the `group_id`. The group must
   not be referenced in the table action of any table entry, or the server must
   return a `FAILED_PRECONDITION` error code. If the `group_id` is invalid, the
-  server must return `NOT_FOUND`.
+  server must return `NOT_FOUND`. `group_id` is the only field which is
+  considered when performing a `DELETE` and every other field will be ignored.
+
+When setting the group membership with `INSERT` or `MODIFY`, the `members`
+repeated field must not include duplicates, &ie; members with the same
+`member_id`. The `weight` field is used instead to logically "repeat" the member
+inside the group.
 
 ### One Shot Action Selector Programming { #sec-oneshot }
 
@@ -3013,6 +3031,13 @@ updates](#sec-batching-and-ordering-of-updates). Members need to be inserted
 first, then the group needs to be created, and finally the match entry can be
 inserted. Therefore, 3 distinct `WriteRequest` batches are required.
 
+It is possible to include several `ActionProfileAction` messages with the same
+exact `action` specification in one `ActionProfileActionSet` message. However,
+the P4Runtime client is encouraged not to do so, as the same can be achieved by
+using the `weight` field. Note that to preserve read-write symmetry, the server
+must not coalesce multiple `ActionProfileAction` messages with the same `action`
+specification into one.
+
 All the tables associated with an action selector may either be programmed
 exclusively with one shots, or exclusively with `ActionProfileMember` and
 `ActionProfileGroup` messages. Programming some entries with one shots, and
@@ -3042,7 +3067,10 @@ different actions, the server should return `UNIMPLEMENTED` if not supported by
 the target. This applies to the one shot style of programming as well. We
 recommend that control plane implementations take into account this possible
 limitation and be designed so as not to rely on this feature for the sake of
-portability.
+portability. A target with this restriction is also not expected to support
+modifying the action function of a member which is part of one or more groups
+and should return `UNIMPLEMENTED` (modifying the action parameter values must be
+supported, however).
 
 PSA 1.1 introduces the `psa_empty_group_action` table property in order to
 enable the P4 programmer to specify the action to perform on the packet when the
