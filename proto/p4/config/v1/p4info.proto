@@ -265,6 +265,8 @@ message Counter {
   CounterSpec spec = 2;
   // number of entries in the counter array
   int64 size = 3;
+  // unset if index is not user-defined type
+  P4NamedType index_type_name = 4;
 }
 
 message DirectCounter {
@@ -289,6 +291,8 @@ message Meter {
   MeterSpec spec = 2;
   // number of entries in the meter array
   int64 size = 3;
+  // unset if index is not user-defined type
+  P4NamedType index_type_name = 4;
 }
 
 message DirectMeter {
@@ -332,6 +336,8 @@ message Register {
   Preamble preamble = 1;
   P4DataTypeSpec type_spec = 2;
   int32 size = 3;
+  // unset if index is not user-defined type
+  P4NamedType index_type_name = 4;
 }
 
 message Digest {
