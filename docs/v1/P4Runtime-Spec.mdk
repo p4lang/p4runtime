@@ -1294,6 +1294,12 @@ by this counter array. Conversely, the `DirectCounter` message contains a
 `direct_table_id` field that carries the `unit32` identifier of the table to
 which this direct counter is attached.
 
+For indexed counters, the `Counter` message contains also an `index_type_name`
+field, which indicates whether the index has a [user-defined
+type](#sec-user-defined-types). This is useful for
+[translation](#sec-psa-metadata-translation). The underlying built-in type must
+be a fixed-width unsigned bitstring (`bit<W>`).
+
 ### `Meter` & `DirectMeter`
 
 `Meter` and `DirectMeter` messages are used to specify all possible instances of
@@ -1328,6 +1334,12 @@ representing the maximum number of independent cells that can be held by this
 meter. Conversely, the `DirectMeter` message contains a `direct_table_id` field
 that carries the `uint32` identifier of the table to which this direct meter is
 attached.
+
+For indexed meters, the `Meter` message contains also an `index_type_name`
+field, which indicates whether the index has a [user-defined
+type](#sec-user-defined-types). This is useful for
+[translation](#sec-psa-metadata-translation). The underlying built-in type must
+be a fixed-width unsigned bitstring (`bit<W>`).
 
 ### `ControllerPacketMetadata` { #sec-controller-packet-meta}
 
@@ -1586,6 +1598,11 @@ The `Register` message defines the following fields:
 
 * `size`, an `int32` value representing the total number of independent register
   cells available.
+
+* `index_type_name`, which indicates whether the register index has a
+  [user-defined type](#sec-user-defined-types). This is useful for
+  [translation](#sec-psa-metadata-translation). The underlying built-in type
+  must be a fixed-width unsigned bitstring (`bit<W>`).
 
 ### `Digest`
 
@@ -2259,8 +2276,8 @@ the following fields:
       present. It specifies the underlying built-in P4 type for the user-defined
       type. If the underlying type used in the P4 `type` declaration is itself a
       user-defined type, `original_type` is obtained by "walking" the chain of
-      `type` declarations recursively until a built-in type (e.g `bit<W>` is
-      found).
+      `type` declarations recursively until a built-in type (e.g `bit<W>`) is
+      found.
 
     * `translated_type`, if and only if the P4 `type` declaration was annotated
       with `@p4runtime_translation`. It is of type `P4NewTypeTranslation`, which
@@ -4789,13 +4806,14 @@ switch.
 In order to support the above SDN use case, P4Runtime requires translation of
 port metadata values between the controller's space and the PSA device's space
 as needed. Such translation is enabled by identifying a P4 entity (match field,
-action parameter or header field) as being a PSA port metadata type. For this
-purpose, PSA defines the port metadata field type using special [user-defined P4
-types](#sec-user-defined-types), namely `PortId_t` and `PortIdInHeader_t`,
-instead of standard P4 bitstrings. The P4Info for all P4 entities of the special
-PSA port types use a controller-defined 32-bit type instead of the data plane
-bitwidth defined in the P4 program. The following PSA port metadata types are
-defined in *psa.p4* for the PSA device in Switch 1.
+action parameter, controller-header field or other) as being a PSA port metadata
+type. For this purpose, PSA defines the port metadata field type using special
+[user-defined P4 types](#sec-user-defined-types), namely `PortId_t` and
+`PortIdInHeader_t`, instead of standard P4 bitstrings. The P4Info entries for
+all P4 entities whose type is one of the special PSA port types use a
+controller-defined 32-bit type instead of the data plane bitwidth defined in the
+P4 program. The following PSA port metadata types are defined in *psa.p4* for
+the PSA device in Switch 1.
 
 ~ Begin P4Example
 @p4runtime_translation("p4.org/psa/v1/PortId_t", 32)
@@ -4963,6 +4981,44 @@ multicasting to a set of ports. The egress port fields defined in the PRE
 multicast entry and clone session entry are of type `uint32` to carry the 32-bit
 SDN port number(s). The P4Runtime server will translate these SDN port numbers
 to device-specific port numbers for multicasting and cloning in the data plane.
+
+### Using Port as an Index to a Register, Indirect Counter or Indirect Meter
+
+P4Runtime supports using a translated value (`PortId_t` or any other translated
+type for which the underlying built-in type is `bit<W>`) as an index to a
+register, indirect counter, or indirect meter.
+
+~ Begin P4Example
+Counter<bit<32> /* counter entry type */, PortId_t /* index type */>(
+  32w1024, PSA_CounterType_t.PACKETS) counter;
+action a(PortId_t p) {
+  istd.egress_port = p;  // PSA standard metadata egress port
+  counter.count(p);
+}
+~ End P4Example
+
+This P4 Counter declaration will translate into the following entry in the
+P4Info messsage:
+
+~ Begin Prototext
+counters {
+  preamble {
+    id: 0x12000001
+    name: "counter"
+  }
+  spec {
+    unit: PACKETS
+  }
+  index_type_name {
+    name: "PortId_t"
+  }
+}
+~ End Prototext
+
+The controller may read and write counter values from indexed counter `counter`
+using SDN port numbers as indices, and not device-specific port numbers. The
+`index_type_name` field in the P4Info message is a signal to the P4Runtime
+server that translation is required.
 
 # P4Runtime Versioning
 
