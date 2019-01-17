@@ -567,8 +567,9 @@ message Role {
 }
 
 message IdleTimeoutNotification {
-  // Only "key" fields are required to be set in each TableEntry: table_id,
-  // match and priority.
+  // The only fields that are required to be set in each TableEntry are the
+  // "key" fields (table_id, match and priority) along with controller_metadata
+  // and idle_timeout_ns.
   repeated TableEntry table_entry = 1;
   // Timestamp at which the server generated the message (in nanoseconds since
   // Epoch)

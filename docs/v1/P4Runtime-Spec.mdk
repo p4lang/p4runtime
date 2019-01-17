@@ -4515,8 +4515,8 @@ The `IdleTimeoutNotification` Protobuf message has the following fields:
 * `table_entry`: a repeated field of entries which have expired. Each individual
   entry is identified by a single `TableEntry` message. For each `TableEntry`,
   the *key* fields (`table_id`, `match` and `priority`) must be set, along with
-  the `controller_metadata` field. Other fields may be set by the server but
-  should be ignored by the client.
+  the `controller_metadata` field and the `idle_timeout_ns` field. Other fields
+  may be set by the server but should be ignored by the client.
 
 Because we use a repeated Protobuf field, the P4Runtime server may elect to
 coalesce several idle timeout notifications in the same
