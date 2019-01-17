@@ -624,9 +624,9 @@ reasons:
    one or more standby slave controllers, which take over controlling the
    devices in case the master controller goes offline.
 
-To support multiple controllers, P4Runtime uses the same streaming channel
-(available via `StreamChannel` RPC) for session management. The workflow is
-described as follows:
+To support multiple controllers, P4Runtime uses the streaming channel (available
+via `StreamChannel` RPC) for session management. The workflow is described as
+follows:
 
 * Each controller instance (e.g. a controller process) can participate in one or
   more roles. For each `(device_id, role_id)`, the controller receives an
