@@ -624,21 +624,37 @@ reasons:
    one or more standby slave controllers, which take over controlling the
    devices in case the master controller goes offline.
 
-To support multiple controllers, P4Runtime uses the same streaming channel
-(available via `StreamChannel` RPC) for session management. The workflow is
-described as follows:
+To support multiple controllers, P4Runtime uses the streaming channel (available
+via `StreamChannel` RPC) for session management. The workflow is described as
+follows:
 
-* Each controller is assigned a `role_id` and an `election_id`. The `role_id`
-  defines the role (or realm) that the controller is part of. The `election_id`
-  is unique per role and identifies the master for a specific role. At any point
-  in time, the controller with the largest `election_id` for each role is the
-  master and the rest are slaves. Note that the device does not assign a
-  `role_id` and `election_id` to any controller. It is up to an arbitration
-  mechanism outside of the device to decide on the controller roles and the
-  master and slave controllers for each role. The P4Runtime server running on
-  the device only keeps track of the `role_id` and `election_id` of the
-  controllers to determine which connected controller is master at any point of
-  time.
+* Each controller instance (e.g. a controller process) can participate in one or
+  more roles. For each (`device_id`, `role_id`), the controller receives an
+  `election_id`. This `election_id` can be the same for different roles and/or
+  devices, as long as the tuple (`device_id`, `role_id`, `election_id`) is
+  unique. For each (`device_id`, `role_id`) that the controller wishes to
+  control, it establishes a `StreamChannel` with the P4Runtime server
+  responsible for that device, and sends a `MasterArbitrationUpdate` message
+  containing that tuple of (`device_id`, `role_id`, `election_id`) values. The
+  P4Runtime server selects a master independently for each (`device_id`,
+  `role_id`) pair. The master is the client that has the highest `election_id`
+  among all active `StreamChannel` connections with the same (`device_id`,
+  `role_id`) values.  A connection between a controller instance and a device id
+  - which involves a persistent `StreamChannel` - can be referred to as a
+  P4Runtime client.
+
+  Note that the P4Runtime server does not assign a `role_id` or `election_id` to
+  any controller. It is up to an arbitration mechanism outside of the server to
+  decide on the controller roles, and the `election_id` values used for each
+  `StreamChannel`. The P4Runtime server only keeps track of the (`device_id`,
+  `role_id`, `election_id`) of each `StreamChannel` that has sent a successful
+  `MasterArbitrationUpdate` message, and maintains the invariant that all such
+  3-tuples are unique. A server must use all three of these values from a
+  `WriteRequest` message to identify which client is making the `WriteRequest`,
+  not only the `election_id`. This enables controllers to re-use the same
+  numeric `election_id` values across different (`device_id`, `role_id`)
+  pairs. P4Runtime does not require `election_id` values be reused across such
+  different (`device_id`, `role_id`) pairs; it allows it.
 
 * To start a controller session, a controller first opens a bidirectional stream
   channel to the server via the `StreamChannel` RPC for each device. This is the
