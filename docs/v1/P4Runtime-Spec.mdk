@@ -630,16 +630,18 @@ follows:
 
 * Each controller instance (e.g. a controller process) can participate in one or
   more roles. For each (`device_id`, `role_id`), the controller receives an
-  `election_id`, which may be the same numeric value across multiple roles. For
-  each (`device_id`, `role_id`) that the controller wishes to control, it
-  establishes a `StreamChannel` with the P4Runtime server responsible for that
-  device, and sends a `MasterArbitrationUpdate` message containing that tuple of
-  (`device_id`, `role_id`, `election_id`) values. The P4Runtime server selects a
-  master independently for each (`device_id`, `role_id`) pair. The master is the
-  client that has the highest `election_id` among all active `StreamChannel`
-  connections with the same (`device_id`, `role_id`) values.  A connection
-  between a controller instance and a device id - which involves a persistent
-  `StreamChannel` - can be referred to as a P4Runtime client.
+  `election_id`. This `election_id` can be the same for different roles and/or
+  devices, as long as the tuple (`device_id`, `role_id`, `election_id`) is
+  unique. For each (`device_id`, `role_id`) that the controller wishes to
+  control, it establishes a `StreamChannel` with the P4Runtime server
+  responsible for that device, and sends a `MasterArbitrationUpdate` message
+  containing that tuple of (`device_id`, `role_id`, `election_id`) values. The
+  P4Runtime server selects a master independently for each (`device_id`,
+  `role_id`) pair. The master is the client that has the highest `election_id`
+  among all active `StreamChannel` connections with the same (`device_id`,
+  `role_id`) values.  A connection between a controller instance and a device id
+  - which involves a persistent `StreamChannel` - can be referred to as a
+  P4Runtime client.
 
   Note that the P4Runtime server does not assign a `role_id` or `election_id` to
   any controller. It is up to an arbitration mechanism outside of the server to
