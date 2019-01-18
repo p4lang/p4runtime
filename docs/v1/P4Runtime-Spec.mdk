@@ -2920,6 +2920,12 @@ repeated field must not include duplicates, &ie; members with the same
 `member_id`. The `weight` field is used instead to logically "repeat" the member
 inside the group.
 
+It is explicitly allowed for the same member to be added to be present in
+multiple groups at the same time. If, as a result, an implementation "stores"
+the action id and parameters in the target in multiple locations, the server
+must update all of those locations when a request to modify such a member is
+made.
+
 ### One Shot Action Selector Programming { #sec-oneshot }
 
 P4Runtime supports syntactic sugar to program a table, which is implemented with
