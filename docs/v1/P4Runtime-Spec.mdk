@@ -2882,7 +2882,9 @@ An `ActionProfileGroup` entity update message has the following fields:
   group. For each member in a group, the controller must define the following
   fields:
     * `member_id` for looking up the member table in the selector.
-    * `weight` specifying the probability of the member's selection at runtime.
+    * `weight` specifying the probability of the member's selection at
+      runtime. 0 is not a valid `weight` value and the server must return
+      `INVALID_ARGUMENT` if the client attempts to use it.
     * `watch` is the controller-defined 32-bit port number that the member's
       liveness depends on. At runtime, the member must be excluded from
       selection if the watch port is down.
@@ -2933,7 +2935,9 @@ One shots are programmed by choosing the `ActionProfileActionSet` message as the
 * `action` is one of the actions specified by the table that is being
   programmed.
 
-* `weight` specifying the probability of the action's selection at runtime.
+* `weight` specifying the probability of the action's selection at runtime. 0 is
+  not a valid `weight` value and the server must return `INVALID_ARGUMENT` if
+  the client attempts to use it.
 
 * `watch` is the controller-defined 32-bit port number that the action's
   liveness depends on. At runtime, the action must be excluded from selection if
