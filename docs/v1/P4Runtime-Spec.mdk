@@ -2760,6 +2760,12 @@ value they can support, rather than reject the TableEntry write with an error
 code. Similarly, each target should do its best to provide reasonably-accurate
 values for `time_since_last_hit`.
 
+P4Runtime does not support idle timeout for default entries. When the
+`is_default_action` flag is set in a `TableEntry` message, `idle_timeout_ns`
+must be set to 0 (default) and `time_since_last_hit` must be unset. If the
+server receives a `TableEntry` message which violates this, it must return an
+`INVALID_ARGUMENT` error.
+
 For more information about idle timeout, in particular regarding
 `IdleTimeoutNotification`, please refer to the [Table idle timeout
 notifications](#sec-table-idle-timeout-notification) section.
