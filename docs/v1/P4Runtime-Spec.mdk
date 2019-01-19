@@ -2921,12 +2921,14 @@ following semantics.
 * `INSERT`: Add a new group entry bound to a set of existing action profile
   members. `The group_id` must be different from ids of already programmed
   groups for that selector, or the server must return an `ALREADY_EXISTS` error
-  code. P4Runtime does not explicitly limit the number of groups, however, such
-  limits may be imposed out-of-band by the target. The value of `max_size`
-  should not exceed the static maximum size defined for the selector in P4Info,
-  otherwise a `RESOURCE_EXHAUSTED` error should be returned. If the client does
-  not set `max_size`, the default value (0) implies that the statically-defined
-  maximum size should be used for this group.
+  code.  All members specified in the group must exist in the selector, or the
+  server must return `NOT_FOUND`.  P4Runtime does not explicitly limit the
+  number of groups, however, such limits may be imposed out-of-band by the
+  target. The value of `max_size` should not exceed the static maximum size
+  defined for the selector in P4Info, otherwise a `RESOURCE_EXHAUSTED` error
+  should be returned. If the client does not set `max_size`, the default value
+  (0) implies that the statically-defined maximum size should be used for this
+  group.
 - `MODIFY`: Modify the member set specification of an existing group entry. An
   entry with the `group_id` must exist, or the server must return
   `NOT_FOUND`. All members specified in the group entry must exist in the
