@@ -1883,18 +1883,21 @@ specification.
 | `void`         | error                 | error        | error           |
 | `error`        | error                 | error        | allowed         |
 | `match_kind`   | error                 | error        | error           |
-| `bool`         | error                 | error        | allowed         |
+| `bool`         | allowed               | error        | allowed         |
 | `enum`         | allowed[^enum_header] | error        | allowed         |
 | `header`       | error                 | allowed      | allowed         |
 | header stack   | error                 | error        | allowed         |
 | `header_union` | error                 | error        | allowed         |
-| `struct`       | error                 | error        | allowed         |
+| `struct`       | allowed[*st_header]   | error        | allowed         |
 | `tuple`        | error                 | error        | allowed         |
 |----------------|-----------------------|--------------|-----------------|
 ~
 
 [^enum_header]: an `enum` type used as a field in a `header` must specify a
     underlying type and representation for `enum` elements.
+[*st_header]: a `struct` or nested 'struct' type that has the same properties, 
+              used as a field in a `header` must contain only 
+              `bit<W>`, `int<W>`, a Serializable Enum, or a `bool`.
 
 For example, the following P4~16~ objects involve complex types that need to be
 exposed in P4Runtime in order to support runtime operations on these objects.
