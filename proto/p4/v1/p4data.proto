@@ -43,8 +43,8 @@ message P4StructLike {
 }
 
 message P4Header {
-  // If the header is invalid (is_valid is "false"), then the repeated
-  // bitstrings must be empty.
+  // If the header is invalid (is_valid is "false"), then the bitstrings
+  // repeated field must be empty.
   bool is_valid = 1;
   repeated bytes bitstrings = 2;
 }
