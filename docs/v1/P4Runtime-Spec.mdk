@@ -3093,7 +3093,7 @@ in the P4Info message:
 
 * If `max_group_size` is greater than 0, then `max_size` must be greater than 0,
   and less than or equal to `max_group_size`. We assume that the target can
-  support selector groups for which the sum of all member weigths is up to
+  support selector groups for which the sum of all member weights is up to
   `max_group_size`, or the P4Runtime server would have rejected the Forwarding
   Pipeline Config. If `max_size` is greater than `max_group_size`, the server
   must return `INVALID_ARGUMENT`.
