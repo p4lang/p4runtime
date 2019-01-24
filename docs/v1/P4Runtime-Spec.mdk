@@ -4964,6 +4964,14 @@ properties, but we may include on in future versions of the API.
   in particular, there is no way for a client to query the supported minor +
   patch version numbers.
 
+# Security concerns for P4Runtime
+
+Appropriate measures and security best practices need to be in place to protect
+the P4Runtime server and client, and the communication channel between the two.
+For example, firewalling and authenticating the incoming connections to the
+P4Runtime server can prevent a malicious actor from taking over the switch.
+Similarly, using TLS to authenticate and encrypt the gRPC channel can prevent
+man-in-the-middle attacks between the server and client.
 
 # Appendix: P4 Annotations {@h1:"A"}
 
