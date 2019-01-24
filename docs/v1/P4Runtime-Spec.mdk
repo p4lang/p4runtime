@@ -1253,7 +1253,7 @@ The `ActionProfile` message includes the following fields:
   instance of a PSA Action Selector extern.
 
 * `size`, an `int64` representing the maximum number of member entries that the
-  Action Profile can hold, or, in the case of an Action Profile, the maximum sum
+  Action Profile can hold, or, in the case of an Action Selector, the maximum sum
   of all member weights across all selector groups.
 
 * `max_group_size`, an `int32` representing the maximum sum of all member
