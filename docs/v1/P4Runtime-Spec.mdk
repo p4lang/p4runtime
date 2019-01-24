@@ -1215,7 +1215,7 @@ The `Action` message defines the following fields:
       [user-defined type](#sec-user-defined-types); this is useful for
       [translation](#sec-psa-metadata-translation).
 
-### `ActionProfile`
+### `ActionProfile` { #sec-p4info-action-profile}
 
 `ActionProfile` messages are used to specify all available instances of Action
 Profile and Action Selector PSA externs.
@@ -1252,12 +1252,15 @@ The `ActionProfile` message includes the following fields:
 * `with_selector`, a boolean flag indicating whether this message describes an
   instance of a PSA Action Selector extern.
 
-* `size`, an `int64` representing the maximum number of *weighted* member
-  entries that this Action Profile or Selector can hold - across all selector
-  groups for an Action Selector.
+* `size`, an `int64` representing the maximum number of member entries that the
+  Action Profile can hold, or, in the case of an Action Selector, the maximum sum
+  of all member weights across all selector groups.
 
-* `max_group_size`, an `int32` representing the maximum number of *weighted*
-  member entries in any given Selector group, or 0 for an Action Profile.
+* `max_group_size`, an `int32` representing the maximum sum of all member
+  weights within any given selector group, in the case of an Action Selector, or
+  0 for an Action Profile. PSA programs can use the `@max_group_size` annotation
+  to provide this value for Action Selectors. If the annotation is omitted, the
+  P4Info field will default to 0.
 
 ### `Counter` & `DirectCounter`
 
@@ -3021,7 +3024,7 @@ following semantics.
   return `FAILED_PRECONDITION`. `member_id` is the only field which is
   considered when performing a `DELETE` and every other field will be ignored.
 
-### Action Profile Group Programming
+### Action Profile Group Programming { #sec-action-profile-group-programming }
 
 Action profile groups are entries in an ActionSelector and are referenced by a
 `uint32` identifier that is bound to a set of action profile members already
@@ -3048,12 +3051,9 @@ An `ActionProfileGroup` entity update message has the following fields:
       selection if the watch port is down.
 
 * `max_size` is the maximum sum of all member weights for the group. This field
-  is defined when the group is inserted, but it must not be changed in a
-  `MODIFY` update. It must not exceed the static `max_group_size` included in
-  P4Info. If the `max size` is not known at group creation-time, the client may
-  leave this field unset (default value 0), in which case the static
-  `max_group_size` value will be used and the group will be able to include up
-  to `max_group_size` weighted member entries.
+  is defined when the group is inserted, and must not be changed in a
+  `MODIFY` update. See the subsection below for the [rules on setting
+  `max_size`](#sec-max-size-rules).
 
 An action profile group may be inserted, modified or deleted as per the
 following semantics.
@@ -3062,20 +3062,15 @@ following semantics.
   members. `The group_id` must be different from ids of already programmed
   groups for that selector, or the server must return an `ALREADY_EXISTS` error
   code.  All members specified in the group must exist in the selector, or the
-  server must return `NOT_FOUND`.  P4Runtime does not explicitly limit the
-  number of groups, however, such limits may be imposed out-of-band by the
-  target. The value of `max_size` should not exceed the static maximum size
-  defined for the selector in P4Info, otherwise a `RESOURCE_EXHAUSTED` error
-  should be returned. If the client does not set `max_size`, the default value
-  (0) implies that the statically-defined maximum size should be used for this
-  group.
-- `MODIFY`: Modify the member set specification of an existing group entry. An
+  server must return `NOT_FOUND`. P4Runtime does not explicitly limit the number
+  of groups, however, such limits may be imposed out-of-band by the target.
+* `MODIFY`: Modify the member set specification of an existing group entry. An
   entry with the `group_id` must exist, or the server must return
   `NOT_FOUND`. All members specified in the group entry must exist in the
   selector, or the server must return `NOT_FOUND`. The value of `max_size` must
   be identical to the value used when inserting the group, otherwise an
   `INVALID_ARGUMENT` error is returned.
-- `DELETE`: Delete the group entry and deallocate the `group_id`. The group must
+* `DELETE`: Delete the group entry and deallocate the `group_id`. The group must
   not be referenced in the table action of any table entry, or the server must
   return a `FAILED_PRECONDITION` error code. If the `group_id` is invalid, the
   server must return `NOT_FOUND`. `group_id` is the only field which is
@@ -3086,11 +3081,35 @@ repeated field must not include duplicates, &ie; members with the same
 `member_id`. The `weight` field is used instead to logically "repeat" the member
 inside the group.
 
-It is explicitly allowed for the same member to be added to be present in
-multiple groups at the same time. If, as a result, an implementation "stores"
-the action id and parameters in the target in multiple locations, the server
-must update all of those locations when a request to modify such a member is
-made.
+It is explicitly allowed for the same member to be present in multiple groups at
+the same time. If, as a result, an implementation "stores" the action id and
+parameters in the target in multiple locations, the server must update all of
+those locations when a request to modify such a member is made.
+
+#### Rules on Setting `max_size` { #sec-max-size-rules}
+
+The valid values for `max_size` depend on the static `max_group_size` included
+in the P4Info message:
+
+* If `max_group_size` is greater than 0, then `max_size` must be greater than 0,
+  and less than or equal to `max_group_size`. We assume that the target can
+  support selector groups for which the sum of all member weights is up to
+  `max_group_size`, or the P4Runtime server would have rejected the Forwarding
+  Pipeline Config. If `max_size` is greater than `max_group_size`, the server
+  must return `INVALID_ARGUMENT`.
+
+* Otherwise (&ie; if `max_group_size` is 0), the P4Runtime client can set
+  `max_size` to any value greater than or equal to 0.
+
+  * A `max_size` of 0 indicates that the client is not able to specify a maximum
+    size at group-creation time, and the target should use the maximum value it
+    can support. If the maximum value supported by the target is exceeded during
+    a write update (`INSERT` or `MODIFY`), the target must return a
+    `RESOURCE_EXHAUSTED` error.
+
+  * If `max_size` is greater than 0 and the value is not supported by the
+    target, the server must return a `RESOURCE_EXHAUSTED` error at
+    group-creation time.
 
 ### One Shot Action Selector Programming { #sec-oneshot }
 
@@ -3109,7 +3128,10 @@ One shots are programmed by choosing the `ActionProfileActionSet` message as the
 
 * `weight` specifying the probability of the action's selection at runtime. 0 is
   not a valid `weight` value and the server must return `INVALID_ARGUMENT` if
-  the client attempts to use it.
+  the client attempts to use it. The sum of all weights across all
+  `ActionProfileAction` messages for that `ActionProfileActionSet` message must
+  not exceed the `max_group_size` specificed in the P4Info (if greater than 0),
+  or the server must return `INVALID_ARGUMENT`.
 
 * `watch` is the controller-defined 32-bit port number that the action's
   liveness depends on. At runtime, the action must be excluded from selection if
@@ -5249,6 +5271,7 @@ the purpose of adding features for the P4Runtime API.
 | `@controller_header`     | See section [#sec-controller-packet-meta] |
 | `@description`           | See section [#sec-annotating-p4-entities-with-documentation] |
 | `@id`                    | See section [#sec-id-allocation] |
+| `@max_group_size`        | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
 | `@pkginfo`               | See section [#sec-annotating-p4-code-with-pkginfo] |
 | `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +--------------------------+---------------------------------------+
