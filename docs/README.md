@@ -156,6 +156,12 @@ Do not use backticks for:
 * Each significant word in a heading / section name
 * PSA extern names
 
+#### Hexadecimal numbers
+
+We use lowercase for the letter digits when writing hexadecimal numbers. This is
+a very arbitrary decision, purely for the sake of uniformity. Maybe lowercase
+letters are easier to type for most people?
+
 ## Document Figures
 Each image in the specification has a corresponding `.odg` file under
 `assets/`. These are LibreOffice drawing files. The files are rendered into
