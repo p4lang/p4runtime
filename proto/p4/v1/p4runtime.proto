@@ -687,11 +687,11 @@ enum SdnPort {
   SDN_PORT_UNKNOWN = 0;
   // SDN ports are numbered starting form 1.
   SDN_PORT_MIN = 1;
-  // 0xFFFFFEFF: The maximum value of an SDN port (physical or logical).
+  // 0xfffffeff: The maximum value of an SDN port (physical or logical).
   SDN_PORT_MAX = -257;
-  // Reserved SDN port numbers (0xFFFFFF00 - 0xFFFFFFFF)
-  // 0xFFFFFFFA: Recirculate the packet back to ingress
+  // Reserved SDN port numbers (0xffffff00 - 0xffffffff)
+  // 0xfffffffa: Recirculate the packet back to ingress
   SDN_PORT_RECIRCULATE = -6;
-  // 0xFFFFFFFD: Send to CPU
+  // 0xfffffffd: Send to CPU
   SDN_PORT_CPU = -3;
 }

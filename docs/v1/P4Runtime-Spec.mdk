@@ -2910,7 +2910,7 @@ conditions is met:
 The target should do its best to approximate the `idle_timeout_ns` value
 provided by the client. For example, most targets may not be able to accommodate
 arbitrarily small values of TTL, in which case they should use the smallest
-value they can support, rather than reject the TableEntry write with an error
+value they can support, rather than reject the `TableEntry` write with an error
 code. Similarly, each target should do its best to provide reasonably-accurate
 values for `time_since_last_hit`.
 
@@ -3647,7 +3647,7 @@ entity {
   packet_replication_engine_entry {
     clone_session_entry {
       session_id: 100
-      replicas { egress_port: 0xFFFFFFFD instance: 1 } # to CPU
+      replicas { egress_port: 0xfffffffd instance: 1 } # to CPU
       class_of_service: 2
       packet_length_bytes: 4096
     }
@@ -3665,7 +3665,7 @@ packet is larger than 4096 bytes, it will be truncated to carry at most 4096
 bytes.
 
 The cloned replica will appear in the egress pipeline as an independent packet
-with egress port set to CPU (corresponding to SDN port `0xFFFFFFFD`; see
+with egress port set to CPU (corresponding to SDN port `0xfffffffd`; see
 [Translation of Port Numbers](#sec-translation-of-port-numbers)). Note that the
 egress port must be a 32-bit SDN port number and must refer to a singleton port.
 
@@ -3749,11 +3749,11 @@ entity {
     members {
       match {
         field_id: 1
-        exact { value: 0x22F3 }
+        exact { value: 0x22f3 }
       }
       match {
         field_id: 1
-        exact { value: 0x893B }
+        exact { value: 0x893b }
       }
     }
   }
@@ -3761,7 +3761,7 @@ entity {
 ~ End Prototext
 
 As a result of the above P4Runtime programming, all packets with EtherType
-values of 0x22F3 and 0x893B will be parsed as per the state machine starting at
+values of 0x22f3 and 0x893b will be parsed as per the state machine starting at
 the `parse_trill_types` state.
 
 A `ValueSetEntry` entity update message has the following fields:
@@ -4885,12 +4885,12 @@ enum SdnPort {
   SDN_PORT_MIN = 1;
 
   // The maximum value of an SDN port (physical or logical).
-  SDN_PORT_MAX = 0xFFFFFEFF;
+  SDN_PORT_MAX = 0xfffffeff;
 
-  // Reserved SDN port numbers (0xFFFFFFF0 - 0xFFFFFFFF)
+  // Reserved SDN port numbers (0xfffffff0 - 0xffffffff)
 
-  SDN_PORT_RECIRCULATE = 0xFFFFFFFA;
-  SDN_PORT_CPU = 0xFFFFFFFD;
+  SDN_PORT_RECIRCULATE = 0xfffffffa;
+  SDN_PORT_CPU = 0xfffffffd;
 }
 ~ End Proto
 
@@ -4975,7 +4975,7 @@ values to the corresponding controller-specific values.
 Note that it may be infeasible to translate the value-mask pair for ternary
 matches: `LPM`, `TERNARY` or `RANGE` match kinds.  The P4Runtime server may
 require that for these match kinds the port match be either *de facto* "exact"
-(0xFFFFFFFF mask for `TERNARY`, prefix-length of 32 for `LPM`, or same low and
+(0xffffffff mask for `TERNARY`, prefix-length of 32 for `LPM`, or same low and
 high bounds for `RANGE`) or "don't care".
 
 ### Translation of Action Parameters
