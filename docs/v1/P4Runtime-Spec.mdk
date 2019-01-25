@@ -383,8 +383,8 @@ term controller may refer to one or more controllers.
 The P4Runtime API defines the messages and semantics of the interface between
 the client(s) and the server. The API is specified by the p4runtime.proto
 Protobuf file, which is available on GitHub as part of the standard
-[@P4RuntimeRepo].  It may be compiled via protoc - the Protobuf compiler - to
-produce both client and server implementation stubs in a variety of
+[@P4RuntimeRepo].  It may be compiled via protoc --- the Protobuf compiler ---
+to produce both client and server implementation stubs in a variety of
 languages. It is the responsibility of target implementers to instrument the
 server.
 
@@ -416,12 +416,13 @@ caption: "P4Runtime Reference Architecture." }
 
 In the idealized workflow, a P4 source program is compiled to produce both a P4
 device config and P4Info metadata. These comprise the `ForwardingPipelineConfig`
-message. A P4Runtime controller chooses a configuration appropriate to a particular
-target and installs it via a `SetForwardingPipelineConfig` RPC. Metadata in the
-P4Info describes both the overall program itself (`PkgInfo`) as well as all
-entity instances derived from the P4 program - tables and extern instances. Each
-entity instance has an associated numeric ID assigned by the P4 compiler which
-serves as a concise "handle" used in API calls.
+message. A P4Runtime controller chooses a configuration appropriate to a
+particular target and installs it via a `SetForwardingPipelineConfig`
+RPC. Metadata in the P4Info describes both the overall program itself
+(`PkgInfo`) as well as all entity instances derived from the P4 program ---
+tables and extern instances. Each entity instance has an associated numeric ID
+assigned by the P4 compiler which serves as a concise "handle" used in API
+calls.
 
 In this workflow, P4 compiler backends are developed for each unique type of
 target and produce P4Info and a target-specific device config. The P4Info schema
@@ -640,7 +641,7 @@ follows:
   `role_id`) pair. The master is the client that has the highest `election_id`
   among all active `StreamChannel` connections with the same (`device_id`,
   `role_id`) values.  A connection between a controller instance and a device id
-  - which involves a persistent `StreamChannel` - can be referred to as a
+  --- which involves a persistent `StreamChannel` --- can be referred to as a
   P4Runtime client.
 
   Note that the P4Runtime server does not assign a `role_id` or `election_id` to
@@ -1823,8 +1824,9 @@ types (32-bit and 64-bit words). The P4 language does not put any limit on the
 size of integer values, whether unsigned (`bit<W>`) or signed (`int<W>`), and it
 is up to the P4 programmer to choose the appropriate sizes. Because of this
 flexibility, P4Runtime represents P4 integer values as binary strings, using the
-`bytes` Protobuf type. The correct bitwidth - as per the P4 program - of each
-integer variable exposed through P4Runtime is specified in the P4Info message.
+`bytes` Protobuf type. The correct bitwidth --- as per the P4 program --- of
+each integer variable exposed through P4Runtime is specified in the P4Info
+message.
 
 The canonical binary string representation uses the shortest string that
 fits the encoded integer value. This representation achieves three goals:
@@ -2107,8 +2109,8 @@ case (P4~16~ `bit<W>` type).
 Just like its P4Info counterpart - `P4DataTypeSpec` -, `P4Data` uses a Protobuf
 `oneof` to represent all possible values.
 
-We define a canonical representation for `P4Data` messages - therefore
-guaranteeing read-write symmetry - by introducing the following requirements:
+We define a canonical representation for `P4Data` messages --- therefore
+guaranteeing read-write symmetry --- by introducing the following requirements:
 
  * The order of `members` in `P4StructLike` and the order of `bitstrings` in
    `P4Header` must match the order in the corresponding p4info.proto type
@@ -2230,7 +2232,7 @@ update {
 
 P4~16~ supports 2 different classes of enumeration types: without underlying
 type (safe enum) and with underlying type (serializable enum or "unsafe" enum)
-[@P4Enums]. For `enum` types with no underlying type - as well as `error` -
+[@P4Enums]. For `enum` types with no underlying type --- as well as `error` ---
 there is no integer value associated with each symbolic member entry (whether
 assigned automatically by the compiler or directly in the P4 source). We
 therefore use a human-readable string in `P4Data` to represent `enum` and
@@ -2243,7 +2245,7 @@ underlying type need to have a corresponding name. `P4TypeInfo` includes the
 mapping between entry name and entry value. When providing serializable enum
 values through `P4Data`, one must use the assigned integer value (`enum_value`
 bytestring field). P4Runtime does not provide a way for the client to use the
-name - even when the enum member has one - instead of the value, as it makes it
+name --- even when the enum member has one --- instead of the value, as it makes it
 easier for the server to respect the [read-write
 symmetry](#sec-read-write-symmetry) principle.
 
@@ -2284,14 +2286,14 @@ the following fields:
 
     * `translated_type`, if and only if the P4 `type` declaration was annotated
       with `@p4runtime_translation`. It is of type `P4NewTypeTranslation`, which
-      itself has two fields - `uri` and `sdn_bitwidth`, which map to the two
-      input parameters to the annotation.
+      itself has two fields --- `uri` and `sdn_bitwidth` ---, which map to the
+      two input parameters to the annotation.
 
 * `annotations`, a repeated field of strings, each one representing a P4
   annotation associated to the type declaration.
 
-For example, an architecture - in this case PSA - may introduce a new type for
-port numbers:
+For example, an architecture --- in this case PSA --- may introduce a new type
+for port numbers:
 ~ Begin P4Example
 @p4runtime_translation("p4.org/psa/v1/PortId_t", 32)
 type bit<9> PortId_t;
@@ -2595,8 +2597,8 @@ The `Action` Protobuf message has the following fields:
   [Bytestrings](#sec-bytestrings). The P4Runtime client must provide a valid
   value for each parameter of the P4 action; we do not support default values
   for action parameters. The server must return an `INVALID_ARGUMENT` error code
-  if a parameter id is missing, if an extra parameter - id not found in the
-  P4Info - was provided by the client, if a parameter value is missing, or if
+  if a parameter id is missing, if an extra parameter --- id not found in the
+  P4Info --- was provided by the client, if a parameter value is missing, or if
   the value provided for one of the parameters does not conform to the
   [Bytestrings](#sec-bytestrings) format.
 
@@ -2607,8 +2609,8 @@ P4Runtime server must return a `NOT_FOUND` error code.
 ### Default Entry { #sec-default-entry}
 
 According to the P4 specification, the default entry for a table is always set.
-It can be set at compile-time by the P4 programmer - or defaults to `NoAction`
-(which is a no-op) otherwise - and assuming it is not declared as `const`, can
+It can be set at compile-time by the P4 programmer --- or defaults to `NoAction`
+(which is a no-op) otherwise --- and assuming it is not declared as `const`, can
 be modified by the P4Runtime client. Because the default entry is always set, we
 do not allow `INSERT` and `DELETE` updates on the default entry and the
 P4Runtime server must return an `INVALID_ARGUMENT` error code if the client
@@ -2631,8 +2633,8 @@ Apart from the above restrictions, the default entry is treated like a regular
 entry, including with regards to [direct resources](#sec-direct-resources).
 
 In this P4Runtime release, we have decided to restrict the default entry for
-indirect tables - tables with an ActionProfile or ActionSelector
-`implementation` property - to a constant `NoAction` action entry, with the hope
+indirect tables --- tables with an ActionProfile or ActionSelector
+`implementation` property --- to a constant `NoAction` action entry, with the hope
 that it would simplify the implementation of the P4Runtime service.
 
 ### Constant Tables
@@ -2644,8 +2646,8 @@ action, assuming the default action itself is not constant. If the P4Runtime
 client attempts to perform any other kind of write update on a constant table,
 the server must return a `PERMISSION_DENIED` error. However, the contents of
 such tables can be queried by the client through a `ReadRequest`. When reading
-static (immutable) entries from a constant table, the following fields - and
-only these fields -, must be set by the server: `table_id`, `match`, `action`,
+static (immutable) entries from a constant table, the following fields --- and
+only these fields ---, must be set by the server: `table_id`, `match`, `action`,
 `priority` and `is_default_action`. In particular, we assume that constant
 tables cannot be assigned direct resources and idle timeout is not supported for
 static entries. If the table requires a priority value for entries, the server
@@ -2666,9 +2668,9 @@ the field to act as a wildcard. This default value is zero for scalar fields
 such as `priority` and "unset" for message fields such as `match`. The following
 fields may be used to select and filter results:
 
-* `table_id`: If default (0), entries from all tables - including constant
-  tables - will be selected and no other filter can be used. Otherwise only the
-  specified table will be considered.
+* `table_id`: If default (0), entries from all tables --- including constant
+  tables --- will be selected and no other filter can be used. Otherwise only
+  the specified table will be considered.
 * `match`: If default (unset), all entries from the specified table will be
   considered. Otherwise, results will be filtered based on the provided match
   key, which must be a valid match key for the table. The match will be exact,
@@ -2782,8 +2784,8 @@ This issue also exists for tables with `TERNARY` and / or `RANGE`
 matches. However, in this case the priority is also taken into account for
 wildcard reads, and because a priority of 0 is not valid, in practice only the
 entries with the same priority as the "don't care" entry will be returned to the
-client. If the client uses distinct priority values for all entries - which is
-strongly recommended to achieve [deterministic behavior](#sec-table-entry) -,
+client. If the client uses distinct priority values for all entries --- which is
+strongly recommended to achieve [deterministic behavior](#sec-table-entry) ---,
 then there is no ambiguity because the wildcard read will actually return a
 single entry (the "don't care" entry) as long as the `priority` field is set to
 the correct value.
@@ -2877,8 +2879,8 @@ P4Runtime supports idle timeout for table entries. When adding a table entry,
 the client can specify a Time-To-Live (TTL) value. If at any time during its
 lifetime, the data plane entry is not "hit" (&ie; not selected by any packet
 lookup) for a lapse of time greater or equal to its TTL, the P4Runtime should,
-with best effort, generate a stream notification - using the
-`IdleTimeoutNotification` message - to the master client, which can then take
+with best effort, generate a stream notification --- using the
+`IdleTimeoutNotification` message --- to the master client, which can then take
 action, such as remove the idle table entry.
 
 Two fields of the `TableEntry` Protobuf message are used to implement idle
@@ -3295,8 +3297,8 @@ The PSA specification includes a discussion on how to implement
 PSA defines Counters as a mechanism for keeping statistics of bytes and packets.
 Statistics may be updated as a result of an action associated with a table
 entry, or a direct invocation such as from a P4 control. The `CounterData`
-P4Runtime message can be used for all three types of PSA counters - `PACKETS`,
-`BYTES` and `PACKETS_AND_BYTES` - and consists of the following fields:
+P4Runtime message can be used for all three types of PSA counters --- `PACKETS`,
+`BYTES` and `PACKETS_AND_BYTES` --- and consists of the following fields:
 
 * `byte_count` is an `int64`, corresponding to the number of octets.
 * `packet_count` is an `int64`, corresponding to the number of packets.
@@ -3411,9 +3413,9 @@ Meters are an advanced mechanism for keeping statistics, involving stateful
 "marking" and usually "throttling" of packets based on configured rates of
 traffic. The PSA metering function is based on the *Two Rate Three Color Marker*
 (trTCM) defined in RFC 2698 [@RFC2698]. The trTCM meters an arbitrary packet
-stream using two configured rates - the Peak Information Rate (PIR) and
-Committed Information Rate (CIR), and their associated burst sizes - and "marks"
-its packets as GREEN, YELLOW or RED based on the observed rate.
+stream using two configured rates --- the Peak Information Rate (PIR) and
+Committed Information Rate (CIR), and their associated burst sizes --- and
+"marks" its packets as GREEN, YELLOW or RED based on the observed rate.
 
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
@@ -3859,8 +3861,8 @@ if they are not duplicate.
 
     * `max_timeout_ns`: the maximum server buffering delay in nanoseconds for an
       outstanding digest message.
-    * `max_list_size`: the maximum digest list size - in number of digest
-      messages - sent by the server to the client as a single `DigestList`
+    * `max_list_size`: the maximum digest list size --- in number of digest
+      messages --- sent by the server to the client as a single `DigestList`
       Protobuf message.
     * `ack_timeout_ns`: the timeout in nanoseconds that a server must wait for a
       digest list acknowledgement from the client before new digest messages can
@@ -4866,10 +4868,10 @@ type PortIdInHeader_t bit<32>;
 ~ End P4Example
 
 The first argument to the `@p4runtime_translation` annotation is a URI that
-indicates to the P4Runtime server which numerical mapping - provided by the
-out-of-band switch configuration mechanism - to use to translate between the SDN
-value and the data plane value. The second argument is the bitwidth of the SDN
-representation of the translated entity (32-bit in the case of ports).
+indicates to the P4Runtime server which numerical mapping --- provided by the
+out-of-band switch configuration mechanism --- to use to translate between the
+SDN value and the data plane value. The second argument is the bitwidth of the
+SDN representation of the translated entity (32-bit in the case of ports).
 
 An SDN port number of 0 is invalid (while 0 may be a valid device port number
 depending on the PSA device). A PSA device may define its CPU and recirculation
@@ -4894,8 +4896,8 @@ enum SdnPort {
 }
 ~ End Proto
 
-The switch config will map `SDN_PORT_RECIRCULATE` and `SDN_PORT_CPU` - as well
-as any SDN port number corresponding to a "regular" front-panel port - to the
+The switch config will map `SDN_PORT_RECIRCULATE` and `SDN_PORT_CPU` --- as well
+as any SDN port number corresponding to a "regular" front-panel port --- to the
 corresponding device-specific values, in order to enable the P4Runtime server to
 perform the translation.
 
@@ -4927,7 +4929,7 @@ packet-out metadata (`egress_port`) value of width 32-bit from the given set of
 SDN port values in the switch config. The server will then translate the SDN
 port value into the device-specific port value from the mapping provided in the
 out-of-band switch configuration (the mapping can be identified using the
-translation URI - first argument to the `@p4runtime_translation`
+translation URI --- first argument to the `@p4runtime_translation`
 annotation). Any subsequent reference to the `egress_port` field in the
 data plane will use the translated value. `PortIdInHeader_t` is used in the
 header definition instead of `PortId_t` to guarantee byte-aligned headers in

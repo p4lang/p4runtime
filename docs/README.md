@@ -162,6 +162,12 @@ We use lowercase for the letter digits when writing hexadecimal numbers. This is
 a very arbitrary decision, purely for the sake of uniformity. Maybe lowercase
 letters are easier to type for most people?
 
+### Hyphen, en dash and em dash
+
+Use `-` for the hyphen, `--` for en dash and `---` for em dash. You can refer to
+this [section of the Madoko
+spec](http://madoko.org/reference.html#sec-smart-quotes-symbols-and-direct-links).
+
 ## Document Figures
 Each image in the specification has a corresponding `.odg` file under
 `assets/`. These are LibreOffice drawing files. The files are rendered into
