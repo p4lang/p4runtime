@@ -675,10 +675,13 @@ described as follows:
   controllers with the highest `election_id` as master.
 
 * The mechanism via which the controller receives the P4Runtime server details
-  is implementation specific and beyond the scope of this specification.
-  Nevertheless, if the server information is transferred for example, from the P4
-  build machine via the network, it is recommended to use TLS or similar
-  encryption and authentication mechanisms to prevent eavesdropping attacks.
+  which includes the `device_id`, `ip` and `port`, is implementation specific
+  and beyond the scope of this specification. Similarly, the mechanism via which
+  the P4Runtime server receives its switch config (which includes the
+  `device_id`, `ip` and `port`) is beyond the scope of this specification.
+  Nevertheless, if the server details or switch config are transferred via the
+  network, it is recommended to use TLS or similar encryption and authentication
+  mechanisms to prevent eavesdropping attacks.
 
 * After the controller sends a `StreamMessageRequest` message to the P4Runtime
   server, the server sends a `StreamMessageResponse` message back to the
@@ -715,12 +718,6 @@ server trusts clients not to use a triple of values other than their own in
 their write requests. gRPC provides authentication methods [@gRPCAuth] that
 should be deployed to prevent untrusted clients from creating channels, and thus
 from making changes or even reading the state of the server.
-
-To avoid misconfiguration and abusing identifiers even after authenticating the
-gRPC channel, the controller should authenticate the P4Runtime server's
-`device_id`. Furthermore, the P4Runtime server should be protected from
-unauthorized users by restricting communication between the controller and
-switches only to the ports and direction relevant to P4Runtime channels.
 
 ## Default Role
 
