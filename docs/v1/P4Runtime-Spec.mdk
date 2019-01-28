@@ -675,13 +675,14 @@ described as follows:
   controllers with the highest `election_id` as master.
 
 * The mechanism via which the controller receives the P4Runtime server details
-  which includes the `device_id`, `ip` and `port`, is implementation specific
+  which includes the `device_id`, `ip` and `port`, as well as the mechanism via
+  which it receives the Forwarding Pipeline Config, are implementation specific
   and beyond the scope of this specification. Similarly, the mechanism via which
-  the P4Runtime server receives its switch config (which includes the
-  `device_id`, `ip` and `port`) is beyond the scope of this specification.
-  Nevertheless, if the server details or switch config are transferred via the
-  network, it is recommended to use TLS or similar encryption and authentication
-  mechanisms to prevent eavesdropping attacks.
+  the P4Runtime server receives its switch config (which notably includes the
+  `device_id`) is beyond the scope of this specification.  Nevertheless, if the
+  server details or switch config are transferred via the network, it is
+  recommended to use TLS or similar encryption and authentication mechanisms to
+  prevent eavesdropping attacks.
 
 * After the controller sends a `StreamMessageRequest` message to the P4Runtime
   server, the server sends a `StreamMessageResponse` message back to the
