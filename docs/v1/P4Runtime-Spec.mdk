@@ -691,6 +691,16 @@ follows:
   broken, in which case the P4Runtime server quickly sets one of the slave
   controllers with the highest `election_id` as master.
 
+* The mechanism via which the controller receives the P4Runtime server details
+  which includes the `device_id`, `ip` and `port`, as well as the mechanism via
+  which it receives the Forwarding Pipeline Config, are implementation specific
+  and beyond the scope of this specification. Similarly, the mechanism via which
+  the P4Runtime server receives its switch config (which notably includes the
+  `device_id`) is beyond the scope of this specification.  Nevertheless, if the
+  server details or switch config are transferred via the network, it is
+  recommended to use TLS or similar encryption and authentication mechanisms to
+  prevent eavesdropping attacks.
+
 * After the controller sends a `StreamMessageRequest` message to the P4Runtime
   server, the server sends a `StreamMessageResponse` message back to the
   controller, in which it populates the `MasterArbitrationUpdate`. The
@@ -723,9 +733,9 @@ read state from the data plane, among others described later. P4Runtime relies
 on clients identifying themselves in every write request, by including the
 values `device_id`, `role_id`, and `election_id` in all write requests. The
 server trusts clients not to use a triple of values other than their own in
-their write requests. gRPC provides authentication methods [@gRPCAuth] that can
-be deployed to prevent untrusted clients from creating channels, and thus from
-making changes or even reading the state of the server.
+their write requests. gRPC provides authentication methods [@gRPCAuth] that
+should be deployed to prevent untrusted clients from creating channels, and thus
+from making changes or even reading the state of the server.
 
 ## Default Role
 
@@ -5255,6 +5265,14 @@ properties, but we may include on in future versions of the API.
   in particular, there is no way for a client to query the supported minor +
   patch version numbers.
 
+# Security concerns for P4Runtime
+
+Appropriate measures and security best practices need to be in place to protect
+the P4Runtime server and client, and the communication channel between the two.
+For example, firewalling and authenticating the incoming connections to the
+P4Runtime server can prevent a malicious actor from taking over the switch.
+Similarly, using TLS to authenticate and encrypt the gRPC channel can prevent
+man-in-the-middle attacks between the server and client.
 
 # Appendix { @h1:"A"}
 
