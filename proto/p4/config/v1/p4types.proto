@@ -31,16 +31,20 @@ package p4.config.v1;
  * | void               | error     | error        | error           |
  * | error              | error     | error        | allowed         |
  * | match_kind         | error     | error        | error           |
- * | bool               | error     | error        | allowed         |
+ * | bool               | allowed   | error        | allowed         |
  * | enum               | allowed*  | error        | allowed         |
  * | header             | error     | allowed      | allowed         |
  * | header stack       | error     | error        | allowed         |
  * | header_union       | error     | error        | allowed         |
- * | struct             | error     | error        | allowed         |
+ * | struct             | allowed** | error        | allowed         |
  * | tuple              | error     | error        | allowed         |
  * |--------------------|-----------|--------------|-----------------|
  *
  * *if serializable
+ *
+ * **struct_header: a `struct` or nested 'struct' type that has the same properties, 
+ *   used as a field in a `header` must contain only 
+ *   bit<W>, int<W>, a Serializable Enum, or a bool.
  */
 
 // These P4 types (struct, header_type, header_union and enum) are guaranteed to
@@ -129,7 +133,7 @@ message P4StructTypeSpec {
 message P4HeaderTypeSpec {
   message Member {
     string name = 1;
-    P4BitstringLikeTypeSpec type_spec = 2;
+    P4DataTypeSpec type_spec = 2;
   }
   repeated Member members = 1;
   repeated string annotations = 2;

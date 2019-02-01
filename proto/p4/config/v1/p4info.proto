@@ -85,7 +85,8 @@ message P4Ids {
     TABLE = 0x02;
     VALUE_SET = 0x03;
     CONTROLLER_HEADER = 0x04;
-
+    HEADER_OR_STRUCT = 0x05;  // used to test specific struct or header other than
+                              // controller_header for nested struct support.
     // PSA externs
     PSA_EXTERNS_START = 0x10;
     ACTION_PROFILE = 0x11;

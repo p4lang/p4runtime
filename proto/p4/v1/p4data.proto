@@ -46,7 +46,7 @@ message P4Header {
   // If the header is invalid (is_valid is "false"), then the repeated
   // bitstrings must be empty.
   bool is_valid = 1;
-  repeated bytes bitstrings = 2;
+  repeated P4Data members = 2;
 }
 
 message P4HeaderUnion {
