@@ -33,6 +33,7 @@ The easiest way to render the Madoko specification documentation is to use the
 sudo apt-get install nodejs
 sudo npm install madoko -g
 sudo apt-get install libreoffice
+sudo apt-get install texlive-science texlive-xetex
 make [all | html | pdf ]
 ```
 In particular (on Ubuntu 16.04 at least), don't try `sudo apt-get install npm`
