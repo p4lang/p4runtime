@@ -5387,14 +5387,28 @@ This section contains practical advice for using P4Runtime.
 
 ### gRPC Metadata Maximum Size
 
-In gRPC, the status of a RPC request is sent as metadata, whose size is limited by the `grpc.max_metadata_size` gRPC channel argument.  By default, this limit is 8KB, which can be a problem for the `Write` P4Runtime RPC.  The `Write` RPC returns an individual error for every item in a batch (see Section [#sec-write-rpc]), which can quickly result in a status size over 8KB.  In that case, the gRPC server would not send the status, but instead send a `RESOURCE_EXHAUSTED` error, without any of the individual errors.
+In gRPC, the status of a RPC request is sent as metadata, whose size is limited
+by the `grpc.max_metadata_size` gRPC channel argument.  By default, this limit
+is 8KB, which can be a problem for the `Write` P4Runtime RPC.  The `Write` RPC
+returns an individual error for every item in a batch (see Section
+[#sec-write-rpc]), which can quickly result in a status size over 8KB.  In that
+case, the gRPC server would not send the status, but instead send a
+`RESOURCE_EXHAUSTED` error, without any of the individual errors.
 
-To fix this problem, one can set the `grpc.max_metadata_size` option on the client channel.  This allows the client to receive more than 8KB of metadata, based on the new limit.  Note that the gRPC server does not have to change it's limit, as only the receiving side's limit is relevant.  The exact limit that is required depends on the maximum batch size, the length of error messages inside every `p4.Error`, as well as any other metadata that is being sent over the gRPC channel.  As a rule of thumb, it might make sense to allow for at least `8192 + MAX_UPDATES_PER_WRITE * 100` bytes of metadata.
+To fix this problem, one can set the `grpc.max_metadata_size` option on the
+client channel.  This allows the client to receive more than 8KB of metadata,
+based on the new limit.  Note that the gRPC server does not have to change it's
+limit, as only the receiving side's limit is relevant.  The exact limit that is
+required depends on the maximum batch size, the length of error messages inside
+every `p4.Error`, as well as any other metadata that is being sent over the gRPC
+channel.  As a rule of thumb, it might make sense to allow for at least
+`8192 + MAX_UPDATES_PER_WRITE * 100` bytes of metadata.
 
 For example, in C++ one can create a client channel as follows:
 ~ Begin CPP
+const int MAX_UPDATES_PER_WRITE = 100;
 ::grpc::ChannelArguments arguments;
-arguments.SetInt(GRPC_ARG_MAX_METADATA_SIZE, 8192 + MAX_UPDATES_PER_WRITE * 100);
+arguments.SetInt(GRPC_ARG_MAX_METADATA_SIZE, 8192 + MAX_UPDATES_PER_WRITE*100);
 return grpc::CreateCustomChannel(address, credentials, arguments);
 ~ End CPP
 
