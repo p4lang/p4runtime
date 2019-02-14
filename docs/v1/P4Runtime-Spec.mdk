@@ -5383,7 +5383,8 @@ entity {
 
 ## Guidelines for Implementations
 
-This section contains practical advice for using P4Runtime.
+This section contains practical advice for implementing P4Runtime clients and
+servers.
 
 ### gRPC Metadata Maximum Size
 
@@ -5404,12 +5405,44 @@ every `p4.Error`, as well as any other metadata that is being sent over the gRPC
 channel.  As a rule of thumb, it might make sense to allow for at least
 `8192 + MAX_UPDATES_PER_WRITE * 100` bytes of metadata.
 
-For example, in C++ one can create a client channel as follows:
+For example, in C++, one can create a client channel as follows:
 ~ Begin CPP
 const int MAX_UPDATES_PER_WRITE = 100;
 ::grpc::ChannelArguments arguments;
 arguments.SetInt(GRPC_ARG_MAX_METADATA_SIZE, 8192 + MAX_UPDATES_PER_WRITE*100);
 return grpc::CreateCustomChannel(address, credentials, arguments);
 ~ End CPP
+
+### gRPC Server Maximum Receive Message Size
+
+At the time of writing, the default maximum receive message size in gRPC is 4MB
+--- while the default maximum send message size is unlimited. This can be a
+problem for the `SetForwardingPipelineConfig` RPC, since for some targets the
+binary `p4_device_config` can exceed 4MB, in which case by default the P4Runtime
+server would return an `INVALID_ARGUMENT` error. To a lesser extent, this may
+affect the `Write` RPC as well, in case of extremely large batches.
+
+To fix this problem, we recommend that vendors implementing a P4Runtime server
+ensure that the maximum receive message size be large enough to accomodate all
+possible values of `p4_device_config` for their target(s). This can be done by
+setting the `grpc.max_receive_message_length` when building the gRPC server.
+
+For example, in C++, one can set the maximum receive message size as follows:
+~ Begin CPP
+const int MAX_RECEIVE_MESSAGE_SIZE = 128 * 1024 * 1024;  // 128MB
+::grpc::ServerBuilder server_builder;
+builder.AddListeningPort(/*...*/);
+builder.RegisterService(/*...*/);  // register P4Runtime service
+builder.SetMaxReceiveMessageSize(MAX_RECEIVE_MESSAGE_SIZE);
+builder.BuildAndStart();
+~ End CPP
+
+On the client side, we recommend that P4Runtime clients do not use `Write`
+batches larger than the default maximum receive message size (4MB) --- in case
+the server did not deem necessary to increase the default value ---, unless the
+clients are aware that the server is using a larger maximum receive message
+size. The gRPC server running the P4Runtime service must not set the maximum
+receive message size to a value smaller than the default (4MB).
+
 
 [BIB]
