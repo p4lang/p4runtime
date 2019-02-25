@@ -5246,8 +5246,13 @@ properties, but we may include on in future versions of the API.
 # Known-limitations of P4Runtime v1.0.0
 
 * `FieldMatch`, action `Param`, and controller packet metadata fields only
-  support unsigned bitstrings, i.e. values of type `bit<W>` (not the more
-  general `P4Data`).
+  support unsigned bitstrings, i.e. values of one of the following types (not
+  the more general `P4Data`):
+  * `bit<W>`
+  * an `enum` with underlying type `bit<W>`
+  * a `type` or `typedef` with an underlying type that is one of the above (or
+    in general a "chain" of `type` and/or `typedef` that eventually ends with
+    one of the types above)
 
 * Support for PSA Random & Timestamp externs is postponed to a future minor
   version update.
