@@ -1398,7 +1398,10 @@ message contains the following fields:
       example below).
     * `annotations`, a repeated field of strings, each one representing a P4
       annotation associated to this metadata.
-    * `bitwidth`, an `int32` representing the size in bit of this metadata.
+    * `bitwidth`, an `int32` representing the size in bits of this metadata.
+    * `type_name`, which indicates whether the metadata field has a
+      [user-defined type](#sec-user-defined-types); this is useful for
+      [translation](#sec-psa-metadata-translation).
 
 As an example, consider the following snippet of a P4 program where controller
 headers are specified and we show the corresponding `ControllerPacketMetadata`
@@ -1542,6 +1545,9 @@ value_sets {
    field, except for the `@match` annotation, if present (see the `match` field
    below).
  * `bitwidth`: set to the value of `W` for the corresponding struct field.
+ * `type_name`, which indicates whether the struct field has a [user-defined
+   type](#sec-user-defined-types); this is useful for
+   [translation](#sec-psa-metadata-translation).
  * `match`: by default `match_type` is set to `EXACT`; the P4 programmer can
    specify a different match type by using the `@match` annotation
    [@P4SelectExpr].

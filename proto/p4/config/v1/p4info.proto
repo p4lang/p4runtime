@@ -319,6 +319,8 @@ message ControllerPacketMetadata {
     string name = 2;
     repeated string annotations = 3;
     int32 bitwidth = 4;
+    // unset if not user-defined type
+    P4NamedType type_name = 5;
   }
   // Ordered based on header layout.
   // This is a constraint on the generator of this P4Info.
