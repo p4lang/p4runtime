@@ -3,15 +3,15 @@
 The P4Runtime v1.0 specification restricts the types that it supports
 for the following kinds of things:
 
-+ table search key fields, defined in the P4Info file in a
++ table search key fields, defined in the P4Info message in a
   `MatchField` message
-+ fields of a `ValueSet`, also defined in the P4Info file in a
++ fields of a `ValueSet`, also defined in the P4Info message in a
   `MatchField` message
 + parameters specified by the control plane for a table action,
-  defined in the P4Info file in a `Param` message
+  defined in the P4Info message in a `Param` message
 + metadata fields in a header sent from data plane to controller, or
-  from controller to the data plane, defined in the P4Info file in a
-  `Metadata` message, if a [recently proposed
+  from controller to the data plane, defined in the P4Info message in
+  a `Metadata` message, if a [recently proposed
   PR](https://github.com/p4lang/p4runtime/pull/188) is merged in.
 
 Later in this section, we will use the term "constrained value" for
@@ -175,7 +175,7 @@ message describing the program, because of the `type` definitions.
 There is never anything put into a P4Info message because of `typedef`
 definitions in a P4 program.
 
-Note that the bit width of 10 appears in the P4Info file for any
+Note that the bit width of 10 appears in the P4Info message for any
 `type`s "built on top of" a `bit<10>`, _unless that type has its own
 `p4runtime_translation` annotation_.
 
@@ -238,8 +238,8 @@ It is not clear whether there are strong use cases for declaring a
 
 However, currently the P4_16 language and `p4c` compiler allow it, so
 it seems to be a good idea to have predictable rules to follow for
-what the P4Info file contents should be, and how the resulting system
-should behave.
+what the P4Info message contents should be, and how the resulting
+system should behave.
 
 The basic design described here tries to keep things fairly
 straightforward to explain and understand, if a P4_16 program does so.
