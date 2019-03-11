@@ -11,13 +11,13 @@ for the following kinds of things:
   defined in the P4Info message in a `Param` message
 + metadata fields in a header sent from data plane to controller, or
   from controller to the data plane, defined in the P4Info message in
-  a `Metadata` message, if a [recently proposed
-  PR](https://github.com/p4lang/p4runtime/pull/188) is merged in.
+  a `Metadata` message, if a recently proposed [p4runtime PR
+  #188](https://github.com/p4lang/p4runtime/pull/188) is merged in.
 
 Later in this section, we will use the term "constrained value" for
-brevity, instead of repeating all of kinds of objects listed above.
-For such values, the P4Runtime v1.0 supports all of the following
-types, but currently no others:
+brevity, instead of repeating all of the kinds of objects listed
+above.  For such values, the P4Runtime specification v1.0 supports all
+of the following types, but currently no others:
 
 + `bit<W>`
 + an `enum` with an underlying type of `bit<W>`, also called a
@@ -63,11 +63,11 @@ and always ends with one type that is neither a `type` nor `typedef`
 name, e.g. `bit<W>`, a header type, struct type, etc.  It never
 contains the name of a type declared using `typedef`.  P4Runtime v1.0
 only supports `p4runtime_translation` annotations on `type`
-definitions.  If any occur on a `typedef` definition, they should be
-ignored.
+definitions.  If any such annotations occur on a `typedef` definition,
+they should be ignored.
 
-The p4c compiler signals an error if you attempt to create a cycle of
-type names.  In order to create such a cycle, the first `type` or
+The `p4c` compiler signals an error if you attempt to create a cycle
+of type names.  In order to create such a cycle, the first `type` or
 `typedef` that appears in the program would have to refer to a later
 type name, and this is not allowed.
 
@@ -102,10 +102,10 @@ bit<W>` is the last element of `type_list(x)`.
 
 Note that all type names that are present as the value of a
 `type_name` field anywhere in a P4Info message must contain an entry
-somewhere in the `type_info` field of the P4Info message.  Thus this
-`bitwidth` value could be considered redundant information, since it
-can be derived from the description of the type contained within the
-`type_info` field (see [this
+describing it in the `type_info` field of the P4Info message.  Thus
+this `bitwidth` value could be considered redundant information, since
+it can be derived from the description of the type contained within
+the `type_info` field (see [this
 comment](https://github.com/p4lang/p4runtime/issues/189#issuecomment-471240515)).
 
 
@@ -120,9 +120,9 @@ type_name: left unset in P4Info message
 bitwidth: 10
 ```
 
-Based on the P4 code snippet above, there is no need to set any fields
-inside of the type_info field of the P4Info message, because there are
-no named types in that code.
+Based on the P4 code snippet above, there is no need to describe any
+type inside of the `type_info` field of the P4Info message, because
+there are no named types in this code.
 
 
 ## Example 2: field with user-defined `type` with no annotation
@@ -137,6 +137,7 @@ T2_t f2;
 
 ```
 Execution trace for call to type_list(f2):
+    tlist = []
     T = declared type of object f2 in the P4 program = T2_t
     Evaluate condition (T2_t is declared as "type B T") -> true,
         because T2_t is declared as "type T1_t T2_t"
@@ -165,7 +166,7 @@ bitwidth: 10
 
     Reason: Type T2_t is the first type name in type_list(f2), but it
     has no p4runtime_translation on it, so even though T1_t does, that
-    is ignored.  Use the width 10 from the last element of
+    is ignored.  Use the width 10 from bit<10>, the last element of
     type_list(f2).
 ```
 
@@ -204,14 +205,16 @@ type_info {
 }
 ```
 
-Type `T2_t` is described via an `original_type` message, because
-`T2_t` does not have a `p4runtime_translation` annotation.
+Type `T2_t` is described via an `original_type` message, because the
+definition of `T2_t` in the program, `type T1_t T2_t`, does not have a
+`p4runtime_translation` annotation.
 
 Based on the P4 code snippet above, there is no reason to include a
-definition for the type `T1_t` in the P4Info message.  If there were
+description for the type `T1_t` in the P4Info message.  If there were
 some other variable other than `f2` in the program declared with type
-`T1_t`, then the following definition for type `T1_t` must be included
-in the `type_info` field.
+`T1_t`, and that variable caused the type name `T1_t` to be included
+in the P4Info message, then the following description for type `T1_t`
+must be included in the `type_info` field.
 
 ```
 type_info {
@@ -227,30 +230,30 @@ type_info {
 }
 ```
 
-Type `T1_t` is described via a `translated_type` message, because
-`T1_t` has a `p4runtime_translation` annotation.
+Type `T1_t` is described via a `translated_type` message, because the
+definition of `T1_t` in the program, `type T1uint T1_t`, has a
+`p4runtime_translation` annotation.
 
 
 ## Example 3: field with user-defined `type` with `p4runtime_translation` annotation
 
 It is not clear whether there are strong use cases for declaring a
-`type` based upon another `type` in a P4_16 program.
-
-However, currently the P4_16 language and `p4c` compiler allow it, so
-it seems to be a good idea to have predictable rules to follow for
-what the P4Info message contents should be, and how the resulting
-system should behave.
+`type` based upon another `type` in a P4_16 program.  However,
+currently the P4_16 language and `p4c` compiler allow it, so it seems
+to be a good idea to have predictable rules to follow for what the
+P4Info message contents should be, and how the resulting system should
+behave.
 
 The basic design described here tries to keep things fairly
 straightforward to explain and understand, if a P4_16 program does so.
 
-If a constrained value is declared with a `type` that has a
-`p4runtime_translation` on it, that one is used.
+If a constrained value `f` has a `type` name as the first element of
+the list `type_list(f)`, then that type name is used for `f`,
+regardless of whether it has a `p4runtime_translation` annotation.
 
 In the absence of such an annotation on that `type`, no P4runtime
 translation is done for that type, _even if a later type in
-`type_list(x)` does have such an annotation_.  The final type in
-`type_list(x)` is used.
+`type_list(x)` does have such an annotation_.
 
 Below is an example of a P4 code snippet that demonstrates one
 example, but I do _not_ claim that it is useful for any actual
@@ -279,10 +282,10 @@ bitwidth: 18
 
 The contents of the `type_info` field of the P4Info message should be
 as follows.  For the code snippet above, there is no reason to include
-a description of the type `T1_t`.  It is shown below for the sake of
-an example, but it only needs to be included in the P4Info message if
-there is a reference directly to type `T1_t` somewhere in the P4Info
-message.
+a description of the type `T1_t`.  The description of type `T1_t` is
+shown below for the sake of an example, but it only needs to be
+included in the P4Info message if there is a reference to type `T1_t`
+somewhere in the P4Info message.
 
 ```
 type_info {
@@ -343,7 +346,7 @@ is declared as type `bit<10>`.  This is not necessarily a fatal flaw,
 but it is a loss of potentially useful information in the P4Info
 message.
 
-Should `type_name` be `"enum1_t"`, and then `"enum_t"` should be
+Should `type_name` be `"enum1_t"`, and then `"enum1_t"` should be
 described within the `type_info` field of the message?
 
 As of early March 2019, `p4c` does not support users defining their
