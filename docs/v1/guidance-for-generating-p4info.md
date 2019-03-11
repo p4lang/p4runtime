@@ -5,7 +5,7 @@ for the following kinds of things:
 
 + table search key fields, defined in the P4Info file in a
   `MatchField` message
-+ fields of a ValueSet, also defined in the P4Info file in a
++ fields of a `ValueSet`, also defined in the P4Info file in a
   `MatchField` message
 + parameters specified by the control plane for a table action,
   defined in the P4Info file in a `Param` message
@@ -14,10 +14,10 @@ for the following kinds of things:
   `Metadata` message, if a [recently proposed
   PR](https://github.com/p4lang/p4runtime/pull/188) is merged in.
 
-Later in this section, we will use the term "bit-constrained value"
-for brevity, instead of repeating all of kinds of objects listed
-above.  For such values, the P4Runtime v1.0 supports all of the
-following types, but currently no others:
+Later in this section, we will use the term "constrained value" for
+brevity, instead of repeating all of kinds of objects listed above.
+For such values, the P4Runtime v1.0 supports all of the following
+types, but currently no others:
 
 + `bit<W>`
 + an `enum` with an underlying type of `bit<W>`, also called a
@@ -25,7 +25,7 @@ following types, but currently no others:
 + a `typedef` or `type` name that, when "followed back" to the lowest
   base type, is one of the above.  (As of the P4_16 language
   specification version 1.1, it is not required to support a `type`
-  definition with a serializble `enum` as its base type.  See
+  definition with a serializable `enum` as its base type.  See
   [p4runtime issue
   #192](https://github.com/p4lang/p4runtime/issues/192).)
 
@@ -37,7 +37,7 @@ messages may optionally contain the following two fields:
 
 Below we will describe what values these fields should have.
 
-Consider a single bit-constrained value `x`.  Create a list of types
+Consider a single constrained value `x`.  Create a list of types
 `type_list(x)` using the pseudocode shown below.
 
 ```
@@ -63,7 +63,7 @@ and always ends with one type that is neither a `type` nor `typedef`
 name, e.g. `bit<W>`, a header type, struct type, etc.  It never
 contains the name of a type declared using `typedef`.  P4Runtime v1.0
 only supports `p4runtime_translation` annotations on `type`
-definitions.  If any occur on a `typdef` definition, they should be
+definitions.  If any occur on a `typedef` definition, they should be
 ignored.
 
 The p4c compiler signals an error if you attempt to create a cycle of
@@ -73,7 +73,7 @@ type name, and this is not allowed.
 
 If the last type is not `bit<W>` or `enum bit<W>`, that is an error
 for P4Runtime v1.0.  The "base" type must always be one of those for
-every bit-constrained value.
+every constrained value.
 
 
 ### `type_name` field
@@ -140,11 +140,11 @@ Execution trace for call to type_list(f2):
     T = declared type of object f2 in the P4 program = T2_t
     Evaluate condition (T2_t is declared as "type B T") -> true,
         because T2_t is declared as "type T1_t T2_t"
-    ret = ret + [T] -> ret=[T2_t]
+    tlist = tlist + [T] -> tlist=[T2_t]
     T = B = T1_t
     Evaluate condition (T1_t is declared as "type B T") -> true,
         because T1_t is declared as "type T1uint_t T1_t"
-    ret = ret + [T] -> ret=[T2_t, T1_t]
+    tlist = tlist + [T] -> tlist=[T2_t, T1_t]
     T = B = T1uint_t
     Evaluate condition (T1uint_t is declared as "type B T") -> false
     Evaluate condition (T1uint_t is declared as "typedef B T") -> true,
@@ -152,8 +152,8 @@ Execution trace for call to type_list(f2):
     T = B = bit<10>
     Evaluate condition (bit<10> is declared as "type B T") -> false
     Evaluate condition (bit<10> is declared as "typedef B T") -> false
-    ret = ret + [T] -> ret=[T2_t, T1_t, bit<10>]
-    return ret
+    tlist = tlist + [T] -> tlist=[T2_t, T1_t, bit<10>]
+    return tlist
 
 type_list(f2) -> [T2_t, T1_t, bit<10>]
 
@@ -244,7 +244,7 @@ should behave.
 The basic design described here tries to keep things fairly
 straightforward to explain and understand, if a P4_16 program does so.
 
-If a bit-constrained value is declared with a `type` that has a
+If a constrained value is declared with a `type` that has a
 `p4runtime_translation` on it, that one is used.
 
 In the absence of such an annotation on that `type`, no P4runtime
@@ -312,7 +312,7 @@ Note that both types `T1_t` and `T2_t` are described via
 `p4runtime_translation` annotation.
 
 
-## Example 4: fied with serializable `enum` type
+## Example 4: field with serializable `enum` type
 
 See [p4runtime issue
 #192](https://github.com/p4lang/p4runtime/issues/192).
@@ -344,14 +344,14 @@ but it is a loss of potentially useful information in the P4Info
 message.
 
 Should `type_name` be `"enum1_t"`, and then `"enum_t"` should be
-described withint the `type_info` field of the message?
+described within the `type_info` field of the message?
 
 As of early March 2019, `p4c` does not support users defining their
 own `type` definitions with a serializable `enum` like `enum1_t` as
 the base type.  The disadvantage with this situation is that there is
-no way to define a serializable `enum` type for a bit-constrained
-value, and also have `p4runtime_translation` annotated on a `type`
-with the serializable `enum` as its underlying type.
+no way to define a serializable `enum` type for a constrained value,
+and also have `p4runtime_translation` annotated on a `type` with the
+serializable `enum` as its underlying type.
 
 If `p4c` ever does support defining a `type` with a serializable
 `enum` as its underlying type, with an optional
