@@ -343,7 +343,7 @@ The following are not in scope of this specification document:
     of the networking infrastructure, in order to promote programmability of the
     network control. SDN is often associated with OpenFlow, a communications
     protocol that enables remote control of the network infrastructure through a
-    probrammable, centralized network *controller*.
+    programmable, centralized network *controller*.
 * SDN port
   : A 32-bit port number defined by a remote Software-Defined Network (SDN)
     controller. The SDN port number maps to a unique device port id, which may
