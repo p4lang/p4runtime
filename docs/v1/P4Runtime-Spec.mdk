@@ -639,7 +639,7 @@ follows:
   containing that tuple of (`device_id`, `role_id`, `election_id`) values. The
   P4Runtime server selects a master independently for each (`device_id`,
   `role_id`) pair. The master is the client that has the highest `election_id`
-  among all active `StreamChannel` connections with the same (`device_id`,
+  that the device has ever received for the same (`device_id`,
   `role_id`) values.  A connection between a controller instance and a device id
   --- which involves a persistent `StreamChannel` --- can be referred to as a
   P4Runtime client.
@@ -686,10 +686,11 @@ follows:
   for each pair of (`device_id`, `role_id`) at any point of time.
 
 * The streaming channel between the controller and the server defines the
-  liveness of the controller session. The controller is considered "offline" or
-  "dead" as soon as its corresponding stream channel to the switch is
-  broken, in which case the P4Runtime server quickly sets one of the slave
-  controllers with the highest `election_id` as master.
+  liveness of the controller session. The controller is considered “offline” or
+  “dead” as soon as its corresponding stream channel to the switch is broken, in
+  which case the P4Runtime server will be without a master, until one of the
+  slave controllers increases its election_id to a value higher than anything
+  that the server has previously received.
 
 * The mechanism via which the controller receives the P4Runtime server details
   which includes the `device_id`, `ip` and `port`, as well as the mechanism via
@@ -828,14 +829,10 @@ the server must return an `INVALID_ARGUMENT` error.
 
 ## Mastership Change { #sec-master-change}
 
-"Mastership change" refers to either one of these cases:
-
-1. A new `MasterArbitrationUpdate` is received from an already connected
-   controller for a given (`device_id`, `role_id`), which changes the controller
-   mastership status (the controller becomes master or slave).
-
-2. A streaming channel for a given master controller breaks, forcing a new
-   master to be elected.
+"Mastership change" refers to the case where a new `MasterArbitrationUpdate` is
+received from an already connected controller for a given
+(`device_id`, `role_id`), which changes the controller mastership status
+(the controller becomes master or slave).
 
 In case of a mastership change, the P4Runtime server shall send the
 `election_id` of the master to *all* the connected controllers for a given
@@ -4391,6 +4388,10 @@ any of the devices known to the P4Runtime server, the server must return a
 `NOT_FOUND` error. The `entities` repeated field is a list of P4 entities, each
 acting as a query filter to be applied to P4 entity containers on the server.
 
+Since `ReadRequest`s do not mutate any state on the switch, they do not
+require an `election_id`, and they do not require the pressence of an open
+`StreamChannel` between the server and client.
+
 The `Read `response consists of a sequence of messages (a gRPC `stream`) with
 each message defined as:
 
@@ -4695,6 +4696,10 @@ message PacketMetadata {
 
 ## Master Arbitration Update
 
+P4Runtime's master arbitration mechanism ensures the following invariant:
+the device will not allow a write from an older master, if it has already
+accepted a write from a newer master.
+
 As explained earlier in this document, the controller uses the `StreamChannel`
 RPC for session management as well as Packet I/O. In fact, before a controller
 becomes able to do Packet I/O or program any forwarding entry (via `Write` RPC),
@@ -4705,8 +4710,18 @@ controller populates the `MasterArbitrationUpdate` field in this message using
 its `role_id` and `election_id` and the `device_id` of the device, as explained
 in detail in the [Master-Slave Arbitration and Controller
 Replication](#sec-master-slave-arbitration-and-controller-replication)
-section. For any given (`device_id`, `role_id`), the controller with the highest
-`election_id` is the master and the rest are slaves.
+section. For any given (device_id, role_id), the P4Runtime server keeps track
+of the highest election_id that it has ever received. If a controller's
+election_id is equal to the highest election_id that the server has ever
+received, that controller is the master. All other controller are slaves. Note
+that it is possible that all controllers are slaves, and that there is no
+master.
+
+To ensure that the invariant holds across reboots, the device needs to persist
+the highest election_id. If the device's P4Runtime state is cleared completely
+after a reboot, it is acceptable (but not required) for the device to reset the
+election_id, as such a device is indistinguishable from a device that has been
+newly deployed to the network.
 
 The `MasterArbitrationUpdate` message is defined as follows:
 
