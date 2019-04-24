@@ -717,6 +717,9 @@ follows:
     * Non-OK (with `status.code` set to `google.rpc.ALREADY_EXISTS`) when the
       controller is determined to be a slave for a given (`device_id`,
       `role_id`).
+  An OK message is only sent after all previous write requests have been
+  completed. This prevents a previous master's write requests from interfering
+  with the new master. Non-OK messages are sent immediately.
 
 gRPC enables the server to identify which client originated each message in the
 `StreamChannel` stream. For example, the C++ gRPC library [@gRPCStreamC] in
@@ -4771,6 +4774,10 @@ also populates the `status` field in the `MasterArbitrationUpdate` as follows:
 
 * Non-OK (with `status.code` set to `google.rpc.ALREADY_EXISTS`) when the
   controller is determined to be a slave for a given (`device_id`, `role_id`).
+
+The sender need not specify an `election_id`. If the `election_id` is not
+specified, the sender's `election_id` is considered lower than any
+`election_id`, and the sender will thus never become master.
 
 ## Digest Messages
 
