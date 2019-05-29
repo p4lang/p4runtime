@@ -26,6 +26,7 @@ def p4runtime_proto_repositories():
 
     cpp_proto_repositories(
         overrides = PROTOBUF_RULES_OVERRIDE,
+        excludes = ["com_google_googletest"],
     )
 
     py_proto_repositories(
