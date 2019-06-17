@@ -5249,12 +5249,18 @@ field [@ProtoAny]. At the moment, there is not any mechanism to extend the
 `p4.v1.TableEntry` message based on the value of architecture-specific table
 properties, but we may include on in future versions of the API.
 
-# Known-limitations of P4Runtime v1.0.0
+# Known limitations of P4Runtime v1.0.0
 
 * `FieldMatch`, action `Param`, and controller packet metadata fields only
   support unsigned bitstrings, i.e. values of one of the following types (not
   the more general `P4Data`):
   * `bit<W>`
+  * `bool`.  Note that as far as the `P4Info` message contents and
+    thus controller software is concerned, such fields of type `bool`
+    will be indistinguishable from those that have been declared with
+    type `bit<1>`.  P4Runtime server software will automatically
+    perform any conversion needed between the type `bit<1>` values in
+    P4Runtime messages and the data plane representation.
   * an `enum` with underlying type `bit<W>`
   * a `type` or `typedef` with an underlying type that is one of the above (or
     in general a "chain" of `type` and/or `typedef` that eventually ends with
