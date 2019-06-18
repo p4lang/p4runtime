@@ -4508,11 +4508,11 @@ For example, imagine a client that wanted to use `WriteRequest`
 messages with large batches of insert, modify, and/or delete
 operations on an IP route table, in order to achieve higher throughput
 of updates to this table.  Such a client might also wish to send
-`WriteRequest` messages with small numbers of updates to an
-`ActionSelector` object that controlled which links were in which
-LAGs, and have those small requests start processing even if there is
-a large `WriteRequest` batch currently being processed, but it will
-not complete for a significant amount of time.
+`WriteRequest` messages with only a few updates to an `ActionSelector`
+object that controlled which links were in which LAGs, and have those
+small requests start processing even if there is a large
+`WriteRequest` batch currently being processed, but it will not
+complete for a significant amount of time.
 
 The restrictions on which a client may rely are:
 
@@ -4530,7 +4530,7 @@ of a `WriteRequest` message it acquired a write lock for each stateful
 object affected by the `WriteRequest`, and before starting the
 processing of a `ReadRequest` message it acquired a read lock for each
 stateful object accessed by the `ReadRequest`, such an implementation
-should meet all of the requirements above.
+meets all of the requirements above.
 
 It is possible to meet the requirements of this specification and
 perform even more requests in parallel than that example
