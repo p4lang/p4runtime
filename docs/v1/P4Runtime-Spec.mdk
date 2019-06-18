@@ -2287,6 +2287,11 @@ server and the *bitwidth* of the bitstring type exposed to the control plane. It
 is recommended that the URI includes at least the P4 architecture name and the
 type name.
 
+A `@p4runtime_translation` annotation need not have any effect if it is used to
+annotate anything in a P4 program other than a `type` declaration. It is
+recommended that P4 development tools have an option to issue a warning if such
+an annotation is used in a part of a P4 program where it has no effect.
+
 User-defined types are specified using the `P4NewTypeSpec` message, which has
 the following fields:
 
