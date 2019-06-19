@@ -4496,7 +4496,7 @@ multi-reader lock (also known as multiple-readers/single-writer lock).
 Conversely (&eg; in a single-threaded architecture), it may choose to serialize
 `Read` RPC processing.
 
-## Parallelism of Read and Write requests
+## Parallelism of Read and Write Requests
 
 A P4Runtime server may be implemented to serve at most one
 `ReadRequest` or `WriteRequest` message at a time, sequentially.  It
