@@ -623,8 +623,9 @@ reasons:
 
 2. Redundancy and fault tolerance: Supporting multiple controllers allows having
    one or more standby slave controllers. These can already have a connection
-   open, and can read the switch state while being a slave, which can help them
-   become master more quickly.
+   open, which can help them become master more quickly, especially in the case
+   where the management traffic is in-band and connection setup might be more
+   involved.
 
 To support multiple controllers, P4Runtime uses the streaming channel (available
 via `StreamChannel` RPC) for session management. The workflow is described as
@@ -659,17 +660,16 @@ follows:
   different (`device_id`, `role_id`) pairs; it allows it.
 
 * To start a controller session, a controller first opens a bidirectional stream
-  channel to the server via the `StreamChannel` RPC for each device. This is the
-  first thing the controller does to identify itself to the P4Runtime server on
-  the device. This stream will be used for two purposes:
+  channel to the server via the `StreamChannel` RPC for each device. This stream
+  will be used for two purposes:
 
     * **Session management:** As soon as the controller opens the stream
       channel, it sends a `StreamMessageRequest` message to the switch. The
       controller populates the `MasterArbitrationUpdate` field in this message
-      using its `role_id` and `election_id`. Note that the `status` field in the
-      `MasterArbitrationUpdate` is not populated by the controller. This field
-      is populated by the P4Runtime server when it sends a response back to the
-      client, as explained below.
+      using its `role_id` and `election_id`, as well as the `device_id` of the
+      device. Note that the `status` field in the `MasterArbitrationUpdate` is
+      not populated by the controller. This field is populated by the P4Runtime
+      server when it sends a response back to the client, as explained below.
 
     * **Streaming of notifications (&eg; digests) and packet I/O:** The same
       streaming channel will be used for streaming notifications, as well as for
@@ -687,11 +687,14 @@ follows:
   for each pair of (`device_id`, `role_id`) at any point of time.
 
 * The streaming channel between the controller and the server defines the
-  liveness of the controller session. The controller is considered “offline” or
-  “dead” as soon as its corresponding stream channel to the switch is broken, in
+  liveness of the controller session. The controller is considered "offline" or
+  "dead" as soon as its corresponding stream channel to the switch is broken, in
   which case the P4Runtime server will be without a master, until a client sends
-  a successful MasterArbitrationUpdate message with an `election_id` greater or
-  equal to anything that the server has previously received.
+  a successful `MasterArbitrationUpdate` (as per the rules in a
+  [later section](#sec-mastership-updates)). When a master controller breaks its
+  stream channel, an advisory message is sent to all other controllers for that
+  `device_id` and `role_id`, as described in the
+  [following section](#sec-mastership-notification).
 
 * The mechanism via which the controller receives the P4Runtime server details
   which includes the `device_id`, `ip` and `port`, as well as the mechanism via
@@ -702,24 +705,6 @@ follows:
   server details or switch config are transferred via the network, it is
   recommended to use TLS or similar encryption and authentication mechanisms to
   prevent eavesdropping attacks.
-
-* After the controller sends a `StreamMessageRequest` message to the P4Runtime
-  server, the server sends a `StreamMessageResponse` message back to the
-  controller, in which it populates the `MasterArbitrationUpdate`. The
-  controller must populate the `device_id`, `role`, and `election_id`
-  fields. The `election_id` field is set to the highest value, &ie; the value
-  for the current master. The server also populates the `status` field in the
-  `MasterArbitrationUpdate` (note that this field is not populated in the
-  `MasterArbitrationUpdate` received by the controller). The value of the status
-  message is one of the following:
-    * OK (with `status.code` set to `google.rpc.OK`) when the controller is
-      determined to be the master for a given (`device_id`, `role_id`).
-    * Non-OK (with `status.code` set to `google.rpc.ALREADY_EXISTS`) when the
-      controller is determined to be a slave for a given (`device_id`,
-      `role_id`).
-  An OK message is only sent after all previous write requests have been
-  completed. This prevents a previous master's write requests from interfering
-  with the new master. Non-OK messages are sent immediately.
 
 gRPC enables the server to identify which client originated each message in the
 `StreamChannel` stream. For example, the C++ gRPC library [@gRPCStreamC] in
@@ -774,10 +759,13 @@ are out-of-scope of this document. When partitioning of the control plane is
 desired, the P4Runtime client(s) and server need to agree on a role definition
 scheme in an out-of-band fashion.
 
-## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers
+It is the job of the P4Runtime server to remember the `role.config` for every
+`device_id` and `role_id` pair.
 
-1. If the `MasterArbitrationUpdate` message is received for the first time (for
-   a newly connected controller):
+## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers { #sec-mastership-updates }
+
+1. If the `MasterArbitrationUpdate` message is received for the first time on
+   this particular channel (i.e., for a newly connected controller):
 
     1. If `device_id` does not match any of the devices known to the P4Runtime
        server, the server shall terminate the stream by returning a
@@ -787,71 +775,143 @@ scheme in an out-of-band fashion.
        (`device_id`, `role_id`), the P4Runtime server shall terminate the stream
        by returning an `INVALID_ARGUMENT` error.
 
-    3. If the max number of clients for the given (`device_id`, `role_id`)
+    3. If `role.config` does not match the "out-of-band" scheme previously
+       agreed upon, the server must return an `INVALID_ARGUMENT` error.
+
+    4. If the max number of clients for the given (`device_id`, `role_id`)
        exceeds the supported limit, the P4Runtime server shall terminate the
        stream by returning a `RESOURCE_EXHAUSTED` error.
 
-    4. Otherwise, the controller is added to a list of connected controllers for
-       the given (`device_id`, `role_id`) and the controller is notified by
-       sending a `StreamMessageResponse` message back to it, as explained
-       earlier.
+    5. Otherwise, the controller is added to a list of connected controllers for
+       the given (`device_id`, `role_id`) and the server remembers the
+       controllers `device_id`, `role_id` and `election_id` for this gRPC
+       channel. See below for the rules to determine if this controller becomes
+       a master or slave, and what notifications are sent as a consequence.
 
-2. If the `MasterArbitrationUpdate` message is received from an already
-   connected controller:
+2. Otherwise, if the `MasterArbitrationUpdate` message is received from an
+   already connected controller:
 
     1. If the `device_id` does not match the one already assigned to this
        stream, the P4Runtime server shall terminate the stream by returning a
        `FAILED_PRECONDITION` error.
 
-    2. Otherwise, if the `role.id` matches the current `role_id` assigned to
-       this stream:
+    2. If the `role.id` does not match the current `role_id` assigned to this
+       stream, the P4Runtime server shall terminate the stream by returning a
+       `FAILED_PRECONDITION` error. If the controller wishes to change its role,
+       it must close the current stream channel and open a new one.
 
-        1. If the `election_id` also matches the one assigned to this stream,
-           the server will accept the (new) `role.config` only if this
-           controller is the current master. If the controller is not a master,
-           the operation is a no-op.
+    3. If `role.config` does not match the "out-of-band" scheme previously
+       agreed upon, the server must return an `INVALID_ARGUMENT` error.
 
-        2. If the `election_id` is already assigned to another controller stream
-           for the same (`device_id`, `role_id`), the P4Runtime server shall
-           terminate the stream by returning an `INVALID_ARGUMENT` error.
+    4. If the `election_id` is already used by another controller (excluding the
+       controller making the request) for the same (`device_id`, `role_id`), the
+       P4Runtime server shall terminate the stream by returning an
+       `INVALID_ARGUMENT` error.
 
-        3. Otherwise, the P4Runtime server updates the `election_id` for this
-           controller. If this makes the client the new master, the server will
-           also accept the given `role.config` and follow the "mastership change
-           rules" described in the [following section](#sec-master-change).
+    5. If the `election_id` matches the one assigned to this stream:
 
-    3. Otherwise (&ie; `role.id` is different from current `role_id` assigned to
-       this stream), the P4Runtime server moves the controller to the new role.
-       This controller will then be treated as a new controller for the new
-       (`device_id`, `role_id`). The server accepts the given `role.config` only
-       if the client becomes master, in which case the server also follows the
-       "mastership change rules" described in the [following
-       section](#sec-master-change).
+        1. If the controller for this channel is the master, then the server
+           updates the `role.config` to the one specified in the
+           `MasterArbitrationUpdate`. An advisory mastership message is sent to
+           all controllers for this `device_id` and `role_id` informing
+           them of the new `role.config`.  Since the format of `role.config` is
+           out of scope for the P4Runtime specification, the server will send
+           the advisory message for every update, even if the master sets the
+           same `role.config` as it has before. See the
+           [following section](#sec-mastership-notification) for the format of
+           the advisory message.
 
-If `role.config` does not match the "out-of-band" scheme previously agreed upon,
-the server must return an `INVALID_ARGUMENT` error.
+        2. If the controller is a slave, this is a no-op and the `role.config`
+           is ignored. No response is sent to any controller.
 
-## Mastership Change { #sec-master-change}
+    6. Otherwise, the server updates the `election_id` it has stored for this
+       controllers. This change might cause a change in mastership (this
+       controller might become master, or the controller might have downgraded
+       itself to a slave, see below), as well as notifications being sent to one
+       or more controllers.
 
-"Mastership change" refers to the case where a new `MasterArbitrationUpdate` is
-received from an already connected controller for a given (`device_id`,
-`role_id`), which changes the controller mastership status (the controller
-becomes master or slave).
+If the `MasterArbitrationUpdate` is accepted by either of the two steps above
+(cases 1.5. and 2.6. above), then the server determines if there are changes in
+mastership. Let `election_id_past` be the highest election ID the server has
+ever seen for the given `device_id` and `role_id` (including the one of the
+current master if there is one).
 
-There are two cases to consider for mastership changes:
+1. If `election_id` is greater than or equal to `election_id_past`, then the
+   controller becomes master. The server updates the role configuration to
+   `role.config` for the given `role.id`.  Furthermore:
 
-- Mastership changes when a connected instance (other than the currently
-  selected master) advertises a new highest `election_id`.
+    1. If there was no master for this `device_id` and `role_id` before, then
+       the server immediately sends an advisory notification to all controllers
+       for this `device_id` and `role_id`. See the
+       [following section](#sec-mastership-notification) for the format of the
+       advisory message.
 
-- Mastership changes when the current master advertises a new highest
-  `election_id`.
+    2. If there was a previous master, then the server carries out the following
+       steps (in this order):
 
-In case of a mastership change, the P4Runtime server shall send the
-`election_id` of the master to *all* the connected controllers for a given
-(`device_id`, `role_id`).  The `StreamMessageResponse` sent back to all the
-connected controllers has a `MasterArbitrationUpdate` message populated with the
-`device_id`, `role_id`, and `election_id` of the master, as well as an OK status
-for the master and non-OK status (with `ALREADY_EXISTS` error code) for slaves.
+        1. The server stops accepting `Write` requests from the previous master.
+           At this point, the server will reject all `Write` requests with
+           `PERMISSION_DENIED`.
+
+        2. The server notifies all controllers other than the new master of the
+           mastership change by sending the advisory notification described in
+           the [following section](#sec-mastership-notification).
+
+        3. The server will finish processing any `Write` requests from the
+           previous master that have already started.
+
+        4. The server now accepts the current controller as the new master, thus
+           accepting `Write` requests from this controller. The server updates
+           the highest election ID (i.e., `election_id_past`) it has seen for
+           this `device_id` and `role_id` to `election_id`.
+
+        5. The server notifies the new master by sending the advisory message
+           described in the [following section](#sec-mastership-notification).
+
+2. Otherwise, the controller becomes a slave: If the controller was previously a
+   master (and downgraded itself), then an advisory message is sent to all
+   controllers for this `device_id` and `role_id`.  Otherwise, the advisory
+   message is only sent to the controller that sent the initial
+   `MasterArbitrationUpdate`.  See the
+   [following section](#sec-mastership-notification) for the format of the
+   advisory message.
+
+## Mastership Notifications { #sec-mastership-notification}
+
+For any given `device_id` and `role_id`, any time a new master is chosen, a
+master downgrades its status to a slave, a master disconnects, or the
+`role.config` is updated by the master, all controllers for that
+(`device_id`, `role_id`) are informed of this by sending a
+`StreamMessageResponse`. The `MasterArbitrationUpdate` is populated as follows:
+
+* `device_id` and `role.id` as given.
+
+* `role.config` is set to the role configuration the server received most
+  recently in a `MasterArbitrationUpdate` from a master.
+
+* If there currently is a master, then `election_id` is set to the `election_id`
+  of that master.  Otherwise, `election_id` is set to the highest election ID
+  that the server has seen for this `device_id` and `role_id` (and left unset if
+  there has not been any master at all).
+
+* `status` is set differently based on whether the notification is sent to the
+  master or a slave controller:
+
+    * If there is a master:
+
+        * For the master, `status` is OK (with `status.code` set to
+          `google.rpc.OK`).
+
+        * For all slave controllers, `status` is set to non-OK (with
+          `status.code` set to `google.rpc.ALREADY_EXISTS`).
+
+    * Otherwise, if there is no master currently, for all slave controllers,
+      `status` is set to non-OK (with `status.code` set to
+      `google.rpc.NOT_FOUND`).
+
+Note that on mastership changes with outstanding `Write` request, some
+notifications might be delayed, see the
+[previous section](#sec-mastership-updates) for details.
 
 # The P4Info Message
 
