@@ -840,25 +840,28 @@ current master if there is one).
    controller becomes master. The server updates the role configuration to
    `role.config` for the given `role.id`.  Furthermore:
 
-    1. If there was no master for this `device_id` and `role_id` before, then
-       the server immediately sends an advisory notification to all controllers
-       for this `device_id` and `role_id`. See the
+    1. If there was no master for this `device_id` and `role_id` before and
+       there are no `Write` requests still processing from a previous master,
+       then the server immediately sends an advisory notification to all
+       controllers for this `device_id` and `role_id`. See the
        [following section](#sec-mastership-notification) for the format of the
        advisory message.
 
-    2. If there was a previous master, then the server carries out the following
-       steps (in this order):
+    2. If there was a previous master or `Write` requests in flight, then the
+       server carries out the following steps (in this order):
 
-        1. The server stops accepting `Write` requests from the previous master.
-           At this point, the server will reject all `Write` requests with
-           `PERMISSION_DENIED`.
+        1. The server stops accepting `Write` requests from the previous master
+           (if there is one). At this point, the server will reject all `Write`
+           requests with `PERMISSION_DENIED`.
 
         2. The server notifies all controllers other than the new master of the
            mastership change by sending the advisory notification described in
            the [following section](#sec-mastership-notification).
 
-        3. The server will finish processing any `Write` requests from the
-           previous master that have already started.
+        3. The server will finish processing any `Write` requests that have
+           already started. If there are errors, they are reported as usual to
+           the previous master. If the previous master has already disconnected,
+           any possible errors are dropped and not reported.
 
         4. The server now accepts the current controller as the new master, thus
            accepting `Write` requests from this controller. The server updates
