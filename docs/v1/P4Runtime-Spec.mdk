@@ -511,6 +511,15 @@ In this situation, P4Info is selectively packaged into role-based subsets to
 allow some controllers access to just the functionality required. For example, a
 controller may only need read access to statistics counters and nothing more.
 
+## P4Runtime State Across Restarts { #sec-restarts }
+
+All targets support full restarts, where all forwarding state is reset and the
+P4Runtime server starts with a clean state.  Some targets may also support
+In-Service Software Upgrade (ISSU), where the software on the target can be
+restarted while traffic is being forwarded. In this case, the P4Runtime Server
+is restarted, but it will restore the forwarding state after the restart and no
+forwarding state is lost.
+
 # Controller Use-cases
 
 P4Runtime allows for more than one controller. The mechanisms and semantics are
@@ -765,7 +774,7 @@ It is the job of the P4Runtime server to remember the `role.config` for every
 ## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers { #sec-mastership-updates }
 
 1. If the `MasterArbitrationUpdate` message is received for the first time on
-   this particular channel (i.e., for a newly connected controller):
+   this particular channel (&ie; for a newly connected controller):
 
     1. If `device_id` does not match any of the devices known to the P4Runtime
        server, the server shall terminate the stream by returning a
@@ -865,7 +874,7 @@ current master if there is one).
 
         4. The server now accepts the current controller as the new master, thus
            accepting `Write` requests from this controller. The server updates
-           the highest election ID (i.e., `election_id_past`) it has seen for
+           the highest election ID (&ie; `election_id_past`) it has seen for
            this `device_id` and `role_id` to `election_id`.
 
         5. The server notifies the new master by sending the advisory message
@@ -4843,11 +4852,10 @@ that it is possible that all controllers are slaves, and that there is no
 master. There can be at most one master, because for any given
 `(device_id, role_id)`, each connected controller has a unique `election_id`.
 
-To ensure that the invariant holds across reboots, the device needs to persist
-the highest `election_id`. If the device's P4Runtime state is cleared
-completely after a reboot, it is acceptable (but not required) for the device
-to reset the `election_id`, as such a device is indistinguishable from a device
-that has been newly deployed to the network.
+This invariant must be maintained across in-service software upgrades, and the
+P4Runtime server must remember the highest `election_id` after such a restart.
+However, across a [full restart](#sec-restarts), the `election_id` must be
+reset. In fact, a full restart is the only way to reset the `election_id`.
 
 The `MasterArbitrationUpdate` message is defined as follows:
 
@@ -4890,7 +4898,13 @@ also populates the `status` field in the `MasterArbitrationUpdate` as follows:
 
 The sender need not specify an `election_id`. If the `election_id` is not
 specified, the sender's `election_id` is considered lower than any
-`election_id`, and the sender will thus never become master.
+`election_id`, and the sender will thus never become master. This way, if a
+controller is informed by the consensus layer that it is not supposed to be
+master, it may choose not to advertise an election_id, in order to avoid master
+"flapping" (if a standby controller connects to the switch shortly before the
+actual master controller, therefore becoming master temporarily).
+
+
 
 ## Digest Messages
 
