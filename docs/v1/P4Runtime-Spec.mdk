@@ -4830,9 +4830,11 @@ message PacketMetadata {
 
 ## Master Arbitration Update
 
-P4Runtime's master arbitration mechanism ensures the following invariant: the
-device will not allow a `MasterArbitrationUpdate` from an older master, if it
-has already accepted a `MasterArbitrationUpdate` from a newer master.
+P4Runtime's master arbitration mechanism ensures that only the current master
+can modify state on the switch, and that the `election_id` is monotonically
+increasing. For example, the switch must finish all previous write operations
+before changing masters, and must only accept write requests from the current
+master.
 
 As explained earlier in this document, the controller uses the `StreamChannel`
 RPC for session management as well as Packet I/O. In fact, before a controller
