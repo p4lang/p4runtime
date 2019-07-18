@@ -516,9 +516,8 @@ controller may only need read access to statistics counters and nothing more.
 All targets support full restarts, where all forwarding state is reset and the
 P4Runtime server starts with a clean state.  Some targets may also support
 In-Service Software Upgrade (ISSU), where the software on the target can be
-restarted while traffic is being forwarded. In this case, the P4Runtime Server
-is restarted, but it will restore the forwarding state after the restart and no
-forwarding state is lost.
+restarted while traffic is being forwarded. In this case, the P4Runtime server
+may have the ability to access information from memory before the upgrade.
 
 # Controller Use-cases
 
@@ -633,7 +632,7 @@ reasons:
 2. Redundancy and fault tolerance: Supporting multiple controllers allows having
    one or more standby slave controllers. These can already have a connection
    open, which can help them become master more quickly, especially in the case
-   where the management traffic is in-band and connection setup might be more
+   where the control-plane traffic is in-band and connection setup might be more
    involved.
 
 To support multiple controllers, P4Runtime uses the streaming channel (available
@@ -687,6 +686,9 @@ follows:
       I/O. This feature is explained in more details in the [Packet
       I/O](#sec-packet-i_o) section.
 
+  Note that a controller session is only required if the controller wants to do
+  Packet I/O, or modify the forwarding state.
+
 * Note that the stream is opened per device. In case a switching platform has
   multiple devices (&eg; multi-ASIC line card) which are all controlled via the
   same P4Runtime server, it is possible to have different masters for different
@@ -697,13 +699,13 @@ follows:
 
 * The streaming channel between the controller and the server defines the
   liveness of the controller session. The controller is considered "offline" or
-  "dead" as soon as its corresponding stream channel to the switch is broken, in
-  which case the P4Runtime server will be without a master, until a client sends
-  a successful `MasterArbitrationUpdate` (as per the rules in a
-  [later section](#sec-mastership-updates)). When a master controller breaks its
-  stream channel, an advisory message is sent to all other controllers for that
-  `device_id` and `role_id`, as described in the
-  [following section](#sec-mastership-notification).
+  "dead" as soon as its stream channel to the switch is broken. When a master
+  channel gets broken: (i) an advisory message is sent to all other controllers
+  for that `device_id` and `role_id`, as described in the
+  [following section](#sec-mastership-notification) (ii) the P4Runtime server
+  will be without a master, until a client sends a successful
+  `MasterArbitrationUpdate` (as per the rules in a
+  [later section](#sec-mastership-updates)).
 
 * The mechanism via which the controller receives the P4Runtime server details
   which includes the `device_id`, `ip` and `port`, as well as the mechanism via
@@ -4890,22 +4892,15 @@ populated by the controller. This field is populated by the P4Runtime server
 when it sends a `StreamMessageResponse` message back to the controller, in which
 it populates the `MasterArbitrationUpdate` message using the `device_id`,
 `role`, and `election_id` it previously received from the controller. The server
-also populates the `status` field in the `MasterArbitrationUpdate` as follows:
-
-* OK (with `status.code` set to `google.rpc.OK`) when the controller is
-  determined to be the master for a given (`device_id`, `role_id`).
-
-* Non-OK (with `status.code` set to `google.rpc.ALREADY_EXISTS`) when the
-  controller is determined to be a slave for a given (`device_id`, `role_id`).
+also populates the `status` field in the `MasterArbitrationUpdate` according to
+the rules in an [earlier section](#sec-mastership-updates).
 
 The sender need not specify an `election_id`. If the `election_id` is not
 specified, the sender's `election_id` is considered lower than any
-`election_id`, and the sender will thus never become master. This way, if a
-controller is informed by the consensus layer that it is not supposed to be
-master, it may choose not to advertise an election_id, in order to avoid master
+`election_id`, and the sender will thus never become master. This way, a
+controller can choose to be a standby controller, in order to avoid master
 "flapping" (if a standby controller connects to the switch shortly before the
 actual master controller, therefore becoming master temporarily).
-
 
 
 ## Digest Messages
