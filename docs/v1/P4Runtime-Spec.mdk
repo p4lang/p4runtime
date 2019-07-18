@@ -789,7 +789,7 @@ It is the job of the P4Runtime server to remember the `role.config` for every
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
 
-    4. If the max number of clients for the given (`device_id`, `role_id`)
+    4. If the number of open streams for the given (`device_id`, `role_id`) 
        exceeds the supported limit, the P4Runtime server shall terminate the
        stream by returning a `RESOURCE_EXHAUSTED` error.
 
