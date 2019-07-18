@@ -782,9 +782,9 @@ It is the job of the P4Runtime server to remember the `role.config` for every
        server, the server shall terminate the stream by returning a
        `NOT_FOUND` error.
 
-    2. If the `election_id` is already used by another controller for the same
-       (`device_id`, `role_id`), the P4Runtime server shall terminate the stream
-       by returning an `INVALID_ARGUMENT` error.
+    2. If the `election_id` is set and is already used by another controller for
+       the same (`device_id`, `role_id`), the P4Runtime server shall terminate
+       the stream by returning an `INVALID_ARGUMENT` error.
 
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
@@ -814,10 +814,10 @@ It is the job of the P4Runtime server to remember the `role.config` for every
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
 
-    4. If the `election_id` is already used by another controller (excluding the
-       controller making the request) for the same (`device_id`, `role_id`), the
-       P4Runtime server shall terminate the stream by returning an
-       `INVALID_ARGUMENT` error.
+    4. If the `election_id` is set and is already used by another controller
+       (excluding the controller making the request) for the same
+       (`device_id`, `role_id`), the P4Runtime server shall terminate the stream
+       by returning an `INVALID_ARGUMENT` error.
 
     5. If the `election_id` matches the one assigned to this stream:
 
