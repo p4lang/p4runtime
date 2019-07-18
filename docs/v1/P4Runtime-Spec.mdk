@@ -903,10 +903,13 @@ master downgrades its status to a slave, a master disconnects, or the
 * `role.config` is set to the role configuration the server received most
   recently in a `MasterArbitrationUpdate` from a master.
 
-* If there currently is a master, then `election_id` is set to the `election_id`
-  of that master.  Otherwise, `election_id` is set to the highest election ID
-  that the server has seen for this `device_id` and `role_id` (and left unset if
-  there has not been any master at all).
+* `election_id` is populated as follows:
+
+    * If there has not been any master at all, the election_id is left unset.
+
+    * Otherwise, `election_id` is set to the highest election ID that the server
+      has seen for this `device_id` and `role_id` (which is the `election_id` of
+      the current master if there is any).
 
 * `status` is set differently based on whether the notification is sent to the
   master or a slave controller:
