@@ -836,7 +836,7 @@ It is the job of the P4Runtime server to remember the `role.config` for every
            is ignored. No response is sent to any controller.
 
     6. Otherwise, the server updates the `election_id` it has stored for this
-       controllers. This change might cause a change in mastership (this
+       controller. This change might cause a change in mastership (this
        controller might become master, or the controller might have downgraded
        itself to a slave, see below), as well as notifications being sent to one
        or more controllers.
