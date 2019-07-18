@@ -882,7 +882,7 @@ current master if there is one).
         5. The server notifies the new master by sending the advisory message
            described in the [following section](#sec-mastership-notification).
 
-2. Otherwise, the controller becomes a slave: If the controller was previously a
+2. Otherwise, the controller becomes a slave. If the controller was previously a
    master (and downgraded itself), then an advisory message is sent to all
    controllers for this `device_id` and `role_id`.  Otherwise, the advisory
    message is only sent to the controller that sent the initial
