@@ -849,7 +849,7 @@ current master if there is one).
 
 1. If `election_id` is greater than or equal to `election_id_past`, then the
    controller becomes master. The server updates the role configuration to
-   `role.config` for the given `role.id`.  Furthermore:
+   `role.config` for the given `role.id`. Furthermore:
 
     1. If there was no master for this `device_id` and `role_id` before and
        there are no `Write` requests still processing from a previous master,
