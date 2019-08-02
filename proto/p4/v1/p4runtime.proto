@@ -394,8 +394,17 @@ message Replica {
 // each replica's egress input metadata will be set to the respective values
 // programmed in the multicast group entry.
 message MulticastGroupEntry {
+  // Set multicast_group_id to MULTICAST_GROUP_ID_WILDCARD for wildcard reads
   uint32 multicast_group_id = 1;
   repeated Replica replicas = 2;
+
+  // We define a special reserved value for the multicast_group_id field. This
+  // value can be used to do a wildcard Read on all configured multicast
+  // groups. This value cannot be used in Write RPCs.
+  enum MulticastGroupIdReserved {
+    // 0xffffffff
+    MULTICAST_GROUP_ID_WILDCARD = -1;
+  }
 }
 
 // A packet may be cloned by setting the clone_session_id field of PSA
@@ -412,10 +421,19 @@ message MulticastGroupEntry {
 // packet_length_bytes field is 0, no truncation on the clone(s) will be
 // performed.
 message CloneSessionEntry {
+  // Set session_id to CLONE_SESSION_ID_WILDCARD for wildcard reads
   uint32 session_id = 1;
   repeated Replica replicas = 2;
   uint32 class_of_service = 3;
   int32 packet_length_bytes = 4;
+
+  // We define a special reserved value for the session_id field. This value can
+  // be used to do a wildcard read on all configured clone sessions. This value
+  // cannot be used in Write RPCs.
+  enum CloneSessionIdReserved {
+    // 0xffffffff
+    CLONE_SESSION_ID_WILDCARD = -1;
+  }
 }
 
 // A member in a P4 value set. Each member defines a list of matches, which can
@@ -444,12 +462,14 @@ message ValueSetEntry {
   repeated ValueSetMember members = 2;
 }
 
+//------------------------------------------------------------------------------
 message RegisterEntry {
   uint32 register_id = 1;
   Index index = 2;
   P4Data data = 3;
 }
 
+//------------------------------------------------------------------------------
 // Used to configure the digest extern only, not to stream digests or acks
 message DigestEntry {
   uint32 digest_id = 1;

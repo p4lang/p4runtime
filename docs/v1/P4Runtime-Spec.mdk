@@ -3715,6 +3715,22 @@ semantics.
   operation. Any packets with their `multicast_group` metadata in the data plane
   set to the deleted `multicast_group_id` will be dropped.
 
+When reading a multicast group, only `multicast_group_id` is considered. All
+other fields in `MulticastGroupEntry`` are ignored. To perform a *wildcard* read
+on all configured multicast group entries, the client must set the
+`multicast_group_id` field to `MULTICAST_GROUP_ID_WILDCARD`, which is defined in
+p4runtime.proto as an enum member with the value `0xffffffff`:
+
+~ Begin Proto
+enum MulticastGroupIdReserved {
+  // 0xffffffff
+  MULTICAST_GROUP_ID_WILDCARD = -1;
+}
+~ End Proto
+
+This reserved value can never appear in a `Write` RPC. If it does, the server
+must return an `INVALID_ARGUMENT` error.
+
 ### `CloneSessionEntry`
 
 PSA supports cloning of packets in both the ingress and egress pipeline. Ingress
@@ -3808,6 +3824,22 @@ semantics:
   `clone_session_id`. Other fields need not be provided for this operation. Any
   packet with their `clone_session_id` metadata in the data plane set to the
   deleted `session_id` will no longer be cloned.
+
+When reading a clone session, only `session_id` is considered. All other fields
+in `CloneSessionEntry` are ignored. To perform a *wildcard* read on all
+configured clone session entries, the client must set the `session_id` field to
+`CLONE_SESSION_ID_WILDCARD`, which is defined in p4runtime.proto as an enum
+member with the value `0xffffffff`:
+
+~ Begin Proto
+enum CloneSessionIdReserved {
+  // 0xffffffff
+  CLONE_SESSION_ID_WILDCARD = -1;
+}
+~ End Proto
+
+This reserved value can never appear in a `Write` RPC. If it does, the server
+must return an `INVALID_ARGUMENT` error.
 
 ## `ValueSetEntry`
 
