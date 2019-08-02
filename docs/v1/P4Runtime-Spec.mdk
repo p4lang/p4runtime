@@ -3716,20 +3716,21 @@ semantics.
   set to the deleted `multicast_group_id` will be dropped.
 
 When reading a multicast group, only `multicast_group_id` is considered. All
-other fields in `MulticastGroupEntry`` are ignored. To perform a *wildcard* read
+other fields in `MulticastGroupEntry` are ignored. To perform a *wildcard* read
 on all configured multicast group entries, the client must set the
 `multicast_group_id` field to `MULTICAST_GROUP_ID_WILDCARD`, which is defined in
 p4runtime.proto as an enum member with the value `0xffffffff`:
 
 ~ Begin Proto
-enum MulticastGroupIdReserved {
+enum MulticastGroupIdValues {
   // 0xffffffff
   MULTICAST_GROUP_ID_WILDCARD = -1;
 }
 ~ End Proto
 
-This reserved value can never appear in a `Write` RPC. If it does, the server
-must return an `INVALID_ARGUMENT` error.
+The `multicast_group_id` field can never be set to `MULTICAST_GROUP_ID_WILDCARD`
+in a `Write` RPC. If it does, the server must return an `INVALID_ARGUMENT`
+error.
 
 ### `CloneSessionEntry`
 
@@ -3832,14 +3833,14 @@ configured clone session entries, the client must set the `session_id` field to
 member with the value `0xffffffff`:
 
 ~ Begin Proto
-enum CloneSessionIdReserved {
+enum CloneSessionIdValues {
   // 0xffffffff
   CLONE_SESSION_ID_WILDCARD = -1;
 }
 ~ End Proto
 
-This reserved value can never appear in a `Write` RPC. If it does, the server
-must return an `INVALID_ARGUMENT` error.
+The `session_id` field can never be set to `CLONE_SESSION_ID_WILDCARD` in a
+`Write` RPC. If it does, the server must return an `INVALID_ARGUMENT` error.
 
 ## `ValueSetEntry`
 

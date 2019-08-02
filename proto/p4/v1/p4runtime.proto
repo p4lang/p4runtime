@@ -398,14 +398,13 @@ message MulticastGroupEntry {
   uint32 multicast_group_id = 1;
   repeated Replica replicas = 2;
 
-  // We define a special reserved value for the multicast_group_id field. This
-  // value can be used to do a wildcard Read on all configured multicast
-  // groups. This value cannot be used in Write RPCs.
-  enum MulticastGroupIdReserved {
+  // "Special" values for the multicast_group_id field
+  enum MulticastGroupIdValues {
     MULTICAST_GROUP_ID_INVALID = 0;
     MULTICAST_GROUP_ID_FIRST = 1;
-    // 0xffffffff
-    MULTICAST_GROUP_ID_WILDCARD = -1;
+    // This value is reserved to perform a wildcard Read on all configured
+    // multicast groups. This value cannot be used in Write RPCs.
+    MULTICAST_GROUP_ID_WILDCARD = -1;  // 0xffffffff
   }
 }
 
@@ -429,13 +428,12 @@ message CloneSessionEntry {
   uint32 class_of_service = 3;
   int32 packet_length_bytes = 4;
 
-  // We define a special reserved value for the session_id field. This value can
-  // be used to do a wildcard read on all configured clone sessions. This value
-  // cannot be used in Write RPCs.
+  // "Special" values for the session_id field
   enum CloneSessionIdReserved {
     CLONE_SESSION_ID_FIRST = 0;
-    // 0xffffffff
-    CLONE_SESSION_ID_WILDCARD = -1;
+    // This value is reserved to perform a wildcard Read on all configured clone
+    // sessions. This value cannot be used in Write RPCs.
+    CLONE_SESSION_ID_WILDCARD = -1;  // 0xffffffff
   }
 }
 
