@@ -3811,7 +3811,7 @@ semantics:
   port number and must refer to a singleton port. The class of service for each
   clone packet instance will be set to the value programmed in the clone session
   entry (`class_of_service` field). This value must be a valid value for the PSA
-  `CloneSessionId_t` type, which supports runtime translation by default
+  `ClassOfService_t` type, which supports runtime translation by default
   [@PSATranslation], or the server must return `INVALID_ARGUMENT`. See [PSA
   Metadata Translation](#sec-translation-of-port-numbers) for more
   information. The `packet_length_bytes` field must be set to a non-zero value
