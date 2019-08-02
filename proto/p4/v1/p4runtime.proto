@@ -402,6 +402,8 @@ message MulticastGroupEntry {
   // value can be used to do a wildcard Read on all configured multicast
   // groups. This value cannot be used in Write RPCs.
   enum MulticastGroupIdReserved {
+    MULTICAST_GROUP_ID_INVALID = 0;
+    MULTICAST_GROUP_ID_FIRST = 1;
     // 0xffffffff
     MULTICAST_GROUP_ID_WILDCARD = -1;
   }
@@ -431,6 +433,7 @@ message CloneSessionEntry {
   // be used to do a wildcard read on all configured clone sessions. This value
   // cannot be used in Write RPCs.
   enum CloneSessionIdReserved {
+    CLONE_SESSION_ID_FIRST = 0;
     // 0xffffffff
     CLONE_SESSION_ID_WILDCARD = -1;
   }
