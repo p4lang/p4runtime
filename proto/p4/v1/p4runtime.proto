@@ -444,12 +444,14 @@ message ValueSetEntry {
   repeated ValueSetMember members = 2;
 }
 
+//------------------------------------------------------------------------------
 message RegisterEntry {
   uint32 register_id = 1;
   Index index = 2;
   P4Data data = 3;
 }
 
+//------------------------------------------------------------------------------
 // Used to configure the digest extern only, not to stream digests or acks
 message DigestEntry {
   uint32 digest_id = 1;

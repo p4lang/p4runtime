@@ -3695,18 +3695,15 @@ A multicast group may be inserted, modified or deleted as per the following
 semantics.
 
 * `INSERT`: Add a new multicast group entry bound to a set of egress ports and
-  replica IDs. The `multicast_group_id` field is a `uint32` and must not exceed
-  the maximum value supported by the target. The PSA specification states that 0
-  is a special value which indicates that no multicast replication is to be
-  performed for a packet [@PSATranslation]. Therefore `multicast_group_id` must
-  never be set to 0. If one of these constraints is violated, the P4Runtime
-  server must return an `INVALID_ARGUMENT` error. The replica `instance` ID is
-  also a `uint32`, and its value may not exceed the maximum allowed by the
-  target for the `EgressInstance_t` type (0 is allowed), or the server must
-  return an `INVALID_ARGUMENT` error. The egress port must be a 32-bit SDN port
-  number and must refer to a singleton port. No two replicas may have identical
-  values of *both* `egress_port` and `instance`, or the server must return
-  `INVALID_ARGUMENT`.
+  replica IDs. The `multicast_group_id` field is a `uint32` and must be greater
+  than 0 (see explanation [below](#sec-valid-values-for-mg-id)), or the
+  P4Runtime server must return an `INVALID_ARGUMENT` error. The replica
+  `instance` ID is also a `uint32`, and its value may not exceed the maximum
+  allowed by the target for the `EgressInstance_t` type (0 is allowed), or the
+  server must return an `INVALID_ARGUMENT` error. The egress port must be a
+  32-bit SDN port number and must refer to a singleton port. No two replicas may
+  have identical values of *both* `egress_port` and `instance`, or the server
+  must return `INVALID_ARGUMENT`.
 * `MODIFY`: Modify the set of replicas for a given multicast group entry,
   indexed by the given `multicast_group_id`. Same restrictions as `INSERT` apply
   here.
@@ -3714,6 +3711,26 @@ semantics.
   `multicast_group_id`. The replicas need not be provided for this
   operation. Any packets with their `multicast_group` metadata in the data plane
   set to the deleted `multicast_group_id` will be dropped.
+
+When reading a multicast group, only `multicast_group_id` is considered. All
+other fields in `MulticastGroupEntry` are ignored. To perform a *wildcard*
+`Read` on all configured multicast group entries, the `multicast_group_id` field
+must be set to 0, its default value.
+
+#### Valid Values for `multicast_group_id` { #sec-valid-values-for-mg-id}
+
+The PSA specification states that the valid *data plane* values for multicast
+group ids (`MulticastGroup_t`) range from 1 (0 is a special value that indicates
+no multicast replication is to be performed for a packet) to the maximum value
+supported by the target [@PSATranslation]. This means that, in the absence of
+translation, the client must set the `multicast_group_id` field to a value in
+this range when inserting a multicast group. However, because P4Runtime reserves
+0 as a special *wildcard* value which is used to read all the multicast groups
+configured in the target, the `multicast_group_id` field must never be set to 0
+when performing a `Write` RPC, even when numerical translation is enabled for
+multicast group ids. In other words, it is not possible to map (using
+translation) a zero SDN multicast group id value to a non-zero data plane
+multicast group id value.
 
 ### `CloneSessionEntry`
 
@@ -3785,21 +3802,21 @@ A clone session may be inserted, modified or deleted as per the following
 semantics:
 
 * `INSERT`: Add a new clone session entry bound to a set of egress ports and
-  replica IDs. The `session_id` is a `uint32`, must be unique across all clone
-  session entries, and its value may not exceed the maximum supported by the
-  target (0 is allowed), or the P4Runtime server must return an
-  `INVALID_ARGUMENT` error. The replica `instance` ID is also a `uint32`, and
-  its value may not exceed the maximum allowed by the target for the
-  `EgressInstance_t` type (0 is allowed), or the server must also return an
-  `INVALID_ARGUMENT` error. The egress port in the replica must be a 32-bit SDN
-  port number and must refer to a singleton port. The class of service for each
-  clone packet instance will be set to the value programmed in the clone session
-  entry (`class_of_service` field). This value must be a valid value for the PSA
-  `CloneSessionId_t` type, which supports runtime translation by default
-  [@PSATranslation], or the server must return `INVALID_ARGUMENT`. See [PSA
-  Metadata Translation](#sec-translation-of-port-numbers) for more
-  information. The `packet_length_bytes` field must be set to a non-zero value
-  if the clone packet should be truncated to the given value (in bytes). If the
+  replica IDs. The `session_id` is a `uint32` and must be greater than 0 (see
+  explanation [below](#sec-valid-values-for-session-id)), or the P4Runtime
+  server must return an `INVALID_ARGUMENT` error. The replica `instance` ID is
+  also a `uint32`, and its value may not exceed the maximum allowed by the
+  target for the `EgressInstance_t` type (0 is allowed), or the server must also
+  return an `INVALID_ARGUMENT` error. The egress port in the replica must be a
+  32-bit SDN port number and must refer to a singleton port. The class of
+  service for each clone packet instance will be set to the value programmed in
+  the clone session entry (`class_of_service` field). This value must be a valid
+  value for the PSA `ClassOfService_t` type, which supports runtime translation
+  by default [@PSATranslation], or the server must return
+  `INVALID_ARGUMENT`. See [PSA Metadata
+  Translation](#sec-translation-of-port-numbers) for more information. The
+  `packet_length_bytes` field must be set to a non-zero value if the clone
+  packet should be truncated to the given value (in bytes). If the
   `packet_length_bytes` field is 0 (default), no truncation on the clone will be
   performed.
 * `MODIFY`: Modify the attributes of a given clone session entry, indexed by the
@@ -3809,12 +3826,35 @@ semantics:
   packet with their `clone_session_id` metadata in the data plane set to the
   deleted `session_id` will no longer be cloned.
 
+When reading a clone session, only `session_id` is considered. All other fields
+in `CloneSessionEntry` are ignored. To perform a *wildcard* `Read` on all
+configured clone session entries, the `session_id` field must be set to 0, its
+default value. The `session_id` field can never be equal to 0 in a `Write`
+RPC. If it does, the server must return an `INVALID_ARGUMENT` error.
+
+#### Valid Values for `session_id` { #sec-valid-values-for-session-id}
+
+The PSA specification states that the valid *data plane* values for clone
+session ids (`CloneSessionId_t`) range from 0 to the maximum value supported by
+the target [@PSATranslation]. Note that unlike for [multicast group
+ids](#sec-valid-values-for-mg-id), 0 is a valid *data plane* value for clone
+session ids. However, just like for multicast group ids, P4Runtime reserves 0 as
+a special *wildcard* value which is used to read all the clone sessions
+configured in the target. This means that 0 can never be used as a `session_id`
+value when inserting a clone session, whether or not numeric translation is
+enabled for clone session ids. If translation is *not* enabled, we effectively
+"lose" one clone session, assuming the target supports 0 as mandated by the PSA
+specification. Assuming this is an issue (&eg; because the target supports a
+very limited number of clone sessions), one could enable translation on
+`CloneSessionId_t` and map any non-zero SDN session id to the data plane clone
+session with id 0, then insert a clone session with the chosen SDN session id.
+
 ## `ValueSetEntry`
 
 Parser Value Set is a construct in P4 that is used to support programmability of
 parser state transitions. A transition select statement in P4 can use a parser
 Value Set to define a runtime programmable state transition as shown in the
-example below. A runtime programmable set of TRILL ethtypes is used to
+example below. A runtime programmable set of TRILL Ethertypes is used to
 transition the parser state machine to the `parse_trill_types` state.
 
 ~ Begin P4Example
