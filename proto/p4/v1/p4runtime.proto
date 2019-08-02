@@ -429,7 +429,7 @@ message CloneSessionEntry {
   int32 packet_length_bytes = 4;
 
   // "Special" values for the session_id field
-  enum CloneSessionIdReserved {
+  enum CloneSessionIdValues {
     CLONE_SESSION_ID_FIRST = 0;
     // This value is reserved to perform a wildcard Read on all configured clone
     // sessions. This value cannot be used in Write RPCs.
