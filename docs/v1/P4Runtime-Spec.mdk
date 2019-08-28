@@ -5010,7 +5010,7 @@ Architectures](#sec-extending-p4runtime) for more information.
 The P4Runtime server can asynchronously report errors which occur when
 processing `StreamMessageRequest` messages, using the `error` message field (of
 type `StreamError`) in `StreamMessageResponse`. This error reporting is
-optional and mostly used for debugging purposes, and the server may provide an
+optional and mostly used for debugging purposes. The server may provide an
 out-of-band mechanism to enable / disable this feature.
 
 The `StreamError` message has the following fields:
