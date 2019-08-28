@@ -4150,7 +4150,7 @@ Please see sections on individual P4Runtime RPCs for details on how
 `grpc::Status` is populated for reporting errors.
 
 Note that P4Runtime also provides a way for the server to asynchronously report
-errors which occur when processing sream messages from the client. This
+errors which occur when processing stream messages from the client. This
 error-reporting mechanism is orthogonal to the one described in this section,
 which applies to unary RPCs. See the section on [Stream Error
 Reporting](#sec-stream-error-reporting) for more information.
@@ -5038,10 +5038,7 @@ The appropriate canonical error code [@gRPCStatusCodes] should be used when
 populating the `canonical_code` field. For example:
 
  * if a controller is not allowed to send a `PacketOut` message under its
-   current role definition, the code should be set to `PERMISSION_DENIED`. Note
-   that if the client is not allowed to send *any* `PacketOut` message, it is
-   probably not useful for the server to populate the `packet_out` field in the
-   `PacketOutError` sub-message.
+   current role definition, the code should be set to `PERMISSION_DENIED`.
  * if the `metadata` repeated field in `PacketOut` does not match the P4Info
    definition, the code should be set to `INVALID_ARGUMENT`. It may be useful
    for the server to set the `packet_out` field in this case, so that the client
