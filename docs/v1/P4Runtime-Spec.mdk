@@ -3844,8 +3844,8 @@ configured in the target. This means that 0 can never be used as a `session_id`
 value when inserting a clone session, whether or not numeric translation is
 enabled for clone session ids. If translation is *not* enabled, we effectively
 "lose" one clone session, assuming the target supports 0 as mandated by the PSA
-specification. Assuming this is an issue (&eg; because the target supports a
-very limited number of clone sessions), one could enable translation on
+specification. If this is an issue (&eg; because the target supports a very
+limited number of clone sessions), one can enable translation on
 `CloneSessionId_t` and map any non-zero SDN session id to the data plane clone
 session with id 0, then insert a clone session with the chosen SDN session id.
 
