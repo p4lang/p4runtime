@@ -5472,6 +5472,78 @@ the purpose of adding features for the P4Runtime API.
 | `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +--------------------------+---------------------------------------+
 ~
+### Custom Annotations in P4Info
+P4 allows flexible annotations. Users may add their own annotations as long as they obey the language syntax.
+To facilitate consumption of user-defined annotations, P4Info has an `anno_map` for any element which can accept
+such annotations, e.g. the `PkgInfo`, `Preamble`, `MatchField`, `ActionRef`, `Action` and
+`ControllerPacketMetadata` messages. The `anno_map` contains a suitable parsed representation for the different
+types of annotation bodies, namely: empty, free-form string, and a key-value-map.
+
+Given the following P4 source fragment:
+
+~ Begin P4Example
+    @my_anno1()
+    @my_anno2("Some random content: for i in range(10)")
+    @my_anno3(a=b,c=d)
+    @my_anno3(e=f)
+    table test1 {
+        key = { hdrs.data.f1 : ternary; }
+        actions = {
+            setb1;
+            noop;
+        }
+        default_action = noop;
+    }
+~ End P4Example
+
+The corresponding P4Info `Preamble` fragment would be as follows.
+Note the lingering presence of the raw `annotations` fields, which are deprecated in favor of the newer
+`anno_map` fields and slated to be removed in some future release.
+~ Begin Prototext
+  preamble {
+    id: 33619894
+    name: "ingress.test1"
+    alias: "test1"
+    annotations: "@my_anno1"
+    annotations: "@my_anno2(\"Some random content: for i in range(10)\")"
+    annotations: "@my_anno3(a = b , c = d)"
+    annotations: "@my_anno3(e = f)"
+    anno_map {
+      key: "my_anno1"
+      value {
+        empty {
+        }
+      }
+    }
+    anno_map {
+      key: "my_anno2"
+      value {
+        string {
+          value: "\"Some random content: for i in range"
+        }
+      }
+    }
+    anno_map {
+      key: "my_anno3"
+      value {
+        kv_map {
+          property {
+            key: "a"
+            value: "b"
+          }
+          property {
+            key: "c"
+            value: "d"
+          }
+          property {
+            key: "e"
+            value: "f"
+          }
+        }
+      }
+    }
+  }
+~ End Prototext
 
 ## A More Complex Value Set Example { #sec-value-set-example}
 
