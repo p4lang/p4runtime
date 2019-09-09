@@ -57,18 +57,13 @@ message KVmap {
 // Ex. string annotation:  @my_anno2("Any text at all", for (i = 1 to 10) {print i} )
 // Ex. KV-pair annotation: @my_anno3(a=b,c=d)
 // NOTE: multiple KV annotations with the same tag are cumulative, so @my_anno3(a=b,c=d) in conjunction with
-//       @my_anno3(e=f) would add to my_anno3's map
+//       @my_anno3(e=f) would result in 3 kv-pairs for my_anno3.
 message AnnotationBody {
   oneof anno {
     google.protobuf.Empty empty = 1;          // The annotation body is empty
     google.protobuf.StringValue string = 2;   // The annotation body contains free-form string or expression 
-    KVMap property_map = 3;                   // The annotation body contains one or more KV-pairs
+    KVmap kv_map = 3;                         // The annotation body contains one or more KV-pairs
   }
-}
-
-// A map of annotation tags to the annotation body.
-message AnnotationMap {
-  map <string,AnnotationBody> propertyMap = 1;   // key-map pairs
 }
   
 // Top-level package documentation describing the forwarding pipeline config
@@ -92,7 +87,7 @@ message PkgInfo {
   // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
   // Annotation map derived from raw annotations
-  AnnotationMap anno_map = 9;
+  map <string,AnnotationBody> anno_map = 9;
 }
 
 // wrapping the enum in a message to avoid name collisions in C++, where "enum
@@ -160,7 +155,7 @@ message Preamble {
   // Documentation of the entity
   Documentation doc = 5;
   // Annotation map derived from raw annotations
-  AnnotationMap anno_map = 6;
+  map <string,AnnotationBody> anno_map = 6;
 }
 
 // used to group all extern instances of the same type in one message
@@ -203,7 +198,7 @@ message MatchField {
   // unset if not user-defined type
   P4NamedType type_name = 8;
   // Annotation map derived from raw annotations
-  AnnotationMap anno_map = 9;
+  map <string,AnnotationBody> anno_map = 9;
 }
 
 message Table {
@@ -254,7 +249,7 @@ message ActionRef {
   // raw annotations - deprecated, use anno_map
   repeated string annotations = 2;
   // Annotation map derived from raw annotations
-  AnnotationMap anno_map = 3;
+  map <string,AnnotationBody> anno_map = 6;
 }
 
 message Action {
@@ -270,7 +265,7 @@ message Action {
     // unset if not user-defined type
     P4NamedType type_name = 6;
     // Annotation map derived from raw annotations
-    AnnotationMap anno_map = 7;
+    map <string,AnnotationBody> anno_map = 7;
   }
   repeated Param params = 2;
 }
@@ -364,7 +359,7 @@ message ControllerPacketMetadata {
     // unset if not user-defined type
     P4NamedType type_name = 5;
     // Annotation map derived from raw annotations
-    AnnotationMap anno_map = 6;
+    map <string,AnnotationBody> anno_map = 6;
   }
   // Ordered based on header layout.
   // This is a constraint on the generator of this P4Info.
