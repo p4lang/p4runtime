@@ -137,7 +137,7 @@ message ExternEntry {
   // range [0x81, 0xfe].
   uint32 extern_type_id = 1;
   uint32 extern_id = 2;  // id of the instance
-  google.protobuf.Any entry = 3;
+  .google.protobuf.Any entry = 3;
 }
 
 message TableEntry {
@@ -227,7 +227,7 @@ message FieldMatch {
     Range range = 6;
     // Architecture-specific match value; it corresponds to the other_match_type
     // in the P4Info MatchField message.
-    google.protobuf.Any other = 100;
+    .google.protobuf.Any other = 100;
   }
 }
 
@@ -472,7 +472,7 @@ message StreamMessageRequest {
     MasterArbitrationUpdate arbitration = 1;
     PacketOut packet = 2;
     DigestListAck digest_ack = 3;
-    google.protobuf.Any other = 4;
+    .google.protobuf.Any other = 4;
   }
 }
 
@@ -500,7 +500,10 @@ message StreamMessageResponse {
     PacketIn packet = 2;
     DigestList digest = 3;
     IdleTimeoutNotification idle_timeout_notification = 4;
-    google.protobuf.Any other = 5;
+    .google.protobuf.Any other = 5;
+    // Used by the server to asynchronously report errors which occur when
+    // processing StreamMessageRequest messages.
+    StreamError error = 6;
   }
 }
 
@@ -560,7 +563,7 @@ message Role {
   // (default case), it implies all P4 objects and control behaviors are in
   // scope, i.e. full pipeline access. The format of this message is
   // out-of-scope of P4Runtime.
-  google.protobuf.Any config = 2;
+  .google.protobuf.Any config = 2;
 }
 
 message IdleTimeoutNotification {
@@ -571,6 +574,47 @@ message IdleTimeoutNotification {
   // Timestamp at which the server generated the message (in nanoseconds since
   // Epoch)
   int64 timestamp = 2;
+}
+
+// Used by the server to asynchronously report errors which occur when
+// processing StreamMessageRequest messages.
+message StreamError {
+  // gRPC canonical error code (see
+  // https://developers.google.com/maps-booking/reference/grpc-api/status_codes)
+  int32 canonical_code = 1;
+  // Optional. An explanation of the error.
+  string message = 2;
+  // Optional. Target and architecture specific space to which this error
+  // belongs.
+  // We encourage using triplet: <target>-<arch>-<vendor>,
+  // e.g."targetX-psa-vendor1" or "targetY-psa-vendor2".
+  string space = 3;
+  // Optional. Numeric code drawn from target-specific error space above.
+  int32 code = 4;
+  // Used by the server to convey additional information about the error. One of
+  // the fields must be set (so that the client can identify which type of
+  // stream message triggered the error), but that field may be set to its
+  // default value.
+  oneof details {
+    PacketOutError packet_out = 5;
+    DigestListAckError digest_list_ack = 6;
+    StreamOtherError other = 7;
+  }
+}
+
+message PacketOutError {
+  // Optional. The packet out message that caused the error.
+  PacketOut packet_out = 1;
+}
+
+message DigestListAckError {
+  // Optional. The digest list acknowledgement message that caused the error.
+  DigestListAck digest_list_ack = 1;
+}
+
+message StreamOtherError {
+  // Optional. The architecture-specific stream message that caused the error.
+  google.protobuf.Any other = 1;
 }
 
 message Uint128 {
@@ -666,7 +710,7 @@ message GetForwardingPipelineConfigResponse {
 // Error message used to report a single P4-entity error for a Write RPC.
 message Error {
   // gRPC canonical error code (see
-  // github.com/grpc/grpc-go/blob/master/codes/codes.go)
+  // https://developers.google.com/maps-booking/reference/grpc-api/status_codes)
   int32 canonical_code = 1;
   // Detailed error message.
   string message = 2;
@@ -678,7 +722,7 @@ message Error {
   int32 code = 4;
   // Optional: Allows reporting back additional target-specific details on the
   // error.
-  google.protobuf.Any details = 5;
+  .google.protobuf.Any details = 5;
 }
 
 //------------------------------------------------------------------------------

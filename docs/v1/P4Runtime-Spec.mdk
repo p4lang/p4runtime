@@ -494,7 +494,7 @@ number of reasons, the most likely of which are:
 As discussed in Section [#sec-p4-as-behavioral-description-language], in the
 absence of a P4 program describing the data plane behavior, the detailed
 knowledge required to write correct control plane code must come from other
-sources, e.g. documentation.
+sources, &eg; documentation.
 
 ### Partial P4Info and P4 Source are Available
 
@@ -639,7 +639,7 @@ To support multiple controllers, P4Runtime uses the streaming channel (available
 via `StreamChannel` RPC) for session management. The workflow is described as
 follows:
 
-* Each controller instance (e.g. a controller process) can participate in one or
+* Each controller instance (&eg; a controller process) can participate in one or
   more roles. For each (`device_id`, `role_id`), the controller receives an
   `election_id`. This `election_id` can be the same for different roles and/or
   devices, as long as the tuple (`device_id`, `role_id`, `election_id`) is
@@ -1988,10 +1988,10 @@ Any additional bits in the bytes sent for an unsigned integer value (type
 `minimum_string_size` minimum required, they must be filled with 0.
 
 Any additional bits in the bytes sent for a signed integer value (type `int<W>`)
-must be copies of the sign bit, i.e. 0 for non-negative values, or 1 for
+must be copies of the sign bit, &ie; 0 for non-negative values, or 1 for
 negative values. If additional bytes are transmitted above the
 `minimum_string_size` minimum required, they must be filled with copies of the
-sign bit, i.e. 0 for non-negative values, or 0xff for negative values. In 2's
+sign bit, &ie; 0 for non-negative values, or 0xff for negative values. In 2's
 complement representation, this is called "sign extension", and leaves the
 numeric value represented unchanged.
 
@@ -4149,6 +4149,12 @@ gRPC provides utility functions `ExtractErrorDetails()` and `SetErrorDetails()`
 Please see sections on individual P4Runtime RPCs for details on how
 `grpc::Status` is populated for reporting errors.
 
+Note that P4Runtime also provides a way for the server to asynchronously report
+errors which occur when processing stream messages from the client. This
+error-reporting mechanism is orthogonal to the one described in this section,
+which applies to unary RPCs. See the section on [Stream Error
+Reporting](#sec-stream-error-reporting) for more information.
+
 # Atomicity of Individual `Write` and `Read` Operations
 
 Each individual entity in a batch is guaranteed to be read or written atomically
@@ -4629,7 +4635,7 @@ meets all of the requirements above.
 
 It is possible to meet the requirements of this specification and
 perform even more requests in parallel than that example
-implementation allows, e.g. if the server somehow determined that two
+implementation allows, &eg; if the server somehow determined that two
 `WriteRequest` messages that inserted entries to the same table could
 not affect the results of the other, they could also be performed in
 parallel.  It is not required that a P4Runtime server do this, and may
@@ -4790,7 +4796,12 @@ P4Runtime supports controller packet-in and packet-out by means of `PacketIn`
 and `PacketOut` stream messages, respectively.
 
 `PacketIn` messages are sent by the P4Runtime server to the client. Conversely,
-`PacketOut` messages are sent by the client to the server.
+`PacketOut` messages are sent by the client to the server. Any `PacketOut`
+message received by the server from a client which is not allowed to send such
+messages based on its current role definition must be dropped. The server may
+also generate a `StreamMessageResponse` message with the `error` field set to
+report the error to the client. See the section on [Stream Error
+Reporting](#sec-stream-error-reporting) for more information on `error`.
 
 As introduced in the [`ControllerPacketMetadata`](#sec-controller-packet-meta)
 section, such messages can carry arbitrary metadata specified by means of P4
@@ -4831,7 +4842,12 @@ message PacketMetadata {
   for the packet-out (or packet-in) case. Each `PacketMetadata.value` is a
   binary string and must conform to the [Bytestrings](#sec-bytestrings)
   requirements based on the corresponding P4Info
-  `ControllerPacketMetadata.metadata` specification.
+  `ControllerPacketMetadata.metadata` specification. If the `metadata` field
+  does not match the P4Info specification, the server must drop the `PacketOut`
+  message and may generate a `StreamMessageResponse` message with the `error`
+  field set to report the error to the client which issued the `PacketOut`. See
+  the section on [Stream Error Reporting](#sec-stream-error-reporting) for more
+  information on `error`.
 
 ## Master Arbitration Update
 
@@ -4988,6 +5004,98 @@ enables support for architecture-specific externs which require asynchronous
 streaming of data from the server to the client, much like the [PSA `Digest`
 extern](#sec-digestentry). See section on [Extending P4Runtime for non-PSA
 Architectures](#sec-extending-p4runtime) for more information.
+
+## Stream Error Reporting { #sec-stream-error-reporting}
+
+The P4Runtime server can asynchronously report errors which occur when
+processing `StreamMessageRequest` messages, using the `error` message field (of
+type `StreamError`) in `StreamMessageResponse`. This error reporting is
+optional and mostly used for debugging purposes. The server may provide an
+out-of-band mechanism to enable / disable this feature.
+
+The `StreamError` message has the following fields:
+
+ * `canonical_code`, which must be set to the appropriate canonical error code
+   [@gRPCStatusCodes].
+ * `message`, an optional developer-facing error message describing the error.
+ * `space` and `code`, which are optional and can be used by vendors to provide
+   additional details on the error. `code` is a numeric error code drawn from a
+   vendor's chosen error `space`.
+ * `details`, which is a Protobuf `oneof` used to help the client identify which
+   `StreamMessageRequest` triggered the error. The server is required to set the
+   appropriate field in the `oneof` so that the client can identify which type
+   of stream message is responsible for the error (`packet_out`,
+   `digest_list_ack` or `other`), and may also choose to populate the field(s)
+   of the selected sub-message to provide more context to the client. For
+   example, if the server received an invalid `PacketOut` message from the
+   client, the `packet_out` field (of type `PacketOutError)` should be set in
+   the `details` `oneof`, and the server may additionally set the `packet_out`
+   field in the `PacketOutError` sub-message (by copying it from the invalid
+   `PacketOut` message received on the stream channel) so that the client can
+   know exactly what packet-out triggered the error.
+
+The appropriate canonical error code [@gRPCStatusCodes] should be used when
+populating the `canonical_code` field. For example:
+
+ * if a controller is not allowed to send a `PacketOut` message under its
+   current role definition, the code should be set to `PERMISSION_DENIED`.
+ * if the `metadata` repeated field in `PacketOut` does not match the P4Info
+   definition, the code should be set to `INVALID_ARGUMENT`. It may be useful
+   for the server to set the `packet_out` field in this case, so that the client
+   can find out which set of metadata fields triggered the error.
+ * if the `digest_id` field in `DigestListAck` does not match any `Digest` entry
+   in P4Info, the code should be set to `INVALID_ARGUMENT`.
+
+The server may choose to assign a lower priority to error reporting messages and
+drop them first if the stream channel comes under heavy load, &eg; because of a
+burst of `PacketIn` messages.
+
+Note that master-arbitration errors are never reported using the `StreamError`
+message. Invalid `MasterArbitrationUpdate` messages sent by the client cause the
+stream to be terminated and the appropriate error code to be returned to the
+client immediately. See section [#sec-mastership-updates].
+
+### Examples of `StreamError` Messages
+
+ * **Malformed packet-out metadata.** If the server receives a `PacketOut`
+   message with a `metadata` field with id 7 which is not included in the P4Info
+   `ControllerPacketMetadata` message for "packet_out", the server may send the
+   following `StreamMessageResponse` back to the client:
+~ Begin Prototext
+error {
+    canonical_code: 3  # INVALID_ARGUMENT
+    message: "Unknown metadata field id 7."
+    packet_out {
+      # copied from the PacketOut message received from the client
+      packet_out {
+        payload: ...
+        metadata {
+          id: 7
+          name: "I_should_not_be_here"
+          bitwidth: 32
+        }
+        # more metadata
+      }
+    }
+}
+~ End Prototext
+
+ * **Packet-out which exceeds the MTU.** If the server receives a `PacketOut`
+   message which requires injecting a raw data plane packet that exceeds the MTU
+   (Maximum Transmission Unit) for the egress link, the server may generate the
+   following `StreamMessageResponse`:
+~ Begin Prototext
+error {
+    canonical_code: 3  # INVALID_ARGUMENT
+    message: "Packet exceeds the MTU for port."
+    space: "targetX-psa-vendor1"
+    code: 123  # MTU_EXCEEDED
+    packet_out {
+      # we do not set the packet_out field as it does not provide any
+      # extra information to the client
+    }
+}
+~ End Prototext
 
 # Portability Considerations
 
@@ -5411,7 +5519,7 @@ properties, but we may include on in future versions of the API.
 # Known limitations of P4Runtime v1.0.0
 
 * `FieldMatch`, action `Param`, and controller packet metadata fields only
-  support unsigned bitstrings, i.e. values of one of the following types (not
+  support unsigned bitstrings, &ie; values of one of the following types (not
   the more general `P4Data`):
   * `bit<W>`
   * `bool`.  Note that as far as the `P4Info` message contents and
