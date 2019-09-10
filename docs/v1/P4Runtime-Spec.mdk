@@ -2388,7 +2388,7 @@ the following fields:
       present. It specifies the underlying built-in P4 type for the user-defined
       type. If the underlying type used in the P4 `type` declaration is itself a
       user-defined type, `original_type` is obtained by "walking" the chain of
-      `type` declarations recursively until a built-in type (e.g `bit<W>`) is
+      `type` declarations recursively until a built-in type (&eg; `bit<W>`) is
       found.
 
     * `translated_type`, if and only if the P4 `type` declaration was annotated
