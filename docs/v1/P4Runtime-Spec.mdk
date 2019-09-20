@@ -1016,6 +1016,104 @@ table my_ipv4_lkup {
   ...
 }
 ~ End p4example
+### Custom Annotations in P4Info
+P4 allows flexible annotations[@P4Annotations]. Users may add their own annotations as long as they obey the language syntax. To facilitate consumption of user-defined annotations, P4Info has an `annotation_map` for any element which can accept such annotations, &ie; the `PkgInfo`, `Preamble`, `MatchField`, `ActionRef`, `Action` and `ControllerPacketMetadata` messages. The `annotation_map` contains a suitable parsed representation for the different types of annotation bodies, namely: `expression_list` and `kv_map`. Empty annotation bodies are signified by an empty `value` field  in the `annotation_map` entry. 
+
+Note that `AnnotationBody` allows for simultaneous `expression_list` and `kv_map` entries even though the P6-16 specification grammar does not at this writing.
+
+~ Begin Proto
+// A parsed representation of the annotation body.
+// Ex. empty annotation:           @my_anno1()
+// Ex. expression list annotation: @my_anno2(1+1, "Hello", 1 << 3)
+// Ex. KV-pair annotation:         @my_anno3(a=b,c=d)
+// Ex. Cumulative kv-pair          @my_anno3(e=f)  // adds to my_anno3's properties
+message AnnotationBody {
+  repeated string expressions = 1;
+  map <string,string> properties = 2;
+}
+~ End Proto
+
+Given the following P4 source fragment:
+~ Begin P4Example
+@my_anno1()
+@my_anno2("Some random content: for i in range(10)")
+@my_anno3(1+1, "Hello", 1 << 3)
+@my_anno4(a=b,c=d)
+@my_anno4(e=f)
+@my_anno5(w=x, "expression one", y=z, expression two)
+table test1 {
+    key = { hdrs.data.f1 : ternary; }
+    actions = {
+        setb1;
+        noop;
+    }
+    default_action = noop;
+}
+~ End P4Example
+The corresponding P4Info `Preamble` fragment would be as follows. Note the appearance of the raw `annotations` fields which are deprecated in favor of the `annotation_map` fields.
+~ Begin Prototext
+  preamble {
+    id: 33619894
+    name: "ingress.test1"
+    alias: "test1"
+    annotations: "@my_anno1"
+    annotations: "@my_anno2(\"Some random content: for i in range(10)\")"
+    annotations: "@my_anno3(1 + 1 , \"Hello\" , 1 << 3)"
+    annotations: "@my_anno4(a = b , c = d)"
+    annotations: "@my_anno4(e = f)"
+    annotations: "@my_anno5(w = x , \"expression one\" , y = z , expression two)"
+    annotation_map {
+      key: "my_anno1"
+      value {
+      }
+    }
+    annotation_map {
+      key: "my_anno2"
+      value {
+        expressions: "\"Some random content: for i in range"
+      }
+    }
+    annotation_map {
+      key: "my_anno3"
+      value {
+        expressions: "\"Hello\""
+        expressions: "1 << 3"
+        expressions: "1 + 1"
+      }
+    }
+    annotation_map {
+      key: "my_anno4"
+      value {
+        properties {
+          key: "a"
+          value: "b"
+        }
+        properties {
+          key: "c"
+          value: "d"
+        }
+        properties {
+          key: "e"
+          value: "f"
+        }
+      }
+    }
+    annotation_map {
+      key: "my_anno5"
+      value {
+        expressions: "\"expression one\""
+        expressions: "expression two"
+        properties {
+          key: "w"
+          value: "x"
+        }
+        properties {
+          key: "y"
+          value: "z"
+        }
+      }
+    }
+~ End Prototext
 
 ## `PkgInfo` Message
 
@@ -1107,7 +1205,6 @@ Built for data-center profile.")
 PSA_Switch(IgPipeline, PacketReplicationEngine(), EgPipeline,
            BufferingQueueingEngine()) main;
 ~ End p4example
-
 ## ID Allocation for P4Info Objects { #sec-id-allocation}
 
 P4Info objects receive a unique ID, which is used to identify the object in
@@ -5472,79 +5569,6 @@ the purpose of adding features for the P4Runtime API.
 | `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +--------------------------+---------------------------------------+
 ~
-### Custom Annotations in P4Info
-P4 allows flexible annotations. Users may add their own annotations as long as they obey the language syntax.
-To facilitate consumption of user-defined annotations, P4Info has an `anno_map` for any element which can accept
-such annotations, e.g. the `PkgInfo`, `Preamble`, `MatchField`, `ActionRef`, `Action` and
-`ControllerPacketMetadata` messages. The `anno_map` contains a suitable parsed representation for the different
-types of annotation bodies, namely: empty, free-form string, and a key-value-map.
-
-Given the following P4 source fragment:
-
-~ Begin P4Example
-    @my_anno1()
-    @my_anno2("Some random content: for i in range(10)")
-    @my_anno3(a=b,c=d)
-    @my_anno3(e=f)
-    table test1 {
-        key = { hdrs.data.f1 : ternary; }
-        actions = {
-            setb1;
-            noop;
-        }
-        default_action = noop;
-    }
-~ End P4Example
-
-The corresponding P4Info `Preamble` fragment would be as follows.
-Note the lingering presence of the raw `annotations` fields, which are deprecated in favor of the newer
-`anno_map` fields and slated to be removed in some future release.
-~ Begin Prototext
-  preamble {
-    id: 33619894
-    name: "ingress.test1"
-    alias: "test1"
-    annotations: "@my_anno1"
-    annotations: "@my_anno2(\"Some random content: for i in range(10)\")"
-    annotations: "@my_anno3(a = b , c = d)"
-    annotations: "@my_anno3(e = f)"
-    anno_map {
-      key: "my_anno1"
-      value {
-        empty {
-        }
-      }
-    }
-    anno_map {
-      key: "my_anno2"
-      value {
-        string {
-          value: "\"Some random content: for i in range"
-        }
-      }
-    }
-    anno_map {
-      key: "my_anno3"
-      value {
-        kv_map {
-          property {
-            key: "a"
-            value: "b"
-          }
-          property {
-            key: "c"
-            value: "d"
-          }
-          property {
-            key: "e"
-            value: "f"
-          }
-        }
-      }
-    }
-  }
-~ End Prototext
-
 ## A More Complex Value Set Example { #sec-value-set-example}
 
 This section includes a more complex Value Set example, with multiple matches of
