@@ -48,9 +48,9 @@ message Documentation {
 
 // A parsed representation of the annotation body.
 // Ex. empty annotation:           @my_anno1()
-// Ex. ExpressionList annotation:  @my_anno2(1+1, "Hello", 1 << 3)
+// Ex. expression list annotation: @my_anno2(1+1, "Hello", 1 << 3)
 // Ex. KV-pair annotation:         @my_anno3(a=b,c=d)
-// Ex. Cumulative kv-pair          @my_anno3(e=f)  // adds to my_anno3's properties
+// Ex. Cumulative KV-pair          @my_anno3(e=f)  // adds to my_anno3's properties
 message AnnotationBody {
   repeated string expressions = 1;
   map <string,string> properties = 2;
