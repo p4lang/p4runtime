@@ -8,7 +8,8 @@ install:
 # protoc), then we generate the HTML for the spec.
 script:
   - docker run -t p4runtime-ci /p4runtime/CI/compile_protos.sh /tmp/ || travis_terminate 1
-  - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make
+  - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make || travis_terminate 1
+  - ./tools/madokolint.py docs/v1/P4Runtime-Spec.mdk
 
 after_success:
   - ls docs/v1/build

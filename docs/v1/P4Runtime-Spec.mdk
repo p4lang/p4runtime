@@ -371,14 +371,15 @@ The following are not in scope of this specification document:
     identification of resources.
 
 # Reference Architecture { #sec-reference-architecture}
+
 Figure [#fig-reference-architecture] represents the P4Runtime Reference
 Architecture. The device or target to be controlled is at the bottom, and one or
 more controllers is shown at the top. A multi-master protocol allows more than
 one controller to participate, and a role-based arbitration scheme ensures only
-one controller has write access to each read/write entity, or the pipeline config
-itself. Any controller may perform read access to any entity or the pipeline
-config. Later sections describe this in detail. For the sake of brevity, the
-term controller may refer to one or more controllers.
+one controller has write access to each read/write entity, or the pipeline
+config itself. Any controller may perform read access to any entity or the
+pipeline config. Later sections describe this in detail. For the sake of
+brevity, the term controller may refer to one or more controllers.
 
 The P4Runtime API defines the messages and semantics of the interface between
 the client(s) and the server. The API is specified by the p4runtime.proto
@@ -612,7 +613,8 @@ arbitration scheme supports it.
 caption: "Use-Case: Embedded Plus Two Remote High-Availability Controllers" }
 ![embedded-plus-two-remote-ha-controllers]
 ~
-[embedded-plus-two-remote-ha-controllers]: build/embedded-plus-two-remote-ha-controllers.[svg,png] \
+[embedded-plus-two-remote-ha-controllers]: \
+build/embedded-plus-two-remote-ha-controllers.[svg,png] \
 { height: 7cm; page-align: forcehere }
 
 # Master-Slave Arbitration and Controller Replication {\
@@ -789,7 +791,7 @@ It is the job of the P4Runtime server to remember the `role.config` for every
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
 
-    4. If the number of open streams for the given (`device_id`, `role_id`) 
+    4. If the number of open streams for the given (`device_id`, `role_id`)
        exceeds the supported limit, the P4Runtime server shall terminate the
        stream by returning a `RESOURCE_EXHAUSTED` error.
 
@@ -1080,7 +1082,8 @@ Above we see several different types of annotations:
 
 * `@brief` - This will populate the `PkgInfo.doc.brief` message field.
 
-* `@description` - This will populate the `PkgInfo.doc.description` message field
+* `@description` - This will populate the `PkgInfo.doc.description` message
+  field
 
 * `@<anything else>` - This will create a `PkgInfo.annotation` entry
 
@@ -1350,8 +1353,8 @@ The `ActionProfile` message includes the following fields:
   instance of a PSA Action Selector extern.
 
 * `size`, an `int64` representing the maximum number of member entries that the
-  Action Profile can hold, or, in the case of an Action Selector, the maximum sum
-  of all member weights across all selector groups.
+  Action Profile can hold, or, in the case of an Action Selector, the maximum
+  sum of all member weights across all selector groups.
 
 * `max_group_size`, an `int32` representing the maximum sum of all member
   weights within any given selector group, in the case of an Action Selector, or
@@ -2083,11 +2086,11 @@ the encoder of a P4Runtime request or reply uses the shortest strings that
 fit the encoded integer values.
 
 Representation of variable-length integer values (`varbit<W>` P4 type) is
-similar to the representation of fixed-width unsigned integers. We use a binary string,
-whose length is the *dynamic-length* of the expression. When the value is
-provided by the P4Runtime client, the server must verify that the length of the
-binary string is less than the maximum length specified in the P4 program, and
-return an `OUT_OF_RANGE` error code otherwise.
+similar to the representation of fixed-width unsigned integers. We use a binary
+string, whose length is the *dynamic-length* of the expression. When the value
+is provided by the P4Runtime client, the server must verify that the length of
+the binary string is less than the maximum length specified in the P4 program,
+and return an `OUT_OF_RANGE` error code otherwise.
 
 ## Representation of Arbitrary P4 Types { #sec-representation-of-arbitrary-p4-types}
 
@@ -2347,8 +2350,8 @@ underlying type need to have a corresponding name. `P4TypeInfo` includes the
 mapping between entry name and entry value. When providing serializable enum
 values through `P4Data`, one must use the assigned integer value (`enum_value`
 bytestring field). P4Runtime does not provide a way for the client to use the
-name --- even when the enum member has one --- instead of the value, as it makes it
-easier for the server to respect the [read-write
+name --- even when the enum member has one --- instead of the value, as it makes
+it easier for the server to respect the [read-write
 symmetry](#sec-read-write-symmetry) principle.
 
 ### User-defined types { #sec-user-defined-types}
@@ -2741,8 +2744,8 @@ entry, including with regards to [direct resources](#sec-direct-resources).
 
 In this P4Runtime release, we have decided to restrict the default entry for
 indirect tables --- tables with an ActionProfile or ActionSelector
-`implementation` property --- to a constant `NoAction` action entry, with the hope
-that it would simplify the implementation of the P4Runtime service.
+`implementation` property --- to a constant `NoAction` action entry, with the
+hope that it would simplify the implementation of the P4Runtime service.
 
 ### Constant Tables
 
@@ -3104,8 +3107,8 @@ An `ActionProfileMember` entity update message has the following fields:
 * `action_profile_id` is the `uint32` identifier of the PSA ActionProfile or
   ActionSelector extern instance, as defined in P4Info.
 
-* `member_id` is the `uint32` identifier of the action profile member entry being
-  updated.
+* `member_id` is the `uint32` identifier of the action profile member entry
+  being updated.
 
 * `action` is the specification of the P4 action instance bound to the action
   profile member entry.
@@ -4299,7 +4302,8 @@ message WriteRequest {
 
 The `device_id` uniquely identifies the target P4 device. The `role_id` and
 `election_id` define the client role and election-id as described in the
-[Master-Slave Arbitration and Controller Replication](#sec-master-slave-arbitration-and-controller-replication)
+[Master-Slave Arbitration and Controller
+Replication](#sec-master-slave-arbitration-and-controller-replication)
 section. The server is expected to perform the following checks (in this order)
 before processing the `updates` list:
 
@@ -4438,8 +4442,8 @@ enum. A P4Runtime server is required to support only the modes marked as
   entire batch must be atomic from a data plane point of view. Every data plane
   packet is guaranteed to be processed according to table contents before the
   batch began, or after the batch completes. The batch is therefore treated as a
-  *transaction*. The details and design of how to achieve data plane-atomicity is
-  outside the scope of this specification. One possibility is to limit the
+  *transaction*. The details and design of how to achieve data plane-atomicity
+  is outside the scope of this specification. One possibility is to limit the
   target to half of the data plane's table capacity at all times. At the start
   of the batch processing, the remaining half of the table capacity can be
   initialized with the current table state and used as a working area to commit
@@ -4614,8 +4618,8 @@ A P4Runtime server will process the batch as follows:
 ### Example
 
 If a client asked to read `{a,b,c,d}` and `b` and `d` *requests* didn't
-validate, the server will return entities corresponding to `a` and `c`, followed by
-a status `{p4.Error(OK), p4.Error(xxx), p4.Error(yyy), p4.Error(OK)}` in the
+validate, the server will return entities corresponding to `a` and `c`, followed
+by a status `{p4.Error(OK), p4.Error(xxx), p4.Error(yyy), p4.Error(OK)}` in the
 `details` field.
 
 The P4Runtime server is not required to perform any optimization (&eg; merge two
