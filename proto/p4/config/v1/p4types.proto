@@ -43,6 +43,21 @@ package p4.config.v1;
  * *if serializable
  */
 
+// A parsed representation of the annotation body.
+// Ex. empty annotation:           @my_anno1()
+// Ex. expression list annotation: @my_anno2(1+1, "Hello", 1 << 3)
+// Ex. KV-pair annotation:         @my_anno3(a=b,c=d)
+// Ex. Cumulative kv-pair          @my_anno3(e=f)  // adds to my_anno3's properties
+message AnnotationBody {
+  repeated string expressions = 1;
+  map <string, string> properties = 2;
+}
+
+// A map of annotations keyed by the annotation tag following the @-sign
+message AnnotationMap {
+  map <string, AnnotationBody> annotations = 1;
+}
+
 // These P4 types (struct, header_type, header_union and enum) are guaranteed to
 // have a fully-qualified name (e.g. you cannot use an anonymous struct to
 // declare a variable like in C). Instead of duplicating the type spec for these
@@ -96,7 +111,8 @@ message P4BitstringLikeTypeSpec {
   }
   // Useful to identify well-known types, such as IP address or Ethernet MAC
   // address.
-  repeated string annotations = 4;
+  repeated string annotations = 4 [deprecated=true];
+  AnnotationMap annotation_map = 5;
 }
 
 message P4BitTypeSpec {
@@ -123,7 +139,8 @@ message P4StructTypeSpec {
     P4DataTypeSpec type_spec = 2;
   }
   repeated Member members = 1;
-  repeated string annotations = 2;
+  repeated string annotations = 2 [deprecated=true];
+  AnnotationMap annotation_map = 3;
 }
 
 message P4HeaderTypeSpec {
@@ -132,7 +149,8 @@ message P4HeaderTypeSpec {
     P4BitstringLikeTypeSpec type_spec = 2;
   }
   repeated Member members = 1;
-  repeated string annotations = 2;
+  repeated string annotations = 2 [deprecated=true];
+  AnnotationMap annotation_map = 3;
 }
 
 message P4HeaderUnionTypeSpec {
@@ -141,7 +159,8 @@ message P4HeaderUnionTypeSpec {
     P4NamedType header = 2;
   }
   repeated Member members = 1;
-  repeated string annotations = 2;
+  repeated string annotations = 2 [deprecated=true];
+  AnnotationMap annotation_map = 3;
 }
 
 message P4HeaderStackTypeSpec {
@@ -159,10 +178,12 @@ message P4HeaderUnionStackTypeSpec {
 message P4EnumTypeSpec {
   message Member {
     string name = 1;
-    repeated string annotations = 2;
+    repeated string annotations = 2 [deprecated=true];
+    AnnotationMap annotation_map = 3;
   }
   repeated Member members = 1;
-  repeated string annotations = 2;
+  repeated string annotations = 2 [deprecated=true];
+  AnnotationMap annotation_map = 3;
 }
 
 // For serializable (or "unsafe") enums, which have an underlying type. Note
@@ -172,11 +193,14 @@ message P4SerializableEnumTypeSpec {
   message Member {
     string name = 1;
     bytes value = 2;
-    repeated string annotations = 3;
+    repeated string annotations = 3 [deprecated=true];
+    AnnotationMap annotation_map = 4;
   }
+
   P4BitTypeSpec underlying_type = 1;
   repeated Member members = 2;
-  repeated string annotations = 3;
+  repeated string annotations = 3 [deprecated=true];
+  AnnotationMap annotation_map = 4;
 }
 
 // Similar to an enum, but there is always one and only one instance per P4
@@ -203,7 +227,8 @@ message P4NewTypeSpec {
     P4NewTypeTranslation translated_type = 2;
   }
   // for other annotations (not @p4runtime_translation)
-  repeated string annotations = 3;
+  repeated string annotations = 3 [deprecated=true];
+  AnnotationMap annotation_map = 4;
 }
 
 // End of P4 type specs --------------------------------------------------------
