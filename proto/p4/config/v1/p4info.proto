@@ -46,16 +46,6 @@ message Documentation {
   string description = 2;
 }
 
-// A parsed representation of the annotation body.
-// Ex. empty annotation:           @my_anno1()
-// Ex. expression list annotation: @my_anno2(1+1, "Hello", 1 << 3)
-// Ex. KV-pair annotation:         @my_anno3(a=b,c=d)
-// Ex. Cumulative KV-pair          @my_anno3(e=f)  // adds to my_anno3's properties
-message AnnotationBody {
-  repeated string expressions = 1;
-  map <string,string> properties = 2;
-}
- 
 // Top-level package documentation describing the forwarding pipeline config
 // Can be used to manage multiple P4 packages.
 message PkgInfo {
@@ -67,7 +57,7 @@ message PkgInfo {
   Documentation doc = 3;
   // Miscellaneous metadata, free-form; a way to extend PkgInfo
   // raw annotations - deprecated, use annotation_map
-  repeated string annotations = 4;
+  repeated string annotations = 4 [deprecated=true];
   // the target architecture, e.g. "psa"
   string arch = 5;
   // organization which produced the configuration, e.g. "p4.org"
@@ -77,7 +67,7 @@ message PkgInfo {
   // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
   // Annotation map derived from raw annotations, keyed by annotation tag
-  map <string,AnnotationBody> annotation_map = 9;
+  AnnotationMap annotation_map = 9;
 }
 
 // wrapping the enum in a message to avoid name collisions in C++, where "enum
@@ -141,11 +131,11 @@ message Preamble {
   // object (TBD).
   string alias = 3;
   // raw annotations - deprecated, use annotation_map
-  repeated string annotations = 4;
+  repeated string annotations = 4 [deprecated=true];
   // Documentation of the entity
   Documentation doc = 5;
   // Annotation map derived from raw annotations, keyed by annotation tag
-  map <string,AnnotationBody> annotation_map = 6;
+  AnnotationMap annotation_map = 6;
 }
 
 // used to group all extern instances of the same type in one message
@@ -168,7 +158,7 @@ message MatchField {
   uint32 id = 1;
   string name = 2;
   // raw annotations - deprecated, use annotation_map
-  repeated string annotations = 3;
+  repeated string annotations = 3 [deprecated=true];
   int32 bitwidth = 4;
   enum MatchType {
     UNSPECIFIED = 0;
@@ -188,7 +178,7 @@ message MatchField {
   // unset if not user-defined type
   P4NamedType type_name = 8;
   // Annotation map derived from raw annotations, keyed by annotation tag
-  map <string,AnnotationBody> annotation_map = 9;
+  AnnotationMap annotation_map = 9;
 }
 
 message Table {
@@ -237,9 +227,9 @@ message ActionRef {
   Scope scope = 3;
   
   // raw annotations - deprecated, use annotation_map
-  repeated string annotations = 2;
+  repeated string annotations = 2 [deprecated=true];
   // Annotation map derived from raw annotations, keyed by annotation tag
-  map <string,AnnotationBody> annotation_map = 6;
+  AnnotationMap annotation_map = 6;
 }
 
 message Action {
@@ -248,14 +238,14 @@ message Action {
     uint32 id = 1;
     string name = 2;
     // raw annotations - deprecated, use annotation_map
-    repeated string annotations = 3;
+    repeated string annotations = 3 [deprecated=true];
     int32 bitwidth = 4;
     // Documentation of the Param
     Documentation doc = 5;
     // unset if not user-defined type
     P4NamedType type_name = 6;
     // Annotation map derived from raw annotations, keyed by annotation tag
-    map <string,AnnotationBody> annotation_map = 7;
+    AnnotationMap annotation_map = 7;
   }
   repeated Param params = 2;
 }
@@ -344,12 +334,12 @@ message ControllerPacketMetadata {
     // to e.g. Action.Param.name.
     string name = 2;
     // raw annotations - deprecated, use annotation_map
-    repeated string annotations = 3;
+    repeated string annotations = 3 [deprecated=true];
     int32 bitwidth = 4;
     // unset if not user-defined type
     P4NamedType type_name = 5;
     // Annotation map derived from raw annotations, keyed by annotation tag
-    map <string,AnnotationBody> annotation_map = 6;
+    AnnotationMap annotation_map = 6;
   }
   // Ordered based on header layout.
   // This is a constraint on the generator of this P4Info.
