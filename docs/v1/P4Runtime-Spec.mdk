@@ -2750,16 +2750,20 @@ hope that it would simplify the implementation of the P4Runtime service.
 ### Constant Tables
 
 Constant tables are defined as tables whose match entries are immutable. They
-are identified by the `is_const_table` flag in P4Info. The only write updates
-which are allowed for constant tables are `MODIFY` operations on the default
-action, assuming the default action itself is not constant. If the P4Runtime
-client attempts to perform any other kind of write update on a constant table,
-the server must return a `PERMISSION_DENIED` error. However, the contents of
-such tables can be queried by the client through a `ReadRequest`. When reading
-static (immutable) entries from a constant table, the following fields --- and
-only these fields ---, must be set by the server: `table_id`, `match`, `action`,
-`priority` and `is_default_action`. In particular, we assume that constant
-tables cannot be assigned direct resources and idle timeout is not supported for
+are identified by the `is_const_table` flag in P4Info.
+
+The only write updates which are allowed for constant tables are `MODIFY`
+operations on direct resources; and the default action, assuming the default
+action itself is not constant. If the P4Runtime client attempts to perform any
+other kind of write update on a constant table the server must return a
+`PERMISSION_DENIED` error.
+
+
+The contents of const tables can be queried by the client through a `ReadRequest`.
+When reading static (immutable) entries from a constant table, the following fields
+must be set by the server: `table_id`, `match`, `action`, `is_default_action`, and
+`priority` (if required). This is in addition to any direct resources
+that are being queried.  Idle timeouts are not supported for
 static entries. If the table requires a priority value for entries, the server
 must populate the `priority` field appropriately, starting at 1 for the lowest
 priority entry and incrementing the value by 1 for each successive entry. Note
