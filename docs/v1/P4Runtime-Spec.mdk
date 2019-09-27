@@ -2760,6 +2760,7 @@ other kind of write update on a constant table the server must return a
 request must specify the match fields and priority to identify the table
 entry. Because the action of a const entry cannot be modified, the request
 may not specify an action, even if the action is equal to the existing action.
+If an action is specified, the switch will return a `PERMISSION_DENIED` error.
 
 The contents of const tables can be queried by the client through a `ReadRequest`.
 When reading static (immutable) entries from a constant table, the following fields
