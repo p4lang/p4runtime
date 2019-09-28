@@ -1033,7 +1033,8 @@ comma-separated expressions and/or key-value ("property") pairs. Empty
 annotation bodies are signified by zero `AnnotationElement`s in the `elements`
 field of `ParsedAnnotation`.
 
-The `AnnotationElement` and `ParsedAnnotation` messages are defined in `p4types.proto`
+The `AnnotationElement` and `ParsedAnnotation` messages are defined in
+`p4types.proto`
 
 ~ Begin Proto
 // One parsed element within an annotation's body.
@@ -1052,8 +1053,11 @@ message ParsedAnnotation {
 
 The following invariants hold:
 
-1. For any P4 entity with annotations, there are no two parsed_annotations that have the same name.
-2. Within a `ParsedAnnotation`, there are no two `AnnotationElement`s that have the same key, except for the empty key, which can appear any number of times.
+1. For any P4 entity with annotations, there are no two parsed_annotations that
+have the same name.
+
+2. Within a `ParsedAnnotation`, there are no two `AnnotationElement`s that have
+the same key, except for the empty key, which can appear any number of times.
 
 
 Given the following P4 source fragment:
