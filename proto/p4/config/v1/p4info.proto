@@ -67,7 +67,7 @@ message PkgInfo {
   // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
   // Annotation map derived from raw annotations, keyed by annotation tag
-  AnnotationMap annotation_map = 9;
+  repeated ParsedAnnotation parsed_annotations = 9;
 }
 
 // wrapping the enum in a message to avoid name collisions in C++, where "enum
@@ -135,7 +135,7 @@ message Preamble {
   // Documentation of the entity
   Documentation doc = 5;
   // Annotation map derived from raw annotations, keyed by annotation tag
-  AnnotationMap annotation_map = 6;
+  repeated ParsedAnnotation parsed_annotations = 6;
 }
 
 // used to group all extern instances of the same type in one message
@@ -178,7 +178,7 @@ message MatchField {
   // unset if not user-defined type
   P4NamedType type_name = 8;
   // Annotation map derived from raw annotations, keyed by annotation tag
-  AnnotationMap annotation_map = 9;
+  repeated ParsedAnnotation parsed_annotations = 9;
 }
 
 message Table {
@@ -229,7 +229,7 @@ message ActionRef {
   // raw annotations - deprecated, use annotation_map
   repeated string annotations = 2 [deprecated=true];
   // Annotation map derived from raw annotations, keyed by annotation tag
-  AnnotationMap annotation_map = 6;
+  repeated ParsedAnnotation parsed_annotations = 6;
 }
 
 message Action {
@@ -245,7 +245,7 @@ message Action {
     // unset if not user-defined type
     P4NamedType type_name = 6;
     // Annotation map derived from raw annotations, keyed by annotation tag
-    AnnotationMap annotation_map = 7;
+    repeated ParsedAnnotation parsed_annotations = 7;
   }
   repeated Param params = 2;
 }
@@ -339,7 +339,7 @@ message ControllerPacketMetadata {
     // unset if not user-defined type
     P4NamedType type_name = 5;
     // Annotation map derived from raw annotations, keyed by annotation tag
-    AnnotationMap annotation_map = 6;
+    repeated ParsedAnnotation parsed_annotations = 6;
   }
   // Ordered based on header layout.
   // This is a constraint on the generator of this P4Info.
