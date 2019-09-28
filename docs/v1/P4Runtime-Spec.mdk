@@ -1020,47 +1020,60 @@ table my_ipv4_lkup {
 ~ End p4example
 
 ### Custom Annotations in P4Info
+
 P4 allows flexible annotations[@P4Annotations]. Users may add their own
 annotations as long as they obey the language syntax. To facilitate consumption
-of user-defined annotations, P4Info has an `AnnotationMap` for any element which
-can accept such annotations, &ie; the `PkgInfo`, `Preamble`, `MatchField`,
-`ActionRef`, `Action` and `ControllerPacketMetadata` messages, as well as the
-type specification messages in `p4types.proto`. The `AnnotationMap` contains a
-suitable parsed representation for the different types of annotation bodies,
-namely: `expressions` and `properties`. Empty annotation bodies are signified by
-an empty `value` field  in the `AnnotationMap` entry. 
+of user-defined annotations, P4Info has a `repeated ParsedAnnotation` for any
+element which can accept such annotations, &ie; the `PkgInfo`, `Preamble`,
+`MatchField`, `ActionRef`, `Action` and `ControllerPacketMetadata` messages, as
+well as the type specification messages in `p4types.proto`. The
+`ParsedAnnotation` contains a parsed representation which accomodates both
+unstructured annotation content, as well as common structured use-cases:
+comma-separated expressions and/or key-value ("property") pairs. Empty
+annotation bodies are signified by zero `AnnotationElement`s in the `elements`
+field of `ParsedAnnotation`.
 
-Note that `AnnotationBody` allows for simultaneous `expressions` and
-`properties` entries even though the P6-16 specification grammar does not at this
-writing.
-
-The `AnnotationBody` and `AnnotationMap` messages are defined in `p4types.proto`:
+The `AnnotationElement` and `ParsedAnnotation` messages are defined in `p4types.proto`
 
 ~ Begin Proto
-// A parsed representation of the annotation body.
-// Ex. empty annotation:           @my_anno1()
-// Ex. expression list annotation: @my_anno2(1+1, "Hello", 1 << 3)
-// Ex. KV-pair annotation:         @my_anno3(a=b,c=d)
-// Ex. Cumulative kv-pair          @my_anno3(e=f)  // adds to my_anno3's properties
-message AnnotationBody {
-  repeated string expressions = 1;
-  map <string, string> properties = 2;
+// One parsed element within an annotation's body.
+message AnnotationElement {
+// Key is empty if and only if no key was specified
+  string key = 1;
+  string value = 2;
 }
 
-// A map of annotations keyed by the annotation tag following the @-sign
-message AnnotationMap {
-  map <string, AnnotationBody> annotations = 1;
+// An ordered list of annotations identified by the name
+message ParsedAnnotation {
+  string name = 1;
+  repeated AnnotationElement elements = 2;
 }
 ~ End Proto
 
+The following invariants hold:
+
+1. For any P4 entity with annotations, there are no two parsed_annotations that have the same name.
+2. Within a `ParsedAnnotation`, there are no two `AnnotationElement`s that have the same key, except for the empty key, which can appear any number of times.
+
+
 Given the following P4 source fragment:
 ~ Begin P4Example
-@my_anno1()
-@my_anno2("Some random content: for i in range(10)")
-@my_anno3(1+1, "Hello", 1 << 3)
-@my_anno4(a=b,c=d)
-@my_anno4(e=f)
-@my_anno5(w=x, "expression one", y=z, expression two)
+@MyAnno1()
+@MyAnno2("Some random content: for i in range(10)")
+@MyAnno3(1+1, "Hello", 1 << 3)
+@MyAnno4(a=b,c=d)
+@MyAnno4(e=f)
+@MyAnno5(a=1,a=2)
+@MyAnno6(e=f)
+@MyAnno6(1)
+@MyAnno7(
+- What do you get if you multiply six by nine?
+- Six by nine. Forty two.
+- That's it. That's all there is.
+- I always thought there was something fundamentally wrong with the
+  universe.
+0xdeadbeef
+)
 table test1 {
     key = { hdrs.data.f1 : ternary; }
     actions = {
@@ -1070,72 +1083,92 @@ table test1 {
     default_action = noop;
 }
 ~ End P4Example
+
 The corresponding P4Info `Preamble` fragment would be as follows. Note the
 appearance of the raw `annotations` fields which are deprecated in favor of the
-`annotation_map` fields.
+`annotation_map` fields. (Note the final `annotations` entry has artificial line
+breaks inserted for print layout purposes.)
+
 ~ Begin Prototext
 tables {
   preamble {
     id: 33619894
     name: "ingress.test1"
     alias: "test1"
-    annotations: "@my_anno1"
-    annotations: "@my_anno2(\"Some random content: for i in range(10)\")"
-    annotations: "@my_anno3(1 + 1 , \"Hello\" , 1 << 3)"
-    annotations: "@my_anno4(a = b , c = d)"
-    annotations: "@my_anno4(e = f)"
-    annotations: "@my_anno5(w = x , \"expression one\" , y = z , expression two)"
-    annotation_map {
-      annotations {
-        key: "my_anno1"
-        value {
-        }
+    annotations: "@MyAnno1"
+    annotations: "@MyAnno2(\"Some random content: for i in range(10)\")"
+    annotations: "@MyAnno3(1 + 1 , \"Hello\" , 1 << 3)"
+    annotations: "@MyAnno4(a = b , c = d)"
+    annotations: "@MyAnno4(e = f)"
+    annotations: "@MyAnno5(a = 1 , a = 2)"
+    annotations: "@MyAnno6(e = f)"
+    annotations: "@MyAnno6(1)"
+    annotations: "@MyAnno7(- What do you get if you multiply six by nine ?
+     - Six by nine. Forty two. - That \' s it. That \' s all there is.
+     - I always thought there was something fundamentally wrong with the universe.
+     0xdeadbeef)"
+    parsed_annotations {
+      name: "@MyAnno1"
+      elements {
       }
-      annotations {
-        key: "my_anno2"
-        value {
-          expressions: "\"Some random content: for i in range"
-        }
+    }
+    parsed_annotations {
+      name: "@MyAnno2"
+      elements {
+        value: "\"Some random content: for i in range(10)\""
       }
-      annotations {
-        key: "my_anno3"
-        value {
-          expressions: "\"Hello\""
-          expressions: "1 << 3"
-          expressions: "1 + 1"
-        }
+    }
+    parsed_annotations {
+      name: "@MyAnno3"
+      elements {
+        value: "\"Hello\""
       }
-      annotations {
-        key: "my_anno4"
-        value {
-          properties {
-            key: "a"
-            value: "b"
-          }
-          properties {
-            key: "c"
-            value: "d"
-          }
-          properties {
-            key: "e"
-            value: "f"
-          }
-        }
+      elements {
+        value: "1 << 3"
       }
-      annotations {
-        key: "my_anno5"
-        value {
-          expressions: "\"expression one\""
-          expressions: "expression two"
-          properties {
-            key: "w"
-            value: "x"
-          }
-          properties {
-            key: "y"
-            value: "z"
-          }
-        }
+      elements {
+        value: "1 + 1"
+      }
+    }
+    parsed_annotations {
+      name: "@MyAnno4"
+      elements {
+        key: "a"
+        value: "b"
+      }
+      elements {
+        key: "c"
+        value: "d"
+      }
+      elements {
+        key: "e"
+        value: "f"
+      }
+    }
+    parsed_annotations {
+      name: "@MyAnno5"
+      elements {
+        key: "a"
+        value: "2"
+      }
+    }
+    parsed_annotations {
+      name: "@MyAnno6"
+      elements {
+        key: "e"
+        value: "f"
+      }
+      elements {
+        value: "1"
+      }
+    }
+    parsed_annotations {
+      name: "@MyAnno7"
+      elements {
+        value: "- What do you get if you multiply six by nine ?
+        - Six by nine. Forty two  - That \' s it. That \' s all there is.
+        - I always thought there was something fundamentally wrong with the universe.
+        0xdeadbeef"
       }
     }
   }
