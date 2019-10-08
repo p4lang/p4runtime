@@ -182,9 +182,9 @@ change the object's aspect ratio.)
 
 ## CI upload of built documents
 
-Travis takes care of uploading the built HTML version of the spec to AWS S3. The
+Travis takes care of uploading the built HTML version of the spec to Github. The
 latest working draft (master branch) can be found
-[here](https://s3-us-west-2.amazonaws.com/p4runtime/docs/master/P4Runtime-Spec.html).
+[here](https://p4.org/p4runtime/spec/master/P4Runtime-Spec.html).
 
 Additionally, you can access the HTML & PDF versions of the spec for any given
 branch of this repository by using the following URLs:
