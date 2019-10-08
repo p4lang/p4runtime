@@ -21,10 +21,10 @@ Git tags are used to mark minor and patch release versions.
 ## Reading the latest version of the documentation
 
 The latest version of the P4Runtime v1 specification is available:
-* [here](https://s3-us-west-2.amazonaws.com/p4runtime/docs/master/P4Runtime-Spec.html)
-  in **HTML** format
-* [here](https://s3-us-west-2.amazonaws.com/p4runtime/docs/master/P4Runtime-Spec.pdf)
-  in **PDF** format
+* [here](https://p4.org/p4runtime/spec/master/P4Runtime-Spec.html) in **HTML**
+  format
+* [here](https://p4.org/p4runtime/spec/master/P4Runtime-Spec.pdf) in **PDF**
+  format
 
 It is updated every time a new commit is pushed to the master branch.
 
