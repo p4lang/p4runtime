@@ -2776,7 +2776,7 @@ entries. When a priority value is required (&eg; for tables including `RANGE`
 and / or `TERNARY` matches in the case of PSA), it is inferred based on the
 order in which entries appear in the table declaration.
 
-### Wildcard Reads
+### Wildcard Reads { #sec-table-wildcard-reads}
 
 When performing a `ReadRequest`, the P4Runtime client can select all entries
 from one or all tables on the target and use several of the `TableEntry` fields
@@ -4581,11 +4581,32 @@ what parts of the entity can be wildcarded in a given *request*.
 
 For example, in a *request* of type `CounterEntry`:
 
-* A default `counter_id` implies a request to read all counter-entries for all
-  indirect counters.
+* A default `counter_id` (0) implies a request to read all counter-entries for
+  all indirect counters.
 * A particular (non-default) `counter_id` in conjunction with `index` unset
   implies a request to read all counter-entries for the given indirect counter
   ID.
+
+To read the entire forwarding state for a given device, the P4Runtime client can
+generate the following `ReadRequest`:
+
+~ Begin Prototext
+device_id: <ID>
+entities {
+  extern_entry { }  # read all extern instances for all supported extern types
+  table_entry { }  # read all table entries for all tables
+  action_profile_member { }  # read all members for all action profiles
+  action_profile_group { }  # read all groups for all action profiles
+  ...
+}
+~ End Prototext
+
+The `entity` oneof field in the `Entity` message must always be set, or the
+server must return an `INVALID_ARGUMENT` error. In other words, P4Runtime does
+not support performing a wildcard read on the entire forwarding state by
+including an empty `Entity` message in the `ReadRequest`. The main reason for
+this decision is to prevent backwards-compatibility issues if new entity types
+are added to the `entity` oneof [@ProtoOneOfBackwardsCompatibility].
 
 ## Batch Processing
 
