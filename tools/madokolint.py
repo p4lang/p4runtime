@@ -26,17 +26,22 @@
 
 import argparse
 from collections import namedtuple
+import json
 import os.path
 import re
 import sys
+import traceback
 
 
+DEFAULT_CONF = 'madokolint.conf.json'
 LINE_WRAP_LENGTH = 80
 
 
 parser = argparse.ArgumentParser(description='Lint tool for Madoko code')
 parser.add_argument('files', metavar='FILE', type=str, nargs='+',
                     help='Input files')
+parser.add_argument('--conf', type=str,
+                    help='Configuration file for lint tool')
 
 
 class MadokoFmtError(Exception):
@@ -61,6 +66,44 @@ class LintState:
 
 
 lint_state = LintState()
+
+
+class LintConf:
+    class BadConfException(Exception):
+        def __init__(self, what):
+            self.what = what
+
+        def __str__(self):
+            return self.what
+
+
+    def __init__(self):
+        self.keywords = {}
+
+    def build_from(self, conf_fp):
+        try:
+            conf_d = json.load(conf_fp)
+            for entry in conf_d['keywords']:
+                category = entry['category']
+                for keyword in entry['keywords']:
+                    if keyword in self.keywords:
+                        raise LintConf.BadConfException(
+                            "Keyword '{}' is present multiple times in configuration".format(
+                                keyword))
+                    self.keywords[keyword] = category
+        except json.JSONDecodeError:
+            print("Provided configuration file is not a valid JSON file")
+            sys.exit(1)
+        except KeyError:
+            print("Provided JSON configuration file has missing attributes")
+            traceback.print_exc()
+            sys.exit(1)
+        except LintConf.BadConfException as e:
+            print(str(e))
+            sys.exit(1)
+
+
+lint_conf = LintConf()
 
 
 class Context:
@@ -200,6 +243,7 @@ def check_trailing_whitespace(path):
 
     foreach_line(path, Context(), check)
 
+
 def check_predefined_abbreviations(path):
     abbreviations = {
         'e.g.': '&eg;',
@@ -216,10 +260,24 @@ def check_predefined_abbreviations(path):
     foreach_line(path, ContextCompose(ContextAfterTitle(), ContextSkipBlocks()), check)
 
 
+def check_keywords(path):
+    def check(line, lineno):
+        for word in line.split():
+            if word not in lint_conf.keywords:
+                continue
+            category = lint_conf.keywords[word]
+            lint_state.error(
+                path, lineno, line,
+                "'{}' is a known keyword ({}), highlight it with backticks".format(word, category))
+
+    foreach_line(path, ContextCompose(ContextAfterTitle(), ContextSkipBlocks()), check)
+
+
 def process_one(path):
     check_line_wraps(path)
     check_predefined_abbreviations(path)
     check_trailing_whitespace(path)
+    check_keywords(path)
 
 
 def main():
@@ -233,6 +291,24 @@ def main():
         if ext != ".mdk":
             print("'{}' does not have an .mdk extension")
             sys.exit(1)
+
+    conf_path = None
+    if args.conf is not None:
+        if not os.path.isfile(args.conf):
+            print("'{}' is not a valid file path".format(args.conf))
+            sys.exit(1)
+        conf_path = args.conf
+    elif os.path.isfile(DEFAULT_CONF):  # search working directory
+        conf_path = DEFAULT_CONF
+    else:  # search directory of Python script
+        this_dir = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(this_dir, DEFAULT_CONF)
+        if os.path.isfile(path):
+            conf_path = path
+
+    if conf_path is not None:
+        with open(conf_path, 'r') as conf_fp:
+                lint_conf.build_from(conf_fp)
 
     for f in args.files:
         try:
