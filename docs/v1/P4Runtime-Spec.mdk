@@ -4369,12 +4369,6 @@ An update can be one of the following types:
   `NOT_FOUND` error is returned. In order to delete, the entity specification
   only needs to include the key. Any non-key parts of entity are ignored.
 
-The `Write` RPC is idempotent, &ie; multiple invocations of the same
-RPC, with no intervening data plane operations, do not have any side
-effects. The end result (modified end state on P4Runtime server and P4
-device) is always the same as the result of the initial invocation,
-even if the response differs.
-
 If an update is not allowed under the given controller role, the server must
 return a `PERMISSION_DENIED` error for this update.
 
@@ -4385,31 +4379,32 @@ P4Runtime supports batching of `Write` operations. The list of updates in a
 updates on an arbitrary set of P4 entities. It is not restricted to a particular
 entity or table (in the case of `TableEntry` entities).
 
-The P4Runtime server may arbitrarily reorder message within a batch to maximize
-performance, and clients should not depend on a specific processing order (&eg;
-FIFO or inferring implicit dependencies within a batch). In particular, P4
-entities (&eg; table entries) may be inserted in the data plane in an order
-different than what is received in the `WriteRequest`.
+The P4Runtime server may choose to reorder updates in a batch when processing
+them, and/or process updates in parallel.  Updates across multiple concurrent
+`WriteRequest`s can also be processed interleaved and/or in parallel.
+However, **the processing of updates must be strictly serializable**.  That
+is, given a set S of `WriteRequest`s and the responses to those requests, there
+must exist an order L for all updates in S, such that:
+
+1. For two updates u1 and u2, if the write request containing u1 completed
+   before the write request of u2 was sent, then u1 must appear before u2 in L.
+2. Executing all updates in L sequentially must yield the same response for
+   every update as in S.
+3. The observable state of the switch after S (e.g., through the `Read` RPC) is
+   identical to the one obtained by sequentially executing L.
 
 The `Write` RPC demarcates the batch boundary, and can be used to ensure
 ordering between dependent updates. When the `Write` RPC returns, it is required
 that all operations in the batch have been committed to the P4 data plane,
 with the exception of any operations that return an error status.
 If two updates from the client depend on each other (&eg; inserting an
-`ActionProfileMember` followed by pointing a `TableEntry` to it), they should be
-separated across two batches (and therefore two `Write` RPCs). In other words,
-the client must wait until the dependent `Write` RPC is acknowledged before
-invoking a `Write` RPC that depends on it.
+`ActionProfileMember` followed by pointing a `TableEntry` to it) and the updates
+are not split into separate batches, then the behavior may be non-deterministic.
+Similarly, clients can invoke multiple outstanding `Write` RPCs. If the updates
+across these RPCs have dependencies, the observed behavior may be
+non-deterministic.  For this reason, most clients are advised to split dependent
+updates across separate, non-overlapping `Write` calls.
 
-P4Runtime is based on gRPC which provides a concurrent server design. A target
-implementation may support concurrent execution of a given RPC handler, or it
-may internally choose to serialize RPC processing (using locks, message queue,
-etc.). A client is free to invoke multiple outstanding `Write` RPCs. This is a
-valid scenario if there are no dependent updates among these RPCs. However, if
-there are dependencies, the client should be aware that there is no way to
-guarantee their ordering, and this will lead to non-deterministic and/or
-erroneous behavior. Given the risk, most clients are advised to stick to a
-synchronous model where there can be at most one Write `RPC` in flight.
 
 ## Batch Atomicity
 
