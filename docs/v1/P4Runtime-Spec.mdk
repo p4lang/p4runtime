@@ -4390,7 +4390,7 @@ must exist an order L for all updates in S, such that:
    before the write request of u2 was sent, then u1 must appear before u2 in L.
 2. Executing all updates in L sequentially must yield the same response for
    every update as in S.
-3. The observable state of the switch after S (e.g., through the `Read` RPC) is
+3. The observable state of the switch after S (&eg;, through the `Read` RPC) is
    identical to the one obtained by sequentially executing L.
 
 The `Write` RPC demarcates the batch boundary, and can be used to ensure
