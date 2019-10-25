@@ -4383,7 +4383,7 @@ The P4Runtime server may choose to reorder updates in a batch when processing
 them, and/or process updates in parallel.  Updates across multiple concurrent
 `WriteRequest`s can also be processed interleaved and/or in parallel.
 However, **the processing of updates must be strictly serializable**.  That
-is, given a set $S$ of `WriteRequest`s including their responses to those
+is, given a history $S$ of `WriteRequest`s including the responses to those
 requests, there must exist an order $L$ for all updates in $S$, such that:
 
 1. For two updates $u_1$ and $u_2$, if the write request containing $u_1$
