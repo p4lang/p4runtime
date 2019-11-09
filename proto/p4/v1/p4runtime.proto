@@ -53,6 +53,9 @@ service P4Runtime {
   rpc StreamChannel(stream StreamMessageRequest)
       returns (stream StreamMessageResponse) {
   }
+
+  rpc Capabilities(CapabilitiesRequest) returns (CapabilitiesResponse) {
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -740,4 +743,14 @@ enum SdnPort {
   SDN_PORT_RECIRCULATE = -6;
   // 0xfffffffd: Send to CPU
   SDN_PORT_CPU = -3;
+}
+
+//------------------------------------------------------------------------------
+message CapabilitiesRequest {
+}
+
+message CapabilitiesResponse {
+  // The full semantic version string (e.g. "1.1.0-rc.1") corresponding to the
+  // version of the P4Runtime specification currently implemented by the server.
+  string p4runtime_version = 1;
 }
