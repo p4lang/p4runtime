@@ -5173,9 +5173,9 @@ error {
 The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
 discover the capabilities of the P4Runtime server implementation. At the moment,
 the `CapabilitiesRequest` message is empty and the `CapabilitiesResponse`
-message only includes the `p4runtime_version` string field. This field must be
-set to the full semantic version string [@SemVer] corresponding to the version
-of the P4Runtime specification implemented by the server, &eg; "1.1.0-rc.1".
+message only includes the `p4runtime_api_version` string field. This field must
+be set to the full semantic version string [@SemVer] corresponding to the
+version of the P4Runtime API implemented by the server, &eg; "1.1.0-rc.1".
 
 Future versions of P4Runtime may introduce more advanced capability discovery
 features. For example, P4Runtime supports three [atomicity
