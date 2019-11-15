@@ -4409,7 +4409,7 @@ sent sequentially, waiting for the previous call to be acknowledged before
 sending the next one.
 
 
-## Batch Atomicity
+## Batch Atomicity { #sec-batch-atomicity}
 
 A P4Runtime server may arbitrarily reorder messages within a batch. The
 atomicity semantics of the batch operations are defined by the `Atomicity`
@@ -5168,6 +5168,31 @@ error {
 }
 ~ End Prototext
 
+# `Capabilities` RPC
+
+The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
+discover the capabilities of the P4Runtime server implementation. At the moment,
+the `CapabilitiesRequest` message is empty and the `CapabilitiesResponse`
+message only includes the `p4runtime_api_version` string field. This field must
+be set to the full semantic version string [@SemVer] corresponding to the
+version of the P4Runtime API implemented by the server, &eg; "1.1.0-rc.1".
+
+Future versions of P4Runtime may introduce more advanced capability discovery
+features. For example, P4Runtime supports three [atomicity
+modes](#sec-batch-atomicity) for `WriteRequest` batches, two of them being
+optional. In the future we may decide to leverage the `CapabilitiesResponse`
+message to enable the server to report to the client which subset of these
+atomicity modes is supported.
+
+The semantic version string included in `CapabilitiesResponse` can be used by
+the client to determine which exact feature set is implemented by the server,
+since [minor releases](#sec-p4runtime-versioning) may introduce new
+functionality. However, because the `Capabilities` RPC itself was introduced in
+version 1.1 of P4Runtime, the client should assume that any server which does
+not implement this RPC (&ie; an `UNIMPLEMENTED` error is returned by the
+P4Runtime service) implements an older version of the P4Runtime specification
+(1.0 or a pre-release version of 1.0).
+
 # Portability Considerations
 
 ## PSA Metadata Translation { #sec-psa-metadata-translation}
@@ -5419,7 +5444,7 @@ using SDN port numbers as indices, and not device-specific port numbers. The
 `index_type_name` field in the P4Info message is a signal to the P4Runtime
 server that translation is required.
 
-# P4Runtime Versioning
+# P4Runtime Versioning { #sec-p4runtime-versioning}
 
 P4Runtime follows the Google guidelines for versioning cloud APIs
 [@APIVersioning]. We use a `MAJOR.MINOR.PATCH` style version number scheme and
