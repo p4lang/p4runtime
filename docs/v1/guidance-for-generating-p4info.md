@@ -63,7 +63,7 @@ of the following types, but currently no others:
   this work are actually supported for P4Runtime 1.0)
 + a `typedef` or `type` name that, when "followed back" to the lowest
   base type, is one of the above.  (As of the P4_16 language
-  specification version 1.1, it is not required to support a `type`
+  specification version 1.2.0, it is not required to support a `type`
   definition with a serializable `enum` as its base type.  See
   [p4runtime issue
   #192](https://github.com/p4lang/p4runtime/issues/192).)
