@@ -5656,6 +5656,33 @@ man-in-the-middle attacks between the server and client.
 
 # Appendix { @h1:"A"}
 
+## Revision History
+
+### Changes in v1.1.0
+
+* Major overhaul of master-arbitration: while the Protobuf messages did not
+  change, the state machine that the server needs to implement is significantly
+  different. Upon the master disconnection, the server no longer chooses the
+  controller with the second highest election id as the new master. Instead,
+  there will not be a new master until one of the controllers advertises an
+  election id higher than any election id seen previously.
+* Add `error` field to stream messages sent by the server.
+* Add `Capabilities` RPC to query the P4Runtime API version implemented by the
+  server.
+* Support wildcard reads for multicast groups and clone sessions.
+* Support for modifying direct resources of const tables.
+* Support P4 user-defined types for Packet IO metadata fields.
+* Clarify consistency requirements for `Write` and `Read` RPCs.
+* Add Appendix providing implementation advice for avoiding common pitfalls:
+  * advice on setting gRPC Metadata Maximum Size
+  * advice on setting gRPC Server Maximum Receive Message Size
+* Clarify limitations on supported types for `FieldMatch`, action `Param`, and
+  Packet IO metadata fields.
+* Clarify that reading entire forwarding state with empty `entity` is not
+  supported.
+* Document that `@p4runtime_translation` need only be supported when applied to
+  type declarations in P4.
+
 ## P4 Annotations
 
 Table [#tab-p4-annotations] lists P4~16~ annotations introduced primarily for
