@@ -29,5 +29,5 @@ cp -r docs/v1/build spec/$TARGET_DIR
 
 # Amend previous commit and force-push to gh-pages
 git add spec
-git commit --amend -m "Publish spec from Travis"
+git commit --amend --date=now -m "Publish spec from Travis"
 git push -f $REMOTE_NAME $TARGET_BRANCH
