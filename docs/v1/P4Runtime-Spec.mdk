@@ -4383,16 +4383,18 @@ entity or table (in the case of `TableEntry` entities).
 The P4Runtime server may choose to reorder updates in a batch when processing
 them, and/or process updates in parallel.  Updates across multiple concurrent
 `WriteRequest`s can also be processed interleaved and/or in parallel.
-However, **the processing of updates must be strictly serializable**.  That
+However, **the processing of requests must be strictly serializable**.  That
 is, given a history $S$ of `WriteRequest`s including the responses to those
-requests, there must exist an order $L$ for all requests in $S$, such that:
+requests, there must exist an order $L$ for all updates in $S$, such that:
 
-1. For two `WriteRequest`s $r_1$ and $r_2$, if $r_1$ completed before $r_2$ was
-   sent, then $r_1$ must appear before $r_2$ in $L$.
-2. Executing all requests in $L$ sequentially must yield the same response for
-   every request as in $S$, &ie; the status reported by the server for every
-   individual update in every request must be the same.
-3. The observable state of the switch after $S$ (&eg;, through the `Read` RPC)
+1. All updates from the same write request must appear as a contiguous
+   subsequence in $L$, but the order within that subsequence can be arbitrary.
+2. For two updates $u_1$ and $u_2$, if the write request containing $u_1$
+   completed before the write request of $u_2$ was sent, then $u_1$ must appear
+   before $u_2$ in $L$.
+3. Executing all updates in $L$ sequentially must yield the same response for
+   every update as in $S$.
+4. The observable state of the switch after $S$ (&eg;, through the `Read` RPC)
    is identical to the one obtained by sequentially executing $L$.
 
 The `Write` RPC demarcates the batch boundary, and can be used to ensure
@@ -4406,8 +4408,9 @@ clients can invoke multiple outstanding `Write` RPCs. If the updates across
 these RPCs have dependencies, the observed behavior may be non-deterministic, as
 the server can process these RPCs in any arbitrary order, providing strict
 serializability is enforced. For this reason, most clients are advised to split
-dependent updates across separate `Write` calls. Additionally, each `Write` call
-has to be sent sequentially, waiting for the previous call to be acknowledged
+dependent updates across separate `Write` calls. Additionally, if the client
+wants to enforce that batches are applied in a specific order, each `Write` call
+should be sent sequentially, waiting for the previous call to be acknowledged
 before sending the next one.
 
 
