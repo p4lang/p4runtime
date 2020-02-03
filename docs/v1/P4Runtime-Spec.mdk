@@ -2477,7 +2477,7 @@ the `TableEntry` entity, which has the following fields:
   match and with which argument values.
 
 * `priority`, a 32-bit integer used to order entries when the table's match key
-  includes a ternary or range match.
+  includes an optional, ternary or range match.
 
 * `controller_metadata`, a 64-bit cookie value which is opaque to the
   target. There is no requirement of where this is stored, but it must be
@@ -2502,7 +2502,8 @@ the `TableEntry` entity, which has the following fields:
 
 The `priority` field must be set to a non-zero value if the match key includes a
 ternary match (&ie; in the case of PSA if the P4Info entry for the table
-indicates that one or more of its match fields has a `TERNARY` or `RANGE` match
+indicates that one or more of its match fields has an `OPTIONAL`, `TERNARY` or
+`RANGE` match
 type) or to zero otherwise. A higher priority number indicates that the entry
 must be given higher priority when performing a table lookup. Clients must allow
 multiple entries to be added with the same priority value.  If a packet can
@@ -2545,6 +2546,8 @@ to ensure [read-write symmetry](#sec-read-write-symmetry). For PSA match types,
 a "don't care" match for a specific match key field is defined as follows:
 
 * For a `TERNARY` match, it is logically equivalent to a mask of zeros.
+
+* For a `OPTIONAL` match, it is logically equivalent to a wildcard match.
 
 * For an `LPM` match, it is logically equivalent to a prefix_len of zero.
 
@@ -2666,6 +2669,14 @@ assert(low <= high)
 assert(low != min_field_value || high != max_field_value)
 ~ End Pseudo
 
+* `OPTIONAL` match
+    * The binary string encoding of the value must conform to the
+      [Bytestrings](#sec-bytestrings) requirements.
+
+~ Begin Pseudo
+assert(BytestringValid(match.optional().value()))
+~ End Pseudo
+
 ### Action Specification
 
 The `TableEntry` `action` field must be set for every `INSERT` update but may be
@@ -2773,9 +2784,9 @@ static entries. If the table requires a priority value for entries, the server
 must populate the `priority` field appropriately, starting at 1 for the lowest
 priority entry and incrementing the value by 1 for each successive entry. Note
 that P4~16~ does not support assigning explicit priorities to static
-entries. When a priority value is required (&eg; for tables including `RANGE`
-and / or `TERNARY` matches in the case of PSA), it is inferred based on the
-order in which entries appear in the table declaration.
+entries. When a priority value is required (&eg; for tables including `RANGE`,
+`TERNARY` or `OPTIONAL` matches), it is inferred based on the order in which
+entries appear in the table declaration.
 
 ### Wildcard Reads { #sec-table-wildcard-reads}
 
@@ -2899,7 +2910,7 @@ entities {
 }
 ~ End Prototext
 
-This issue also exists for tables with `TERNARY` and / or `RANGE`
+This issue also exists for tables with `TERNARY`, `RANGE`, and `OPTIONAL`
 matches. However, in this case the priority is also taken into account for
 wildcard reads, and because a priority of 0 is not valid, in practice only the
 entries with the same priority as the "don't care" entry will be returned to the
@@ -3952,10 +3963,10 @@ can perform a `MODIFY` update with an empty `members` repeated field.
 
 To facilitate [read-write symmetry](#sec-read-write-symmetry), the server must
 return an `ALREADY_EXISTS` error in case of duplicate members. Unlike for match
-tables, a priority value is not required for ternary and range matches:
-overlapping entries do not need to be ordered and the parse state transition
-is determined by whether or not the packet matches at least one entry in the
-set.
+tables, a priority value is not required for ternary, range and optional
+matches: overlapping entries do not need to be ordered and the parse state
+transition is determined by whether or not the packet matches at least one entry
+in the set.
 
 See Appendix [#sec-value-set-example] for a more complex Value Set example.
 
@@ -5595,8 +5606,9 @@ An architecture may introduce new table match types [@P4MatchTypes]. P4Runtime
 accounts for this by providing the following hooks:
 
 * The `match` field in `p4.config.v1.MatchField` (p4info.proto) is a `oneof`
-  which can be either one of the default match types (`EXACT`, `LPM`, `TERNARY`
-  or `RANGE`) or an architecture-specific match type encoded as a string.
+  which can be either one of the default match types (`EXACT`, `LPM`, `TERNARY`,
+  `RANGE`, or `OPTIONAL`) or an architecture-specific match type encoded as a
+  string.
 
 * The `field_match_type` field in `p4.v1.FieldMatch` (p4runtime.proto) is a
   `oneof` which includes an `Any` Protobuf message [@ProtoAny] field
