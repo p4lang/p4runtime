@@ -159,6 +159,7 @@ message MatchField {
     LPM = 3;
     TERNARY = 4;
     RANGE = 5;
+    OPTIONAL = 6;
   }
   oneof match {
     MatchType match_type = 5;
