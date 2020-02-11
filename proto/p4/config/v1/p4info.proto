@@ -65,6 +65,8 @@ message PkgInfo {
   string contact = 7;
   // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
+  // Miscellaneous metadata, structured; a way to extend PkgInfo
+  repeated StructuredAnnotation structured_annotations = 9;
 }
 
 // wrapping the enum in a message to avoid name collisions in C++, where "enum
@@ -130,6 +132,7 @@ message Preamble {
   repeated string annotations = 4;
   // Documentation of the entity
   Documentation doc = 5;
+  repeated StructuredAnnotation structured_annotations = 6;
 }
 
 // used to group all extern instances of the same type in one message
@@ -171,6 +174,7 @@ message MatchField {
   Documentation doc = 6;
   // unset if not user-defined type
   P4NamedType type_name = 8;
+  repeated StructuredAnnotation structured_annotations = 9;
 }
 
 message Table {
@@ -231,6 +235,7 @@ message Action {
     Documentation doc = 5;
     // unset if not user-defined type
     P4NamedType type_name = 6;
+    repeated StructuredAnnotation structured_annotations = 7;
   }
   repeated Param params = 2;
 }
@@ -322,6 +327,7 @@ message ControllerPacketMetadata {
     int32 bitwidth = 4;
     // unset if not user-defined type
     P4NamedType type_name = 5;
+    repeated StructuredAnnotation structured_annotations = 6;
   }
   // Ordered based on header layout.
   // This is a constraint on the generator of this P4Info.

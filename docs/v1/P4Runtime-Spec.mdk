@@ -989,6 +989,7 @@ message Preamble {
   repeated string annotations = 4;
   // Documentation of the entity
   Documentation doc = 5;
+  repeated StructuredAnnotation structured_annotations = 6;
 }
 ~ End Proto
 
@@ -1020,6 +1021,257 @@ table my_ipv4_lkup {
 }
 ~ End p4example
 
+### Structured Annotations
+
+P4 supports both unstructured and structured annotations [@P4Annotations].
+Unstructured annotations of the form `MyAnno1` or `MyAnno2(body-content)` can
+either be empty, or contain free-form content; anything between the pair of
+matched parentheses is legal. Conversely, structured annotations of the form
+`MyAnno3[]` or `MyAnno4[kvList|expressionList]` have a more prescribed syntax,
+which allows declaring key-value lists or expression lists. Both unstructured
+and structured annotations may be used simultaneously on a P4 element and
+`P4Info` supports this.
+
+The annotations described up to this point, &eg; `@brief()`, have all been
+unstructured annotations, or simply annotations. These are represented in
+`P4Info` as `repeated string annotations` fields in the various `message`s.
+Similarly, structured annotations are represented in
+`repeated structured_annotations` fields which are siblings to the unstructured
+`annotations`. The `structured_annotations` contain parsed representations of
+the original annotation source. This parsing includes expression-evaluation,
+so the resulting `P4Info` may contain a simplified replica of the original
+structured annotations.
+
+The structured annotation messages are defined in `p4types.proto`.
+
+~ Begin Proto
+// One parsed element within a structured annotation's body.
+message StructuredAnnotationElement {
+// Key is empty if and only if no key was specified
+  string key = 1;
+  StructuredAnnotationValue value = 2;
+}
+
+// A structured annotation value may be scalar or a list
+message StructuredAnnotationValue {
+  oneof value {
+    ExpressionValue expression = 1;
+    ExpressionList expression_list = 2;
+  }
+}
+
+// Various value types
+message ExpressionValue {
+  oneof value {
+    string string_value = 1;
+    int64 int64_value = 2;
+    bool bool_value = 3;
+  }
+}
+
+// A list of expressions
+message ExpressionList {
+  repeated ExpressionValue expressions = 1;
+}
+
+// An ordered list of annotations identified by the name
+message StructuredAnnotation {
+  string name = 1;
+  repeated StructuredAnnotationElement elements = 2;
+}
+~ End Proto
+
+The `StructuredAnnotationElement` can represent a `kvPair` as a `key` and a
+`value`; alternatively, it can represent an `expression` as a keyless value.
+Therefore a `kvList` or `expressionList` can both use the same
+`StructuredAnnotation` message with the annotation `name` and a list of
+`StructuredAnnotationElement`s.
+
+The type of an expression is intentionally limited to a practical subset:
+string literal, 64-bit signed integer, boolean, or a list of any of these.
+This is more restrictive than the P4 language but provides reasonable types
+for known annotation use-cases. The `p4c` compiler frontend which generates
+`P4Info` will evaluate all expressions and simplify them to one of the three
+types. Any expressions which don't match one of the valid types will generate
+an error.
+
+The following invariants hold:
+
+1. For any P4 entity, there are no two `StructuredAnnotation`s that have the
+same name.
+
+2. Within a `StructuredAnnotation`, there are no two
+`StructuredAnnotationElement`s that have the same key, except for the empty
+key, which can appear any number of times to represent `expressionList`s.
+
+### Structured Annotation Examples
+
+**Empty Expression List**
+
+~ Begin P4Example
+@Empty[]
+table t {
+    ...
+}
+~ End P4Example
+
+The generated p4Info will contain:
+
+~ Begin Proto
+structured_annotations {
+  name: "Empty"
+}
+~ End Proto
+
+**Mixed Expression List**
+
+~ Begin P4Example
+#define TEXT_CONST "hello"
+#define NUM_CONST 6
+@MixedExprList[1,TEXT_CONST,true,1==2,5+NUM_CONST]
+table t {
+    ...
+}
+~ End P4Example
+
+The generated p4Info will contain:
+
+~ Begin Proto
+structured_annotations {
+  name: "MixedExprList"
+  elements {
+    value {
+      expression {
+        int64_value: 1
+      }
+    }
+  }
+  elements {
+    value {
+      expression {
+        string_value: "hello"
+      }
+    }
+  }
+  elements {
+    value {
+      expression {
+        bool_value: true
+      }
+    }
+  }
+  elements {
+    value {
+      expression {
+        bool_value: false
+      }
+    }
+  }
+  elements {
+    value {
+      expression {
+        int64_value: 11
+      }
+    }
+  }
+}
+~ End Proto
+
+**kvList of Strings**
+
+~ Begin P4Example
+@Labels[short="Short Label", hover="My Longer Table Label to appear in hover-help"]
+table t {
+    ...
+}
+~ End P4Example
+
+The generated p4Info will contain:
+
+~ Begin Proto
+structured_annotations {
+  name: "Labels"
+  elements {
+    key: "short"
+    value {
+      expression {
+        string_value: "Short Label"
+      }
+    }
+  }
+  elements {
+    key: "hover"
+    value {
+      expression {
+        string_value: "My Longer Table Label to appear in hover-help"
+      }
+    }
+  }
+}
+~ End Proto
+
+**kvList of Mixed Expressions**
+
+The following example will produce a more  complex `kvList`: one of
+the `kvPair`s has a value which is itself an `{expressionList}`, which is a
+valid form of an expression.
+
+~ Begin P4Example
+@MixedKV[label="text", my_bool=true, list_key={"a", 5+6, 1==2}, int_val=2*3]
+table t {
+    ...
+}
+~ End P4Example
+
+
+The generated p4Info will contain:
+
+~ Begin Proto
+structured_annotations {
+  name: "MixedKV"
+  elements {
+    key: "label"
+    value {
+      expression {
+        string_value: "text"
+      }
+    }
+  }
+  elements {
+    key: "my_bool"
+    value {
+      expression {
+        bool_value: true
+      }
+    }
+  }
+  elements {
+    key: "list_key"
+    value {
+      expression_list {
+        expressions {
+          string_value: "a"
+        }
+        expressions {
+          int64_value: 11
+        }
+        expressions {
+          bool_value: true
+        }
+      }
+    }
+  }
+  elements {
+    key: "int_val"
+    value {
+      expression {
+        int64_value: 6
+      }
+    }
+  }
+}
+~ End Proto
+
 ## `PkgInfo` Message
 
 The `PkgInfo` message contains package-level metadata which describes the
@@ -1048,6 +1300,8 @@ message PkgInfo {
   string contact = 7;
   // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
+  // Miscellaneous metadata, structured; a way to extend PkgInfo
+  repeated StructuredAnnotation structured_annotations = 9;
 }
 ~ End Proto
 

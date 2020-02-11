@@ -154,15 +154,52 @@ message P4HeaderUnionStackTypeSpec {
   int32 size = 2;
 }
 
+// One parsed element within a structured annotation's body.
+message StructuredAnnotationElement {
+  // Key is empty if and only if no key was specified
+    string key = 1;
+    StructuredAnnotationValue value = 2;
+  }
+  
+// A structured annotation value may be scalar or a list
+message StructuredAnnotationValue {
+  oneof value {
+    ExpressionValue expression = 1;
+    ExpressionList expression_list = 2;
+  }
+}
+
+// Various value types
+message ExpressionValue {
+  oneof value {
+    string string_value = 1;
+    int64 int64_value = 2;
+    bool bool_value = 3;
+  }
+}
+
+// A list of expressions
+message ExpressionList {
+  repeated ExpressionValue expressions = 1;
+}
+
+// An ordered list of annotations identified by the name
+message StructuredAnnotation {
+  string name = 1;
+  repeated StructuredAnnotationElement elements = 2;
+}
+  
 // For "safe" enums with no underlying representation and no member integer
 // values.
 message P4EnumTypeSpec {
   message Member {
     string name = 1;
     repeated string annotations = 2;
+    repeated StructuredAnnotation structured_annotations = 3;
   }
   repeated Member members = 1;
   repeated string annotations = 2;
+  repeated StructuredAnnotation structured_annotations = 3;
 }
 
 // For serializable (or "unsafe") enums, which have an underlying type. Note
@@ -173,10 +210,12 @@ message P4SerializableEnumTypeSpec {
     string name = 1;
     bytes value = 2;
     repeated string annotations = 3;
+    repeated StructuredAnnotation structured_annotations = 4;
   }
   P4BitTypeSpec underlying_type = 1;
   repeated Member members = 2;
   repeated string annotations = 3;
+  repeated StructuredAnnotation structured_annotations = 4;
 }
 
 // Similar to an enum, but there is always one and only one instance per P4
@@ -204,6 +243,7 @@ message P4NewTypeSpec {
   }
   // for other annotations (not @p4runtime_translation)
   repeated string annotations = 3;
+  repeated StructuredAnnotation structured_annotations = 4;
 }
 
 // End of P4 type specs --------------------------------------------------------
