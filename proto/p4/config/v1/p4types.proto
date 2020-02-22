@@ -154,39 +154,34 @@ message P4HeaderUnionStackTypeSpec {
   int32 size = 2;
 }
 
-// One parsed element within a structured annotation's body.
-message StructuredAnnotationElement {
-  // Key is empty if and only if no key was specified
-    string key = 1;
-    StructuredAnnotationValue value = 2;
-  }
-  
-// A structured annotation value may be scalar or a list
-message StructuredAnnotationValue {
-  oneof value {
-    ExpressionValue expression = 1;
-    ExpressionList expression_list = 2;
-  }
+message KeyValuePair {
+  string key = 1;
+  Expression value = 2;
 }
 
-// Various value types
-message ExpressionValue {
+message KeyValuePairList {
+  repeated KeyValuePair kv_pairs = 1;
+}
+
+message Expression {
   oneof value {
     string string_value = 1;
     int64 int64_value = 2;
     bool bool_value = 3;
+    ExpressionList expr_list_value = 4;
   }
 }
 
-// A list of expressions
 message ExpressionList {
-  repeated ExpressionValue expressions = 1;
+  repeated Expression expressions = 1;
 }
 
-// An ordered list of annotations identified by the name
 message StructuredAnnotation {
   string name = 1;
-  repeated StructuredAnnotationElement elements = 2;
+  oneof body {
+    ExpressionList expression_list = 2;
+    KeyValuePairList kvpair_list = 3;
+  }
 }
   
 // For "safe" enums with no underlying representation and no member integer

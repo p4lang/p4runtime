@@ -1035,74 +1035,68 @@ and structured annotations may be used simultaneously on a P4 element and
 The annotations described up to this point, &eg; `@brief()`, have all been
 unstructured annotations, or simply annotations. These are represented in
 `P4Info` as `repeated string annotations` fields in the various `message`s.
-Similarly, structured annotations are represented in
-`repeated structured_annotations` fields which are siblings to the unstructured
-`annotations`. The `structured_annotations` contain parsed representations of
-the original annotation source. This parsing includes expression-evaluation,
-so the resulting `P4Info` may contain a simplified replica of the original
-structured annotations.
+Similarly, structured annotations are represented in `repeated
+StructuredAnnotation structured_annotations` fields which are siblings to the
+unstructured `annotations`. The `structured_annotations` contain parsed
+representations of the original annotation source. This parsing includes
+expression-evaluation, so the resulting `P4Info` may contain a simplified
+replica of the original structured annotations.
 
 The structured annotation messages are defined in `p4types.proto`.
 
 ~ Begin Proto
-// One parsed element within a structured annotation's body.
-message StructuredAnnotationElement {
-// Key is empty if and only if no key was specified
+message KeyValuePair {
   string key = 1;
-  StructuredAnnotationValue value = 2;
+  Expression value = 2;
 }
 
-// A structured annotation value may be scalar or a list
-message StructuredAnnotationValue {
-  oneof value {
-    ExpressionValue expression = 1;
-    ExpressionList expression_list = 2;
-  }
+message KeyValuePairList {
+  repeated KeyValuePair kv_pairs = 1;
 }
 
-// Various value types
-message ExpressionValue {
+message Expression {
   oneof value {
     string string_value = 1;
     int64 int64_value = 2;
     bool bool_value = 3;
+    ExpressionList expr_list_value = 4;
   }
 }
 
-// A list of expressions
 message ExpressionList {
-  repeated ExpressionValue expressions = 1;
+  repeated Expression expressions = 1;
 }
 
-// An ordered list of annotations identified by the name
 message StructuredAnnotation {
   string name = 1;
-  repeated StructuredAnnotationElement elements = 2;
+  oneof body {
+    ExpressionList expression_list = 2;
+    KeyValuePairList kvpair_list = 3;
+  }
 }
 ~ End Proto
 
-The `StructuredAnnotationElement` can represent a `kvPair` as a `key` and a
-`value`; alternatively, it can represent an `expression` as a keyless value.
-Therefore a `kvList` or `expressionList` can both use the same
-`StructuredAnnotation` message with the annotation `name` and a list of
-`StructuredAnnotationElement`s.
+The `StructuredAnnotation` message can represent either a `KeyValuePairList`
+or an `ExpressionList`.
 
 The type of an expression is intentionally limited to a practical subset:
-string literal, 64-bit signed integer, boolean, or a list of any of these.
-This is more restrictive than the P4 language but provides reasonable types
-for known annotation use-cases. The `p4c` compiler frontend which generates
-`P4Info` will evaluate all expressions and simplify them to one of the three
-types. Any expressions which don't match one of the valid types will generate
-an error.
+string literal, 64-bit signed integer, boolean, or a nested list of
+`Expression`s. This is more restrictive than the P4 language but provides
+reasonable types for known annotation use-cases. The `p4c` compiler frontend
+which generates `P4Info` will evaluate all expressions and simplify them to
+one of the valid types. Any expressions which don't match one of the valid
+types will generate an error. For integers exceeding 64 bits, besides issuing
+an error, the compiler *could* print a suggestion to use a string
+representation, and the `P4Info` consumer could perform any necessary
+conversions.
 
 The following invariants hold:
 
 1. For any P4 entity, there are no two `StructuredAnnotation`s that have the
 same name.
 
-2. Within a `StructuredAnnotation`, there are no two
-`StructuredAnnotationElement`s that have the same key, except for the empty
-key, which can appear any number of times to represent `expressionList`s.
+2. Within a `KeyValuePairList`, there are no two `KeyValuePair`s that have the
+same `key.`
 
 ### Structured Annotation Examples
 
@@ -1139,38 +1133,74 @@ The generated p4Info will contain:
 ~ Begin Proto
 structured_annotations {
   name: "MixedExprList"
-  elements {
-    value {
-      expression {
-        int64_value: 1
-      }
+  expression_list {
+    expressions {
+      int64_value: 1
+    }
+    expressions {
+      string_value: "hello"
+    }
+    expressions {
+      bool_value: true
+    }
+    expressions {
+      bool_value: false
+    }
+    expressions {
+      int64_value: 11
     }
   }
-  elements {
-    value {
-      expression {
-        string_value: "hello"
-      }
+}
+~ End Proto
+
+**Nested Expression List**
+
+~ Begin P4Example
+@NestedExprLists[1,TEXT_CONST,true,1==2,{3, 4, {5, 6}}]
+#define TEXT_CONST "hello"
+#define NUM_CONST 6
+@MixedExprList[1,TEXT_CONST,true,1==2,5+NUM_CONST]
+table t {
+    ...
+}
+~ End P4Example
+
+The generated p4Info will contain:
+
+~ Begin Proto
+structured_annotations {
+  name: "NestedExprLists"
+  expression_list {
+    expressions {
+      int64_value: 1
     }
-  }
-  elements {
-    value {
-      expression {
-        bool_value: true
-      }
+    expressions {
+      string_value: "hello"
     }
-  }
-  elements {
-    value {
-      expression {
-        bool_value: false
-      }
+    expressions {
+      bool_value: true
     }
-  }
-  elements {
-    value {
-      expression {
-        int64_value: 11
+    expressions {
+      bool_value: false
+    }
+    expressions {
+      expr_list_value {
+        expressions {
+          int64_value: 3
+        }
+        expressions {
+          int64_value: 4
+        }
+        expressions {
+          expr_list_value {
+            expressions {
+              int64_value: 5
+            }
+            expressions {
+              int64_value: 6
+            }
+          }
+        }
       }
     }
   }
@@ -1191,18 +1221,16 @@ The generated p4Info will contain:
 ~ Begin Proto
 structured_annotations {
   name: "Labels"
-  elements {
-    key: "short"
-    value {
-      expression {
+  kvpair_list {
+    kv_pairs {
+      key: "short"
+      value {
         string_value: "Short Label"
       }
     }
-  }
-  elements {
-    key: "hover"
-    value {
-      expression {
+    kv_pairs {
+      key: "hover"
+      value {
         string_value: "My Longer Table Label to appear in hover-help"
       }
     }
@@ -1229,42 +1257,38 @@ The generated p4Info will contain:
 ~ Begin Proto
 structured_annotations {
   name: "MixedKV"
-  elements {
-    key: "label"
-    value {
-      expression {
+  kvpair_list {
+    kv_pairs {
+      key: "label"
+      value {
         string_value: "text"
       }
     }
-  }
-  elements {
-    key: "my_bool"
-    value {
-      expression {
+    kv_pairs {
+      key: "my_bool"
+      value {
         bool_value: true
       }
     }
-  }
-  elements {
-    key: "list_key"
-    value {
-      expression_list {
-        expressions {
-          string_value: "a"
-        }
-        expressions {
-          int64_value: 11
-        }
-        expressions {
-          bool_value: true
+    kv_pairs {
+      key: "list_key"
+      value {
+        expr_list_value {
+          expressions {
+            string_value: "a"
+          }
+          expressions {
+            int64_value: 11
+          }
+          expressions {
+            bool_value: true
+          }
         }
       }
     }
-  }
-  elements {
-    key: "int_val"
-    value {
-      expression {
+    kv_pairs {
+      key: "int_val"
+      value {
         int64_value: 6
       }
     }
