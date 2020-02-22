@@ -1,5 +1,5 @@
 Title : P4Runtime Specification
-Title Note: version 1.1.0
+Title Note: version 1.2.0-dev
 Title Footer: &date;
 Author: The P4.org API Working Group
 Heading depth: 5
@@ -223,7 +223,7 @@ protocol-independent runtime APIs for P4-defined or P4-described data
 planes. This document specifies one such API, called *P4Runtime*. It is meant to
 disambiguate and augment the programmatic API definition expressed in Protobuf
 format and available at
-[https://github.com/p4lang/p4runtime/tree/v1.1.0/proto](https://github.com/p4lang/p4runtime/tree/v1.1.0/proto).
+[https://github.com/p4lang/p4runtime/tree/master/proto](https://github.com/p4lang/p4runtime/tree/master/proto).
 
 ## P4 Language Version Applicability
 
@@ -5952,6 +5952,12 @@ man-in-the-middle attacks between the server and client.
 # Appendix { @h1:"A"}
 
 ## Revision History
+
+### Changes in v1.2.0 (under development)
+
+* Add new `OPTIONAL` match kind. At the moment, `OPTIONAL` is only supported by
+  the v1model architecture [@v1model], and not by PSA. We hope that it will be
+  included in the core P4 language by the time P4Runtime v1.2.0 is released.
 
 ### Changes in v1.1.0
 
