@@ -1059,7 +1059,6 @@ message Expression {
     string string_value = 1;
     int64 int64_value = 2;
     bool bool_value = 3;
-    ExpressionList expr_list_value = 4;
   }
 }
 
@@ -1079,15 +1078,13 @@ message StructuredAnnotation {
 The `StructuredAnnotation` message can represent either a `KeyValuePairList`
 or an `ExpressionList`.
 
-The type of an expression is intentionally limited to a practical subset:
-string literal, 64-bit signed integer, boolean, or a nested list of
-`Expression`s. This is more restrictive than the P4 language but provides
-reasonable types for known annotation use-cases. The `p4c` compiler frontend
-which generates `P4Info` will evaluate all expressions and simplify them to
-one of the valid types. Any expressions which don't match one of the valid
-types will generate an error. For integers exceeding 64 bits, besides issuing
-an error, the compiler *could* print a suggestion to use a string
-representation, and the `P4Info` consumer could perform any necessary
+The type of an expression is intentionally limited to one of the following
+base types: string literal, 64-bit signed integer, or boolean. The `p4c`
+compiler frontend which generates `P4Info` will evaluate all expressions and
+simplify them to one of the valid types. Any expressions which don't match one
+of the valid types will generate an error. For integers exceeding 64 bits,
+besides issuing an error, the compiler *could* print a suggestion to use a
+string representation, and the `P4Info` consumer could perform any necessary
 conversions.
 
 The following invariants hold:
@@ -1152,105 +1149,16 @@ structured_annotations {
   }
 }
 ~ End Proto
-
-**Nested Expression List**
-
-~ Begin P4Example
-@NestedExprLists[1,TEXT_CONST,true,1==2,{3, 4, {5, 6}}]
-#define TEXT_CONST "hello"
-#define NUM_CONST 6
-@MixedExprList[1,TEXT_CONST,true,1==2,5+NUM_CONST]
-table t {
-    ...
-}
-~ End P4Example
-
-The generated p4Info will contain:
-
-~ Begin Proto
-structured_annotations {
-  name: "NestedExprLists"
-  expression_list {
-    expressions {
-      int64_value: 1
-    }
-    expressions {
-      string_value: "hello"
-    }
-    expressions {
-      bool_value: true
-    }
-    expressions {
-      bool_value: false
-    }
-    expressions {
-      expr_list_value {
-        expressions {
-          int64_value: 3
-        }
-        expressions {
-          int64_value: 4
-        }
-        expressions {
-          expr_list_value {
-            expressions {
-              int64_value: 5
-            }
-            expressions {
-              int64_value: 6
-            }
-          }
-        }
-      }
-    }
-  }
-}
-~ End Proto
-
-**kvList of Strings**
-
-~ Begin P4Example
-@Labels[short="Short Label", hover="My Longer Table Label to appear in hover-help"]
-table t {
-    ...
-}
-~ End P4Example
-
-The generated p4Info will contain:
-
-~ Begin Proto
-structured_annotations {
-  name: "Labels"
-  kvpair_list {
-    kv_pairs {
-      key: "short"
-      value {
-        string_value: "Short Label"
-      }
-    }
-    kv_pairs {
-      key: "hover"
-      value {
-        string_value: "My Longer Table Label to appear in hover-help"
-      }
-    }
-  }
-}
 ~ End Proto
 
 **kvList of Mixed Expressions**
 
-The following example will produce a more  complex `kvList`: one of
-the `kvPair`s has a value which is itself an `{expressionList}`, which is a
-valid form of an expression.
-
 ~ Begin P4Example
-@MixedKV[label="text", my_bool=true, list_key={"a", 5+6, 1==2}, int_val=2*3]
+@MixedKV[label="text", my_bool=true, int_val=2*3]
 table t {
     ...
 }
 ~ End P4Example
-
 
 The generated p4Info will contain:
 
@@ -1268,22 +1176,6 @@ structured_annotations {
       key: "my_bool"
       value {
         bool_value: true
-      }
-    }
-    kv_pairs {
-      key: "list_key"
-      value {
-        expr_list_value {
-          expressions {
-            string_value: "a"
-          }
-          expressions {
-            int64_value: 11
-          }
-          expressions {
-            bool_value: true
-          }
-        }
       }
     }
     kv_pairs {
