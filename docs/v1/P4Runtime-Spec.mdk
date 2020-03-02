@@ -1111,6 +1111,8 @@ The generated p4Info will contain:
 ~ Begin Proto
 structured_annotations {
   name: "Empty"
+  expression_list {
+  }
 }
 ~ End Proto
 
