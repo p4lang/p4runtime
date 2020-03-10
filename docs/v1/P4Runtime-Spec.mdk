@@ -1151,7 +1151,6 @@ structured_annotations {
   }
 }
 ~ End Proto
-~ End Proto
 
 **kvList of Mixed Expressions**
 
