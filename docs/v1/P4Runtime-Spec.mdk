@@ -1106,9 +1106,9 @@ table t {
 }
 ~ End P4Example
 
-The generated p4Info will contain the following. An empty annotation body
-generates an empty `expression_list` to remain consistent with the P4 Language
-Spec.
+The generated p4Info will contain the following. An empty structured annotation
+body generates an empty `expression_list` to remain consistent with the P4
+Language Spec.
 
 ~ Begin Proto
 structured_annotations {
