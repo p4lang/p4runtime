@@ -1042,7 +1042,7 @@ representations of the original annotation source. This parsing includes
 expression-evaluation, so the resulting `P4Info` may contain a simplified
 replica of the original structured annotations.
 
-The structured annotation messages are defined in `p4types.proto`.
+The structured annotation messages are defined in p4types.proto.
 
 ~ Begin Proto
 message KeyValuePair {
