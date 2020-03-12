@@ -2482,6 +2482,12 @@ the `TableEntry` entity, which has the following fields:
 * `controller_metadata`, a 64-bit cookie value which is opaque to the
   target. There is no requirement of where this is stored, but it must be
   returned by the server along with the rest of the entry when the client
+  performs a read on the entry. This is deprecated in favor of the more flexible
+  metadata field.
+
+* `metadata`, an arbitrary `bytes` value which is opaque to the
+  target. There is no requirement of where this is stored, but it must be
+  returned by the server along with the rest of the entry when the client
   performs a read on the entry.
 
 * `meter_config`, which is used to read and write the configuration for the
@@ -2746,11 +2752,11 @@ must return an `INVALID_ARGUMENT` error code. When performing a `MODIFY` update
 on the default entry, the client can either provide a valid action for the table
 or leave the action field unset, in which case the default entry will be reset
 to its original value, as defined in the P4 program. When resetting the default
-entry, its `controller_metadata` value as well as the configurations for its
-[direct resources](#sec-direct-resources) will be reset to their defaults. If
-the default entry is constant (as indicated by the P4 program and the P4Info
-message), the server must return a `PERMISSION_DENIED` error code if the client
-attempts to modify it.
+entry, its `controller_metadata` and `metadata` value as well as the
+configurations for its [direct resources](#sec-direct-resources) will be reset
+to their defaults. If the default entry is constant (as indicated by the P4
+program and the P4Info message), the server must return a `PERMISSION_DENIED`
+error code if the client attempts to modify it.
 
 Apart from the above restrictions, the default entry is treated like a regular
 entry, including with regards to [direct resources](#sec-direct-resources).
@@ -2818,6 +2824,9 @@ fields may be used to select and filter results:
 * `controller_metadata`: If default (0), all entries from the specified table
   will be considered. Otherwise, results will be filtered based on the provided
   `controller_metadata` value.
+* `metadata`: If default (empty byte string), all entries from the specified
+  table will be considered. Otherwise, results will be filtered based on the
+  provided `metadata` value.
 * `is_default_action`: If default (false), all non-default entries from the
   specified table will be considered. Otherwise, only the default entry will be
   considered.
@@ -2832,6 +2841,7 @@ entities {
     table_id: 0
     priority: 0
     controller_metadata: 0
+    metadata: ""
   }
 }
 ~ End Prototext
@@ -2847,6 +2857,7 @@ entities {
     table_id: 0x0212ab34
     priority: 11
     controller_metadata: 0
+    metadata: ""
   }
 }
 ~ End Prototext
@@ -5031,8 +5042,9 @@ The `IdleTimeoutNotification` Protobuf message has the following fields:
 * `table_entry`: a repeated field of entries which have expired. Each individual
   entry is identified by a single `TableEntry` message. For each `TableEntry`,
   the *key* fields (`table_id`, `match` and `priority`) must be set, along with
-  the `controller_metadata` field and the `idle_timeout_ns` field. Other fields
-  may be set by the server but should be ignored by the client.
+  the `controller_metadata` field, the `metadata` field, and the
+  `idle_timeout_ns` field. Other fields may be set by the server but should be
+  ignored by the client.
 
 Because we use a repeated Protobuf field, the P4Runtime server may elect to
 coalesce several idle timeout notifications in the same
