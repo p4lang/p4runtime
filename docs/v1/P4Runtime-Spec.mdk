@@ -1173,7 +1173,9 @@ statically-assigned ID suffixes lead to non-unique IDs (&ie; if the P4
 programmer tries to assign the same ID suffix to two different P4 objects of the
 same type by annotating them with the same `@id` value). Note that it is not
 possible for the P4 programmer to change the value of the 8-bit ID prefix, which
-encodes the object type.
+encodes the object type. The programmer is free to include or not include the
+8-bit prefix; the compiler will add it if not already present, and will check
+an existing prefix against the correct prefix and error if it is not correct.
 
 ~ TableFigure { #tab-exmpl-p4-obj-ids; \
     caption: "Example of statically-assigned P4Info object IDs"; \
@@ -1190,6 +1192,12 @@ encodes the object type.
 | `@id(0x12ab34) action act1...` | 0x0112ab34                                                 |
 +--------------------------------+------------------------------------------------------------+
 ~
+
+The `@id` annotation can also be used to choose the ID for match fields,
+action parameters, packet metadata, and . In this case, there is no 8-bit prefix
+and the programmer is free to choose any 32-bit number. The compiler must fail
+if the IDs chosen by the programmer are not unique (within a table and action,
+respectively).
 
 ## P4Info Objects
 
@@ -1208,7 +1216,9 @@ control plane. This message contains the following fields:
       this table. No rules are prescribed on the way `MatchField` IDs should be
       allocated, as long as two `MatchField` of the same table do not have the
       same ID. Nonetheless, we recommend that the IDs be assigned incrementally,
-      starting from 1, in the same order as in the P4 key declaration.
+      starting from 1, in the same order as in the P4 key declaration. The
+      programmer can chose the IDs using the `@id` annotation, or let the
+      compiler choose them.
 
     * `name`, the string representing the name of this `MatchField`.
 
@@ -1306,7 +1316,8 @@ The `Action` message defines the following fields:
       on the way `Param` IDs should be allocated, as long as two `Param` of the
       same action do not have the same ID. Nonetheless, we recommend that the
       IDs be assigned incrementally, starting from 1, in the same order as in
-      the P4 action declaration.
+      the P4 action declaration.  The programmer can chose the IDs using the
+      `@id` annotation, or let the compiler choose them.
     * `name`, the string representing the name of this parameter.
     * `annotations`, a repeated field of strings, each one representing a P4
       annotation associated to this parameter.
@@ -1481,7 +1492,9 @@ message contains the following fields:
       same `ControllerPacketMetadata` message do not have the same
       ID. Nonetheless, if the P4Info message was generated from a P4 compiler,
       we recommend that the IDs be assigned incrementally, starting from 1, in
-      the same order as the fields in the P4 header declaration.
+      the same order as the fields in the P4 header declaration. The
+      programmer can chose the IDs using the `@id` annotation, or let the
+      compiler choose them.
     * `name`, a string representation of the name of this metadata. If the
       P4Info message was generated from a P4 compiler, then this field is
       expected to be set to the name of the P4 controller header field (see
