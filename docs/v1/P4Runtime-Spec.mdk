@@ -1173,9 +1173,12 @@ statically-assigned ID suffixes lead to non-unique IDs (&ie; if the P4
 programmer tries to assign the same ID suffix to two different P4 objects of the
 same type by annotating them with the same `@id` value). Note that it is not
 possible for the P4 programmer to change the value of the 8-bit ID prefix, which
-encodes the object type. The programmer is free to include or not include the
-8-bit prefix; the compiler will add it if not already present, and will check
-an existing prefix against the correct prefix and error if it is not correct.
+encodes the object type. The programmer is free to leave the 8-bit prefix as 0,
+in which case the compiler will replace the 0 with the correct value for the
+kind of object the annotation is annotating. The programmer may also fill in
+the 8-bit prefix with a non-0 value, in which case the compiler will give an
+error if the 8-bit prefix does not contain the correct value, or leave it as is
+if it is correct.
 
 ~ TableFigure { #tab-exmpl-p4-obj-ids; \
     caption: "Example of statically-assigned P4Info object IDs"; \
@@ -1217,7 +1220,7 @@ control plane. This message contains the following fields:
       allocated, as long as two `MatchField` of the same table do not have the
       same ID. Nonetheless, we recommend that the IDs be assigned incrementally,
       starting from 1, in the same order as in the P4 key declaration. The
-      programmer can chose the IDs using the `@id` annotation, or let the
+      programmer can choose the IDs using the `@id` annotation, or let the
       compiler choose them.
 
     * `name`, the string representing the name of this `MatchField`.
@@ -1316,7 +1319,7 @@ The `Action` message defines the following fields:
       on the way `Param` IDs should be allocated, as long as two `Param` of the
       same action do not have the same ID. Nonetheless, we recommend that the
       IDs be assigned incrementally, starting from 1, in the same order as in
-      the P4 action declaration.  The programmer can chose the IDs using the
+      the P4 action declaration.  The programmer can choose the IDs using the
       `@id` annotation, or let the compiler choose them.
     * `name`, the string representing the name of this parameter.
     * `annotations`, a repeated field of strings, each one representing a P4
@@ -1493,7 +1496,7 @@ message contains the following fields:
       ID. Nonetheless, if the P4Info message was generated from a P4 compiler,
       we recommend that the IDs be assigned incrementally, starting from 1, in
       the same order as the fields in the P4 header declaration. The
-      programmer can chose the IDs using the `@id` annotation, or let the
+      programmer can choose the IDs using the `@id` annotation, or let the
       compiler choose them.
     * `name`, a string representation of the name of this metadata. If the
       P4Info message was generated from a P4 compiler, then this field is
@@ -5708,7 +5711,7 @@ man-in-the-middle attacks between the server and client.
 * Added a new `metadata` field of type `bytes` to `TableEntry`. This is more
   flexible than the now deprecated `controller_metadata` field.
 * Added the ability to change the ID of table match fields, action parameters,
-  and metadata for packetio in P4Info by using the `@id` annotation.
+  and Packet IO metadata fields in P4Info by using the `@id` annotation.
 
 ### Changes in v1.1.0
 
