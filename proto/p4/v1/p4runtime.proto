@@ -156,8 +156,9 @@ message TableEntry {
   int32 priority = 4;
   // Metadata (cookie) opaque to the target. There is no requirement of where
   // this is stored, as long as it is returned with the rest of the entry in
-  // a Read RPC.
-  uint64 controller_metadata = 5;
+  // a Read RPC. This is deprecated in favor of the more flexible metadata
+  // field.
+  uint64 controller_metadata = 5 [deprecated=true];
   // meter_config and counter_data are convenience fields that enable the
   // controller to configure the direct resources associated with the table at
   // the same time as a match-action entry is inserted or modified.
@@ -197,6 +198,8 @@ message TableEntry {
   // Table read: if the table supports idle timeout and time_since_last_hit is
   // set in the request, this field will be set in the response.
   IdleTimeout time_since_last_hit = 10;
+  // Arbitrary metadata from the controller that is opaque to the target.
+  bytes metadata = 11;
 }
 
 // field_match_type ::= exact | ternary | lpm | range | optional
@@ -579,8 +582,8 @@ message Role {
 
 message IdleTimeoutNotification {
   // The only fields that are required to be set in each TableEntry are the
-  // "key" fields (table_id, match and priority) along with controller_metadata
-  // and idle_timeout_ns.
+  // "key" fields (table_id, match and priority) along with controller_metadata,
+  // metadata and idle_timeout_ns.
   repeated TableEntry table_entry = 1;
   // Timestamp at which the server generated the message (in nanoseconds since
   // Epoch)
