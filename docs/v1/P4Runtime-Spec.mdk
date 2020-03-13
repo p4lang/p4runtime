@@ -5707,6 +5707,8 @@ man-in-the-middle attacks between the server and client.
   included in the core P4 language by the time P4Runtime v1.2.0 is released.
 * Added a new `metadata` field of type `bytes` to `TableEntry`. This is more
   flexible than the now deprecated `controller_metadata` field.
+* Added the ability to change the ID of table match fields, action parameters,
+  and metadata for packetio in P4Info by using the `@id` annotation.
 
 ### Changes in v1.1.0
 
