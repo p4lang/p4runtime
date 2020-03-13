@@ -1194,10 +1194,10 @@ an existing prefix against the correct prefix and error if it is not correct.
 ~
 
 The `@id` annotation can also be used to choose the ID for match fields,
-action parameters, packet metadata, and . In this case, there is no 8-bit prefix
+action parameters, and packet metadata. In this case, there is no 8-bit prefix
 and the programmer is free to choose any 32-bit number. The compiler must fail
-if the IDs chosen by the programmer are not unique (within a table and action,
-respectively).
+if the IDs chosen by the programmer are not unique (within a table, action, or
+header, respectively).
 
 ## P4Info Objects
 
