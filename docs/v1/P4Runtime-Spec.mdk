@@ -1030,16 +1030,16 @@ matched parentheses is legal. Conversely, structured annotations of the form
 `MyAnno3[]` or `MyAnno4[kvList|expressionList]` have a more prescribed syntax,
 which allows declaring key-value lists or expression lists. Both unstructured
 and structured annotations may be used simultaneously on a P4 element and
-`P4Info` supports this.
+P4Info supports this.
 
 The annotations described up to this point, &eg; `@brief()`, have all been
 unstructured annotations, or simply annotations. These are represented in
-`P4Info` as `repeated string annotations` fields in the various `message`s.
+P4Info as `repeated string annotations` fields in the various `message`s.
 Similarly, structured annotations are represented in `repeated
 StructuredAnnotation structured_annotations` fields which are siblings to the
 unstructured `annotations`. The `structured_annotations` contain parsed
 representations of the original annotation source. This parsing includes
-expression-evaluation, so the resulting `P4Info` may contain a simplified
+expression-evaluation, so the resulting P4Info may contain a simplified
 replica of the original structured annotations.
 
 The structured annotation messages are defined in p4types.proto.
@@ -1080,11 +1080,11 @@ or an `ExpressionList`.
 
 The type of an expression is intentionally limited to one of the following
 base types: string literal, 64-bit signed integer, or boolean. The `p4c`
-compiler frontend which generates `P4Info` will evaluate all expressions and
+compiler frontend which generates P4Info will evaluate all expressions and
 simplify them to one of the valid types. Any expressions which don't match one
 of the valid types will generate an error. For integers exceeding 64 bits,
-besides issuing an error, the compiler *could* print a suggestion to use a
-string representation, and the `P4Info` consumer could perform any necessary
+besides issuing an error, the compiler *may* print a suggestion to use a
+string representation, and the P4Info consumer may perform any necessary
 conversions.
 
 The following invariants hold:
@@ -1106,7 +1106,7 @@ table t {
 }
 ~ End P4Example
 
-The generated p4Info will contain the following. An empty structured annotation
+The generated P4Info will contain the following. An empty structured annotation
 body generates an empty `expression_list` to remain consistent with the P4
 Language Spec.
 
@@ -1129,7 +1129,7 @@ table t {
 }
 ~ End P4Example
 
-The generated p4Info will contain:
+The generated P4Info will contain:
 
 ~ Begin Proto
 structured_annotations {
@@ -1163,7 +1163,7 @@ table t {
 }
 ~ End P4Example
 
-The generated p4Info will contain:
+The generated P4Info will contain:
 
 ~ Begin Proto
 structured_annotations {
