@@ -186,12 +186,20 @@ message P4ErrorTypeSpec {
 }
 
 message P4NewTypeTranslation {
+  message SdnString {}
+
   // the URI uniquely identifies the translation in order to enable the
   // P4Runtime agent to perform value-mapping appropriately when required. It is
   // recommended that the URI includes at least the P4 architecture name and the
   // type name.
   string uri = 1;
-  int32 sdn_bitwidth = 2;
+
+  // The object is either represented as an unsigned integer with a bitwidth of
+  // `sdn_bitwidth`, or as a string.
+  oneof sdn_type {
+    int32 sdn_bitwidth = 2;
+    SdnString sdn_string = 3;
+  }
 }
 
 // New types introduced with the "type" keyword
