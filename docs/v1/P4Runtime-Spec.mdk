@@ -1387,10 +1387,11 @@ control plane. This message contains the following fields:
     * id, the `uint32` identifier of this `MatchField`, unique in the scope of
       this table. No rules are prescribed on the way `MatchField` IDs should be
       allocated, as long as two `MatchField` of the same table do not have the
-      same ID. Nonetheless, we recommend that the IDs be assigned incrementally,
-      starting from 1, in the same order as in the P4 key declaration. The
-      programmer can choose the IDs using the `@id` annotation, or let the
-      compiler choose them.
+      same ID. Nonetheless, if the P4Info message was generated from a P4
+      compiler, we recommend that the IDs be assigned incrementally, starting
+      from 1, in the same order as in the P4 key declaration. The P4 programmer
+      can either choose the IDs using the `@id` annotation, or let the compiler
+      choose them.
 
     * `name`, the string representing the name of this `MatchField`.
 
@@ -1486,10 +1487,11 @@ The `Action` message defines the following fields:
   following fields:
     * `id`, the `uint32` identifier of this parameter. No rules are prescribed
       on the way `Param` IDs should be allocated, as long as two `Param` of the
-      same action do not have the same ID. Nonetheless, we recommend that the
-      IDs be assigned incrementally, starting from 1, in the same order as in
-      the P4 action declaration.  The programmer can choose the IDs using the
-      `@id` annotation, or let the compiler choose them.
+      same action do not have the same ID. Nonetheless, if the P4Info message
+      was generated from a P4 compiler, we recommend that the IDs be assigned
+      incrementally, starting from 1, in the same order as in the P4 action
+      declaration. The programmer can either choose the IDs using the `@id`
+      annotation, or let the compiler choose them.
     * `name`, the string representing the name of this parameter.
     * `annotations`, a repeated field of strings, each one representing a P4
       annotation associated to this parameter.
@@ -1661,12 +1663,11 @@ message contains the following fields:
   includes the following fields:
     * `id`, a `uint32` identifier of this metadata. No rules are prescribed on
       the way metadata IDs should be allocated, as long as two `Metadata` of the
-      same `ControllerPacketMetadata` message do not have the same
-      ID. Nonetheless, if the P4Info message was generated from a P4 compiler,
-      we recommend that the IDs be assigned incrementally, starting from 1, in
-      the same order as the fields in the P4 header declaration. The
-      programmer can choose the IDs using the `@id` annotation, or let the
-      compiler choose them.
+      same `ControllerPacketMetadata` message do not have the same ID. If the
+      P4Info message was generated from a P4 compiler, we recommend that the IDs
+      be assigned incrementally, starting from 1, in the same order as the
+      fields in the P4 header declaration. The P4 programmer can either choose
+      the IDs using the `@id` annotation, or let the compiler choose them.
     * `name`, a string representation of the name of this metadata. If the
       P4Info message was generated from a P4 compiler, then this field is
       expected to be set to the name of the P4 controller header field (see
@@ -1814,7 +1815,8 @@ value_sets {
  * `id`: must be unique with respect to the other `match` entries. If the P4Info
    message was generated from a P4 compiler, we recommend that the IDs be
    assigned incrementally, starting from 1, in the same order as the fields in
-   the P4 struct declaration.
+   the P4 struct declaration. The P4 programmer can choose the IDs using the
+   `@id` annotation, or let the compiler choose them.
  * `name`: set to the name of the corresponding struct field.
  * `annotations`: set to the list of P4 annotations associated with the struct
    field, except for the `@match` annotation, if present (see the `match` field
@@ -1830,9 +1832,9 @@ value_sets {
 
 ~ Begin P4Example
 struct match_t {
-  bit<8> f8;
-  @match(ternary) bit<16> f16;
-  @match(custom) bit<32> f32;
+  @id(1) bit<8> f8;
+  @id(2) @match(ternary) bit<16> f16;
+  @id(3) @match(custom) bit<32> f32;
 }
 @id(1) value_set<match_t>(4) pvs;
 select ({ hdr.f8, hdr.f16, hdr.f32 }) { /* ... */ }
@@ -1864,6 +1866,9 @@ value_sets {
   size: 4
 }
 ~ End Prototext
+
+In the above example, the `@id` annotations on the P4 struct fields are
+optional. When omitted, the compiler will choose appropriate IDs.
 
 Although not mentioned in the P4 specification, P4Runtime also supports the
 cases where the Value Set type parameter is a [user-defined
@@ -5475,7 +5480,7 @@ the recirculation port as follows:
 enum SdnPort {
   SDN_PORT_UNSPECIFIED = 0;
 
-  // SDN ports are numbered starting form 1.
+  // SDN ports are numbered starting from 1.
   SDN_PORT_MIN = 1;
 
   // The maximum value of an SDN port (physical or logical).
@@ -5880,7 +5885,8 @@ man-in-the-middle attacks between the server and client.
 * Added a new `metadata` field of type `bytes` to `TableEntry`. This is more
   flexible than the now deprecated `controller_metadata` field.
 * Added the ability to change the ID of table match fields, action parameters,
-  and Packet IO metadata fields in P4Info by using the `@id` annotation.
+  Packet IO metadata fields, and Value Set match fields in P4Info by using the
+  `@id` annotation.
 
 ### Changes in v1.1.0
 
