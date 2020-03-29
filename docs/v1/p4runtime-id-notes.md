@@ -114,28 +114,11 @@ described separately for each below.  Thus within a single P4Info
 message, it is possible for there to be multiple messages of these
 types with the same numeric id value.
 
-+ `MatchField` - These messages describe one match field inside of a
-  `Table` or `ValueSet` object.  Their `id` values must be unique
-  within the scope of one such object.
-+ `Param` sub-message within an `Action` message - These `Param`
-  messages describe one parameter of an `Action` object.  Their `id`
-  values must be unique within the scope of one such `Action` object.
-+ `Metadata` sub-message within a `ControllerPacketMetadata` message -
-  These `Metadata` messages describe one field of a header, of which
-  in the referenced version of the P4Runtime API specification, there
-  can be at most two: one "packet_in" and one "packet_out".  The `id`
-  values of the `Metadata` messages must be unique within the scope of
-  one such `ControllerPacketMetadata` object.  TBD: check that this is
-  accurate.
-
-The table below is intended to convey the same information as the
-above bullet list, but perhaps in a more digestable format.
-
 | Field name | Message type | Scope | Notes |
 | ---------- | ------------ | ----- | ----- |
 | `id` | `MatchField` | `Table` or `ValueSet` object that contains the match field | Each `MatchField` describes one match field of the `Table` or `ValueSet`. |
 | `id` | `Param` sub-message of `Action` | `Action` object | Each `Param` describes one (directionless) parameter of a P4 action. |
-| `id` | `Metadata` sub-message of `ControllerPacketMetadata` | `ControllerPacketMetadata` object. | A P4 program can have at most two of these, one named `packet_in`, the other `packet_out`. |
+| `id` | `Metadata` sub-message of `ControllerPacketMetadata` | `ControllerPacketMetadata` object. | A P4 program can have at most two `ControllerPacketMetadata` messages, one named `packet_in`, the other `packet_out`. |
 
 
 ## Numeric ids used as references to P4 objects within a single P4Info message
@@ -144,44 +127,15 @@ The next group below are in the `p4info.proto` file, but not inside of
 `Preamble` messages.  They are "references", meaning that they refer
 to P4 objects by means of their numeric id value.  The value of these
 fields must be equal to the id value of a P4 object of the appropriate
-type, within the same P4Info message.
-
-+ `Table` message, field `const_default_action_id` - The id of some
-  `Action` object, or 0 to mean "the table's default_action is not
-  declared `const`".
-+ `Table` message, field `implementation_id` - The id of some
-  `ActionProfie` object, or 0 to mean "this table has no
-  `implementation` table property".  TBD: double check the meaning of
-  0 here.
-+ `Table` message, repeated field `direct_resource_ids` - Repeated to
-  enable a single table to reference the ids of zero or more
-  `DirectCounter` and/or `DirectMeter` objects.
-+ `Table` message, `ActionRef` repeated sub-message, field `id` - The
-  id of some `Action` object.  `ActionRef` messages contain optional
-  annotations and `Scope` values that are specific to how a particular
-  table is allowed to use that `Action`.
-+ `ActionProfile` message, repeated field `table_ids` - The id of zero
-  or more `Table` objects.  This data is redundant with the
-  `implementation_id` field above, but has been included for the
-  convenience of consumers of P4Info messages.
-+ `DirectCounter` message, field `direct_table_id` - The id of one
-  `Table` object.  This data is redundant with the
-  `direct_resource_ids` field above, but has been included for the
-  convenience of consumers of P4Info messages.
-+ `DirectMeter` message, field `direct_table_id` - The id of one
-  `Table` object.  This data is redundant with the
-  `direct_resource_ids` field above, but has been included for the
-  convenience of consumers of P4Info messages.
-
-The table below is intended to convey the same information as the
-above bullet list, but perhaps in a more digestable format.
+type, within the same P4Info message, with the exception that some of
+them may be 0, described in the notes.
 
 | Field name | Message type | Type of P4 object referred to | Notes |
 | ---------- | ------------ | ----------------------------- | ----- |
 | `const_default_action_id` | `Table` | `Action` | 0 means "the table's `default_action` is not declared `const` |
 | `implementation_id` | `Table` | `ActionProfile` | 0 means "this table has no `implementation` table property. TBD: double check the meaning of 0 here. |
 | `direct_resource_ids` | `Table` | `DirectCounter` or `DirectMeter` | repeated so that a single table can refer to up to one of each |
-| `id` | sub-message `ActionRef` inside `Table` | `Action` | repeated once for each action the table might invoke.  `ActionRef` messages contain optional annotation and `Scope` values that are specific to how a particular table is allowed to use that `Action` |
+| `id` | sub-message `ActionRef` inside `Table` | `Action` | `ActionRef` messages are repeated, with a separate one for each action the table might invoke.  `ActionRef` messages contain optional annotation and `Scope` values that are specific to how a particular table is allowed to use that `Action` |
 | `table_ids` | `ActionProfile` | `Table` | repeated once for each `Table` that uses this `ActionProfile` object.  This data is redundant with the `implementation_id` field above, but has been included for the convenience of consumers of P4Info messages. |
 | `direct_table_id` | `DirectCounter` | `Table` | This data is redundant with the `direct_resource_ids` field above, but has been included for the convenience of consumers of P4Info messages. |
 | `direct_table_id` | `DirectMeter` | `Table` | This data is redundant with the `direct_resource_ids` field above, but has been included for the convenience of consumers of P4Info messages. |
