@@ -58,7 +58,7 @@ These are all defined in the file `proto/p4/config/v1/p4info.proto`.
 
 ## Numeric ids that are unique within an entire P4Info message
 
-The P4Info messagess listed below contain a `Preamble` message.  Each
+The P4Info messages listed below contain a `Preamble` message.  Each
 `Preamble` message contains an `id` field, as well as several others
 like `name`, `alias`, and `annotations`.  See the `Preamble` message
 definition for the full list.
@@ -135,7 +135,7 @@ above bullet list, but perhaps in a more digestable format.
 | ---------- | ------------ | ----- | ----- |
 | `id` | `MatchField` | `Table` or `ValueSet` object that contains the match field | Each `MatchField` describes one match field of the `Table` or `ValueSet`. |
 | `id` | `Param` sub-message of `Action` | `Action` object | Each `Param` describes one (directionless) parameter of a P4 action. |
-| `id` | `Metadata` sub-message of `ControllerPacketMetadata` | `ControllerPacketMetadata` object.  A P4 program can have at most two of these, one named `packet_in`, the other `packet_out`. |
+| `id` | `Metadata` sub-message of `ControllerPacketMetadata` | `ControllerPacketMetadata` object. | A P4 program can have at most two of these, one named `packet_in`, the other `packet_out`. |
 
 
 ## Numeric ids used as references to P4 objects within a single P4Info message
