@@ -234,9 +234,13 @@ specification.
 
 Scope: TBD
 
++ `Role`, where the field is called `id` instead of `role_id`
+  + `MasterArbitrationUpdate` messages contain `Role` sub-messages
 + `SetForwardingPipelineConfigRequest`
 + `WriteRequest`
-+ `Role`, where the field is called `id` instead of `role_id`
+
+
+### Election ids
 
 `election_id` field values appear in the message types listed below.
 Their values are selected by P4Runtime clients.
