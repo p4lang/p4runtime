@@ -58,10 +58,10 @@ These are all defined in the file `proto/p4/config/v1/p4info.proto`.
 
 ## Numeric ids that are unique within an entire P4Info message
 
-The following P4Info messages contain a `Preamble` message, which
-contains an `id` field, as well as several others like `name`,
-`alias`, and `annotations`.  See the `Preamble` message definition for
-the full list.
+The P4Info messagess listed below contain a `Preamble` message.  Each
+`Preamble` message contains an `id` field, as well as several others
+like `name`, `alias`, and `annotations`.  See the `Preamble` message
+definition for the full list.
 
 Section 6.3 "ID Allocation for P4Info Objects" of the P4Runtime API
 specification says:
@@ -74,7 +74,7 @@ specification says:
 So all of these id values must be globally unique for a single P4Info
 message, i.e. for a single compiled P4 program.  All of the values are
 selected during compilation of the P4 program, either by the P4
-compiler, or by the P4 developer using `@id` annotations on the P4
+compiler, or by the P4 developer using an `@id` annotation on the P4
 object.
 
 They are listed in alphabetical order by message name, except for
@@ -105,7 +105,7 @@ They are listed in alphabetical order by message name, except for
 + `ValueSet` - prefix 0x03
 
 
-## Numeric ids that are unique within a restricted scope witin a P4Info message
+## Numeric ids that are unique within a restricted scope of a P4Info message
 
 The next group of id values below are in the `p4info.proto` file, but
 not inside of `Preamble` messages.  The ids are unique, but only
@@ -133,7 +133,6 @@ above bullet list, but perhaps in a more digestable format.
 
 | Field name | Message type | Scope | Notes |
 | ---------- | ------------ | ----- | ----- |
-
 | `id` | `MatchField` | `Table` or `ValueSet` object that contains the match field | Each `MatchField` describes one match field of the `Table` or `ValueSet`. |
 | `id` | `Param` sub-message of `Action` | `Action` object | Each `Param` describes one (directionless) parameter of a P4 action. |
 | `id` | `Metadata` sub-message of `ControllerPacketMetadata` | `ControllerPacketMetadata` object.  A P4 program can have at most two of these, one named `packet_in`, the other `packet_out`. |
