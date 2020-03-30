@@ -148,38 +148,25 @@ These are all defined in the file `proto/p4/v1/p4runtime.proto`.
 
 ## Numeric ids that are references to P4 objects in the relevant P4Info message
 
-+ message `TableEntry`, field `table_id`
-  + sub-message `FieldMatch`, field `field_id`
-+ message `ValueSetEntry`, field `value_set_id`
-  + sub-message (repeated) `ValueSetMember`
-    + sub-message (repeated) `FieldMatch`, field `field_id`
-+ message `TableAction`
-  + sub-message `Action`, field `action_id`
-    + sub-message `Param`, field `param_id`
-+ message `CounterEntry`, field `counter_id` - TBD: I believe this
-  should always be the id of a `Counter` object, never a
-  `DirectCounter`
-+ message `MeterEntry`, field `meter_id` - TBD: I believe this should
-  always be the id of a `Meter` object, never a `DirectMeter`.
-+ message `RegisterEntry`, field `register_id`
-+ message `DigestEntry`, field `digest_id` - used to configure a
-  `Digest` object as a whole, not to deal with digest messages.
-+ message `DigestList`, field `digest_id` - such messages are sent by
-  a server to a client, to report a list of digest messages generated
-  by a P4 device.
-+ message `DigestListAck`, field `digest_id` - such mssages are sent
-  by a client to acknowledge an earlier `DigestList` message that it
-  received.
-+ message `ExternEntry`, fields `extern_type_id` and `extern_id`.
+These fields are id values in messages defined in the
+`p4runtime.proto` file.  The id values reference objects in the
+relevant P4info message.  The table below gives the type of the P4
+object referred to using the name of the message type as defined in
+the `p4info.proto` file.
 
-| Field name | Message type | Type of P4 object referred to | Notes |
+Note that some message names are common in both files, but their
+fields differ from each other.  These message types have full names
+that are qualified by which file they are in, so these identical
+message type names do not conflict with each other.
+
+| Field name | Message type (in `p4runtime.proto`) | Type of P4 object referred to (message type from `p4info.proto`) | Notes |
 | ---------- | ------------ | ----------------------------- | ----- |
 | `table_id` | `TableEntry` | `Table` | |
 | `field_id` | `FieldMatch` sub-message of `TableEntry` | `MatchField` of `Table` | |
 | `value_set_id` | `ValueSetEntry` | `ValueSet` | |
 | `field_id` | `FieldMatch` sub-message of `ValueSetMember` | `MatchField` of `ValueSet` | |
-| `action_id` | `Action` sub-message of `TableAction` | `Action` (in P4Info message) | Note that there are two different `Action` message types.  The first one here is defined in `p4runtime.proto`, the second in `p4info.proto` |
-| `param_id` | `Param` sub-message of `Action` | `Param` sub-message of `Action` | There is also a `Param` sub-message in the two different `Action` message types mentioned in previous row. |
+| `action_id` | `Action` sub-message of `TableAction` | `Action` (in P4Info message) | Note that there are two different `Action` message types. |
+| `param_id` | `Param` sub-message of `Action` | `Param` sub-message of `Action` | Note there are two different `Param` message types, and each is a sub-message of a different `Action` message type. |
 | `counter_id` | `CounterEntry` | `Counter` | an indexed counter (aka indirect) |
 | `meter_id` | `MeterEntry` | `Meter` | an indexed meter (aka indirect) |
 | `register_id` | `RegisterEntry` | `Register` | |
