@@ -148,7 +148,7 @@ These are all defined in the file `proto/p4/v1/p4runtime.proto`.
 
 ## Numeric ids that are references to P4 objects in the relevant P4Info message
 
-These fields are id values in messages defined in the
+The fields in the table below are inside of messages defined in the
 `p4runtime.proto` file.  The id values reference objects in the
 relevant P4info message.  The table below gives the type of the P4
 object referred to using the name of the message type as defined in
