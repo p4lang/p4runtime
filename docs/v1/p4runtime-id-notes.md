@@ -200,11 +200,11 @@ objects in a P4 program.
 
 ### Device ids
 
+Scope: Unique within a single P4Runtime server.
+
 `device_id` field values appear in the message types listed below.
 Their values are selected by means not specified in the P4Runtime
 specification.
-
-Scope: Unique within a single P4Runtime server.
 
 + `MasterArbitrationUpdate`
 + `SetForwardingPipelineConfigRequest`
@@ -228,32 +228,39 @@ some idea of how they might be allocated.
 
 ### Role ids
 
+Scope: TBD
+
 `role_id` field values appear in the message types listed below.
 Their values are selected by means not specified in the P4Runtime
 specification.
-
-Scope: TBD
 
 + `Role`, where the field is called `id` instead of `role_id`
   + `MasterArbitrationUpdate` messages contain `Role` sub-messages
 + `SetForwardingPipelineConfigRequest`
 + `WriteRequest`
 
+There is no known reason why a P4 data plane would ever have use for
+knowing role id values.
+
 
 ### Election ids
 
+Scope: A single P4Runtime device.
+
 `election_id` field values appear in the message types listed below.
 Their values are selected by P4Runtime clients.
-
-Scope: I believe this value is scoped to a (P4Runtime server,
-device_id) pair.
 
 + `MasterArbitrationUpdate`
 + `SetForwardingPipelineConfigRequest`
 + `WriteRequest`
 
+There is no known reason why a P4 data plane would ever have use for
+knowing election id values.
+
 
 ### Multicast group ids
+
+Scope: A single P4Runtime device.
 
 `multicast_group_id` field values appear in the message types listed
 below.  The allowed set of values is determined by the P4Runtime
@@ -261,43 +268,72 @@ server, typically in a contiguous range `[1, M]` for some maximum
 number of multicast groups `M` supported by the device, which can
 differ from one device to another.
 
-Scope: A single P4Runtime device.  For example, multicast group id 7
-could have a different replication list for every device.
+A particular multicast group id value X (e.g. X=7) could have a
+different replication list for every device.
 
 + `MulticastGroupEntry`
+
+Multicast group id values must be used by the P4 data plane to direct
+packets to be replicated using the replication list configured for
+that multicast group id.  Thus it is likely that a P4Runtime client
+would first configure a multicast group id, then write that id into a
+place readable by the P4 program, e.g. as a parameter of some action
+of a table.
+
+(It is also possible that a P4 program might have some multicast group
+id values compiled into it for use for particular purposes, in which
+case it is up to some agreement between the developer of the P4
+program and the controller software.)
 
 
 ### Clone session ids
 
+Scope: A single P4Runtime device.
+
 `session_id` field values appear in the message types listed below.
 The allowed set of values is determined by the P4Runtime server,
 typically in a contiguous range `[0, C-1]` for some maximum number of
-multicast groups `C` supported by the device, which can differ from
-one device to another.
+clone sessions `C` supported by the device, which can differ from one
+device to another.
 
-Scope: A single P4Runtime device.  For example, clone session id 5
-could have a different configuration for every device.
+A particular clone session id value X (e.g. X=5) could have a
+different clone session configuration for every device.
 
 + `CloneSessionEntry`
+
+Like multicast group ids, clone session id values must be used by the
+P4 data plane to direct packets to be cloned using the session with
+that clone session id.  Thus it is likely that a P4Runtime client
+would first configure a clone session id, then write that id into a
+place readable by the P4 program, e.g. as a parameter of some action
+of a table.
+
+(It is also possible that a P4 program might have some clone session
+id values compiled into it for use for particular purposes, in which
+case it is up to some agreement between the developer of the P4
+program and the controller software.)
 
 
 ### Digest list ids
 
+Scope: A single P4Runtime device.
+
 `list_id` field values appear in the message types listed below.  They
 are selected by the P4Runtime server by some means not specified in
-the P4Runtime API specification, but it is implies that the value
-should always be a `list_id` value that is not currently in use by an
-unacknowledged `DigestList` message in the scope of a single P4Runtime
-`device_id`.  The same `list_id` value, e.g. 203, could be
-simultaneously in use by multiple devices managed by the same
-P4Runtime server.  For a single device, a `list_id` value could be
-used later in time, after it has been acknowledged via a
-`DigestListAck` message.
+the P4Runtime API specification, but it is implied that when a server
+sends a new `DigestList` message, it must contain a `list_id` value
+that is not in the set of unacknowledged `list_id` values for the
+device.  For a single device, a `list_id` value could be used later in
+time, after it has been acknowledged via a `DigestListAck` message.
 
-Scope: A single P4Runtime device.
+The same `list_id` value, e.g. 203, could be simultaneously in use by
+multiple devices managed by the same P4Runtime server.
 
 + `DigestList`
 + `DigestListAck`
+
+There is no known reason why a P4 data plane would ever have use for
+knowing digest list id values.
 
 
 ### ids of action profiles, and their members
