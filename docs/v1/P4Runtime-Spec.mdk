@@ -2369,14 +2369,15 @@ whose underlying data plane representation may vary on different targets, but
 for which it may be convenient to present a unified representation and numbering
 scheme to the control plane. **The `@p4runtime_translation` annotation can only
 be used if the underlying P4 built-in type is a fixed-width unsigned bitstring
-type (`bit<W>`)** . The type exposed to the control plane can be either a
-fixed-width unsigned bitstring, with a potentially different bitwidth, or a
-string. The annotation takes two parameters: a *URI* (Uniform Resource
-Identifier) which uniquely identifies the translation being performed on
-entities of the new type to the P4Runtime server and the *controller_type* of
-the values exposed the control plane. The *controller_type* can be either
-`bit<W>` where `W` is any positive integer, or `string`,
-or a positive integer `W` which has the same meaning as `bit<W>`.
+type (`bit<W>`)**. The type exposed to the control plane (referred to as the
+*controller_type*) can be either a fixed-width unsigned bitstring, with a
+potentially different bitwidth, or a string. The annotation takes two
+parameters: a *URI* (Uniform Resource Identifier) which uniquely identifies the
+translation being performed on entities of the new type to the P4Runtime server
+and the *controller_type* of the values exposed to the control plane. The
+*controller_type* can be either `bit<W>` where `W` is any positive integer, or
+`string`, or a positive integer `W` which has the same meaning as `bit<W>`.
+Specifying just an integer is deprecated.
 
 It is recommended that the URI includes at least the P4 architecture name and
 the type name.
@@ -2412,15 +2413,15 @@ For example, an architecture --- in this case PSA --- may introduce a new type
 for port numbers:
 ~ Begin P4Example
 // Controller refers to ports as a string, e.g. "eth0".
-@p4runtime_translation("p4.org/psa/v1/PortId_t", string)
+@p4runtime_translation("p4.org/psa/v1/PortId_String_t", string)
 type bit<9> PortId_String_t;
 
-// Controller refers to ports as a 32bit integer, e.g. 0xffffffff.
-@p4runtime_translation("p4.org/psa/v1/PortId_t", bit<32>)
+// Controller refers to ports as a 32-bit integer, e.g. 0xffffffff.
+@p4runtime_translation("p4.org/psa/v1/PortId_Bit32_t", bit<32>)
 type bit<9> PortId_Bit32_t;
 
 // Same as above.
-@p4runtime_translation("p4.org/psa/v1/PortId_t", 32)
+@p4runtime_translation("p4.org/psa/v1/PortId_32_t", 32)
 type bit<9> PortId_32_t;
 ~ End P4Example
 
@@ -2433,7 +2434,7 @@ type_info {
     key: "PortId_String_t"
     value {  # P4NewTypeSpec
       translated_type {  # P4NewTypeTranslation
-        uri: "p4.org/psa/v1/PortId_t"
+        uri: "p4.org/psa/v1/PortId_String_t"
         sdn_string: {}
       }
     }
@@ -2445,7 +2446,7 @@ type_info {
     key: "PortId_Bit32_t"
     value {  # P4NewTypeSpec
       translated_type {  # P4NewTypeTranslation
-        uri: "p4.org/psa/v1/PortId_t"
+        uri: "p4.org/psa/v1/PortId_Bit32_t"
         sdn_bitwidth: 32
       }
     }
@@ -2457,7 +2458,7 @@ type_info {
     key: "PortId_32_t"
     value {  # P4NewTypeSpec
       translated_type {  # P4NewTypeTranslation
-        uri: "p4.org/psa/v1/PortId_t"
+        uri: "p4.org/psa/v1/PortId_32_t"
         sdn_bitwidth: 32
       }
     }
