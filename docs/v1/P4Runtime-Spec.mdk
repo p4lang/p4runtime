@@ -3539,7 +3539,7 @@ One shots are programmed by choosing the `ActionProfileActionSet` message as the
 
 * `watch` is the controller-defined 32-bit port number that the action's
   liveness depends on. At runtime, the action must be excluded from selection if
-  the watch port is down. See also Section
+  the watch port is down. See Section
   [#sec-action-profile-group-programming] for more details on the `watch` field,
   which also apply for one shot action selector programming.
 
