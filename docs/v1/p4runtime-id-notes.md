@@ -56,7 +56,7 @@ $ find . -name '*.proto' | xargs egrep -c '(\bid\b|_id\b)'
 These are all defined in the file `proto/p4/config/v1/p4info.proto`.
 
 
-## Numeric ids that are unique within an entire P4Info message
+## Numeric ids that are unique within the P4Info top level scope
 
 The messages listed below are all of those that are sub-messages of
 the `P4Info` message, and they contain a `Preamble` sub-message.  Each
@@ -72,11 +72,15 @@ specification says:
     such a way that the resulting IDs must be globally unique in the
     scope of the P4Info message.
 
-So all of these id values must be globally unique for a single P4Info
-message, i.e. for a single compiled P4 program.  All of the values are
-selected during compilation of the P4 program, either by the P4
-compiler, or by the P4 developer using an `@id` annotation on the P4
-object.
+These ids are not required to be globally unique for a single P4Info
+message, because they are allowed to be the same as the ids described
+in the next section.  If we call the scope that contains the ids
+listed in this section the P4Info top level scope, then all of these
+ids must be unique within that scope.
+
+All of these id values in this section and the next are selected
+during compilation of the P4 program, either by the P4 compiler, or by
+the P4 developer using an `@id` annotation on the P4 object.
 
 They are listed in alphabetical order by message name, except for
 `DirectCounter` and `DirectMeter`, which are grouped together with
