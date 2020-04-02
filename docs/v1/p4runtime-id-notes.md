@@ -231,16 +231,17 @@ some idea of how they might be allocated.
 Scope: TBD
 
 `role_id` field values appear in the message types listed below.
-Their values are selected by means not specified in the P4Runtime
-specification.
+Their values are selected by clients.  The P4Runtime API specification
+does not define the meaning of any numeric values of role id, with the
+exception of 0.  A role id of 0 is always a role that can modify
+anything that is modifiable via the P4Runtime API.
 
 + `Role`, where the field is called `id` instead of `role_id`
   + `MasterArbitrationUpdate` messages contain `Role` sub-messages
 + `SetForwardingPipelineConfigRequest`
 + `WriteRequest`
 
-There is no known reason why a P4 data plane would ever have use for
-knowing role id values.
+There is no known use case for a P4 data plane to know role id values.
 
 
 ### Election ids
@@ -254,8 +255,8 @@ Their values are selected by P4Runtime clients.
 + `SetForwardingPipelineConfigRequest`
 + `WriteRequest`
 
-There is no known reason why a P4 data plane would ever have use for
-knowing election id values.
+There is no known use case for a P4 data plane to know election id
+values.
 
 
 ### Multicast group ids
@@ -332,8 +333,8 @@ multiple devices managed by the same P4Runtime server.
 + `DigestList`
 + `DigestListAck`
 
-There is no known reason why a P4 data plane would ever have use for
-knowing digest list id values.
+There is no known use case for a P4 data plane to know digest list id
+values.
 
 
 ### ids of action profiles, and their members
@@ -373,6 +374,16 @@ data plane, as the result of calling `apply` on that table.
 
 If there are multiple ActionProfile extern object instances, the
 server maintains state independently for each one.
+
+There is no known use case for a P4 data plane to know P4Runtime API
+action profile member id values.  It is likely that some P4 data plane
+implementations will use "data plane member id" values as a technique
+for implementing action profiles, but these values are not visible to
+the P4 program.  If such values are in use, it is likely that they
+will be much smaller than 32 bits wide, and if this is the case, the
+P4Runtime server is responsible for managing them and performing any
+needed translation between the P4Runtime API 32-bit values and the
+data plane values.
 
 ```
 // Note: All id values directly in a TableAction message (i.e. not
@@ -419,10 +430,33 @@ features of action profiles.
 Like action profiles, one must still create members with ids that
 refer to an "action plus its control plane parameters".  For tables
 using an action selector, the client can add entries to those tables
-that refer to member ids directly.
+that refer to member ids directly, just as one can for tables with
+action profiles.
 
 The more common use case for action selectors is to create groups,
 which are sets of members.
+
+The basic idea is that for every entry in a table that has an action
+selector implementation, it either refers to a member id directly, or
+to a group id, where every group has been configured by the client as
+a set of member ids (and a couple of other properties described
+later).  If it refers to a group id, one of the eligible members of
+that group is chosen by the data plane via some mechanism (examples
+below), and this gives you a member id.  Once a member id has been
+determined, the action plus parameters configured for that member id
+are invoked.
+
+Among the possible mechanisms for selecting one member among a group,
+the most common is to calculate a hash function of a selected set of
+fields from one or more packet headers (e.g. the IPv4 source and
+destination address, IPv4 protocol, and if the packet is TCP or UDP,
+the source and destination port numbers).  If the group has N members,
+then take the hash function modulo N, and the result indicates which
+member to select.  A common use case for action selectors is to select
+one of several shortest paths calculated by a routing protocol to
+packet's destination, called [Equal Cost
+Multi-Path](https://en.wikipedia.org/wiki/Equal-cost_multi-path_routing)
+routing.
 
 Aside: The P4Runtime API provides two different ways to control the
 state of an ActionSelector object.  The one described here uses
@@ -436,13 +470,12 @@ reuse common members in multiple groups, whereas the one shot API does
 not enable this.  See the P4Runtime API documentation, in the section
 "One Shot Action Selector Programming", for more details.
 
-
-In the P4Runtime API, these action selector groups are identified by
+In the P4Runtime API, the action selector groups are identified by
 non-0 integer id values with type `uint32`.  The member id and group
 id values for a single action selector object are in separate
-'scopes', i.e. a single action selector can have a member with id 5 at
+"scopes", i.e. a single action selector can have a member with id 5 at
 the same time as it has a group with id 5, and those are different
-things.  The member ids are inserted, modified, and/or deleted using
+things.  The member ids are inserted, modified, and deleted using
 `ActionProfileMember` messages, just as for action profiles.  The
 group ids are inserted, modified, and/or deleted using
 `ActionProfileGroup` messages.
@@ -462,14 +495,29 @@ parameter values.  A client can modify this mapping using
 `ActionProfileMember` messages.
 
 Unique to ActionSelector objects is that there is also a mapping `G`
-for `as1` that, for each group id integer value, maps to a group,
-which is a set of values of the form `(member_id, weight, watch)`.
+for `as1` that maps each group id integer value to a group, which is a
+set of tuples of the form `(member_id, weight, watch)`.
 
 Each `member_id` value must equal the id of some member already added
 earlier to the action selector.
 
 `weight` is a positive integer value that specifies the relative
-frequency with which this member should be selected and used, within a
-single group.
+frequency with which this member should be selected, within a single
+group.
 
-`watch` is a 
+`watch` is an integer that identifies a port on the device.  This is a
+32-bit value that is called an "SDN port" in the P4Runtime API
+specification.  If this value is 0, this feature is not applicable to
+the group member, and the member is always eligible for selection.  If
+`watch` is equal to a port id of the device, then the member is
+eligible only when the port is currently operational.
+
+There is no known use case for a P4 data plane to know P4Runtime API
+action selector group id or member id values.  It is likely that some
+P4 data plane implementations will use "data plane group id" values as
+a technique for implementing action selectors (and similar for member
+ids), but these values are not visible to the P4 program.  If such
+values are in use, it is likely that they will be much smaller than 32
+bits wide, and if this is the case, the P4Runtime server is
+responsible for managing them and performing any needed translation
+between the P4Runtime API 32-bit values and the data plane values.
