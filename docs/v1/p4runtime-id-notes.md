@@ -58,7 +58,8 @@ These are all defined in the file `proto/p4/config/v1/p4info.proto`.
 
 ## Numeric ids that are unique within an entire P4Info message
 
-The P4Info messages listed below contain a `Preamble` message.  Each
+The messages listed below are all of those that are sub-messages of
+the `P4Info` message, and they contain a `Preamble` sub-message.  Each
 `Preamble` message contains an `id` field, as well as several others
 like `name`, `alias`, and `annotations`.  See the `Preamble` message
 definition for the full list.
@@ -176,20 +177,6 @@ message type names do not conflict with each other.
 | `metadata_id` | `PacketMetadata` sub-message of `PacketIn` (or `PacketOut`) | `Metadata` sub-message of `ControllerPacketMetadata` | Refers to a `Metadata` message in the `ControllerPacketMetadata` object whose name is `packet_in` (or `packet_out`). |
 | `action_profile_id` | `ActionProfileMember` | `ActionProfile` | `ActionProfileMember` messages must reference an `ActionProfile` object with `with_selector` equal to false, indicating it is an action profile, not an action selector. |
 | `action_
-
-
-```
-// action_profile_id is a reference to an ActionProfile object in the
-// P4Info message.  That message type is used to define both action
-// profiles and action selectors in a P4 program.
-
-message ActionProfileMember {
-  uint32 action_profile_id = 1;
-  uint32 member_id = 2;
-  Action action = 3;
-}
-```
-
 
 
 ## Numeric ids that are NOT references to P4 objects
@@ -339,6 +326,9 @@ values.
 
 ### ids of action profiles, and their members
 
+Scope: A single action profile extern object instance within a single
+P4Runtime device.
+
 Consider a P4 program with an ActionProfile extern object named `ap1`.
 This program has 4 tables named `t1` through `t4` that all have a
 table property `implementation = ap1;` in their definitions.  Several
@@ -385,41 +375,11 @@ P4Runtime server is responsible for managing them and performing any
 needed translation between the P4Runtime API 32-bit values and the
 data plane values.
 
-```
-// Note: All id values directly in a TableAction message (i.e. not
-// within an Action sub-message) are dynamically chosen by the client
-// at run time, and do not refer to any id values within a P4Info
-// message.
-// table_actions ::= action_specification | action_profile_specification
-message TableAction {
-  oneof type {
-    Action action = 1;
-    uint32 action_profile_member_id = 2;
-    uint32 action_profile_group_id = 3;
-    ActionProfileActionSet action_profile_action_set = 4;
-  }
-}
-
-message ActionProfileMember {
-  uint32 action_profile_id = 1;
-  uint32 member_id = 2;
-  Action action = 3;
-}
-
-message ActionProfileGroup {
-  uint32 action_profile_id = 1;
-  uint32 group_id = 2;
-  message Member {
-    uint32 member_id = 1;
-    int32 weight = 2;
-    uint32 watch = 3;
-  }
-  repeated Member members = 3;
-}
-```
-
 
 ### ids of action selectors, their groups, and members within those groups
+
+Scope: A single action selector extern object instance within a single
+P4Runtime device.
 
 Action selectors are more general than action profiles.  They add
 another optional level of indirection, but it is most common to use
