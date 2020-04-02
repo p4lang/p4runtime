@@ -1345,7 +1345,7 @@ possible for the P4 programmer to change the value of the 8-bit ID prefix, which
 encodes the object type. The programmer is free to leave the 8-bit prefix as 0,
 in which case the compiler will replace the 0 with the correct value for the
 kind of object the annotation is annotating. The programmer may also fill in
-the 8-bit prefix with a non-0 value, in which case the compiler will give an
+the 8-bit prefix with a non-zero value, in which case the compiler will give an
 error if the 8-bit prefix does not contain the correct value, or leave it as is
 if it is correct.
 
@@ -3292,7 +3292,7 @@ table t {
 
 When programming table `t` in the example above, a P4Runtime client should
 specify the `TableAction` in the `TableEntry` to be a reference to either an
-action profile member or group. The reference is a non-0 `uint32` identifier
+action profile member or group. The reference is a non-zero `uint32` identifier
 that uniquely identifies a member or group programmed in the action selector
 `as`.
 
@@ -3329,7 +3329,7 @@ An `ActionProfileMember` entity update message has the following fields:
 * `action_profile_id` is the `uint32` identifier of the PSA ActionProfile or
   ActionSelector extern instance, as defined in P4Info.
 
-* `member_id` is the non-0 `uint32` identifier of the action profile member
+* `member_id` is the non-zero `uint32` identifier of the action profile member
   entry being updated.
 
 * `action` is the specification of the P4 action instance bound to the action
@@ -3388,8 +3388,8 @@ An `ActionProfileGroup` entity update message has the following fields:
 * `action_profile_id` is the `uint32` identifier of the PSA ActionSelector
   extern instance, as defined in P4Info.
 
-* `group_id` is the non-0 `uint32` identifier of the action profile group entry
-  being updated.
+* `group_id` is the non-zero `uint32` identifier of the action profile group
+  entry being updated.
 
 * `members` is a repeated field defining the set of members that are part of the
   group. For each member in a group, the controller must define the following
