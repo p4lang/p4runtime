@@ -176,7 +176,7 @@ message type names do not conflict with each other.
 | `extern_id` | `ExternEntry` | `ExternInstance` | |
 | `metadata_id` | `PacketMetadata` sub-message of `PacketIn` (or `PacketOut`) | `Metadata` sub-message of `ControllerPacketMetadata` | Refers to a `Metadata` message in the `ControllerPacketMetadata` object whose name is `packet_in` (or `packet_out`). |
 | `action_profile_id` | `ActionProfileMember` | `ActionProfile` | `ActionProfileMember` messages must reference an `ActionProfile` object with `with_selector` equal to false, indicating it is an action profile, not an action selector. |
-| `action_
+| `action_profile_id` | `ActionProfileGroup` | `ActionProfile` | `ActionProfileMember` messages must reference an `ActionProfile` object with `with_selector` equal to true, indicating it is an action selector, not an action profile. |
 
 
 ## Numeric ids that are NOT references to P4 objects
