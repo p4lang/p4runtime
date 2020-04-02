@@ -338,8 +338,41 @@ knowing digest list id values.
 
 ### ids of action profiles, and their members
 
+Consider a P4 program with an ActionProfile extern object named `ap1`.
+This program has 4 tables named `t1` through `t4` that all have a
+table property `implementation = ap1;` in their definitions.  Several
+P4_16 architectures, including v1model and PSA, enable any number of
+tables to have the same ActionProfile object used in this way.
 
-TBD
+For every ActionProfile object, including `ap1`, the P4Runtime server
+maintains a set of members at run time.  These members are identified
+using non-0 integer values with type `uint32`.  The P4Runtime clients
+choose which integer values to use.  The set of integers need not be
+restricted to a consecutive range of values starting at 1.
+
+The effect is that logically there is a mapping `M` (`M` for
+"members") for `ap1` that, given one of these `uint32` integer values,
+maps it to an action name, and some parameter values, all selected by
+the client.  The client directs the server to update the contents of
+`M` by sending `ActionProfileMember` messages.  Each message either
+inserts, deletes, or modifies one integer-to-action element of `M`.
+
+Suppose that at some point in time, the client has successfully added
+to `ap1` a member with id 27, and the action `my_act5`.
+
+Suppose also that the client has added an entry to table `t2` with
+some set of key match conditions, using a `TableAction` message with
+field `action_profile_member_id` equal to 27.  Note that adding such a
+table entry can only succeed _after_ an entry has been added to `ap1`
+with id 27.
+
+After that state has been established in the data plane, when a packet
+is being processed and `t2.apply()` is called, and the key matches
+this table entry, then action `my_act5` will be executed by the P4
+data plane, as the result of calling `apply` on that table.
+
+If there are multiple ActionProfile extern object instances, the
+server maintains state independently for each one.
 
 ```
 // Note: All id values directly in a TableAction message (i.e. not
@@ -377,4 +410,66 @@ message ActionProfileGroup {
 
 ### ids of action selectors, their groups, and members within those groups
 
-TBD
+Action selectors are more general than action profiles.  They add
+another optional level of indirection, but it is most common to use
+them when you want that extra level of indirection -- there is not
+much purpose to use an action selector if all you want are the
+features of action profiles.
+
+Like action profiles, one must still create members with ids that
+refer to an "action plus its control plane parameters".  For tables
+using an action selector, the client can add entries to those tables
+that refer to member ids directly.
+
+The more common use case for action selectors is to create groups,
+which are sets of members.
+
+Aside: The P4Runtime API provides two different ways to control the
+state of an ActionSelector object.  The one described here uses
+`ActionProfileMember` and `ActionProfileGroup` messages, and requires
+the clients to choose member id and group id values to identify
+members and groups.  The other way is called "one shot" action
+selector programming, and eliminates the need of clients to choose and
+manage these id values.  There is a tradeoff here -- using the API
+described here provides more precise control if a client wishes to
+reuse common members in multiple groups, whereas the one shot API does
+not enable this.  See the P4Runtime API documentation, in the section
+"One Shot Action Selector Programming", for more details.
+
+
+In the P4Runtime API, these action selector groups are identified by
+non-0 integer id values with type `uint32`.  The member id and group
+id values for a single action selector object are in separate
+'scopes', i.e. a single action selector can have a member with id 5 at
+the same time as it has a group with id 5, and those are different
+things.  The member ids are inserted, modified, and/or deleted using
+`ActionProfileMember` messages, just as for action profiles.  The
+group ids are inserted, modified, and/or deleted using
+`ActionProfileGroup` messages.
+
+Consider a P4 program with an ActionSelector extern object named
+`as1`.  This program has 4 tables named `t5` through `t8` that all
+have a table property `implementation = as1;` in their definitions.
+As for action profiles, several P4_16 architectures enable any number
+of tables to have the same ActionSelector object used in this way.
+
+For every ActionSelector object, the P4Runtime server maintains a set
+of members, and also a set of groups, at run time.
+
+Just as for action profiles, there is a mapping `M` for `as1` that
+maps each member id integer value to an action name and action
+parameter values.  A client can modify this mapping using
+`ActionProfileMember` messages.
+
+Unique to ActionSelector objects is that there is also a mapping `G`
+for `as1` that, for each group id integer value, maps to a group,
+which is a set of values of the form `(member_id, weight, watch)`.
+
+Each `member_id` value must equal the id of some member already added
+earlier to the action selector.
+
+`weight` is a positive integer value that specifies the relative
+frequency with which this member should be selected and used, within a
+single group.
+
+`watch` is a 
