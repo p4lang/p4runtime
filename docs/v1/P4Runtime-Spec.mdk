@@ -1345,7 +1345,7 @@ possible for the P4 programmer to change the value of the 8-bit ID prefix, which
 encodes the object type. The programmer is free to leave the 8-bit prefix as 0,
 in which case the compiler will replace the 0 with the correct value for the
 kind of object the annotation is annotating. The programmer may also fill in
-the 8-bit prefix with a non-0 value, in which case the compiler will give an
+the 8-bit prefix with a non-zero value, in which case the compiler will give an
 error if the 8-bit prefix does not contain the correct value, or leave it as is
 if it is correct.
 
@@ -3331,8 +3331,9 @@ table t {
 
 When programming table `t` in the example above, a P4Runtime client should
 specify the `TableAction` in the `TableEntry` to be a reference to either an
-action profile member or group. The reference is a `uint32` identifier that
-uniquely identifies a member or group programmed in the action selector `as`.
+action profile member or group. The reference is a non-zero `uint32` identifier
+that uniquely identifies a member or group programmed in the action selector
+`as`.
 
 If a table entry in an indirect table with an ActionProfile implementation is
 hit, then the corresponding table action gives a member id. The member table is
@@ -3367,8 +3368,8 @@ An `ActionProfileMember` entity update message has the following fields:
 * `action_profile_id` is the `uint32` identifier of the PSA ActionProfile or
   ActionSelector extern instance, as defined in P4Info.
 
-* `member_id` is the `uint32` identifier of the action profile member entry
-  being updated.
+* `member_id` is the non-zero `uint32` identifier of the action profile member
+  entry being updated.
 
 * `action` is the specification of the P4 action instance bound to the action
   profile member entry.
@@ -3393,8 +3394,15 @@ following semantics.
   `FAILED_PRECONDITION`. If needed, the action profile group should first be
   modified to remove the member from the group. The member must not be
   referenced in the table action of any table entry, or the server must also
-  return `FAILED_PRECONDITION`. `member_id` is the only field which is
-  considered when performing a `DELETE` and every other field will be ignored.
+  return `FAILED_PRECONDITION`. `action_profile_id` and `member_id` are the only
+  fields that are considered when performing a `DELETE` and every other field
+  will be ignored.
+
+When reading, an `ActionProfileMember` message with `action_profile_id` and
+`member_id` equal to 0 will read all members of all ActionProfile and
+ActionSelector objects.  A message with `action_profile_id` equal to the id of
+an existing ActionProfile or ActionSelector object, and a `member_id` equal to
+0, will read all members of that specified object.
 
 ### Action Profile Group Programming { #sec-action-profile-group-programming }
 
@@ -3403,13 +3411,24 @@ Action profile groups are entries in an ActionSelector and are referenced by a
 programmed in the selector. The action profile members in a group must be bound
 to actions of the same type.
 
+Within a single ActionSelector object, the `uint32` values used to identify its
+members are in a separate 'scope' from the `uint32` values used to identify its
+groups. That is, the id 5 can simultaneously be used within a single
+ActionSelector object to identify a member 5, and a group 5.
+
+There is not a separate scope within each group for member ids. For example, if
+at the same time both groups 5 and 10 contain member 6, the action associated
+with member 6 is the action for all groups containing member 6. Modifying the
+action associated with member 6 updates the behavior of all groups containing
+it.
+
 An `ActionProfileGroup` entity update message has the following fields:
 
 * `action_profile_id` is the `uint32` identifier of the PSA ActionSelector
   extern instance, as defined in P4Info.
 
-* `group_id` is the `uint32` identifier of the action profile group entry being
-  updated.
+* `group_id` is the non-zero `uint32` identifier of the action profile group
+  entry being updated.
 
 * `members` is a repeated field defining the set of members that are part of the
   group. For each member in a group, the controller must define the following
@@ -3445,8 +3464,9 @@ following semantics.
 * `DELETE`: Delete the group entry and deallocate the `group_id`. The group must
   not be referenced in the table action of any table entry, or the server must
   return a `FAILED_PRECONDITION` error code. If the `group_id` is invalid, the
-  server must return `NOT_FOUND`. `group_id` is the only field which is
-  considered when performing a `DELETE` and every other field will be ignored.
+  server must return `NOT_FOUND`. `action_profile_id` and `group_id` are the
+  only fields that are considered when performing a `DELETE` and every other
+  field will be ignored.
 
 When setting the group membership with `INSERT` or `MODIFY`, the `members`
 repeated field must not include duplicates, &ie; members with the same
@@ -3457,6 +3477,12 @@ It is explicitly allowed for the same member to be present in multiple groups at
 the same time. If, as a result, an implementation "stores" the action id and
 parameters in the target in multiple locations, the server must update all of
 those locations when a request to modify such a member is made.
+
+When reading, an `ActionProfileGroup` message with `action_profile_id` and
+`group_id` equal to 0 will read all groups of all ActionSelector objects.  A
+message with `action_profile_id` equal to the id of an existing ActionSelector
+object, and a `group_id` equal to 0, will read all groups of that one specified
+object.
 
 #### Rules on Setting `max_size` { #sec-max-size-rules}
 
