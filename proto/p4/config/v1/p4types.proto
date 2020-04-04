@@ -179,7 +179,7 @@ message StructuredAnnotation {
   string name = 1;
   oneof body {
     ExpressionList expression_list = 2;
-    KeyValuePairList kvpair_list = 3;
+    KeyValuePairList kv_pair_list = 3;
   }
 }
   
