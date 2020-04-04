@@ -1070,7 +1070,7 @@ message StructuredAnnotation {
   string name = 1;
   oneof body {
     ExpressionList expression_list = 2;
-    KeyValuePairList kvpair_list = 3;
+    KeyValuePairList kv_pair_list = 3;
   }
 }
 ~ End Proto
@@ -1164,7 +1164,7 @@ The generated P4Info will contain:
 ~ Begin Proto
 structured_annotations {
   name: "MixedKV"
-  kvpair_list {
+  kv_pair_list {
     kv_pairs {
       key: "label"
       value {

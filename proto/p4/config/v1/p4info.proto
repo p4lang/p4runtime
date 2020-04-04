@@ -222,6 +222,7 @@ message ActionRef {
   }
   Scope scope = 3;
   repeated string annotations = 2;
+  repeated StructuredAnnotation structured_annotations = 4;
 }
 
 message Action {
