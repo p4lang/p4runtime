@@ -3442,10 +3442,9 @@ An `ActionProfileGroup` entity update message has the following fields:
       selection if the watch port is down.  See Section
       [#action-selector-constraints] for notes on the behavior if all members in
       a group are excluded for this reason. If `watch` is 0, then the member is
-      always included in the selection, regardless of the status of the
-      ports. The value must be 0 or the port number of an existing port on the
-      device, otherwise the server must return `INVALID_ARGUMENT` if the client
-      attempts to use any other value.
+      always included in the selection, regardless of the status of any port of
+      the device.  The value must be 0 or the port number of an existing port on
+      the device, otherwise the server must return `INVALID_ARGUMENT`.
 
 * `max_size` is the maximum sum of all member weights for the group. This field
   is defined when the group is inserted, and must not be changed in a
@@ -3699,7 +3698,7 @@ The PSA specification includes a discussion on how to implement
 
 If a P4Runtime implementation does support `psa_empty_group_action`, that action
 should be executed when an action selector group is selected that uses the watch
-port feature, and every member of the group has a watched port that is down.
+port feature, and every member of the group has a watch port that is down.
 
 If a P4Runtime implementation does not support `psa_empty_group_action`, and
 does support the watch port feature, we recommend that its developers document
