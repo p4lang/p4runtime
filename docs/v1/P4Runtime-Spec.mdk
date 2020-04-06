@@ -5970,6 +5970,8 @@ man-in-the-middle attacks between the server and client.
 * Added the ability to change the ID of table match fields, action parameters,
   Packet IO metadata fields, and Value Set match fields in P4Info by using the
   `@id` annotation.
+* Clarified the behavior of some corner cases involving action profiles and
+  selectors, including the watch port feature.
 
 ### Changes in v1.1.0
 
