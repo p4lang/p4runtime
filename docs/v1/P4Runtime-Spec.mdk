@@ -3443,8 +3443,8 @@ An `ActionProfileGroup` entity update message has the following fields:
       [#action-selector-constraints] for notes on the behavior if all members in
       a group are excluded for this reason. If `watch` is 0, then the member is
       always included in the selection, regardless of the status of any port of
-      the device.  The value must be 0 or the port number of an existing port on
-      the device, otherwise the server must return `INVALID_ARGUMENT`.
+      the device.  The value must be 0 or the SDN port number of an existing
+      port on the device, otherwise the server must return `INVALID_ARGUMENT`.
 
 * `max_size` is the maximum sum of all member weights for the group. This field
   is defined when the group is inserted, and must not be changed in a
