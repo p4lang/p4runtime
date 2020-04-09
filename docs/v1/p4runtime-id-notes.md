@@ -55,6 +55,15 @@ $ find . -name '*.proto' | xargs egrep -c '(\bid\b|_id\b)'
 
 These are all defined in the file `proto/p4/config/v1/p4info.proto`.
 
+Note that a numeric id value of 0 is not a valid id for any P4 object
+described inside of a P4Info message.  In a few cases, an id that is
+used as a reference may be 0 to mean a "not a reference to any
+object".  A few special cases of 0 are called out in
+this article.
+
+See the next major section for uses of id 0 outside of a P4Info
+message.
+
 
 ## Numeric ids that are unique within the P4Info top level scope
 
@@ -149,6 +158,11 @@ them may be 0, described in the notes.
 # Numeric ids that appear outside of a P4Info message
 
 These are all defined in the file `proto/p4/v1/p4runtime.proto`.
+
+In ReadRequest messages, an id of 0 is used to mean "read all objects
+of some kind, regardless of their id".
+
+TBD: Any other special uses of 0 for id values to mention here?
 
 
 ## Numeric ids that are references to P4 objects in the relevant P4Info message
@@ -284,7 +298,7 @@ Scope: A single P4Runtime device.
 
 `session_id` field values appear in the message types listed below.
 The allowed set of values is determined by the P4Runtime server,
-typically in a contiguous range `[0, C-1]` for some maximum number of
+typically in a contiguous range `[1, C]` for some maximum number of
 clone sessions `C` supported by the device, which can differ from one
 device to another.
 
@@ -330,8 +344,9 @@ values.
 
 ### ids of action profiles, and their members
 
-Scope: A single action profile extern object instance within a single
-P4Runtime device.
+Scope: The field values named `action_profile_member_id` and
+`member_id` have a scope of a single action profile extern object
+instance within a single P4Runtime device.
 
 Consider a P4 program with an ActionProfile extern object named `ap1`.
 This program has 4 tables named `t1` through `t4` that all have a
@@ -382,8 +397,14 @@ data plane values.
 
 ### ids of action selectors, their groups, and members within those groups
 
-Scope: A single action selector extern object instance within a single
-P4Runtime device.
+Scope:
+
++ The field values named `action_profile_group_id` and `group_id` have
+  a scope of a single action selector extern object instance within a
+  single P4Runtime device.
++ The field values named `action_profile_member_id` and `member_id`
+  have a scope of a single action selector extern object instance
+  within a single P4Runtime device.
 
 Action selectors are more general than action profiles.  They add
 another optional level of indirection, but it is most common to use
