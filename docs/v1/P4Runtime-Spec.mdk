@@ -3439,7 +3439,12 @@ An `ActionProfileGroup` entity update message has the following fields:
       `INVALID_ARGUMENT` if the client attempts to use it.
     * `watch` is the controller-defined 32-bit port number that the member's
       liveness depends on. At runtime, the member must be excluded from
-      selection if the watch port is down.
+      selection if the watch port is down.  See Section
+      [#action-selector-constraints] for notes on the behavior if all members in
+      a group are excluded for this reason. If `watch` is 0, then the member is
+      always included in the selection, regardless of the status of any port of
+      the device.  The value must be 0 or the SDN port number of an existing
+      port on the device, otherwise the server must return `INVALID_ARGUMENT`.
 
 * `max_size` is the maximum sum of all member weights for the group. This field
   is defined when the group is inserted, and must not be changed in a
@@ -3533,7 +3538,10 @@ One shots are programmed by choosing the `ActionProfileActionSet` message as the
 
 * `watch` is the controller-defined 32-bit port number that the action's
   liveness depends on. At runtime, the action must be excluded from selection if
-  the watch port is down.
+  the watch port is down. See Section
+  [#sec-action-profile-group-programming] for more details on the `watch` field,
+  which also apply for one shot action selector programming.
+
 
 Semantically, one shots are equivalent to programming the table entry, group,
 and members individually; with the necessary group id and member ids bound to
@@ -3646,7 +3654,7 @@ an action selector implementation. Support for the `ActionProfileMember` and
 `UNIMPLEMENTED` error for every `ActionProfileMember` or `ActionProfileGroup`
 message that it receives.
 
-### Constraints on action selector programming
+### Constraints on action selector programming { #action-selector-constraints }
 
 The PSA specification states that the following features are *optional* in
 action selector implementations [@PSAActionSelector]:
@@ -3687,6 +3695,16 @@ style of programming.
 The PSA specification includes a discussion on how to implement
 `psa_empty_group_action` in software in the P4Runtime server
 [@PSAEmptyGroupActionAppendix].
+
+If a P4Runtime implementation does support `psa_empty_group_action`, that action
+should be executed when an action selector group is selected that uses the watch
+port feature, and every member of the group has a watch port that is down.
+
+If a P4Runtime implementation does not support `psa_empty_group_action`, and
+does support the watch port feature, we recommend that its developers document
+its behavior when a group effectively becomes empty because the watch ports of
+all members of a group are down.
+
 
 ## `CounterEntry` & `DirectCounterEntry`
 
@@ -5952,6 +5970,8 @@ man-in-the-middle attacks between the server and client.
 * Added the ability to change the ID of table match fields, action parameters,
   Packet IO metadata fields, and Value Set match fields in P4Info by using the
   `@id` annotation.
+* Clarified the behavior of some corner cases involving action profiles and
+  selectors, including the watch port feature.
 
 ### Changes in v1.1.0
 
