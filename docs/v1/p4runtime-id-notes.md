@@ -57,9 +57,8 @@ These are all defined in the file `proto/p4/config/v1/p4info.proto`.
 
 Note that a numeric id value of 0 is not a valid id for any P4 object
 described inside of a P4Info message.  In a few cases, an id that is
-used as a reference may be 0 to mean a "not a reference to any
-object".  A few special cases of 0 are called out in
-this article.
+used as a reference may be 0 to mean "not a reference to any object".
+A few special cases of 0 are called out in this article.
 
 See the next major section for uses of id 0 outside of a P4Info
 message.
@@ -159,10 +158,10 @@ them may be 0, described in the notes.
 
 These are all defined in the file `proto/p4/v1/p4runtime.proto`.
 
-In ReadRequest messages, an id of 0 is used to mean "read all objects
-of some kind, regardless of their id".
-
-TBD: Any other special uses of 0 for id values to mention here?
+For those id values that can appear in a `ReadRequest` message, an id
+of 0 is usually used to mean "read all objects of some kind,
+regardless of their id".  Some additional notes on any special
+considerations for ids with value 0 are described below.
 
 
 ## Numeric ids that are references to P4 objects in the relevant P4Info message
@@ -230,6 +229,9 @@ select `device_id` values:
 Other ways are possible.  These examples are only mentioned to give
 some idea of how they might be allocated.
 
+TBD whether `device_id` 0 is special, or just another one of the
+possible integer values to identify a device.
+
 
 ### Role ids
 
@@ -259,6 +261,11 @@ Their values are selected by P4Runtime clients.
 + `MasterArbitrationUpdate`
 + `SetForwardingPipelineConfigRequest`
 + `WriteRequest`
+
+A client may send a message with an `election_id` of 0, and this is
+always interpreted by the server to be lower than any other
+`election_id` value, and indicates that, when sending that message,
+the client is not attempting to become the master client.
 
 There is no known use case for a P4 data plane to know election id
 values.
@@ -337,6 +344,9 @@ multiple devices managed by the same P4Runtime server.
 
 + `DigestList`
 + `DigestListAck`
+
+It is still TBD whether a digest list id of 0 has any special meaning
+in the P4Runtime API.
 
 There is no known use case for a P4 data plane to know digest list id
 values.
