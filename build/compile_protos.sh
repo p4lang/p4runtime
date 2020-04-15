@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# This script is meant for CI testing, to ensure that the P4Runtime Protobuf
-# files are correct and compile with the protoc compiler (CPP, gRPC and Python).
+# This ensures that the P4Runtime Protobuf files are correct and compile with
+# the protoc compiler (CPP, gRPC, Python and Go).
 
 if [ $# -ne 1 ]; then
     echo "Usage: compile_protos.sh <BUILD_DIR>"
@@ -52,6 +52,7 @@ PROTOFLAGS="-I$GOOGLE_PROTO_DIR -I$PROTO_DIR"
 mkdir -p $BUILD_DIR/cpp_out
 mkdir -p $BUILD_DIR/grpc_out
 mkdir -p $BUILD_DIR/py_out
+mkdir -p $BUILD_DIR/go_out
 
 set -o xtrace
 $PROTOC $PROTOS --cpp_out $BUILD_DIR/cpp_out $PROTOFLAGS
@@ -61,6 +62,13 @@ $PROTOC $PROTOS --grpc_out $BUILD_DIR/grpc_out --plugin=protoc-gen-grpc=$GRPC_CP
 # plugin inserts code into the proto-generated files). But maybe I am just using
 # an old version of the Python plugin.
 $PROTOC $PROTOS --python_out $BUILD_DIR/py_out $PROTOFLAGS --grpc_out $BUILD_DIR/py_out --plugin=protoc-gen-grpc=$GRPC_PY_PLUGIN
+
+# our version of protoc-gen-go requires multiple invocations
+# see https://github.com/golang/protobuf/issues/39
+$PROTOC $PROTO_DIR/p4/config/v1/p4types.proto $PROTO_DIR/p4/config/v1/p4info.proto --go_out=$BUILD_DIR/go_out $PROTOFLAGS
+$PROTOC $PROTO_DIR/p4/v1/p4data.proto --go_out=$BUILD_DIR/go_out $PROTOFLAGS
+$PROTOC $PROTO_DIR/p4/v1/p4runtime.proto --go_out=plugins=grpc:$BUILD_DIR/go_out $PROTOFLAGS
+
 set +o xtrace
 
 rm -rf $tmpdir

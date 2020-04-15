@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package p4.v1;
 
+option go_package = "github.com/p4lang/p4runtime/go/p4/v1";
+
 message P4Data {
   oneof data {
     bytes bitstring = 1;  // for bit<W>, int<W>
