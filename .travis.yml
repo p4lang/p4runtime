@@ -6,12 +6,13 @@ env:
   - secure: "kgFEYWugXGaFM/cEh3xUImFcbaq3nFcHT4P9G1XmiJ5JjpT7+5NkvCLydYKEBPEQuIVH+DRxrK1LqySWHC2qhBHE/AyB/0hpQ6JsYOL6LKPzPYUwSJhFKFHxxP1OtBrS5f51DUQ5wCPI6gF6sQP2l24QIVjIfgh3FSkpXX7RzUFF2eC2MS3Tg/NljsD5kGqCGdzaguaFculUuPpRqNixqZZXiM2BjDHHwGWT2rH7NcP4u6x2ycaTcUfN/XnnfDTrIkunicYte/x+l0QOMNXRZ3L/gs1Wgia4UT28P6Bld3MPVUa3sJe+Nz3eqDBZ/I8nyIm7tEvM3oNjLjT5i4JjDWQYffRkc2upVDim4d1boCbx+6zGBrKjP/IJ0AoqG0IBEKaYqfJkHEB8o2mKgp+ib8am69M3Ap3QAPjHGCmlix13+2IHsevoWw/dFnjP8ipb8YTOX/R9xV9cKLiTp4mrcGbDrPUJoadQ2RghNRcqBroS463pPZTsi/9UxcfHGMSWdDv7dqJJw/Y/fPT9mqBBpvX7+Mw2NKNB4AsC+ZCMWVP2kw36LuTww6mjpNy6NgfoctcNqB9rfMnyRKWDAfK4EaFfR5tx6P8xlupNqSnzqTqQzqCDrsTrFyXIXSLGqulz1ZC+RucM0jkCMcjpS+EsFxLUexAgZLl59/bHPEakIvo="
 
 install:
-  - docker build -t p4runtime-ci -f CI/Dockerfile .
+  - docker build -t p4runtime-ci -f build/Dockerfile .
 
 # We check that the P4Runtime Protobuf files are correct (by compiling them with
 # protoc), then we generate the HTML for the spec.
 script:
-  - docker run -t p4runtime-ci /p4runtime/CI/compile_protos.sh /tmp/ || travis_terminate 1
+  - docker run -t p4runtime-ci /p4runtime/build/compile_protos.sh /tmp || travis_terminate 1
+  - ./CI/check_go.sh || travis_terminate 1 # TODO: remove previous step
   - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make || travis_terminate 1
   - ./tools/madokolint.py docs/v1/P4Runtime-Spec.mdk
 

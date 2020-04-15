@@ -51,11 +51,11 @@ devices or switches.
 # Compiling P4Runtime Protobuf files
 
 You can use Docker to run the protoc compiler on the P4Runtime Protobuf files
-and generate the Protobuf & gRPC bindings for C++ and Python:
+and generate the Protobuf & gRPC bindings for C++, Python and Go:
 
 ```
-docker build -t p4runtime -f CI/Dockerfile .
-docker run -v <OUT>:/out/ -t p4runtime /p4runtime/CI/compile_protos.sh /out/
+docker build -t p4runtime -f build/Dockerfile .
+docker run -v <OUT>:/out/ -t p4runtime /p4runtime/build/compile_protos.sh /out/
 ```
 
 This will generate the bindings in the local `<OUT>` directory. **You need to
@@ -124,6 +124,12 @@ processes.
    change. After approval, the author would create a GitHub issue as well as a
    pull request against the specification that a key committer must review and
    approve.
+
+When updating the Protobuf files in a pull request, you will also need to update
+the generated Go files, which are hosted in this repository under
+[go/](go/). This can be done easily by running `./build/update_go.sh`, providing
+docker is installed and your user is part of the "docker" group (which means
+that the `docker` command can be executed without `sudo`).
 
 
 [P4 Slack Workspace]: https://p4-lang.slack.com/join/shared_invite/enQtODA0NzY4Mjc5MTExLTRlMWVmN2I5ZTY4MTAzMDI3MGQ1OTZjM2ZmM2Q1MWE2YzZjYTQ2ZWMyMGUyYjQ2ZmIxMjFjZDE4ZThiN2ZkZWI

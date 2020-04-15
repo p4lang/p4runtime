@@ -169,6 +169,7 @@ this [section of the Madoko
 spec](http://madoko.org/reference.html#sec-smart-quotes-symbols-and-direct-links).
 
 ## Document Figures
+
 Each image in the specification has a corresponding `.odg` file under
 `assets/`. These are LibreOffice drawing files. The files are rendered into
 `.svg` and `.png` images (for HTML and PDF output, resepectively) at build time,

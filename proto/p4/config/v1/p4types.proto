@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package p4.config.v1;
 
+option go_package = "github.com/p4lang/p4runtime/go/p4/config/v1";
+
 // P4 type specs ---------------------------------------------------------------
 
 // From the P4_16 spec:

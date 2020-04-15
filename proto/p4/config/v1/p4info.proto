@@ -21,6 +21,8 @@ import "p4/config/v1/p4types.proto";
 
 package p4.config.v1;
 
+option go_package = "github.com/p4lang/p4runtime/go/p4/config/v1";
+
 message P4Info {
   PkgInfo pkg_info = 1;
   repeated Table tables = 2;
