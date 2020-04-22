@@ -55,10 +55,8 @@ message PkgInfo {
   string version = 2;
   // brief and detailed descriptions
   Documentation doc = 3;
-  // Miscellaneous metadata, free-form; a way to extend PkgInfo
-  repeated string annotations = 4;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 10;
+  // Miscellaneous metadata; a way to extend PkgInfo.
+  repeated Annotation annotations = 4;
   // the target architecture, e.g. "psa"
   string arch = 5;
   // organization which produced the configuration, e.g. "p4.org"
@@ -67,8 +65,6 @@ message PkgInfo {
   string contact = 7;
   // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
-  // Miscellaneous metadata, structured; a way to extend PkgInfo
-  repeated StructuredAnnotation structured_annotations = 9;
 }
 
 // wrapping the enum in a message to avoid name collisions in C++, where "enum
@@ -131,12 +127,9 @@ message Preamble {
   // P4 programmer may also be able to override the default alias for any P4
   // object (TBD).
   string alias = 3;
-  repeated string annotations = 4;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 7;
+  repeated Annotation annotations = 4;
   // Documentation of the entity
   Documentation doc = 5;
-  repeated StructuredAnnotation structured_annotations = 6;
 }
 
 // used to group all extern instances of the same type in one message
@@ -158,9 +151,7 @@ message ExternInstance {
 message MatchField {
   uint32 id = 1;
   string name = 2;
-  repeated string annotations = 3;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 10;
+  repeated Annotation annotations = 3;
   int32 bitwidth = 4;
   enum MatchType {
     UNSPECIFIED = 0;
@@ -180,7 +171,6 @@ message MatchField {
   Documentation doc = 6;
   // unset if not user-defined type
   P4NamedType type_name = 8;
-  repeated StructuredAnnotation structured_annotations = 9;
 }
 
 message Table {
@@ -227,10 +217,7 @@ message ActionRef {
     DEFAULT_ONLY = 2;
   }
   Scope scope = 3;
-  repeated string annotations = 2;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 5;
-  repeated StructuredAnnotation structured_annotations = 4;
+  repeated Annotation annotations = 2;
 }
 
 message Action {
@@ -238,15 +225,12 @@ message Action {
   message Param {
     uint32 id = 1;
     string name = 2;
-    repeated string annotations = 3;
-    // The location of `annotations[i]` is given by `annotation_locations[i]`.
-    repeated SourceLocation annotation_locations = 8;
+    repeated Annotation annotations = 3;
     int32 bitwidth = 4;
     // Documentation of the Param
     Documentation doc = 5;
     // unset if not user-defined type
     P4NamedType type_name = 6;
-    repeated StructuredAnnotation structured_annotations = 7;
   }
   repeated Param params = 2;
 }
@@ -334,13 +318,10 @@ message ControllerPacketMetadata {
     // This is the name of the header field (not fully-qualified), similar
     // to e.g. Action.Param.name.
     string name = 2;
-    repeated string annotations = 3;
-    // The location of `annotations[i]` is given by `annotation_locations[i]`.
-    repeated SourceLocation annotation_locations = 7;
+    repeated Annotation annotations = 3;
     int32 bitwidth = 4;
     // unset if not user-defined type
     P4NamedType type_name = 5;
-    repeated StructuredAnnotation structured_annotations = 6;
   }
   // Ordered based on header layout.
   // This is a constraint on the generator of this P4Info.
