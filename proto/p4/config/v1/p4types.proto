@@ -181,6 +181,17 @@ message StructuredAnnotation {
     ExpressionList expression_list = 2;
     KeyValuePairList kv_pair_list = 3;
   }
+  // Location of the '@' symbol of this annotation in the source code.
+  SourceLocation source_location = 4;
+}
+
+// Location of code relative to a given source file.
+message SourceLocation {
+  // Path to the source file (total or relative to the working directory).
+  string file = 1;
+  // Line and column numbers within the source file, 1-based.
+  int32 line = 2;
+  int32 column = 3;
 }
   
 // For "safe" enums with no underlying representation and no member integer

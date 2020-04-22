@@ -57,6 +57,8 @@ message PkgInfo {
   Documentation doc = 3;
   // Miscellaneous metadata, free-form; a way to extend PkgInfo
   repeated string annotations = 4;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 10;
   // the target architecture, e.g. "psa"
   string arch = 5;
   // organization which produced the configuration, e.g. "p4.org"
@@ -130,6 +132,8 @@ message Preamble {
   // object (TBD).
   string alias = 3;
   repeated string annotations = 4;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 7;
   // Documentation of the entity
   Documentation doc = 5;
   repeated StructuredAnnotation structured_annotations = 6;
@@ -155,6 +159,8 @@ message MatchField {
   uint32 id = 1;
   string name = 2;
   repeated string annotations = 3;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 10;
   int32 bitwidth = 4;
   enum MatchType {
     UNSPECIFIED = 0;
@@ -222,6 +228,8 @@ message ActionRef {
   }
   Scope scope = 3;
   repeated string annotations = 2;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
   repeated StructuredAnnotation structured_annotations = 4;
 }
 
@@ -231,6 +239,8 @@ message Action {
     uint32 id = 1;
     string name = 2;
     repeated string annotations = 3;
+    // The location of `annotations[i]` is given by `annotation_locations[i]`.
+    repeated SourceLocation annotation_locations = 8;
     int32 bitwidth = 4;
     // Documentation of the Param
     Documentation doc = 5;
@@ -325,6 +335,8 @@ message ControllerPacketMetadata {
     // to e.g. Action.Param.name.
     string name = 2;
     repeated string annotations = 3;
+    // The location of `annotations[i]` is given by `annotation_locations[i]`.
+    repeated SourceLocation annotation_locations = 7;
     int32 bitwidth = 4;
     // unset if not user-defined type
     P4NamedType type_name = 5;
