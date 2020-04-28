@@ -2,9 +2,9 @@
 
 set -eo pipefail
 
-THIS_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+THIS_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
-pushd $THIS_DIR/.. >/dev/null
+pushd "$THIS_DIR/.." >/dev/null
 
 rm -rf go/*
 ./build/update_go.sh
