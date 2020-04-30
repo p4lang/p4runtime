@@ -54,8 +54,8 @@ You can use Docker to run the protoc compiler on the P4Runtime Protobuf files
 and generate the Protobuf & gRPC bindings for C++, Python and Go:
 
 ```
-docker build -t p4runtime -f build/Dockerfile .
-docker run -v <OUT>:/out/ -t p4runtime /p4runtime/build/compile_protos.sh /out/
+docker build -t p4runtime -f codegen/Dockerfile .
+docker run -v <OUT>:/out/ -t p4runtime /p4runtime/codegen/compile_protos.sh /out/
 ```
 
 This will generate the bindings in the local `<OUT>` directory. **You need to

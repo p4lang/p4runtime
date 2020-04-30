@@ -6,13 +6,13 @@ THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 pushd "$THIS_DIR/.." >/dev/null
 
-docker build -t p4runtime-ci -f build/Dockerfile .
+docker build -t p4runtime-ci -f codegen/Dockerfile .
 
 tmpdir="$(mktemp -d -p /tmp)"
 
 docker run --rm \
        -v "$tmpdir:/tmp/gen" \
-       p4runtime-ci /p4runtime/build/compile_protos.sh /tmp/gen
+       p4runtime-ci /p4runtime/codegen/compile_protos.sh /tmp/gen
 
 cp -r "$tmpdir"/go_out/github.com/p4lang/p4runtime/go/* go/
 
