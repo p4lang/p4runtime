@@ -5060,7 +5060,7 @@ The action is the type of configuration action requested, it can be one of:
 
 * `VERIFY_AND_COMMIT`: saves and realizes the given config if the P4Runtime
   target can realize it. The forwarding state in the target is cleared. Returns
-  an `INVALID_ARGUMENT` error if the forwarding config is not provided of if the
+  an `INVALID_ARGUMENT` error if the forwarding config is not provided or if the
   provided config cannot be realized.
 
 * `COMMIT`: realizes the last saved, but not yet committed, config. The
