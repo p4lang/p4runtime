@@ -99,6 +99,9 @@ message P4BitstringLikeTypeSpec {
   // Useful to identify well-known types, such as IP address or Ethernet MAC
   // address.
   repeated string annotations = 4;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
+  repeated StructuredAnnotation structured_annotations = 6;
 }
 
 message P4BitTypeSpec {
@@ -126,6 +129,9 @@ message P4StructTypeSpec {
   }
   repeated Member members = 1;
   repeated string annotations = 2;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 3;
+  repeated StructuredAnnotation structured_annotations = 4;
 }
 
 message P4HeaderTypeSpec {
@@ -135,6 +141,9 @@ message P4HeaderTypeSpec {
   }
   repeated Member members = 1;
   repeated string annotations = 2;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 3;
+  repeated StructuredAnnotation structured_annotations = 4;
 }
 
 message P4HeaderUnionTypeSpec {
@@ -144,6 +153,9 @@ message P4HeaderUnionTypeSpec {
   }
   repeated Member members = 1;
   repeated string annotations = 2;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 3;
+  repeated StructuredAnnotation structured_annotations = 4;
 }
 
 message P4HeaderStackTypeSpec {
@@ -202,10 +214,14 @@ message P4EnumTypeSpec {
   message Member {
     string name = 1;
     repeated string annotations = 2;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 4;
     repeated StructuredAnnotation structured_annotations = 3;
   }
   repeated Member members = 1;
   repeated string annotations = 2;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 4;
   repeated StructuredAnnotation structured_annotations = 3;
 }
 
@@ -217,11 +233,15 @@ message P4SerializableEnumTypeSpec {
     string name = 1;
     bytes value = 2;
     repeated string annotations = 3;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
     repeated StructuredAnnotation structured_annotations = 4;
   }
   P4BitTypeSpec underlying_type = 1;
   repeated Member members = 2;
   repeated string annotations = 3;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
   repeated StructuredAnnotation structured_annotations = 4;
 }
 
@@ -258,6 +278,8 @@ message P4NewTypeSpec {
   }
   // for other annotations (not @p4runtime_translation)
   repeated string annotations = 3;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
   repeated StructuredAnnotation structured_annotations = 4;
 }
 
