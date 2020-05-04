@@ -96,7 +96,7 @@ message P4BitstringLikeTypeSpec {
   }
   // Useful to identify well-known types, such as IP address or Ethernet MAC
   // address.
-  repeated string annotations = 4;
+  repeated Annotation annotations = 4;
 }
 
 message P4BitTypeSpec {
@@ -123,7 +123,7 @@ message P4StructTypeSpec {
     P4DataTypeSpec type_spec = 2;
   }
   repeated Member members = 1;
-  repeated string annotations = 2;
+  repeated Annotation annotations = 2;
 }
 
 message P4HeaderTypeSpec {
@@ -132,7 +132,7 @@ message P4HeaderTypeSpec {
     P4BitstringLikeTypeSpec type_spec = 2;
   }
   repeated Member members = 1;
-  repeated string annotations = 2;
+  repeated Annotation annotations = 2;
 }
 
 message P4HeaderUnionTypeSpec {
@@ -141,7 +141,7 @@ message P4HeaderUnionTypeSpec {
     P4NamedType header = 2;
   }
   repeated Member members = 1;
-  repeated string annotations = 2;
+  repeated Annotation annotations = 2;
 }
 
 message P4HeaderStackTypeSpec {
@@ -200,12 +200,10 @@ message SourceLocation {
 message P4EnumTypeSpec {
   message Member {
     string name = 1;
-    repeated string annotations = 2;
-    repeated Annotation structured_annotations = 3;
+    repeated Annotation annotations = 2;
   }
   repeated Member members = 1;
-  repeated string annotations = 2;
-  repeated Annotation structured_annotations = 3;
+  repeated Annotation annotations = 2;
 }
 
 // For serializable (or "unsafe") enums, which have an underlying type. Note
@@ -215,13 +213,11 @@ message P4SerializableEnumTypeSpec {
   message Member {
     string name = 1;
     bytes value = 2;
-    repeated string annotations = 3;
-    repeated Annotation structured_annotations = 4;
+    repeated Annotation annotations = 3;
   }
   P4BitTypeSpec underlying_type = 1;
   repeated Member members = 2;
-  repeated string annotations = 3;
-  repeated Annotation structured_annotations = 4;
+  repeated Annotation annotations = 3;
 }
 
 // Similar to an enum, but there is always one and only one instance per P4
@@ -256,8 +252,7 @@ message P4NewTypeSpec {
     P4NewTypeTranslation translated_type = 2;
   }
   // for other annotations (not @p4runtime_translation)
-  repeated string annotations = 3;
-  repeated Annotation structured_annotations = 4;
+  repeated Annotation annotations = 3;
 }
 
 // End of P4 type specs --------------------------------------------------------
