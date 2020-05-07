@@ -229,8 +229,11 @@ select `device_id` values:
 Other ways are possible.  These examples are only mentioned to give
 some idea of how they might be allocated.
 
-TBD whether `device_id` 0 is special, or just another one of the
-possible integer values to identify a device.
+As of P4Runtime API version 1.x, `device_id` 0 is used by some servers
+and clients as a normal `device_id` value, i.e. to name a P4 target
+device.  An issue has been created to consider changing this for
+P4Runtime API version 2.0:
+https://github.com/p4lang/p4runtime/issues/291.
 
 
 ### Role ids
