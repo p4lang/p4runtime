@@ -214,8 +214,8 @@ message P4EnumTypeSpec {
   message Member {
     string name = 1;
     repeated string annotations = 2;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 4;
+    // The location of `annotations[i]` is given by `annotation_locations[i]`.
+    repeated SourceLocation annotation_locations = 4;
     repeated StructuredAnnotation structured_annotations = 3;
   }
   repeated Member members = 1;
@@ -233,8 +233,8 @@ message P4SerializableEnumTypeSpec {
     string name = 1;
     bytes value = 2;
     repeated string annotations = 3;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 5;
+    // The location of `annotations[i]` is given by `annotation_locations[i]`.
+    repeated SourceLocation annotation_locations = 5;
     repeated StructuredAnnotation structured_annotations = 4;
   }
   P4BitTypeSpec underlying_type = 1;
