@@ -959,6 +959,7 @@ message Documentation {
   string description = 2;
 }
 ~ End Proto
+
 ### `Preamble` Message
 
 The preamble serves as the "descriptor" for each entity and contains the unique
@@ -987,6 +988,8 @@ message Preamble {
   // object (TBD).
   string alias = 3;
   repeated string annotations = 4;
+  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 7;
   // Documentation of the entity
   Documentation doc = 5;
   repeated StructuredAnnotation structured_annotations = 6;
@@ -1072,6 +1075,8 @@ message StructuredAnnotation {
     ExpressionList expression_list = 2;
     KeyValuePairList kv_pair_list = 3;
   }
+  // Location of the '@' symbol of this annotation in the source code.
+  SourceLocation source_location = 4;
 }
 ~ End Proto
 
@@ -1096,6 +1101,8 @@ same name.
 same `key.`
 
 #### Structured Annotation Examples
+
+We omit the `source_location` field in the following examples.
 
 **Empty Expression List**
 
@@ -1186,6 +1193,41 @@ structured_annotations {
   }
 }
 ~ End Proto
+
+### `SourceLocation` Message
+
+A source location describes a location within a *.p4*-source file. The
+`SourceLocation` message is defined in p4types.proto as follows:
+
+~ Begin Proto
+// Location of code relative to a given source file.
+message SourceLocation {
+  // Path to the source file (total or relative to the working directory).
+  string file = 1;
+  // Line and column numbers within the source file, 1-based.
+  int32 line = 2;
+  int32 column = 3;
+}
+~ End Proto
+
+We provide source locations for structured and unstructured annotations. This
+information may be useful when annotations require further parsing or
+processing, as it allows tools to point out the precise source of errors for
+invalid annotations.
+
+The `SourceLocation` message associated with an annotation holds the location of
+the `@` symbol introducing the annotation in the P4 source code; the message can
+be found in the following place:
+
+* For **unstructured annotations**, every message containing a field
+  `repeated string annotations` also contains a field
+  `repeated SourceLocation annotation_locations`. The i-th member of
+  `annotation_locations` is the source location of the i-th member of
+  `annotations`.
+
+* For **structured annotations**, every `StructuredAnnotation` message contains
+  a field `SourceLocation source_location` holding its source location.
+
 
 ## `PkgInfo` Message
 
