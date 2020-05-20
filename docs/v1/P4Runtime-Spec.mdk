@@ -1202,7 +1202,7 @@ A source location describes a location within a *.p4*-source file. The
 ~ Begin Proto
 // Location of code relative to a given source file.
 message SourceLocation {
-  // Path to the source file (total or relative to the working directory).
+  // Path to the source file (absolute or relative to the working directory).
   string file = 1;
   // Line and column numbers within the source file, 1-based.
   int32 line = 2;

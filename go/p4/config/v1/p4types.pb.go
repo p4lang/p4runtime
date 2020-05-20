@@ -1474,7 +1474,7 @@ func (*StructuredAnnotation) XXX_OneofWrappers() []interface{} {
 
 // Location of code relative to a given source file.
 type SourceLocation struct {
-	// Path to the source file (total or relative to the working directory).
+	// Path to the source file (absolute or relative to the working directory).
 	File string `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
 	// Line and column numbers within the source file, 1-based.
 	Line                 int32    `protobuf:"varint,2,opt,name=line,proto3" json:"line,omitempty"`
