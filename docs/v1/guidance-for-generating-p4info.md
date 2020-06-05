@@ -38,7 +38,7 @@ representing the name of the library, its major version, etc.
 
 ## Handling P4_16 `type` and the `p4runtime_translation` annotation
 
-The P4Runtime v1.1 specification restricts the types that it supports
+The P4Runtime v1.2 specification restricts the types that it supports
 for the following kinds of things:
 
 + table search key fields, defined in the P4Info message in a
@@ -54,16 +54,16 @@ for the following kinds of things:
 
 Later in this section, we will use the term "constrained value" for
 brevity, instead of repeating all of the kinds of objects listed
-above.  For such values, the P4Runtime specification v1.1 supports all
+above.  For such values, the P4Runtime specification v1.2 supports all
 of the following types, but currently no others:
 
 + `bit<W>`
 + an `enum` with an underlying type of `bit<W>`, also called a
   serializable `enum` (TBD whether all of the pieces needed to make
-  this work are actually supported for P4Runtime 1.1)
+  this work are actually supported for P4Runtime 1.2)
 + a `typedef` or `type` name that, when "followed back" to the lowest
   base type, is one of the above.  (As of the P4_16 language
-  specification version 1.2.0, it is not required to support a `type`
+  specification version 1.2.1, it is not required to support a `type`
   definition with a serializable `enum` as its base type.  See
   [p4runtime issue
   #192](https://github.com/p4lang/p4runtime/issues/192).)
@@ -100,7 +100,7 @@ type_list(x) {
 Note that `type_list(x)` always starts with zero or more `type` names,
 and always ends with one type that is neither a `type` nor `typedef`
 name, e.g. `bit<W>`, a header type, struct type, etc.  It never
-contains the name of a type declared using `typedef`.  P4Runtime v1.1
+contains the name of a type declared using `typedef`.  P4Runtime v1.2
 only supports `p4runtime_translation` annotations on `type`
 definitions.  If any such annotations occur on a `typedef` definition,
 they should be ignored.
@@ -111,7 +111,7 @@ of type names.  In order to create such a cycle, the first `type` or
 type name, and this is not allowed.
 
 If the last type is not `bit<W>` or `enum bit<W>`, that is an error
-for P4Runtime v1.1.  The "base" type must always be one of those for
+for P4Runtime v1.2.  The "base" type must always be one of those for
 every constrained value.
 
 
@@ -131,10 +131,18 @@ message.
 ### `bitwidth` field
 
 If `first_type` is a `type` name, _and_ if the `type` definition for
-this type has a `p4runtime_translation(uri_string, n)` annotation in
-the source code, then the P4Info `bitwidth` field should be assigned
-the value `n` that is the second parameter of that
-`p4runtime_translation` annotation.
+this type has a `p4runtime_translation(uri_string, <X>)` annotation in
+the source code, then the P4Info `bitwidth` field should follow these
+rules:
+
+ * if `<X>` is `n`, where `n` is a positive integer, then the `bitwidth`
+   field should be assigned the value `n`
+ * if `<X>` is `bit<W>`, where `W` is a postive integer, then the
+   `bitwidth` field should be assigned value `W`
+ * if `<X>` is `string`, then the `bitwidth` field should be unset
+   (which in Protobuf version 3 is the same as setting it explicitly to
+   0)
+ * all other cases for `<X>` are illegal
 
 Otherwise, `bitwidth` should be equal to `W` where `bit<W>` or `enum
 bit<W>` is the last element of `type_list(x)`.
@@ -249,6 +257,13 @@ type T1_t T2_t;
 T2_t f3;
 ```
 
+Note that starting with P4Runtime v1.2.0, the following syntax for the
+`p4runtime_translation` is equivalent (and preferred):
+```
+@p4runtime_translation("mycompany.com/myco_p4lib/v1/T1_t", bit<32>)
+type T1uint_t T1_t;
+```
+
 ```
 Execution trace for call to type_list(f3):
     tlist = []
@@ -351,7 +366,7 @@ definition of `T1_t` in the program, `type T1uint T1_t`, has a
 
 ## Example 4: field with a type defined via `type`, with `p4runtime_translation` annotation
 
-This example is very similar to Example 3, except that both `type`
+This example is very similar to Example 3, except that all three `type`
 definitions have a `p4runtime_translation` annotation.
 
 ```
@@ -443,7 +458,7 @@ message.
 Should `type_name` be `"enum1_t"`, and then `"enum1_t"` should be
 described within the `type_info` field of the message?
 
-As of early March 2019, `p4c` does not support users defining their
+As of early June 2020, `p4c` does not support users defining their
 own `type` definitions with a serializable `enum` like `enum1_t` as
 the base type.  The disadvantage with this situation is that there is
 no way to define a serializable `enum` type for a constrained value,

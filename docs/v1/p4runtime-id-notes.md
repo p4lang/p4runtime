@@ -9,19 +9,9 @@ in one place notes on those identifiers, including:
 + When the values are chosen
 + What is their scope in "space" and time in which they must be unique
 
-This document was written while referring to the P4Runtime API
-specification as of this commit of the Github repository
-https://github.com/p4lang/p4runtime
-
-```
-commit c9cd4af17c2d562d6e4ec760237f16fea9558fcb
-Author: Chris Sommers <31145757+chrispsommers@users.noreply.github.com>
-Date:   Fri Mar 27 13:43:31 2020 -0700
-```
-
-This is after version 1.1.0 of the specification was released, and it
-is expected that version 1.2.0 will be released soon after this time,
-with very few (if any) changes from the version above.
+This document was written at the time of the release of P4Runtime
+v1.2.0. If you refer to other P4Runtime specification versions, you may
+find some small inconsistencies with respect to this document.
 
 Here is a complete list of Google Protobuf `.proto` files in this
 version of the p4lang/p4runtime repository:

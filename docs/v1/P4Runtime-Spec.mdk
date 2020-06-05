@@ -1,5 +1,5 @@
 Title : P4Runtime Specification
-Title Note: version 1.2.0-dev
+Title Note: version 1.2.0-rc.1
 Title Footer: &date;
 Author: The P4.org API Working Group
 Heading depth: 5
@@ -231,7 +231,7 @@ P4Runtime is designed to be implemented in conjunction with the P4~16~ language
 version or later. P4~14~ programs should be translated into P4~16~ to be made
 compatible with P4Runtime. This version of P4Runtime utilizes features which are
 not in P4~16~ 1.0, but were introduced in P4~16~ 1.1.0 [@P4Revisions110]. For
-this version of P4Runtime, we recommend using P4~16~ 1.2.0 [@P4Spec].
+this version of P4Runtime, we recommend using P4~16~ 1.2.1 [@P4Spec].
 
 ## In Scope
 
@@ -6071,18 +6071,25 @@ man-in-the-middle attacks between the server and client.
 
 ## Revision History
 
-### Changes in v1.2.0 (under development)
+### Changes in v1.2.0
 
 * Add new `OPTIONAL` match kind. At the moment, `OPTIONAL` is only supported by
-  the v1model architecture [@v1model], and not by PSA. We hope that it will be
-  included in the core P4 language by the time P4Runtime v1.2.0 is released.
-* Added a new `metadata` field of type `bytes` to `TableEntry`. This is more
+  the v1model architecture [@v1model], and not by PSA. It will eventually be
+  included in the core P4 language.
+* Add support in P4Info for structured annotations, which are used to annotate
+  objects with key-value lists or expression lists.
+* Add a new `metadata` field of type `bytes` to `TableEntry`. This is more
   flexible than the now deprecated `controller_metadata` field.
-* Added the ability to change the ID of table match fields, action parameters,
+* Add the ability to change the ID of table match fields, action parameters,
   Packet IO metadata fields, and Value Set match fields in P4Info by using the
   `@id` annotation.
-* Clarified the behavior of some corner cases involving action profiles and
+* Clarify the behavior of some corner cases involving action profiles and
   selectors, including the watch port feature.
+* Support using `string` as the controller type in the `@p4runtime_translation`
+  annotation. Update syntax when using a fixed-width unsigned bitstring as the
+  controller type.
+* Add optional P4 source locations to both structured and unstructured
+  annotations.
 
 ### Changes in v1.1.0
 
