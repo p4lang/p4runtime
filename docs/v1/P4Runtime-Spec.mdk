@@ -2704,19 +2704,86 @@ configuration file passed on the command-line when invoking the compiler). This
 mechanism should take precedence over `@p4runtime_translation` to enable users
 to overwrite annotations included as part of the P4 architecture definition.
 
-### Trade-off for v1.0 Release
+### Trade-off for v1.x Releases
 
-For the v1.0 release of P4Runtime, it was decided not to replace occurrences of
+For the v1.x release ofs P4Runtime, it was decided not to replace occurrences of
 `bytes` with `P4Data` in the `p4.v1.FieldMatch` message, which is used to
-represent table and Value Set entries. This is to avoid breaking pre-release
+represent table and Value Set entries. This is to avoid breaking pre-v1.0
 implementations of P4Runtime. Similarly it has been decided to keep using
-`bytes` to provide action parameter values. However `P4Data` is used whenever
-appropriate for PSA externs and we encourage the use of `P4Data` in
-architecture-specific extensions.
+`bytes` to provide action parameter values and controller metadata
+values. However `P4Data` is used whenever appropriate for PSA externs and we
+encourage the use of `P4Data` in architecture-specific extensions.
 
 In order to support [translation](#sec-psa-metadata-translation) for action
 parameters and match fields, we include a `type_name` field in
-`p4.config.v1.MatchField` and `p4.config.v1.Action.Param`.
+`p4.config.v1.MatchField`, `p4.config.v1.Action.Param` and
+`p4.config.v1.ControllerPacketMetadata.Metadata`. In addition, the `bitwidth`
+field for all of these message types must abide by the following rule when
+`type_name` names a translated user-defined type:
+
+ * If the *controller_type* is a fixed-width unsigned bitstring, the `bitwidth`
+   field must be set to the bitwidth of the *controller_type*. This information
+   is redundant with the one included in the `P4TypeInfo` entry for the
+   user-defined type, but we believe that it may simplify P4Runtime server
+   implementations by making this information more readily available. We also
+   believe that using the bitwidth of the underlying type here would be
+   inappropriate as it would make the P4Info message target-dependent.
+
+ * Otherwise (&ie;, if the *controller_type* is a string), the `bitwidth` must
+   be "unset", which, in Protobuf version 3, is the same as setting the field to
+   0.
+
+For example, consider the following P4 snippet, which declares a P4 table
+matching on two expressions with translated user-defined types:
+~ Begin P4Example
+@p4runtime_translation("p4.org/psa/v1/PortId_String_t", string)
+type bit<9> PortId_String_t;
+
+@p4runtime_translation("p4.org/psa/v1/PortId_Bit32_t", bit<32>)
+type bit<9> PortId_Bit32_t;
+
+@name(".t")
+table t {
+  key = {
+    meta.port1: exact;  // meta.port1 has type PortId_String_t
+    meta.port2: exact;  // meta.port2 has type PortId_Bit32_t
+  }
+  actions = {
+    drop;
+  }
+}
+~ End P4Example
+
+This table would have the following representation in the generated P4Info
+message:
+~ Begin Prototext
+tables {
+  preamble {
+    id: 34728461
+    name: "t"
+    alias: "t"
+  }
+  match_fields {
+    id: 1
+    name: "meta.port1"
+    # notice that bitwidth is unset
+    match_type: EXACT
+    type_name {
+      name: "PortId_String_t"
+    }
+  }
+  match_fields {
+    id: 2
+    name: "meta.port2"
+    bitwidth: 32
+    match_type: EXACT
+    type_name {
+      name: "PortId_Bit32_t"
+    }
+  }
+  # ...
+}
+~ End Prototext
 
 # P4 Entity Messages { #sec-p4-entity-msgs}
 
@@ -5548,7 +5615,9 @@ define its own types and numbering of such PSA standard metadata
 metadata values and the corresponding target-specific metadata values is
 required at runtime. In this section, we will base our discussions on port
 metadata, although the same translation principles apply to other standard PSA
-metadata such as class of service.
+metadata such as class of service. Since the `@p4runtime_translation` annotation
+can be applied to any user-defined type, these principles also apply to
+translated types which are not declared as part of the PSA architecture.
 
 ~ Figure { #fig-psa-metadata-translation; \
 caption: "P4Runtime Metadata Translation for the Portable Switch Architecture" }
