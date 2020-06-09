@@ -95,6 +95,8 @@ git_repository(
 load("@com_github_p4lang_p4runtime//:p4runtime_deps.bzl", "p4runtime_deps")
 p4runtime_deps()
 ```
+You will likely also have to load transitive dependencies. You can see how to
+do so in [p4runtime's WORKSPACE file](proto/WORKSPACE.proto).
 
 # Modification Policy
 
