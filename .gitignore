@@ -1,6 +1,5 @@
 # Emacs
 *~
-
 docs/v1/build/
-
 bazel-*
+.DS_Store
