@@ -28,33 +28,6 @@ The latest version of the P4Runtime v1 specification is available:
 
 It is updated every time a new commit is pushed to the master branch.
 
-## Building the protobufs using Bazel
-
-![build proto](https://github.com/p4lang/p4runtime/workflows/build%20proto/badge.svg)
-
-The protobufs can be built using [Bazel](https://bazel.build/).
-The Bazel WORKSPACE and BUILD files are located in the [proto folder][proto/].
-
-To build, run
-```sh
-cd proto && bazel build //...
-```
-
-We run [continuous integration](.github/workflows/ci-build-proto.yml) to ensure
-this works with the latest version of Bazel.
-
-To depend on P4Runtime in your own Bazel project, add the following to your
-WORKSAPCE file:
-```bazel
-git_repository(
-  name = "com_github_p4lang_p4runtime",
-  strip_prefix = "proto",  # proto folder is root of the Bazel workspace.
-  ..
-)
-load("@com_github_p4lang_p4runtime//:p4runtime_deps.bzl", "p4runtime_deps")
-p4runtime_deps()
-```
-
 ## Overview
 
 P4 is a language for programming the data plane of network devices. The
@@ -77,6 +50,8 @@ devices or switches.
 
 # Compiling P4Runtime Protobuf files
 
+## Build Using Docker
+
 You can use Docker to run the protoc compiler on the P4Runtime Protobuf files
 and generate the Protobuf & gRPC bindings for C++, Python and Go:
 
@@ -92,6 +67,34 @@ may need to change the permissions manually for the generated files after the
 
 These commands are the ones used by our CI system to ensure that the Protobuf
 files stay semantically valid.
+
+## Build Using Bazel
+
+![build proto](https://github.com/p4lang/p4runtime/workflows/build%20proto/badge.svg)
+
+The protobufs can also be built using [Bazel](https://bazel.build/).
+The Bazel WORKSPACE and BUILD files are located in the [proto folder](proto/).
+
+To build, run
+```sh
+cd proto && bazel build //...
+```
+
+We run [continuous integration](.github/workflows/ci-build-proto.yml) to ensure
+this works with the latest version of Bazel.
+
+To depend on P4Runtime in your own Bazel project, add the following to your
+WORKSAPCE file:
+```bazel
+git_repository(
+  name = "com_github_p4lang_p4runtime",
+  url = "https://github.com/p4lang/p4runtime.git",
+  strip_prefix = "proto",  # The proto folder is the root of the Bazel workspace.
+  ..
+)
+load("@com_github_p4lang_p4runtime//:p4runtime_deps.bzl", "p4runtime_deps")
+p4runtime_deps()
+```
 
 # Modification Policy
 
