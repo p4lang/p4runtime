@@ -26,7 +26,7 @@ jobs:
       run: |
         curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.4.0/$BAZEL"
         chmod +x $BAZEL
-        mv $BAZEL /usr/local/bin/bazel
+        sudo mv $BAZEL /usr/local/bin/bazel
 
     - name: Build
       run: cd proto && bazel build //...
