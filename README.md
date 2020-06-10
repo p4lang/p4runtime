@@ -83,20 +83,8 @@ cd proto && bazel build //...
 We run [continuous integration](.github/workflows/ci-build-proto.yml) to ensure
 this works with the latest version of Bazel.
 
-To depend on P4Runtime in your own Bazel project, add the following to your
-WORKSAPCE file:
-```bazel
-git_repository(
-  name = "com_github_p4lang_p4runtime",
-  url = "https://github.com/p4lang/p4runtime.git",
-  strip_prefix = "proto",  # The proto folder is the root of the Bazel workspace.
-  ...
-)
-load("@com_github_p4lang_p4runtime//:p4runtime_deps.bzl", "p4runtime_deps")
-p4runtime_deps()
-```
-You will likely also have to load transitive dependencies. You can see how to
-do so in [p4runtime's WORKSPACE file](proto/WORKSPACE.bazel).
+For an example of how to include P4Runtime in your own Bazel project, see
+[bazel/example](bazel/example).
 
 # Modification Policy
 

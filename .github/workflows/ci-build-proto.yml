@@ -28,5 +28,8 @@ jobs:
         chmod +x $BAZEL
         sudo mv $BAZEL /usr/local/bin/bazel
 
-    - name: Build
+    - name: Build proto/
       run: cd proto && bazel build //...
+
+    - name: Build bazel/example/
+      run: cd bazel/example/ && bazel build //...

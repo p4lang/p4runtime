@@ -1,0 +1,8 @@
+cc_binary(
+  name = "hello_p4runtime",
+  srcs = ["hello_p4runtime.cc"],
+  deps = [
+    "@com_github_p4lang_p4runtime//:p4info_cc_proto",
+    "@com_google_protobuf//:protobuf",
+  ]
+)
