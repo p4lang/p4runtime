@@ -6,7 +6,8 @@ http_archive(
     # TODO(smolkaj): Set url to v1.2 release once it is available.
     urls = ["https://github.com/p4lang/p4runtime/archive/bazel.zip"],
     strip_prefix = "p4runtime-bazel/proto",
-    sha256 = "69db7d93730c30aeb99da247f941ce8a80a403354e98079f5a5b9500a9a389b9",
+    # TODO(smolkaj): Include once URL points to stable release.
+    # sha256 = "...",
 )
 
 # As an alternative to http_archive, can use git_repository rule.
