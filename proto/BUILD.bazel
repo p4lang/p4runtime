@@ -10,13 +10,17 @@ load("@com_github_grpc_grpc//bazel:python_rules.bzl", "py_proto_library", "py_gr
 proto_library(
     name = "p4types_proto",
     srcs = ["p4/config/v1/p4types.proto"],
-    # strip_import_prefix = "proto",  # `cc_grpc_library` doesn't like this :(
+    # TODO(github.com/grpc/grpc/issues/20675): strip_import_prefix brakes
+    # cc_grpc_library. Make proto folder the Bazel root folder as a workaround.
+    # strip_import_prefix = "proto",
 )
 
 proto_library(
     name = "p4data_proto",
     srcs = ["p4/v1/p4data.proto"],
-    # strip_import_prefix = "proto",  # `cc_grpc_library` doesn't like this :(
+    # TODO(github.com/grpc/grpc/issues/20675): strip_import_prefix brakes
+    # cc_grpc_library. Make proto folder the Bazel root folder as a workaround.
+    # strip_import_prefix = "proto",
 )
 
 proto_library(
@@ -27,7 +31,9 @@ proto_library(
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",
     ],
-    # strip_import_prefix = "proto",  # `cc_grpc_library` doesn't like this :(
+    # TODO(github.com/grpc/grpc/issues/20675): strip_import_prefix brakes
+    # cc_grpc_library. Make proto folder the Bazel root folder as a workaround.
+    # strip_import_prefix = "proto",
 )
 
 proto_library(
@@ -39,7 +45,9 @@ proto_library(
         "@com_google_protobuf//:any_proto",
         "@com_google_googleapis//google/rpc:status_proto"
     ],
-    # strip_import_prefix = "proto",  # `cc_grpc_library` doesn't like this :(
+    # TODO(github.com/grpc/grpc/issues/20675): strip_import_prefix brakes
+    # cc_grpc_library. Make proto folder the Bazel root folder as a workaround.
+    # strip_import_prefix = "proto",
 )
 
 cc_proto_library(
