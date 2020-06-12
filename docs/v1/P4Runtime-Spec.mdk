@@ -5653,9 +5653,9 @@ the PSA device in Switch 1.
 
 ~ Begin P4Example
 @p4runtime_translation("p4.org/psa/v1/PortId_t", 32)
-type PortId_t bit<9>;
+type bit<9> PortId_t;
 @p4runtime_translation("p4.org/psa/v1/PortIdInHeader_t", 32)
-type PortIdInHeader_t bit<32>;
+type bit<32> PortIdInHeader_t;
 ~ End P4Example
 
 The first argument to the `@p4runtime_translation` annotation is a URI that
