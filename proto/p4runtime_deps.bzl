@@ -4,7 +4,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def p4runtime_deps():
-    """Loads dependencies need to compile p4runtime."""
+    """Loads dependencies needed to compile p4runtime."""
     if not native.existing_rule("com_google_protobuf"):
         http_archive(
             name = "com_google_protobuf",
