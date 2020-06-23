@@ -50,6 +50,8 @@ devices or switches.
 
 # Compiling P4Runtime Protobuf files
 
+## Build Using Docker
+
 You can use Docker to run the protoc compiler on the P4Runtime Protobuf files
 and generate the Protobuf & gRPC bindings for C++, Python and Go:
 
@@ -65,6 +67,24 @@ may need to change the permissions manually for the generated files after the
 
 These commands are the ones used by our CI system to ensure that the Protobuf
 files stay semantically valid.
+
+## Build Using Bazel
+
+![build proto](https://github.com/p4lang/p4runtime/workflows/build%20proto/badge.svg)
+
+The protobufs can also be built using [Bazel](https://bazel.build/).
+The Bazel WORKSPACE and BUILD files are located in the [proto folder](proto/).
+
+To build, run
+```sh
+cd proto && bazel build //...
+```
+
+We run [continuous integration](.github/workflows/ci-build-proto.yml) to ensure
+this works with the latest version of Bazel.
+
+For an example of how to include P4Runtime in your own Bazel project, see
+[bazel/example](bazel/example).
 
 # Modification Policy
 
