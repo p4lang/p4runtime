@@ -68,9 +68,7 @@ may need to change the permissions manually for the generated files after the
 These commands are the ones used by our CI system to ensure that the Protobuf
 files stay semantically valid.
 
-## Build Using Bazel
-
-![build proto](https://github.com/p4lang/p4runtime/workflows/build%20proto/badge.svg)
+## Build Using Bazel ![build protobufs](https://github.com/p4lang/p4runtime/workflows/build%20protobufs/badge.svg)
 
 The protobufs can also be built using [Bazel](https://bazel.build/).
 The Bazel WORKSPACE and BUILD files are located in the [proto folder](proto/).
