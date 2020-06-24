@@ -1,24 +1,27 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-P4RUNTIME_COMMIT="263b08c59991d31def22b0467a2fb2ae3bf61fe7"
-
-http_archive(
+local_repository(
     name = "com_github_p4lang_p4runtime",
-    # TODO(smolkaj): Set url to v1.2 release once it is available.
-    urls = ["https://github.com/p4lang/p4runtime/archive/%s.zip" % P4RUNTIME_COMMIT],
-    strip_prefix = "p4runtime-%s/proto" % P4RUNTIME_COMMIT,
-    # TODO(smolkaj): Include once URL points to stable release.
-    # sha256 = "...",
+    path = "../../proto",
 )
 
-# As an alternative to http_archive, can use git_repository rule.
+# In your own project, you will likely want to use `http_archive` or
+# `git_repository` instead of `local_repository` to load p4runtime.
+
+# http_archive(
+#     name = "com_github_p4lang_p4runtime",
+#     urls = ["https://github.com/p4lang/p4runtime/archive/v1.2.0.tar.gz"],
+#     strip_prefix = "p4runtime-1.2.0/proto",
+#     # sha256 = "<insert hash value here>",
+# )
+
 # git_repository(
 #   name = "com_github_p4lang_p4runtime",
 #   remote = "https://github.com/p4lang/p4runtime.git",
 #   # strip_prefix = "proto",  # https://github.com/bazelbuild/bazel/issues/10062
 #   patch_cmds = ["mv proto/* ."],  # Workaround since strip_prefix is broken.
-#   commit = P4RUNTIME_COMMIT,  # Replace with tag = "v1.2" once released.
+#   tag = "v1.2",
 # )
 
 load("@com_github_p4lang_p4runtime//:p4runtime_deps.bzl", "p4runtime_deps")

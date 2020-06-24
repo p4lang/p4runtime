@@ -3,6 +3,8 @@ workspace(name = "com_github_p4lang_p4runtime")
 load("//:p4runtime_deps.bzl", "p4runtime_deps")
 p4runtime_deps()
 
+# -- Transitive dependencies. --------------------------------------------------
+
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
 
