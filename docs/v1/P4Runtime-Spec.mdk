@@ -6086,13 +6086,9 @@ properties, but we may include on in future versions of the API.
 
 ### Changes in v1.3.0
 
-<<<<<<< HEAD
 * Add IANA assigned TCP port, 9559, to P4Runtime server discussion.
 * Move "Security considerations" section to P4Runtime server discussion.
-* Deprecate `watch` field (uint32) in favor of `watch_port` (bytes). This allows
-=======
 * Deprecate `watch` field (int32) in favor of `watch_port` (bytes). This allows
->>>>>>> 3bf4a20 (Fix typo)
   using the watch port feature with the `p4runtime_translation` feature.
 
 ### Changes in v1.2.0
