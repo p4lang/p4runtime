@@ -6079,15 +6079,6 @@ properties, but we may include on in future versions of the API.
   in particular, there is no way for a client to query the supported minor +
   patch version numbers.
 
-# Security concerns for P4Runtime
-
-Appropriate measures and security best practices need to be in place to protect
-the P4Runtime server and client, and the communication channel between the two.
-For example, firewalling and authenticating the incoming connections to the
-P4Runtime server can prevent a malicious actor from taking over the switch.
-Similarly, using TLS to authenticate and encrypt the gRPC channel can prevent
-man-in-the-middle attacks between the server and client.
-
 # Appendix { @h1:"A"}
 
 ## Revision History
@@ -6309,22 +6300,5 @@ the server did not deem necessary to increase the default value ---, unless the
 clients are aware that the server is using a larger maximum receive message
 size. The gRPC server running the P4Runtime service must not set the maximum
 receive message size to a value smaller than the default (4MB).
-
-### gRPC Default Port
-
-IANA has allocated TCP port number 9559 for the P4Runtime service, and
-P4Runtime server implementations must adopt port 9559 as the default. Users
-should be allowed to override the default using a configuration file or flag
-when starting the server. Uses of other port numbers as the default should be
-discontinued.
-
-For example, in C++, one can set the listening port as follows:
-~ Begin CPP
-::grpc::ServerCredentials server_credentials = /*...*/;
-::grpc::ServerBuilder server_builder;
-builder.AddListeningPort("0.0.0.0:9559", server_credentials);
-builder.RegisterService(/*...*/);  // register P4Runtime service
-builder.BuildAndStart();
-~ End CPP
 
 [BIB]
