@@ -258,7 +258,7 @@ Their values are selected by P4Runtime clients.
 A client may send a message with an `election_id` of 0, and this is
 always interpreted by the server to be lower than any other
 `election_id` value, and indicates that, when sending that message,
-the client is not attempting to become the master client.
+the client is not attempting to become the primary client.
 
 There is no known use case for a P4 data plane to know election id
 values.

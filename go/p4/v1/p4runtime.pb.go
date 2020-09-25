@@ -3365,18 +3365,18 @@ func (m *PacketMetadata) GetValue() []byte {
 
 type MasterArbitrationUpdate struct {
 	DeviceId uint64 `protobuf:"varint,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
-	// The role for which the mastership is being arbitrated. For use-cases where
+	// The role for which the primary client is being arbitrated. For use-cases
 	// where multiple roles are not needed, the controller can leave this unset,
 	// implying default role and full pipeline access.
 	Role *Role `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
-	// The stream RPC with the highest election_id is the master. The 'master'
+	// The stream RPC with the highest election_id is the primary. The 'primary'
 	// controller instance populates this with its latest election_id. Switch
 	// populates with the highest election ID it has received from all connected
 	// controllers.
 	ElectionId *Uint128 `protobuf:"bytes,3,opt,name=election_id,json=electionId,proto3" json:"election_id,omitempty"`
-	// Switch populates this with OK for the client that is the master, and with
-	// an error status for all other connected clients (at every mastership
-	// change). The controller does not populate this field.
+	// Switch populates this with OK for the client that is the primary, and
+	// with an error status for all other connected clients (at every primary
+	// client change). The controller does not populate this field.
 	Status               *status.Status `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
@@ -4608,11 +4608,11 @@ type P4RuntimeClient interface {
 	// Represents the bidirectional stream between the controller and the
 	// switch (initiated by the controller), and is managed for the following
 	// purposes:
-	// - connection initiation through master arbitration
+	// - connection initiation through client arbitration
 	// - indicating switch session liveness: the session is live when switch
-	//   sends a positive master arbitration update to the controller, and is
+	//   sends a positive client arbitration update to the controller, and is
 	//   considered dead when either the stream breaks or the switch sends a
-	//   negative update for master arbitration
+	//   negative update for client arbitration
 	// - the controller sending/receiving packets to/from the switch
 	// - streaming of notifications from the switch
 	StreamChannel(ctx context.Context, opts ...grpc.CallOption) (P4Runtime_StreamChannelClient, error)
@@ -4739,11 +4739,11 @@ type P4RuntimeServer interface {
 	// Represents the bidirectional stream between the controller and the
 	// switch (initiated by the controller), and is managed for the following
 	// purposes:
-	// - connection initiation through master arbitration
+	// - connection initiation through client arbitration
 	// - indicating switch session liveness: the session is live when switch
-	//   sends a positive master arbitration update to the controller, and is
+	//   sends a positive client arbitration update to the controller, and is
 	//   considered dead when either the stream breaks or the switch sends a
-	//   negative update for master arbitration
+	//   negative update for client arbitration
 	// - the controller sending/receiving packets to/from the switch
 	// - streaming of notifications from the switch
 	StreamChannel(P4Runtime_StreamChannelServer) error
