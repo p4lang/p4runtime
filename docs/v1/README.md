@@ -13,7 +13,7 @@ documentation are available at **[TODO]**
 Files:
 - `P4Runtime-spec.mdk` is the main file. 
 - assets: Figures
-  - `*.odg` - OfficeLibre master drawing file used to export images. These are
+  - `*.odg` - OfficeLibre drawing file used to export images. These are
     bulk-rendered at build time into .svg and .png images via `soffice`
     command-line (required in build environment)
 - `Makefile` builds documentation in the build subdirectory
