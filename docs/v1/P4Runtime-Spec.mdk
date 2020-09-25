@@ -6284,5 +6284,21 @@ clients are aware that the server is using a larger maximum receive message
 size. The gRPC server running the P4Runtime service must not set the maximum
 receive message size to a value smaller than the default (4MB).
 
+### gRPC Default Port
+
+IANA has allocated TCP port number 9559 for the P4Runtime service, and
+P4Runtime server implementations should adopt port 9559 as the default. Users
+should be allowed to override the default using a configuration file or flag
+when starting the server. Uses of other port numbers as the default should be
+discontinued.
+
+For example, in C++, one can set the listening port as follows:
+~ Begin CPP
+::grpc::ServerCredentials server_credentials = /*...*/;
+::grpc::ServerBuilder server_builder;
+builder.AddListeningPort("0.0.0.0:9559", server_credentials);
+builder.RegisterService(/*...*/);  // register P4Runtime service
+builder.BuildAndStart();
+~ End CPP
 
 [BIB]
