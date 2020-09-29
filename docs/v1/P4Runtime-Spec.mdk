@@ -414,6 +414,27 @@ caption: "P4Runtime Reference Architecture." }
 [reference-architecture]: build/reference-architecture.[svg,png] \
 { height: 7cm; page-align: here }
 
+## P4Runtime Service Implementation
+
+The P4Runtime API is implemented by a program that runs a gRPC server which
+binds an implementation of auto-generated P4Runtime Service interface. This
+program is called the "P4Runtime server." The server must listen on TCP port
+9559 by default, which is the port that has been allocated by IANA for the
+P4Runtime service. Servers should allow users to override the default port
+using a configuration file or flag when starting the server. Uses of other
+port numbers as the default should be discontinued.
+
+### Security concerns
+
+Appropriate measures and security best practices must be in place to protect
+the P4Runtime server and client, and the communication channel between the two.
+For example, firewalling and authenticating the incoming connections to the
+P4Runtime server can prevent a malicious actor from taking over the switch.
+Similarly, using TLS to authenticate and encrypt the gRPC channel can prevent
+man-in-the-middle attacks between the server and client. Mutual TLS (mTLS) may
+be used to facilitate the authentication of the client by the server and
+vice-versa.
+
 ## Idealized Workflow
 
 In the idealized workflow, a P4 source program is compiled to produce both a P4
@@ -6058,18 +6079,14 @@ properties, but we may include on in future versions of the API.
   in particular, there is no way for a client to query the supported minor +
   patch version numbers.
 
-# Security concerns for P4Runtime
-
-Appropriate measures and security best practices need to be in place to protect
-the P4Runtime server and client, and the communication channel between the two.
-For example, firewalling and authenticating the incoming connections to the
-P4Runtime server can prevent a malicious actor from taking over the switch.
-Similarly, using TLS to authenticate and encrypt the gRPC channel can prevent
-man-in-the-middle attacks between the server and client.
-
 # Appendix { @h1:"A"}
 
 ## Revision History
+
+### Changes in v1.3.0
+
+* Add IANA assigned TCP port, 9559, to P4Runtime server discussion.
+* Move "Security considerations" section to P4Runtime server discussion.
 
 ### Changes in v1.2.0
 
@@ -6283,6 +6300,5 @@ the server did not deem necessary to increase the default value ---, unless the
 clients are aware that the server is using a larger maximum receive message
 size. The gRPC server running the P4Runtime service must not set the maximum
 receive message size to a value smaller than the default (4MB).
-
 
 [BIB]
