@@ -40,8 +40,9 @@ devices or switches.
 
 # Community
 
- * **Meetings**: the P4.org API Working Group meets [every other Wednesday at
-   10.30AM (Pacific Time)](https://VMware.zoom.us/j/506821682).
+ * **Meetings**: the P4.org API Working Group meets every other Friday at
+   9:30AM (Pacific Time). Please see the [P4 Working Groups Calendar](https://calendar.google.com/calendar/u/0/embed?src=j4to42rsjqtfks0qb7iah8gous@group.calendar.google.com&ctz=America/Los_Angeles)
+   for meeting details.
  * **Email**: join our [mailing
    list](https://lists.p4.org/mailman/listinfo/p4-dev_lists.p4.org) to receive
    announcements and stay up-to-date with Working Group activities.
