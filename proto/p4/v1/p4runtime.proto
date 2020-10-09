@@ -271,7 +271,11 @@ message ActionProfileActionSet {
 message ActionProfileAction {
   Action action = 1;
   int32 weight = 2;
-  int32 watch = 3;
+  oneof watch_kind {
+    // Using int32 as ports is deprecated, use watch_port instead.
+    int32 watch = 3 [deprecated=true];
+    bytes watch_port = 4;
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -288,7 +292,11 @@ message ActionProfileGroup {
   message Member {
     uint32 member_id = 1;
     int32 weight = 2;
-    uint32 watch = 3;
+    oneof watch_kind {
+      // Using int32 as ports is deprecated, use watch_port instead.
+      int32 watch = 3 [deprecated=true];
+      bytes watch_port = 4;
+    }
   }
   repeated Member members = 3;
   // Max number of weighted member entries in this group. It cannot be modified
