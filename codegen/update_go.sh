@@ -8,7 +8,7 @@ pushd "$THIS_DIR/.." >/dev/null
 
 docker build -t p4runtime-ci -f codegen/Dockerfile .
 
-tmpdir="$(mktemp -d -p /tmp)"
+tmpdir="$(mktemp -d /tmp/p4rt.XXXXXX)"
 
 docker run --rm \
        -v "$tmpdir:/tmp/gen" \
