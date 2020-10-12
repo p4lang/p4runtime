@@ -3567,14 +3567,15 @@ An `ActionProfileGroup` entity update message has the following fields:
     * `weight` specifying the probability of the member's selection at
       runtime. 0 is not a valid `weight` value and the server must return
       `INVALID_ARGUMENT` if the client attempts to use it.
-    * `watch` is the controller-defined 32-bit port number that the member's
+    * `watch_port` is the controller-defined port that the member's
       liveness depends on. At runtime, the member must be excluded from
       selection if the watch port is down.  See Section
       [#action-selector-constraints] for notes on the behavior if all members in
-      a group are excluded for this reason. If `watch` is 0, then the member is
-      always included in the selection, regardless of the status of any port of
-      the device.  The value must be 0 or the SDN port number of an existing
-      port on the device, otherwise the server must return `INVALID_ARGUMENT`.
+      a group are excluded for this reason. If `watch_port` is empty, then the
+      member is always included in the selection, regardless of the status of
+      any port of the device.  The value must be empty or the SDN port of an
+      existing port on the device, otherwise the server must return
+      `INVALID_ARGUMENT`.
 
 * `max_size` is the maximum sum of all member weights for the group. This field
   is defined when the group is inserted, and must not be changed in a
@@ -3666,11 +3667,11 @@ One shots are programmed by choosing the `ActionProfileActionSet` message as the
   not exceed the `max_group_size` specificed in the P4Info (if greater than 0),
   or the server must return `INVALID_ARGUMENT`.
 
-* `watch` is the controller-defined 32-bit port number that the action's
-  liveness depends on. At runtime, the action must be excluded from selection if
-  the watch port is down. See Section
-  [#sec-action-profile-group-programming] for more details on the `watch` field,
-  which also apply for one shot action selector programming.
+* `watch_port` is the controller-defined port that the action's liveness depends
+  on. At runtime, the action must be excluded from selection if the watch port
+  is down. See Section [#sec-action-profile-group-programming] for more details
+  on the `watch_port` field, which also apply for one shot action selector
+  programming.
 
 
 Semantically, one shots are equivalent to programming the table entry, group,
@@ -3695,17 +3696,17 @@ table_entry {
       action_profile_actions {
         action { /* set nexthop 1 */ }
         weight: 1
-        watch: 1
+        watch_port: "\x01"
       }
       action_profile_actions {
         action { /* set nexthop 2 */ }
         weight: 2
-        watch: 2
+        watch_port: "\x02"
       }
       action_profile_actions {
         action { /* set nexthop 3 */ }
         weight: 3
-        watch: 3
+        watch_port: "\x03"
       }
     }
   }
@@ -3737,17 +3738,17 @@ action_profile_group {
   members {
     member_id: MEMBER_ID_1
     weight: 1
-    watch: 1
+    watch_port: "\x01"
   }
   members {
     member_id: MEMBER_ID_2
     weight: 2
-    watch: 2
+    watch_port: "\x02"
   }
   members {
     member_id: MEMBER_ID_3
     weight: 3
-    watch: 3
+    watch_port: "\x03"
   }
 }
 table_entry {
@@ -5827,9 +5828,9 @@ member in an action profile group that is programmed in a selector. This field
 is used to implement fast-failover in the target, where the P4Runtime server can
 locally prune the member from the group if a port is down. This pruning does not
 require intervention from the controller. Conversely, if the port comes back up,
-the P4Runtime server can re-enable the member in the group. The watch field is
-of type `uint32` to carry the 32-bit SDN representation of the port being
-watched. The P4Runtime server will translate the given watch port number into
+the P4Runtime server can re-enable the member in the group. The `watch_port`
+field is of type `bytes` to carry the SDN representation of the port being
+watched. The P4Runtime server will translate the given watch port into
 the device-specific data plane port number for implementing the fast-failover
 functionality on the target device.
 
@@ -6087,6 +6088,8 @@ properties, but we may include on in future versions of the API.
 
 * Add IANA assigned TCP port, 9559, to P4Runtime server discussion.
 * Move "Security considerations" section to P4Runtime server discussion.
+* Deprecate `watch` field (int32) in favor of `watch_port` (bytes). This allows
+  using the watch port feature with the `p4runtime_translation` feature.
 
 ### Changes in v1.2.0
 
