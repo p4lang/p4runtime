@@ -91,7 +91,7 @@ message WriteRequest {
     // Optional. Every data plane packet is guaranteed to be processed according
     // to table contents before the batch began, or after the batch completed
     // and the operations were programmed to the hardware.
-    // The batch is therefore treated as a transaction. 
+    // The batch is therefore treated as a transaction.
     DATAPLANE_ATOMIC = 2;
   }
   Atomicity atomicity = 5;
@@ -120,6 +120,11 @@ message Update {
   Entity entity = 2;
 }
 
+// A scope allows limiting a request to a subset of the hardware resources.
+message Scope {
+  repeated uint32 scope = 1;
+}
+
 message Entity {
   oneof entity {
     ExternEntry extern_entry = 1;
@@ -135,6 +140,7 @@ message Entity {
     RegisterEntry register_entry = 11;
     DigestEntry digest_entry = 12;
   }
+  Scope scope = 13; // Optional
 }
 
 message ExternEntry {
@@ -708,6 +714,7 @@ message ForwardingPipelineConfig {
     uint64 cookie = 1;
   }
   Cookie cookie = 3;
+  Scope scope = 4; // Optional
 }
 
 message GetForwardingPipelineConfigRequest {
