@@ -13,6 +13,7 @@ install:
 script:
   - docker run -t p4runtime-ci /p4runtime/codegen/compile_protos.sh /tmp || travis_terminate 1
   - ./CI/check_go.sh || travis_terminate 1 # TODO: remove previous step
+  - ./CI/check_py.sh || travis_terminate 1 # TODO: remove previous step
   - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make || travis_terminate 1
   - ./tools/madokolint.py docs/v1/P4Runtime-Spec.mdk
 

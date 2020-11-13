@@ -145,8 +145,8 @@ processes.
    approve.
 
 When updating the Protobuf files in a pull request, you will also need to update
-the generated Go files, which are hosted in this repository under
-[go/](go/). This can be done easily by running `./codegen/update_go.sh`,
+the generated Go and Python files, which are hosted in this repository under
+[go/](go/) and [py/](py/). This can be done easily by running `./codegen/update_[go/py].sh`,
 provided docker is installed and your user is part of the "docker" group
 (which means that the `docker` command can be executed without `sudo`).
 
