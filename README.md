@@ -146,9 +146,9 @@ processes.
 
 When updating the Protobuf files in a pull request, you will also need to update
 the generated Go files, which are hosted in this repository under
-[go/](go/). This can be done easily by running `./build/update_go.sh`, providing
-docker is installed and your user is part of the "docker" group (which means
-that the `docker` command can be executed without `sudo`).
+[go/](go/). This can be done easily by running `./codegen/update_go.sh`,
+provided docker is installed and your user is part of the "docker" group
+(which means that the `docker` command can be executed without `sudo`).
 
 
 [P4 Slack Workspace]: https://p4-lang.slack.com/join/shared_invite/enQtODA0NzY4Mjc5MTExLTRlMWVmN2I5ZTY4MTAzMDI3MGQ1OTZjM2ZmM2Q1MWE2YzZjYTQ2ZWMyMGUyYjQ2ZmIxMjFjZDE4ZThiN2ZkZWI
