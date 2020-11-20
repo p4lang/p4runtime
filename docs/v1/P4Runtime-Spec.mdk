@@ -1011,7 +1011,8 @@ message Preamble {
   // object (TBD).
   string alias = 3;
   repeated string annotations = 4;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 7;
   // Documentation of the entity
   Documentation doc = 5;
@@ -1098,7 +1099,7 @@ message StructuredAnnotation {
     ExpressionList expression_list = 2;
     KeyValuePairList kv_pair_list = 3;
   }
-  // Location of the '@' symbol of this annotation in the source code.
+  // Optional. Location of the '@' symbol of this annotation in the source code.
   SourceLocation source_location = 4;
 }
 ~ End Proto
@@ -1244,12 +1245,14 @@ be found in the following place:
 
 * For **unstructured annotations**, every message containing a field
   `repeated string annotations` also contains a field
-  `repeated SourceLocation annotation_locations`. The i-th member of
+  `repeated SourceLocation annotation_locations`. The field must either be empty
+   or match the size of `annotations`. In the latter case, the i-th member of
   `annotation_locations` is the source location of the i-th member of
   `annotations`.
 
 * For **structured annotations**, every `StructuredAnnotation` message contains
-  a field `SourceLocation source_location` holding its source location.
+  an optional field `SourceLocation source_location` holding its source
+  location, if present.
 
 
 ## `PkgInfo` Message
