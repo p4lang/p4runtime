@@ -1,5 +1,5 @@
 Title : P4Runtime Specification
-Title Note: version 1.2.0
+Title Note: version 1.3.0
 Title Footer: &date;
 Author: The P4.org API Working Group
 Heading depth: 5
@@ -223,7 +223,7 @@ protocol-independent runtime APIs for P4-defined or P4-described data
 planes. This document specifies one such API, called *P4Runtime*. It is meant to
 disambiguate and augment the programmatic API definition expressed in Protobuf
 format and available at
-[https://github.com/p4lang/p4runtime/tree/v1.2.0/proto](https://github.com/p4lang/p4runtime/tree/v1.2.0/proto).
+[https://github.com/p4lang/p4runtime/tree/v1.3.0/proto](https://github.com/p4lang/p4runtime/tree/v1.3.0/proto).
 
 ## P4 Language Version Applicability
 
@@ -1240,7 +1240,7 @@ processing, as it allows tools to point out the precise source of errors for
 invalid annotations.
 
 The `SourceLocation` message associated with an annotation holds the location of
-the `@` symbol introducing the annotation in the P4 source code; the message can
+the `@` symbol introducing the annotation in the P4 source code; the message can
 be found in the following place:
 
 * For **unstructured annotations**, every message containing a field
@@ -6103,6 +6103,8 @@ properties, but we may include on in future versions of the API.
   using the watch port feature with the `p4runtime_translation` feature.
 * Replace master, slave, master arbitration with more inclusive language:
   primary, backup, and client arbitration
+* Clarify that source locations for annotations are optional in the P4Info
+  message.
 
 ### Changes in v1.2.0
 
