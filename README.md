@@ -173,7 +173,7 @@ To install P4Runtime Python library, use the `pip3` command:
 
 ```bash
 pip3 install p4runtime
-# Or specifiy the version
+# Or specify the version
 pip3 install p4runtime==1.3.0
 ```
 
