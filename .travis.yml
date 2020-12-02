@@ -71,3 +71,13 @@ deploy:
     on:
       repo: p4lang/p4runtime
       branch: master
+  - provider: pypi
+    username: "__token__"
+    password:
+      secure: ""
+    skip_existing: true
+    before_deploy:
+      - cd py
+    on:
+      repo: p4lang/p4runtime
+      tags: true
