@@ -1,5 +1,8 @@
+import os
 from setuptools import setup, find_packages
-print(__file__)
+this_dir = os.path.dirname(os.path.realpath(__file__))
+project_root = os.path.abspath(os.path.join(this_dir, os.pardir))
+
 setup(
     name = "p4runtime",
     version = "1.3.0",
@@ -17,7 +20,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     description = "The P4 Runtime protocol",
-    long_description = open("README.md").read(),
+    long_description = open(project_root + "/README.md").read(),
     long_description_content_type = "text/markdown",
     license = "Apache-2.0",
     url = "https://github.com/p4lang/p4runtime"
