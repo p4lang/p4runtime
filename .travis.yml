@@ -74,7 +74,7 @@ deploy:
   - provider: pypi
     username: "__token__"
     password:
-      secure: ""
+      secure: "ZV4yvWZDupmyyJHDF7/E0SgAR4WDnNu3gyCBMmslE4kpW0mKYC76hOUJJzcOirUrCUHPWNC0/CUC34hbClIaexXql3BBSAkm5MiSc9J1qDzSS6V9vVeMrGteDxXJZYFDmiWGtmsaWfATu486/FoiBIsvKygQK/hC9cPboVHkwLhXRHWEXnkBdKtd+8x/vWW8nG9p5iLp1s6ysYbUaTpuVrydnXyIOk+lNLTJFJSI7CZZSAxR5QiWMjZ43gD4pD5KZr7G16DlaM9fhRLH8D0wXiY7FcDoKPRC96jK73qZ9JHPBfUyNGz3h1TEdTlqUGuM8mq2TM66aomX+ybW8Q7LFwivoDetvhql7cF5l4H4pZ/oeManYqF0Q7qPRnPjhI0S74n+X9tL+9ARbuRArVjbdRDkOH9faz0aercekhfOwJhQ190dFrLAKi2gIW+VVWio19RHrs2qVsTRrWHbD9DDAMQQf7OmDqQOO7oni9jRNC+8DGLPxaebyMKNT5JAs7ssIBckzfoX+FMEnwUyviwWW9Cs6K5TE40GVoB/j2V9zlPGo2ldh5PYgTb97HWwpZtJkyqOZWlvw9C7+kPCWf/GI91yr9krWoye9XDx/BVuUdpwCK4aAW1PWt3qnWQKBOo37aCvhU9NDax5Rmy3tnl0cM0Q4StSwBW199lRX2orJd0="
     skip_existing: true
     before_deploy:
       - cd py
