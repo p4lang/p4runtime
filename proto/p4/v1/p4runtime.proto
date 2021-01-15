@@ -421,15 +421,19 @@ message PacketReplicationEngineEntry {
 
 // Used for replicas created for cloning and multicasting actions.
 message Replica {
-  uint32 egress_port = 1;
+  oneof port_kind {
+    // Using uint32 as ports is deprecated, use port field instead.
+    uint32 egress_port = 1 [deprecated=true];
+    bytes port = 3;
+  }
   uint32 instance = 2;
 }
 
-// The (egress_port, instance) pair must be unique for each replica in a given
+// The (port, instance) pair must be unique for each replica in a given
 // multicast group entry. A packet may be multicast by setting the
 // multicast_group field of PSA ingress output metadata to multicast_group_id
-// of a programmed multicast group entry. The egress_port and instance fields of
-// each replica's egress input metadata will be set to the respective values
+// of a programmed multicast group entry. The port and instance fields of each
+// replica's egress input metadata will be set to the respective values
 // programmed in the multicast group entry.
 message MulticastGroupEntry {
   uint32 multicast_group_id = 1;
