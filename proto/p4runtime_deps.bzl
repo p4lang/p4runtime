@@ -8,31 +8,31 @@ def p4runtime_deps():
     if not native.existing_rule("com_google_protobuf"):
         http_archive(
             name = "com_google_protobuf",
-            url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protobuf-all-3.12.3.tar.gz",
-            strip_prefix = "protobuf-3.12.3",
-            sha256 = "1a83f0525e5c8096b7b812181865da3c8637de88f9777056cefbf51a1eb0b83f",
+            url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-all-3.13.0.tar.gz",
+            strip_prefix = "protobuf-3.13.0",
+            sha256 = "465fd9367992a9b9c4fba34a549773735da200903678b81b25f367982e8df376",
         )
     if not native.existing_rule("rules_proto"):
         http_archive(
             name = "rules_proto",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
-                "https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
+                "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/cfdc2fa31879c0aebe31ce7702b1a9c8a4be02d2.tar.gz",
+                "https://github.com/bazelbuild/rules_proto/archive/cfdc2fa31879c0aebe31ce7702b1a9c8a4be02d2.tar.gz",
             ],
-            strip_prefix = "rules_proto-97d8af4dc474595af3900dd85cb3a29ad28cc313",
-            sha256 = "602e7161d9195e50246177e7c55b2f39950a9cf7366f74ed5f22fd45750cd208",
+            strip_prefix = "rules_proto-cfdc2fa31879c0aebe31ce7702b1a9c8a4be02d2",
+            sha256 = "d8992e6eeec276d49f1d4e63cfa05bbed6d4a26cfe6ca63c972827a0d141ea3b",
         )
     if not native.existing_rule("com_google_googleapis"):
         git_repository(
             name = "com_google_googleapis",
             remote = "https://github.com/googleapis/googleapis",
-            commit = "dd244bb3a5023a4a9290b21dae6b99020c026123",
-            shallow_since = "1591402163 -0700",
+            commit = "8fa381b7138f1d72966ff20563efae1b2194d359",
+            shallow_since = "1611281195 -0800",
         )
     if not native.existing_rule("com_github_grpc_grpc"):
         http_archive(
             name = "com_github_grpc_grpc",
-            url = "https://github.com/grpc/grpc/archive/v1.29.1.tar.gz",
-            strip_prefix = "grpc-1.29.1",
-            sha256 = "0343e6dbde66e9a31c691f2f61e98d79f3584e03a11511fad3f10e3667832a45",
+            url = "https://github.com/grpc/grpc/archive/v1.35.0.tar.gz",
+            strip_prefix = "grpc-1.35.0",
+            sha256 = "27dd2fc5c9809ddcde8eb6fa1fa278a3486566dfc28335fca13eb8df8bd3b958",
         )
