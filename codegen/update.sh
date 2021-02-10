@@ -8,13 +8,18 @@ pushd "$THIS_DIR/.." >/dev/null
 
 docker build -t p4runtime-ci -f codegen/Dockerfile .
 
-tmpdir="$(mktemp -d -p /tmp)"
+tmpdir="$(mktemp -d /tmp/p4rt.XXXXXX)"
 
 docker run --rm \
        -v "$tmpdir:/tmp/gen" \
        p4runtime-ci /p4runtime/codegen/compile_protos.sh /tmp/gen
 
+# Go
 cp -r "$tmpdir"/go_out/github.com/p4lang/p4runtime/go/* go/
+
+# Python
+cp -r "$tmpdir"/py_out/p4 py/
+find py/p4 -type d -exec touch {}/__init__.py \;
 
 # Cleanup files owned by root user
 docker run --rm \

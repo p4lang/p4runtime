@@ -12,7 +12,7 @@ install:
 # protoc), then we generate the HTML for the spec.
 script:
   - docker run -t p4runtime-ci /p4runtime/codegen/compile_protos.sh /tmp || travis_terminate 1
-  - ./CI/check_go.sh || travis_terminate 1 # TODO: remove previous step
+  - ./CI/check_codegen.sh || travis_terminate 1 # TODO: remove previous step
   - docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make || travis_terminate 1
   - ./tools/madokolint.py docs/v1/P4Runtime-Spec.mdk
 
@@ -71,3 +71,13 @@ deploy:
     on:
       repo: p4lang/p4runtime
       branch: main
+  - provider: pypi
+    username: "__token__"
+    password:
+      secure: "ZV4yvWZDupmyyJHDF7/E0SgAR4WDnNu3gyCBMmslE4kpW0mKYC76hOUJJzcOirUrCUHPWNC0/CUC34hbClIaexXql3BBSAkm5MiSc9J1qDzSS6V9vVeMrGteDxXJZYFDmiWGtmsaWfATu486/FoiBIsvKygQK/hC9cPboVHkwLhXRHWEXnkBdKtd+8x/vWW8nG9p5iLp1s6ysYbUaTpuVrydnXyIOk+lNLTJFJSI7CZZSAxR5QiWMjZ43gD4pD5KZr7G16DlaM9fhRLH8D0wXiY7FcDoKPRC96jK73qZ9JHPBfUyNGz3h1TEdTlqUGuM8mq2TM66aomX+ybW8Q7LFwivoDetvhql7cF5l4H4pZ/oeManYqF0Q7qPRnPjhI0S74n+X9tL+9ARbuRArVjbdRDkOH9faz0aercekhfOwJhQ190dFrLAKi2gIW+VVWio19RHrs2qVsTRrWHbD9DDAMQQf7OmDqQOO7oni9jRNC+8DGLPxaebyMKNT5JAs7ssIBckzfoX+FMEnwUyviwWW9Cs6K5TE40GVoB/j2V9zlPGo2ldh5PYgTb97HWwpZtJkyqOZWlvw9C7+kPCWf/GI91yr9krWoye9XDx/BVuUdpwCK4aAW1PWt3qnWQKBOo37aCvhU9NDax5Rmy3tnl0cM0Q4StSwBW199lRX2orJd0="
+    skip_existing: true
+    before_deploy:
+      - cd py
+    on:
+      repo: p4lang/p4runtime
+      tags: true

@@ -40,8 +40,9 @@ devices or switches.
 
 # Community
 
- * **Meetings**: the P4.org API Working Group meets [every other Wednesday at
-   10.30AM (Pacific Time)](https://VMware.zoom.us/j/506821682).
+ * **Meetings**: the P4.org API Working Group meets every other Friday at
+   9:30AM (Pacific Time). Please see the [P4 Working Groups Calendar](https://calendar.google.com/calendar/u/0/embed?src=j4to42rsjqtfks0qb7iah8gous@group.calendar.google.com&ctz=America/Los_Angeles)
+   for meeting details.
  * **Email**: join our [mailing
    list](https://lists.p4.org/mailman/listinfo/p4-dev_lists.p4.org) to receive
    announcements and stay up-to-date with Working Group activities.
@@ -144,10 +145,36 @@ processes.
    approve.
 
 When updating the Protobuf files in a pull request, you will also need to update
-the generated Go files, which are hosted in this repository under
-[go/](go/). This can be done easily by running `./build/update_go.sh`, providing
-docker is installed and your user is part of the "docker" group (which means
-that the `docker` command can be executed without `sudo`).
+the generated Go and Python files, which are hosted in this repository under
+[go/](go/) and [py/](py/). This can be done easily by running `./codegen/update.sh`,
+provided docker is installed and your user is part of the "docker" group
+(which means that the `docker` command can be executed without `sudo`).
 
+## Use generated P4Runtime library
+
+### Go
+
+To include the P4Runtime Go library to your project, you can add this repository url
+to your `go.mod` file, for example:
+
+```
+module your_module_name
+
+go 1.13
+
+require (
+  github.com/p4lang/p4runtime v1.3.0
+)
+```
+
+### Python
+
+To install P4Runtime Python library, use the `pip3` command:
+
+```bash
+pip3 install p4runtime
+# Or specify the version
+pip3 install p4runtime==1.3.0
+```
 
 [P4 Slack Workspace]: https://p4-lang.slack.com/join/shared_invite/enQtODA0NzY4Mjc5MTExLTRlMWVmN2I5ZTY4MTAzMDI3MGQ1OTZjM2ZmM2Q1MWE2YzZjYTQ2ZWMyMGUyYjQ2ZmIxMjFjZDE4ZThiN2ZkZWI

@@ -45,11 +45,11 @@ service P4Runtime {
   // Represents the bidirectional stream between the controller and the
   // switch (initiated by the controller), and is managed for the following
   // purposes:
-  // - connection initiation through master arbitration
+  // - connection initiation through client arbitration
   // - indicating switch session liveness: the session is live when switch
-  //   sends a positive master arbitration update to the controller, and is
+  //   sends a positive client arbitration update to the controller, and is
   //   considered dead when either the stream breaks or the switch sends a
-  //   negative update for master arbitration
+  //   negative update for client arbitration
   // - the controller sending/receiving packets to/from the switch
   // - streaming of notifications from the switch
   rpc StreamChannel(stream StreamMessageRequest)
@@ -271,7 +271,11 @@ message ActionProfileActionSet {
 message ActionProfileAction {
   Action action = 1;
   int32 weight = 2;
-  int32 watch = 3;
+  oneof watch_kind {
+    // Using int32 as ports is deprecated, use watch_port instead.
+    int32 watch = 3 [deprecated=true];
+    bytes watch_port = 4;
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -288,7 +292,11 @@ message ActionProfileGroup {
   message Member {
     uint32 member_id = 1;
     int32 weight = 2;
-    uint32 watch = 3;
+    oneof watch_kind {
+      // Using int32 as ports is deprecated, use watch_port instead.
+      int32 watch = 3 [deprecated=true];
+      bytes watch_port = 4;
+    }
   }
   repeated Member members = 3;
   // Max number of weighted member entries in this group. It cannot be modified
@@ -556,18 +564,18 @@ message PacketMetadata {
 
 message MasterArbitrationUpdate {
   uint64 device_id = 1;
-  // The role for which the mastership is being arbitrated. For use-cases where
+  // The role for which the primary client is being arbitrated. For use-cases
   // where multiple roles are not needed, the controller can leave this unset,
   // implying default role and full pipeline access.
   Role role = 2;
-  // The stream RPC with the highest election_id is the master. The 'master'
+  // The stream RPC with the highest election_id is the primary. The 'primary'
   // controller instance populates this with its latest election_id. Switch
   // populates with the highest election ID it has received from all connected
   // controllers.
   Uint128 election_id = 3;
-  // Switch populates this with OK for the client that is the master, and with
-  // an error status for all other connected clients (at every mastership
-  // change). The controller does not populate this field.
+  // Switch populates this with OK for the client that is the primary, and
+  // with an error status for all other connected clients (at every primary
+  // client change). The controller does not populate this field.
   .google.rpc.Status status = 4;
 }
 
