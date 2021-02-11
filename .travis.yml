@@ -39,13 +39,13 @@ deploy:
       secure: O1tX0ymUh2sX3t+N0IYKbFasvAVsOxJZ3OyIi5M/6m5IHsDJUS3ldtHGVCAMD+dJEiSbcaxYdXfnxNlO8IFCH60eF4Q4STKmKn7jqjSRpAwf/97HPfI1M97RhMBFbqD0LM8nLQtAhQT5VVQQNcOl49LHZqMEDVtfA6Ta4noLXh32aawEq5DS+jI4iXBhk6CNfTTSs8GeSJmXIxJcoOmMkH6ibg3ZJ1mOV0F66IVqLyVoGhCgS4uwY9v7YmWJ4LRQDM3fycx08awlosFrzwOKrZp2fgTIzXAFd2ndL2OXzhCj+2p5Lp/LM6gIG/QQVHPnOPDs8ZxsKYOrycsPlJHs+3j+Wjy6a0RutZuLUXC2uHxuK/ZFQ+gJ1ExePzFRS83IESgG4swd9fGa9vBeWaP/RbS3KCc2LWLBsQf7MMIN+8tWLqul9k3yuUwaANOnE3Lt6bw6nKW5sef4ULqHkMO4ZH/S6a+TLeoKqDh59d4KpS/K2YPXediEBWk2Jk5bI5JHZDDFbde0Kls3cXOj3b6DTfMUQ4zcgDqVpyNKfOU764FnOGThVt9+zU6vIXRr6Y9olumgC24sz8IeEVEJv5234sdNd4E11B8tQE9JjoQDzmLgJ+xHNan0b1RgW/watYW2JFixwgYu2RLvHGMNySj9kw5t8Mj2Olj0FtsOq9MRHNE=
     bucket: p4runtime
     local-dir: docs/v1/build
-    upload-dir: docs/master
+    upload-dir: docs/main
     acl: public_read
     region: us-west-2
     skip_cleanup: true
     on:
       repo: p4lang/p4runtime
-      branch: master
+      branch: main
   - provider: s3
     access_key_id: AKIAIT3MAUFCQEY7KAFQ
     secret_access_key:
@@ -66,11 +66,11 @@ deploy:
       repo: p4lang/p4runtime
       tags: true
   - provider: script
-    script: bash CI/deploy.sh master
+    script: bash CI/deploy.sh main
     skip_cleanup: true
     on:
       repo: p4lang/p4runtime
-      branch: master
+      branch: main
   - provider: pypi
     username: "__token__"
     password:
