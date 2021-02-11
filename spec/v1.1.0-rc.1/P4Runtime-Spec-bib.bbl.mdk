@@ -1,0 +1,150 @@
+~ begin bibliography { .bib-numeric; cite-style:"numeric:'[',']',', '" ; caption:"37" ; data-style:"numeric" ; data-style:'madoko-numeric';  }
+~ begin bibitem {id:"P4Spec"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"1"; caption:"$P4_{16}$ 1.2.0 specification&nl;n.d., "; data-line:"references.bib:68"; searchterm:"%24P4_%7B16%7D%24%201.2.0%20specification%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[1\]"}
+\/&ldquo;$P4_{16}$ 1.2.0 Specification.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"RFC2698"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"2"; caption:"A Two Rate Three Color Marker&nl;n.d., "; data-line:"references.bib:134"; searchterm:"A%20Two%20Rate%20Three%20Color%20Marker%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[2\]"}
+\/&ldquo;A Two Rate Three Color Marker.&rdquo; <https://tools.ietf.org/html/rfc2698>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4ComplexTypes"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"3"; caption:"Complex types in $P4_{16}$&nl;n.d., "; data-line:"references.bib:32"; searchterm:"Complex%20types%20in%20%24P4_%7B16%7D%24%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[3\]"}
+\/&ldquo;Complex Types in $P4_{16}$.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-p4-type>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"ProtoDefaults"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"4"; caption:"Default values for Protobuf 3 ($proto3$) fields&nl;n.d., "; data-line:"references.bib:37"; searchterm:"Default%20values%20for%20Protobuf%203%20%24proto3%24%20fields%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[4\]"}
+\/&ldquo;Default Values for Protobuf 3 ($proto3$) Fields.&rdquo; <https://developers.google.com/protocol-buffers/docs/proto3#default>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4Enums"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"5"; caption:"Enums in $P4_{16}$&nl;n.d., "; data-line:"references.bib:78"; searchterm:"Enums%20in%20%24P4_%7B16%7D%24%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[5\]"}
+\/&ldquo;Enums in $P4_{16}$.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-enum-types>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"APIVersioning"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"6"; caption:"Google Cloud APIs versioning&nl;n.d., "; data-line:"references.bib:119"; searchterm:"Google%20Cloud%20APIs%20versioning%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[6\]"}
+\/&ldquo;Google Cloud APIs Versioning.&rdquo; <https://cloud.google.com/apis/design/versioning>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"APIVersioningBackwardsCompatibility"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"7"; caption:"Google Cloud APIs versioning - Backwards-compatibility&nl;n.d., "; data-line:"references.bib:124"; searchterm:"Google%20Cloud%20APIs%20versioning%20%20Backwardscompatibility%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[7\]"}
+\/&ldquo;Google Cloud APIs Versioning - Backwards-Compatibility.&rdquo; <https://cloud.google.com/apis/design/versioning#backwards_compatibility>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"gRPCAuth"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"8"; caption:"gRPC Authentication&nl;n.d., "; data-line:"references.bib:149"; searchterm:"gRPC%20Authentication%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[8\]"}
+\/&ldquo;gRPC Authentication.&rdquo; <https://grpc.io/docs/guides/auth.html>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"gRPC"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"9"; caption:"gRPC main site&nl;n.d., "; data-line:"references.bib:7"; searchterm:"gRPC%20main%20site%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[9\]"}
+\/&ldquo;gRPC Main Site.&rdquo; <https://grpc.io>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"gRPCStreamC"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"10"; caption:"gRPC Streaming RPCs in C++&nl;n.d., "; data-line:"references.bib:144"; searchterm:"gRPC%20Streaming%20RPCs%20in%20C%2B%2B%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[10\]"}
+\/&ldquo;gRPC Streaming RPCs in C++.&rdquo; <https://grpc.io/docs/tutorials/basic/c.html#streaming-rpcs>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4NewTypes"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"11"; caption:"Introducing new types in $P4_{16}$&nl;n.d., "; data-line:"references.bib:114"; searchterm:"Introducing%20new%20types%20in%20%24P4_%7B16%7D%24%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[11\]"}
+\/&ldquo;Introducing New Types in $P4_{16}$.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-newtype>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4MatchTypes"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"12"; caption:"Match types in P4&nl;n.d., "; data-line:"references.bib:139"; searchterm:"Match%20types%20in%20P4%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[12\]"}
+\/&ldquo;Match Types in P4.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-match-kind-type>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4Concurrency"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"13"; caption:"P4 Concurrency Model&nl;n.d., "; data-line:"references.bib:174"; searchterm:"P4%20Concurrency%20Model%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[13\]"}
+\/&ldquo;P4 Concurrency Model.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-concurrency>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4RuntimeRepo"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"14"; caption:"p4lang/p4Runtime repository:P4Runtime Protobuf definition files and specification&nl;n.d., "; data-line:"references.bib:1"; searchterm:"p4lang%2Fp4Runtime%20repository%3AP4Runtime%20Protobuf%20definition%20files%20and%20specification%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[14\]"}
+\/&ldquo;p4lang/p4Runtime repository:P4Runtime Protobuf Definition Files and Specification.&rdquo; <https://github.com/p4lang/p4runtime>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"PIRepo"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"15"; caption:"p4lang/PI repository:Legacy repository for P4Runtime, includes reference implementation&nl;n.d., "; data-line:"references.bib:42"; searchterm:"p4lang%2FPI%20repository%3ALegacy%20repository%20for%20P4Runtime%2C%20includes%20reference%20implementation%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[15\]"}
+\/&ldquo;p4lang/PI repository:Legacy Repository for P4Runtime, Includes Reference Implementation.&rdquo; <https://github.com/p4lang/PI>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4APIWGCharter"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"16"; caption:"P4.org API Working Group Charter&nl;n.d., "; data-line:"references.bib:109"; searchterm:"P4.org%20API%20Working%20Group%20Charter%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[16\]"}
+\/&ldquo;P4.org API Working Group Charter.&rdquo; <https://p4.org/p4-spec/docs/P4_API_WG_charter.html>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4ActionAnnotations"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"17"; caption:"P4 standard annotations on table actions&nl;n.d., "; data-line:"references.bib:154"; searchterm:"P4%20standard%20annotations%20on%20table%20actions%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[17\]"}
+\/&ldquo;P4 Standard Annotations on Table Actions.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-table-action-anno>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"PSA"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"18"; caption:"Portable Switch Architecture specification (v1.1.0)&nl;n.d., "; data-line:"references.bib:73"; searchterm:"Portable%20Switch%20Architecture%20specification%20v1.1.0%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[18\]"}
+\/&ldquo;Portable Switch Architecture Specification (v1.1.0).&rdquo; <https://p4.org/p4-spec/docs/PSA-v1.1.0.html>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"ProtoOneOfBackwardsCompatibility"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"19"; caption:"Protobuf OneOf backwards-compatibility issues&nl;n.d., "; data-line:"references.bib:189"; searchterm:"Protobuf%20OneOf%20backwardscompatibility%20issues%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[19\]"}
+\/&ldquo;Protobuf OneOf Backwards-Compatibility Issues.&rdquo; <https://developers.google.com/protocol-buffers/docs/proto3#backwards-compatibility-issues>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"Proto"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"20"; caption:"Protocol buffers main site&nl;n.d., "; data-line:"references.bib:12"; searchterm:"Protocol%20buffers%20main%20site%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[20\]"}
+\/&ldquo;Protocol Buffers Main Site.&rdquo; <https://developers.google.com/protocol-buffers>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"PSAActionSelector"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"21"; caption:"PSA Action Selector&nl;n.d., "; data-line:"references.bib:159"; searchterm:"PSA%20Action%20Selector%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[21\]"}
+\/&ldquo;PSA Action Selector.&rdquo; <https://p4.org/p4-spec/docs/PSA-v1.1.0.html#sec-action-selector>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"PSAAtomicityOfControlPlaneOps"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"22"; caption:"PSA Atomicity of Control Plane Operations&nl;n.d., "; data-line:"references.bib:169"; searchterm:"PSA%20Atomicity%20of%20Control%20Plane%20Operations%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[22\]"}
+\/&ldquo;PSA Atomicity of Control Plane Operations.&rdquo; <https://p4.org/p4-spec/docs/PSA-v1.1.0.html#sec-atomicity-of-control-plane-api-operations>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"PSATranslation"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"23"; caption:"PSA Data Plane vs Control Plane Types&nl;n.d., "; data-line:"references.bib:179"; searchterm:"PSA%20Data%20Plane%20vs%20Control%20Plane%20Types%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[23\]"}
+\/&ldquo;PSA Data Plane vs Control Plane Types.&rdquo; <https://p4.org/p4-spec/docs/PSA-v1.1.0.html#sec-data-plane-vs-control-plane-values>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"PSAEmptyGroupActionAppendix"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"24"; caption:"PSA Empty Group Action Appendix&nl;n.d., "; data-line:"references.bib:164"; searchterm:"PSA%20Empty%20Group%20Action%20Appendix%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[24\]"}
+\/&ldquo;PSA Empty Group Action Appendix.&rdquo; <https://p4.org/p4-spec/docs/PSA-v1.1.0.html#appendix-empty-action-selector-groups>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4SelectExpr"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"25"; caption:"Select expressions in $P4_{16}$&nl;n.d., "; data-line:"references.bib:58"; searchterm:"Select%20expressions%20in%20%24P4_%7B16%7D%24%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[25\]"}
+\/&ldquo;Select Expressions in $P4_{16}$.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-select>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"SemVer"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"26"; caption:"Semantic versioning&nl;n.d., "; data-line:"references.bib:129"; searchterm:"Semantic%20versioning%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[26\]"}
+\/&ldquo;Semantic Versioning.&rdquo; <https://semver.org/>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"ProtoStatus"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"27"; caption:"status.proto:the Protobuf Status message&nl;n.d., "; data-line:"references.bib:98"; searchterm:"status.proto%3Athe%20Protobuf%20Status%20message%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[27\]"}
+\/&ldquo;Status.proto:the Protobuf Status Message.&rdquo; <https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4Revisions110"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"28"; caption:"Summary of changes made in $P4_{16}$ version 1.1.0&nl;n.d., "; data-line:"references.bib:63"; searchterm:"Summary%20of%20changes%20made%20in%20%24P4_%7B16%7D%24%20version%201.1.0%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[28\]"}
+\/&ldquo;Summary of Changes Made in $P4_{16}$ Version 1.1.0.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-summary-of-changes-made-in-version-110>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4TableProperties"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"29"; caption:"Table properties in $P4_{16}$&nl;n.d., "; data-line:"references.bib:48"; searchterm:"Table%20properties%20in%20%24P4_%7B16%7D%24%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[29\]"}
+\/&ldquo;Table Properties in $P4_{16}$.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-table-props>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"ProtoAny"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"30"; caption:"the Any Protobuf message&nl;n.d., "; data-line:"references.bib:83"; searchterm:"the%20Any%20Protobuf%20message%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[30\]"}
+\/&ldquo;The Any Protobuf Message.&rdquo; <https://developers.google.com/protocol-buffers/docs/proto3#any>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"gRPCStatus"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"31"; caption:"the gRPC $Status$ class&nl;n.d., "; data-line:"references.bib:88"; searchterm:"the%20gRPC%20%24Status%24%20class%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[31\]"}
+\/&ldquo;The gRPC $Status$ Class.&rdquo; <https://github.com/grpc/grpc/blob/master/include/grpcpp/impl/codegen/status.h>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"gRPCErrorDetails"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"32"; caption:"the gRPC C++ error details library&nl;n.d., "; data-line:"references.bib:104"; searchterm:"the%20gRPC%20C%2B%2B%20error%20details%20library%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[32\]"}
+\/&ldquo;The gRPC C++ Error Details Library.&rdquo; <https://github.com/grpc/grpc/blob/master/include/grpcpp/support/error_details.h>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"gRPCStatusCodes"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"33"; caption:"the gRPC canonical status codes&nl;n.d., "; data-line:"references.bib:93"; searchterm:"the%20gRPC%20canonical%20status%20codes%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[33\]"}
+\/&ldquo;The gRPC Canonical Status Codes.&rdquo; <https://developers.google.com/maps-booking/reference/grpc-api/status_codes>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"OpenConfig"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"34"; caption:"the OpenConfig project&nl;n.d., "; data-line:"references.bib:22"; searchterm:"the%20OpenConfig%20project%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[34\]"}
+\/&ldquo;The OpenConfig Project.&rdquo; <http://openconfig.net>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"ProtoMessageDifferencer"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"35"; caption:"The Protobuf MessageDifferencer in the C++ API&nl;n.d., "; data-line:"references.bib:184"; searchterm:"The%20Protobuf%20MessageDifferencer%20in%20the%20C%2B%2B%20API%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[35\]"}
+\/&ldquo;The Protobuf MessageDifferencer in the C++ API.&rdquo; <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.util.message_differencer>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"Stratum"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"36"; caption:"the Stratum project&nl;n.d., "; data-line:"references.bib:27"; searchterm:"the%20Stratum%20project%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[36\]"}
+\/&ldquo;The Stratum Project.&rdquo; <https://stratumproject.org/>{.bib-url}.
+~ end bibitem
+
+~ begin bibitem {id:"P4ValueSets"; cite-authors:"n.d."; cite-authors-long:"n.d."; cite-label:"37"; caption:"Value Sets in $P4_{16}$&nl;n.d., "; data-line:"references.bib:53"; searchterm:"Value%20Sets%20in%20%24P4_%7B16%7D%24%20n.d.%2C%20"; spellcheck:"false"; bibitem-label:"\[37\]"}
+\/&ldquo;Value Sets in $P4_{16}$.&rdquo; <https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-value-set>{.bib-url}.
+~ end bibitem
+
+~ end bibliography
