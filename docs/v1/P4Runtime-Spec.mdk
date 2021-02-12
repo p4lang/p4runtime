@@ -3723,17 +3723,17 @@ Which would be equivalent to the following updates, where `GROUP_ID`,
 
 ~ Begin Prototext
 action_profile_member {
-  action_profile_id: 1
+  action_profile_id: 0x11ab12cd
   member_id: MEMBER_ID_1
   action { /* set nexthop 1 */ }
 }
 action_profile_member {
-  action_profile_id: 1
+  action_profile_id: 0x11ab12cd
   member_id: MEMBER_ID_2
   action { /* set nexthop 2 */ }
 }
 action_profile_member {
-  action_profile_id: 1
+  action_profile_id: 0x11ab12cd
   member_id: MEMBER_ID_3
   action {  /* set nexthop 3 */ }
 }
