@@ -28,7 +28,7 @@
 \mdxauthorname{\mdline{211}The P4.org API Working Group}%mdk
 \mdxauthorend
 %mdk-data-line={220}
-\mdxtitlefooter{{\sffamily{\bfseries\mdline{220}2021-02-11}}}%mdk
+\mdxtitlefooter{{\sffamily{\bfseries\mdline{220}2021-02-12}}}%mdk
 \mdtitleauthorrunning{}{}\mdxtitleblockend%mdk
 
 %mdk-data-line={205}
@@ -3855,11 +3855,11 @@ value larger than the receiver expects, the receiver will detect it as out of
 range.%mdk
 
 %mdk-data-line={2221}
-\mdline{2221}In the P4Runtime API version 1.0, values of table key fields, action parameters,
-and fields in packet-in and packet-out headers between a device and the
-controller (see\mdline{2223}~\mdref{sec-controller-packet-meta}{6.4.6}\mdline{2223}), may not be of type \mdline{2223}\mdcode{{\mdfontfamily{LuxiMono}{\mdfontsize{\dimfont{0.75}}int\textless{}W\textgreater{}}}}\mdline{2223}.
-The rules for encoding signed values thus only apply to messages of type
-\mdline{2225}\mdcode{{\mdfontfamily{LuxiMono}{\mdfontsize{\dimfont{0.75}}P4Data}}}\mdline{2225} (see\mdline{2225}~\mdref{sec-p4data-in-p4runtime-proto}{8.5.3}\mdline{2225}).%mdk
+\mdline{2221}In the P4Runtime API version 1.0 (including minor version revisions), values
+of table key fields, action parameters, and fields in packet-in and packet-out
+headers between a device and the controller (see\mdline{2223}~\mdref{sec-controller-packet-meta}{6.4.6}\mdline{2223}),
+may not be of type \mdline{2224}\mdcode{{\mdfontfamily{LuxiMono}{\mdfontsize{\dimfont{0.75}}int\textless{}W\textgreater{}}}}\mdline{2224}. The rules for encoding signed values thus only
+apply to messages of type \mdline{2225}\mdcode{{\mdfontfamily{LuxiMono}{\mdfontsize{\dimfont{0.75}}P4Data}}}\mdline{2225} (see\mdline{2225}~\mdref{sec-p4data-in-p4runtime-proto}{8.5.3}\mdline{2225}).%mdk
 
 %mdk-data-line={2227}
 \mdline{2227}For a value of type \mdline{2227}\mdcode{{\mdfontfamily{LuxiMono}{\mdfontsize{\dimfont{0.75}}bit\textless{}W\textgreater{}}}}\mdline{2227}, the fewest number of bits required to represent
@@ -6133,17 +6133,17 @@ with the following one shot update:%mdk
 %mdk-data-line={3725}
 \begin{mdpre}%mdk
 \noindent{\mdfontfamily{LuxiMono}{\mdfontsize{\dimfont{0.75}}action\_profile\_member~\{\\
-~~action\_profile\_id:~{\mdcolor{purple}1}\\
+~~action\_profile\_id:~{\mdcolor{purple}0x11ab12cd}\\
 ~~member\_id:~MEMBER\_ID\_1\\
 ~~action~\{~/*~set~nexthop~{\mdcolor{purple}1}~*/~\}\\
 \}\\
 action\_profile\_member~\{\\
-~~action\_profile\_id:~{\mdcolor{purple}1}\\
+~~action\_profile\_id:~{\mdcolor{purple}0x11ab12cd}\\
 ~~member\_id:~MEMBER\_ID\_2\\
 ~~action~\{~/*~set~nexthop~{\mdcolor{purple}2}~*/~\}\\
 \}\\
 action\_profile\_member~\{\\
-~~action\_profile\_id:~{\mdcolor{purple}1}\\
+~~action\_profile\_id:~{\mdcolor{purple}0x11ab12cd}\\
 ~~member\_id:~MEMBER\_ID\_3\\
 ~~action~\{~~/*~set~nexthop~{\mdcolor{purple}3}~*/~\}\\
 \}\\
