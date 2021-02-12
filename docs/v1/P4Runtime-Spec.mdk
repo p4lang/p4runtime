@@ -2218,11 +2218,11 @@ either end of the message transmission.  If a message sender attempts to send a
 value larger than the receiver expects, the receiver will detect it as out of
 range.
 
-In the P4Runtime API version 1.0, values of table key fields, action parameters,
-and fields in packet-in and packet-out headers between a device and the
-controller (see [#sec-controller-packet-meta]), may not be of type `int<W>`.
-The rules for encoding signed values thus only apply to messages of type
-`P4Data` (see [#sec-p4data-in-p4runtime-proto]).
+In the P4Runtime API version 1.0 (including minor version revisions), values
+of table key fields, action parameters, and fields in packet-in and packet-out
+headers between a device and the controller (see [#sec-controller-packet-meta]),
+may not be of type `int<W>`. The rules for encoding signed values thus only
+apply to messages of type `P4Data` (see [#sec-p4data-in-p4runtime-proto]).
 
 For a value of type `bit<W>`, the fewest number of bits required to represent
 the integer value $V > 0$ is the smallest integer $A$ such that $V \leq 2^A -
