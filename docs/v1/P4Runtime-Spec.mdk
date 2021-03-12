@@ -4971,7 +4971,10 @@ message ReadRequest {
 
 The `device_id` uniquely identifies the target P4 device. If it does not match
 any of the devices known to the P4Runtime server, the server must return a
-`NOT_FOUND` error. The `entities` repeated field is a list of P4 entities, each
+`NOT_FOUND` error.
+If the `Read` is attempted before `ForwardingPipelineConfig` has been set, the
+server must return a `FAILED_PRECONDITION` error.
+The `entities` repeated field is a list of P4 entities, each
 acting as a query filter to be applied to P4 entity containers on the server.
 
 Since `ReadRequest`s do not mutate any state on the switch, they do not
