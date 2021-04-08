@@ -665,32 +665,32 @@ via `StreamChannel` RPC) for session management. The workflow is described as
 follows:
 
 * Each controller instance (&eg; a controller process) can participate in one or
-  more roles. For each (`device_id`, `role_id`), the controller receives an
+  more roles. For each (`device_id`, `role`), the controller receives an
   `election_id`. This `election_id` can be the same for different roles and/or
-  devices, as long as the tuple (`device_id`, `role_id`, `election_id`) is
-  unique. For each (`device_id`, `role_id`) that the controller wishes to
+  devices, as long as the tuple (`device_id`, `role`, `election_id`) is
+  unique. For each (`device_id`, `role`) that the controller wishes to
   control, it establishes a `StreamChannel` with the P4Runtime server
   responsible for that device, and sends a `MasterArbitrationUpdate` message
-  containing that tuple of (`device_id`, `role_id`, `election_id`) values. The
+  containing that tuple of (`device_id`, `role`, `election_id`) values. The
   P4Runtime server selects a primary independently for each (`device_id`,
-  `role_id`) pair. The primary is the client that has the highest `election_id`
+  `role`) pair. The primary is the client that has the highest `election_id`
   that the device has ever received for the same (`device_id`,
-  `role_id`) values.  A connection between a controller instance and a device id
+  `role`) values.  A connection between a controller instance and a device id
   --- which involves a persistent `StreamChannel` --- can be referred to as a
   P4Runtime client.
 
-  Note that the P4Runtime server does not assign a `role_id` or `election_id` to
+  Note that the P4Runtime server does not assign a `role` or `election_id` to
   any controller. It is up to an arbitration mechanism outside of the server to
   decide on the controller roles, and the `election_id` values used for each
   `StreamChannel`. The P4Runtime server only keeps track of the (`device_id`,
-  `role_id`, `election_id`) of each `StreamChannel` that has sent a successful
+  `role`, `election_id`) of each `StreamChannel` that has sent a successful
   `MasterArbitrationUpdate` message, and maintains the invariant that all such
   3-tuples are unique. A server must use all three of these values from a
   `WriteRequest` message to identify which client is making the `WriteRequest`,
   not only the `election_id`. This enables controllers to re-use the same
-  numeric `election_id` values across different (`device_id`, `role_id`)
+  numeric `election_id` values across different (`device_id`, `role`)
   pairs. P4Runtime does not require `election_id` values be reused across such
-  different (`device_id`, `role_id`) pairs; it allows it.
+  different (`device_id`, `role`) pairs; it allows it.
 
 * To start a controller session, a controller first opens a bidirectional stream
   channel to the server via the `StreamChannel` RPC for each device. This stream
@@ -699,7 +699,7 @@ follows:
     * **Session management:** As soon as the controller opens the stream
       channel, it sends a `StreamMessageRequest` message to the switch. The
       controller populates the `MasterArbitrationUpdate` field in this message
-      using its `role_id` and `election_id`, as well as the `device_id` of the
+      using its `role` and `election_id`, as well as the `device_id` of the
       device. Note that the `status` field in the `MasterArbitrationUpdate` is
       not populated by the controller. This field is populated by the P4Runtime
       server when it sends a response back to the client, as explained below.
@@ -720,14 +720,14 @@ follows:
   different devices. In this case, it is the responsibility of the P4Runtime
   server to keep track of the primary for each device (and role). More
   specifically, the P4Runtime server will know which stream corresponds to the
-  primary controller for each pair of (`device_id`, `role_id`) at any point of
+  primary controller for each pair of (`device_id`, `role`) at any point of
   time.
 
 * The streaming channel between the controller and the server defines the
   liveness of the controller session. The controller is considered "offline" or
   "dead" as soon as its stream channel to the switch is broken. When a primary
   channel gets broken: (i) an advisory message is sent to all other controllers
-  for that `device_id` and `role_id`, as described in the
+  for that `device_id` and `role`, as described in the
   [following section](#sec-arbitration-notification) (ii) the P4Runtime server
   will be without a primary controller, until a client sends a successful
   `MasterArbitrationUpdate` (as per the rules in a
@@ -758,7 +758,7 @@ information with unary RPC messages that identify which client they came from.
 Unary RPC messages include requests to write table entries in the data plane, or
 read state from the data plane, among others described later. P4Runtime relies
 on clients identifying themselves in every write request, by including the
-values `device_id`, `role_id`, and `election_id` in all write requests. The
+values `device_id`, `role`, and `election_id` in all write requests. The
 server trusts clients not to use a triple of values other than their own in
 their write requests. gRPC provides authentication methods [@gRPCAuth] that
 should be deployed to prevent untrusted clients from creating channels, and thus
@@ -767,10 +767,10 @@ from making changes or even reading the state of the server.
 ## Default Role
 
 A controller can omit the role message in `MasterArbitrationUpdate`. This
-implies the "default role", which corresponds to "full pipeline access". This
-also implies that a default role has a `role.id` of 0 (default). If using a
-default role, all RPCs from the controller (&eg; `Write`) must set the `role_id`
-to 0.
+implies the "default role", which corresponds to "full pipeline access".
+This also implies that a default role has a `role_id` of `""` (default).
+If using a default role, all RPCs from the controller (&eg; `Write`) must
+leave the `role` unset.
 
 ## Role Config { #sec-arbitration-role-config}
 
@@ -797,7 +797,7 @@ desired, the P4Runtime client(s) and server need to agree on a role definition
 scheme in an out-of-band fashion.
 
 It is the job of the P4Runtime server to remember the `role.config` for every
-`device_id` and `role_id` pair.
+`device_id` and `role` pair.
 
 ## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers { #sec-arbitration-updates }
 
@@ -809,19 +809,19 @@ It is the job of the P4Runtime server to remember the `role.config` for every
        `NOT_FOUND` error.
 
     2. If the `election_id` is set and is already used by another controller for
-       the same (`device_id`, `role_id`), the P4Runtime server shall terminate
+       the same (`device_id`, `role`), the P4Runtime server shall terminate
        the stream by returning an `INVALID_ARGUMENT` error.
 
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
 
-    4. If the number of open streams for the given (`device_id`, `role_id`)
+    4. If the number of open streams for the given (`device_id`, `role`)
        exceeds the supported limit, the P4Runtime server shall terminate the
        stream by returning a `RESOURCE_EXHAUSTED` error.
 
     5. Otherwise, the controller is added to a list of connected controllers for
-       the given (`device_id`, `role_id`) and the server remembers the
-       controllers `device_id`, `role_id` and `election_id` for this gRPC
+       the given (`device_id`, `role`) and the server remembers the
+       controllers `device_id`, `role` and `election_id` for this gRPC
        channel. See below for the rules to determine if this controller becomes
        a primary or backup, and what notifications are sent as a consequence.
 
@@ -832,7 +832,7 @@ It is the job of the P4Runtime server to remember the `role.config` for every
        stream, the P4Runtime server shall terminate the stream by returning a
        `FAILED_PRECONDITION` error.
 
-    2. If the `role.id` does not match the current `role_id` assigned to this
+    2. If the `role` does not match the current `role` assigned to this
        stream, the P4Runtime server shall terminate the stream by returning a
        `FAILED_PRECONDITION` error. If the controller wishes to change its role,
        it must close the current stream channel and open a new one.
@@ -842,7 +842,7 @@ It is the job of the P4Runtime server to remember the `role.config` for every
 
     4. If the `election_id` is set and is already used by another controller
        (excluding the controller making the request) for the same
-       (`device_id`, `role_id`), the P4Runtime server shall terminate the stream
+       (`device_id`, `role`), the P4Runtime server shall terminate the stream
        by returning an `INVALID_ARGUMENT` error.
 
     5. If the `election_id` matches the one assigned to this stream:
@@ -850,7 +850,7 @@ It is the job of the P4Runtime server to remember the `role.config` for every
         1. If the controller for this channel is the primary, then the server
           updates the `role.config` to the one specified in the
           `MasterArbitrationUpdate`. An advisory client arbitration message is
-          sent to all controllers for this `device_id` and `role_id` informing
+          sent to all controllers for this `device_id` and `role` informing
           them of the new `role.config`.  Since the format of `role.config` is
           out of scope for the P4Runtime specification, the server will send
           the advisory message for every update, even if the primary sets the
@@ -870,17 +870,17 @@ It is the job of the P4Runtime server to remember the `role.config` for every
 If the `MasterArbitrationUpdate` is accepted by either of the two steps above
 (cases 1.5. and 2.6. above), then the server determines if there are changes in
 the primary client. Let `election_id_past` be the highest election ID the server
-has ever seen for the given `device_id` and `role_id` (including the one of the
+has ever seen for the given `device_id` and `role` (including the one of the
 current primary if there is one).
 
 1. If `election_id` is greater than or equal to `election_id_past`, then the
    controller becomes primary. The server updates the role configuration to
    `role.config` for the given `role.id`. Furthermore:
 
-    1. If there was no primary for this `device_id` and `role_id` before and
+    1. If there was no primary for this `device_id` and `role` before and
        there are no `Write` requests still processing from a previous primary,
        then the server immediately sends an advisory notification to all
-       controllers for this `device_id` and `role_id`. See the
+       controllers for this `device_id` and `role`. See the
        [following section](#sec-arbitration-notification) for the format of the
        advisory message.
 
@@ -903,14 +903,14 @@ current primary if there is one).
         4. The server now accepts the current controller as the new primary,
            thus accepting `Write` requests from this controller. The server
            updates the highest election ID (&ie; `election_id_past`) it has seen
-           for this `device_id` and `role_id` to `election_id`.
+           for this `device_id` and `role` to `election_id`.
 
         5. The server notifies the new primary by sending the advisory message
            described in the [following section](#sec-arbitration-notification).
 
 2. Otherwise, the controller becomes a backup. If the controller was previously
    a primary (and downgraded itself), then an advisory message is sent to all
-   controllers for this `device_id` and `role_id`.  Otherwise, the advisory
+   controllers for this `device_id` and `role`.  Otherwise, the advisory
    message is only sent to the controller that sent the initial
    `MasterArbitrationUpdate`.  See the
    [following section](#sec-arbitration-notification) for the format of the
@@ -918,10 +918,10 @@ current primary if there is one).
 
 ## Client Arbitration Notifications { #sec-arbitration-notification}
 
-For any given `device_id` and `role_id`, any time a new primary is chosen, a
+For any given `device_id` and `role`, any time a new primary is chosen, a
 primary downgrades its status to a backup, a primary disconnects, or the
 `role.config` is updated by the primary, all controllers for that
-(`device_id`, `role_id`) are informed of this by sending a
+(`device_id`, `role`) are informed of this by sending a
 `StreamMessageResponse`. The `MasterArbitrationUpdate` is populated as follows:
 
 * `device_id` and `role.id` as given.
@@ -934,7 +934,7 @@ primary downgrades its status to a backup, a primary disconnects, or the
     * If there has not been any primary at all, the election_id is left unset.
 
     * Otherwise, `election_id` is set to the highest election ID that the server
-      has seen for this `device_id` and `role_id` (which is the `election_id` of
+      has seen for this `device_id` and `role` (which is the `election_id` of
       the current primary if there is any).
 
 * `status` is set differently based on whether the notification is sent to the
@@ -3194,6 +3194,8 @@ fields may be used to select and filter results:
 * `is_default_action`: If default (false), all non-default entries from the
   specified table will be considered. Otherwise, only the default entry will be
   considered.
+* `role`: If default (unset), all table entries will be considered. Otherwise,
+  table entries will be filtered based on the provided role value.
 
 For example, in order to read all entries from all tables from device 3, the
 client can use the following `ReadRequest` message.
@@ -4728,7 +4730,7 @@ defined as follows:
 ~ Begin Proto
 message WriteRequest {
   uint64 device_id = 1;
-  uint64 role_id = 2;
+  string role = 6;
   Uint128 election_id = 3;
   repeated Update updates = 4;
   enum Atomicity {
@@ -4740,7 +4742,7 @@ message WriteRequest {
 }
 ~ End Proto
 
-The `device_id` uniquely identifies the target P4 device. The `role_id` and
+The `device_id` uniquely identifies the target P4 device. The `role` and
 `election_id` define the client role and election-id as described in the
 [Primary-Backup Arbitration and Controller
 Replication](#sec-client-arbitration-and-controller-replication)
@@ -4748,10 +4750,10 @@ section. The server is expected to perform the following checks (in this order)
 before processing the `updates` list:
 
 1. If `device_id` does not match any of the devices known to the P4Runtime
-   server or if `role_id` does not match any of the roles for the device, the
+   server or if `role` does not match any of the roles for the device, the
    server must return a `NOT_FOUND` error.
 
-2. If the client is not the primary for (`device_id`, `role_id`) according to
+2. If the client is not the primary for (`device_id`, `role`) according to
    the `election_id` value, the server must return a `PERMISSION_DENIED` error.
 
 3. If the `Write` is attempted before a `ForwardingPipelineConfig` has been set,
@@ -5168,7 +5170,7 @@ message SetForwardingPipelineConfigRequest {
     RECONCILE_AND_COMMIT = 5;
   }
   uint64 device_id = 1;
-  uint64 role_id = 2;
+  string role = 6;
   Uint128 election_id = 3;
   Action action = 4;
   ForwardingPipelineConfig config = 5;
@@ -5179,10 +5181,10 @@ The server is expected to perform the following checks (in this order)
 before performing the required `action`:
 
 1. If `device_id` does not match any of the devices known to the P4Runtime
-   server or if `role_id` does not match any of the roles for the device, the
+   server or if `role` does not match any of the roles for the device, the
    server must return a `NOT_FOUND` error.
 
-2. If the client is not the primary for (`device_id`, `role_id`) according to
+2. If the client is not the primary for (`device_id`, `role`) according to
    the `election_id` value, the server must return a `PERMISSION_DENIED` error.
 
 The action is the type of configuration action requested, it can be one of:
@@ -5374,16 +5376,16 @@ it needs to start a controller session and become a "primary". To do so, the
 controller first opens a bidirectional stream channel to the server via
 `StreamChannel` for each device and sends a `StreamMessageRequest` message. The
 controller populates the `MasterArbitrationUpdate` field in this message using
-its `role_id` and `election_id` and the `device_id` of the device, as explained
+its `role` and `election_id` and the `device_id` of the device, as explained
 in detail in the [Client Arbitration and Controller
 Replication](#sec-client-arbitration-and-controller-replication)
-section. For any given `(device_id, role_id)`, the P4Runtime server keeps track
+section. For any given `(device_id, role)`, the P4Runtime server keeps track
 of the highest `election_id` that it has ever received. If a controller's
 `election_id` is equal to the highest `election_id` that the server has ever
 received, that controller is the primary. All other controllers are backups.
 Note that it is possible that all controllers are backups, and that there is no
 primary. There can be at most one primary, because for any given
-`(device_id, role_id)`, each connected controller has a unique `election_id`.
+`(device_id, role)`, each connected controller has a unique `election_id`.
 
 This invariant must be maintained across in-service software upgrades, and the
 P4Runtime server must remember the highest `election_id` after such a restart.
@@ -5412,7 +5414,7 @@ message MasterArbitrationUpdate {
 
 message Role {
   // Uniquely identifies this role.
-  uint64 id = 1;
+  string name = 3;
   // Describes the role configuration, i.e. what operations, P4 entities,
   // behaviors, etc. are in the scope of a given role. If config is not set
   // (default case), it implies all P4 objects and control behaviors are in

@@ -64,7 +64,8 @@ service P4Runtime {
 //------------------------------------------------------------------------------
 message WriteRequest {
   uint64 device_id = 1;
-  uint64 role_id = 2;
+  uint64 role_id = 2 [deprecated=true];
+  string role = 6;
   Uint128 election_id = 3;
   // The write batch, comprising a list of Update operations. The P4Runtime
   // server may arbitrarily reorder messages within a batch to maximize
@@ -103,6 +104,8 @@ message WriteResponse {
 
 message ReadRequest {
   uint64 device_id = 1;
+  // When specified, only return table entries for the given role.
+  string role = 3;
   repeated Entity entities = 2;
 }
 
@@ -582,7 +585,8 @@ message MasterArbitrationUpdate {
 
 message Role {
   // Uniquely identifies this role.
-  uint64 id = 1;
+  uint64 id = 1 [deprecated=true];
+  string name = 3;
   // Describes the role configuration, i.e. what operations, P4 entities,
   // behaviors, etc. are in the scope of a given role. If config is not set
   // (default case), it implies all P4 objects and control behaviors are in
@@ -685,7 +689,8 @@ message SetForwardingPipelineConfigRequest {
     RECONCILE_AND_COMMIT = 5;
   }
   uint64 device_id = 1;
-  uint64 role_id = 2;
+  uint64 role_id = 2 [deprecated=true];
+  string role = 6;
   Uint128 election_id = 3;
   Action action = 4;
   ForwardingPipelineConfig config = 5;

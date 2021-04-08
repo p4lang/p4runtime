@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='p4.v1',
   syntax='proto3',
   serialized_options=_b('Z$github.com/p4lang/p4runtime/go/p4/v1\370\001\001'),
-  serialized_pb=_b('\n\x15p4/v1/p4runtime.proto\x12\x05p4.v1\x1a\x19google/protobuf/any.proto\x1a\x17google/rpc/status.proto\x1a\x19p4/config/v1/p4info.proto\x1a\x12p4/v1/p4data.proto\"\xfa\x01\n\x0cWriteRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x0f\n\x07role_id\x18\x02 \x01(\x04\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12\x1e\n\x07updates\x18\x04 \x03(\x0b\x32\r.p4.v1.Update\x12\x30\n\tatomicity\x18\x05 \x01(\x0e\x32\x1d.p4.v1.WriteRequest.Atomicity\"O\n\tAtomicity\x12\x15\n\x11\x43ONTINUE_ON_ERROR\x10\x00\x12\x15\n\x11ROLLBACK_ON_ERROR\x10\x01\x12\x14\n\x10\x44\x41TAPLANE_ATOMIC\x10\x02\"\x0f\n\rWriteResponse\"A\n\x0bReadRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x1f\n\x08\x65ntities\x18\x02 \x03(\x0b\x32\r.p4.v1.Entity\"/\n\x0cReadResponse\x12\x1f\n\x08\x65ntities\x18\x01 \x03(\x0b\x32\r.p4.v1.Entity\"\x86\x01\n\x06Update\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.p4.v1.Update.Type\x12\x1d\n\x06\x65ntity\x18\x02 \x01(\x0b\x32\r.p4.v1.Entity\";\n\x04Type\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06INSERT\x10\x01\x12\n\n\x06MODIFY\x10\x02\x12\n\n\x06\x44\x45LETE\x10\x03\"\x87\x05\n\x06\x45ntity\x12*\n\x0c\x65xtern_entry\x18\x01 \x01(\x0b\x32\x12.p4.v1.ExternEntryH\x00\x12(\n\x0btable_entry\x18\x02 \x01(\x0b\x32\x11.p4.v1.TableEntryH\x00\x12;\n\x15\x61\x63tion_profile_member\x18\x03 \x01(\x0b\x32\x1a.p4.v1.ActionProfileMemberH\x00\x12\x39\n\x14\x61\x63tion_profile_group\x18\x04 \x01(\x0b\x32\x19.p4.v1.ActionProfileGroupH\x00\x12(\n\x0bmeter_entry\x18\x05 \x01(\x0b\x32\x11.p4.v1.MeterEntryH\x00\x12\x35\n\x12\x64irect_meter_entry\x18\x06 \x01(\x0b\x32\x17.p4.v1.DirectMeterEntryH\x00\x12,\n\rcounter_entry\x18\x07 \x01(\x0b\x32\x13.p4.v1.CounterEntryH\x00\x12\x39\n\x14\x64irect_counter_entry\x18\x08 \x01(\x0b\x32\x19.p4.v1.DirectCounterEntryH\x00\x12N\n\x1fpacket_replication_engine_entry\x18\t \x01(\x0b\x32#.p4.v1.PacketReplicationEngineEntryH\x00\x12/\n\x0fvalue_set_entry\x18\n \x01(\x0b\x32\x14.p4.v1.ValueSetEntryH\x00\x12.\n\x0eregister_entry\x18\x0b \x01(\x0b\x32\x14.p4.v1.RegisterEntryH\x00\x12*\n\x0c\x64igest_entry\x18\x0c \x01(\x0b\x32\x12.p4.v1.DigestEntryH\x00\x42\x08\n\x06\x65ntity\"]\n\x0b\x45xternEntry\x12\x16\n\x0e\x65xtern_type_id\x18\x01 \x01(\r\x12\x11\n\textern_id\x18\x02 \x01(\r\x12#\n\x05\x65ntry\x18\x03 \x01(\x0b\x32\x14.google.protobuf.Any\"\x90\x03\n\nTableEntry\x12\x10\n\x08table_id\x18\x01 \x01(\r\x12 \n\x05match\x18\x02 \x03(\x0b\x32\x11.p4.v1.FieldMatch\x12\"\n\x06\x61\x63tion\x18\x03 \x01(\x0b\x32\x12.p4.v1.TableAction\x12\x10\n\x08priority\x18\x04 \x01(\x05\x12\x1f\n\x13\x63ontroller_metadata\x18\x05 \x01(\x04\x42\x02\x18\x01\x12(\n\x0cmeter_config\x18\x06 \x01(\x0b\x32\x12.p4.v1.MeterConfig\x12(\n\x0c\x63ounter_data\x18\x07 \x01(\x0b\x32\x12.p4.v1.CounterData\x12\x19\n\x11is_default_action\x18\x08 \x01(\x08\x12\x17\n\x0fidle_timeout_ns\x18\t \x01(\x03\x12:\n\x13time_since_last_hit\x18\n \x01(\x0b\x32\x1d.p4.v1.TableEntry.IdleTimeout\x12\x10\n\x08metadata\x18\x0b \x01(\x0c\x1a!\n\x0bIdleTimeout\x12\x12\n\nelapsed_ns\x18\x01 \x01(\x03\"\xda\x03\n\nFieldMatch\x12\x10\n\x08\x66ield_id\x18\x01 \x01(\r\x12(\n\x05\x65xact\x18\x02 \x01(\x0b\x32\x17.p4.v1.FieldMatch.ExactH\x00\x12,\n\x07ternary\x18\x03 \x01(\x0b\x32\x19.p4.v1.FieldMatch.TernaryH\x00\x12$\n\x03lpm\x18\x04 \x01(\x0b\x32\x15.p4.v1.FieldMatch.LPMH\x00\x12(\n\x05range\x18\x06 \x01(\x0b\x32\x17.p4.v1.FieldMatch.RangeH\x00\x12.\n\x08optional\x18\x07 \x01(\x0b\x32\x1a.p4.v1.FieldMatch.OptionalH\x00\x12%\n\x05other\x18\x64 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x1a\x16\n\x05\x45xact\x12\r\n\x05value\x18\x01 \x01(\x0c\x1a&\n\x07Ternary\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x0c\n\x04mask\x18\x02 \x01(\x0c\x1a(\n\x03LPM\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x12\n\nprefix_len\x18\x02 \x01(\x05\x1a\"\n\x05Range\x12\x0b\n\x03low\x18\x01 \x01(\x0c\x12\x0c\n\x04high\x18\x02 \x01(\x0c\x1a\x19\n\x08Optional\x12\r\n\x05value\x18\x01 \x01(\x0c\x42\x12\n\x10\x66ield_match_type\"\xc1\x01\n\x0bTableAction\x12\x1f\n\x06\x61\x63tion\x18\x01 \x01(\x0b\x32\r.p4.v1.ActionH\x00\x12\"\n\x18\x61\x63tion_profile_member_id\x18\x02 \x01(\rH\x00\x12!\n\x17\x61\x63tion_profile_group_id\x18\x03 \x01(\rH\x00\x12\x42\n\x19\x61\x63tion_profile_action_set\x18\x04 \x01(\x0b\x32\x1d.p4.v1.ActionProfileActionSetH\x00\x42\x06\n\x04type\"j\n\x06\x41\x63tion\x12\x11\n\taction_id\x18\x01 \x01(\r\x12#\n\x06params\x18\x04 \x03(\x0b\x32\x13.p4.v1.Action.Param\x1a(\n\x05Param\x12\x10\n\x08param_id\x18\x02 \x01(\r\x12\r\n\x05value\x18\x03 \x01(\x0c\"T\n\x16\x41\x63tionProfileActionSet\x12:\n\x16\x61\x63tion_profile_actions\x18\x01 \x03(\x0b\x32\x1a.p4.v1.ActionProfileAction\"}\n\x13\x41\x63tionProfileAction\x12\x1d\n\x06\x61\x63tion\x18\x01 \x01(\x0b\x32\r.p4.v1.Action\x12\x0e\n\x06weight\x18\x02 \x01(\x05\x12\x13\n\x05watch\x18\x03 \x01(\x05\x42\x02\x18\x01H\x00\x12\x14\n\nwatch_port\x18\x04 \x01(\x0cH\x00\x42\x0c\n\nwatch_kind\"b\n\x13\x41\x63tionProfileMember\x12\x19\n\x11\x61\x63tion_profile_id\x18\x01 \x01(\r\x12\x11\n\tmember_id\x18\x02 \x01(\r\x12\x1d\n\x06\x61\x63tion\x18\x03 \x01(\x0b\x32\r.p4.v1.Action\"\xec\x01\n\x12\x41\x63tionProfileGroup\x12\x19\n\x11\x61\x63tion_profile_id\x18\x01 \x01(\r\x12\x10\n\x08group_id\x18\x02 \x01(\r\x12\x31\n\x07members\x18\x03 \x03(\x0b\x32 .p4.v1.ActionProfileGroup.Member\x12\x10\n\x08max_size\x18\x04 \x01(\x05\x1a\x64\n\x06Member\x12\x11\n\tmember_id\x18\x01 \x01(\r\x12\x0e\n\x06weight\x18\x02 \x01(\x05\x12\x13\n\x05watch\x18\x03 \x01(\x05\x42\x02\x18\x01H\x00\x12\x14\n\nwatch_port\x18\x04 \x01(\x0cH\x00\x42\x0c\n\nwatch_kind\"\x16\n\x05Index\x12\r\n\x05index\x18\x01 \x01(\x03\"_\n\nMeterEntry\x12\x10\n\x08meter_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12\"\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x12.p4.v1.MeterConfig\"^\n\x10\x44irectMeterEntry\x12&\n\x0btable_entry\x18\x01 \x01(\x0b\x32\x11.p4.v1.TableEntry\x12\"\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x12.p4.v1.MeterConfig\"G\n\x0bMeterConfig\x12\x0b\n\x03\x63ir\x18\x01 \x01(\x03\x12\x0e\n\x06\x63\x62urst\x18\x02 \x01(\x03\x12\x0b\n\x03pir\x18\x03 \x01(\x03\x12\x0e\n\x06pburst\x18\x04 \x01(\x03\"a\n\x0c\x43ounterEntry\x12\x12\n\ncounter_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12 \n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\x12.p4.v1.CounterData\"^\n\x12\x44irectCounterEntry\x12&\n\x0btable_entry\x18\x01 \x01(\x0b\x32\x11.p4.v1.TableEntry\x12 \n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x12.p4.v1.CounterData\"7\n\x0b\x43ounterData\x12\x12\n\nbyte_count\x18\x01 \x01(\x03\x12\x14\n\x0cpacket_count\x18\x02 \x01(\x03\"\x9c\x01\n\x1cPacketReplicationEngineEntry\x12;\n\x15multicast_group_entry\x18\x01 \x01(\x0b\x32\x1a.p4.v1.MulticastGroupEntryH\x00\x12\x37\n\x13\x63lone_session_entry\x18\x02 \x01(\x0b\x32\x18.p4.v1.CloneSessionEntryH\x00\x42\x06\n\x04type\"0\n\x07Replica\x12\x13\n\x0b\x65gress_port\x18\x01 \x01(\r\x12\x10\n\x08instance\x18\x02 \x01(\r\"S\n\x13MulticastGroupEntry\x12\x1a\n\x12multicast_group_id\x18\x01 \x01(\r\x12 \n\x08replicas\x18\x02 \x03(\x0b\x32\x0e.p4.v1.Replica\"\x80\x01\n\x11\x43loneSessionEntry\x12\x12\n\nsession_id\x18\x01 \x01(\r\x12 \n\x08replicas\x18\x02 \x03(\x0b\x32\x0e.p4.v1.Replica\x12\x18\n\x10\x63lass_of_service\x18\x03 \x01(\r\x12\x1b\n\x13packet_length_bytes\x18\x04 \x01(\x05\"2\n\x0eValueSetMember\x12 \n\x05match\x18\x01 \x03(\x0b\x32\x11.p4.v1.FieldMatch\"M\n\rValueSetEntry\x12\x14\n\x0cvalue_set_id\x18\x01 \x01(\r\x12&\n\x07members\x18\x02 \x03(\x0b\x32\x15.p4.v1.ValueSetMember\"^\n\rRegisterEntry\x12\x13\n\x0bregister_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12\x1b\n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\r.p4.v1.P4Data\"\x9c\x01\n\x0b\x44igestEntry\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12)\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x19.p4.v1.DigestEntry.Config\x1aO\n\x06\x43onfig\x12\x16\n\x0emax_timeout_ns\x18\x01 \x01(\x03\x12\x15\n\rmax_list_size\x18\x02 \x01(\x05\x12\x16\n\x0e\x61\x63k_timeout_ns\x18\x03 \x01(\x03\"\xce\x01\n\x14StreamMessageRequest\x12\x35\n\x0b\x61rbitration\x18\x01 \x01(\x0b\x32\x1e.p4.v1.MasterArbitrationUpdateH\x00\x12\"\n\x06packet\x18\x02 \x01(\x0b\x32\x10.p4.v1.PacketOutH\x00\x12*\n\ndigest_ack\x18\x03 \x01(\x0b\x32\x14.p4.v1.DigestListAckH\x00\x12%\n\x05other\x18\x04 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x42\x08\n\x06update\"E\n\tPacketOut\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\'\n\x08metadata\x18\x02 \x03(\x0b\x32\x15.p4.v1.PacketMetadata\"3\n\rDigestListAck\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12\x0f\n\x07list_id\x18\x02 \x01(\x04\"\xb1\x02\n\x15StreamMessageResponse\x12\x35\n\x0b\x61rbitration\x18\x01 \x01(\x0b\x32\x1e.p4.v1.MasterArbitrationUpdateH\x00\x12!\n\x06packet\x18\x02 \x01(\x0b\x32\x0f.p4.v1.PacketInH\x00\x12#\n\x06\x64igest\x18\x03 \x01(\x0b\x32\x11.p4.v1.DigestListH\x00\x12\x43\n\x19idle_timeout_notification\x18\x04 \x01(\x0b\x32\x1e.p4.v1.IdleTimeoutNotificationH\x00\x12%\n\x05other\x18\x05 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x12#\n\x05\x65rror\x18\x06 \x01(\x0b\x32\x12.p4.v1.StreamErrorH\x00\x42\x08\n\x06update\"D\n\x08PacketIn\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\'\n\x08metadata\x18\x02 \x03(\x0b\x32\x15.p4.v1.PacketMetadata\"`\n\nDigestList\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12\x0f\n\x07list_id\x18\x02 \x01(\x04\x12\x1b\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\r.p4.v1.P4Data\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\"4\n\x0ePacketMetadata\x12\x13\n\x0bmetadata_id\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\x0c\"\x90\x01\n\x17MasterArbitrationUpdate\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x19\n\x04role\x18\x02 \x01(\x0b\x32\x0b.p4.v1.Role\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12\"\n\x06status\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status\"8\n\x04Role\x12\n\n\x02id\x18\x01 \x01(\x04\x12$\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"T\n\x17IdleTimeoutNotification\x12&\n\x0btable_entry\x18\x01 \x03(\x0b\x32\x11.p4.v1.TableEntry\x12\x11\n\ttimestamp\x18\x02 \x01(\x03\"\xeb\x01\n\x0bStreamError\x12\x16\n\x0e\x63\x61nonical_code\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05space\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\x05\x12+\n\npacket_out\x18\x05 \x01(\x0b\x32\x15.p4.v1.PacketOutErrorH\x00\x12\x34\n\x0f\x64igest_list_ack\x18\x06 \x01(\x0b\x32\x19.p4.v1.DigestListAckErrorH\x00\x12(\n\x05other\x18\x07 \x01(\x0b\x32\x17.p4.v1.StreamOtherErrorH\x00\x42\t\n\x07\x64\x65tails\"6\n\x0ePacketOutError\x12$\n\npacket_out\x18\x01 \x01(\x0b\x32\x10.p4.v1.PacketOut\"C\n\x12\x44igestListAckError\x12-\n\x0f\x64igest_list_ack\x18\x01 \x01(\x0b\x32\x14.p4.v1.DigestListAck\"7\n\x10StreamOtherError\x12#\n\x05other\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"$\n\x07Uint128\x12\x0c\n\x04high\x18\x01 \x01(\x04\x12\x0b\n\x03low\x18\x02 \x01(\x04\"\xd9\x02\n\"SetForwardingPipelineConfigRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x0f\n\x07role_id\x18\x02 \x01(\x04\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12@\n\x06\x61\x63tion\x18\x04 \x01(\x0e\x32\x30.p4.v1.SetForwardingPipelineConfigRequest.Action\x12/\n\x06\x63onfig\x18\x05 \x01(\x0b\x32\x1f.p4.v1.ForwardingPipelineConfig\"w\n\x06\x41\x63tion\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06VERIFY\x10\x01\x12\x13\n\x0fVERIFY_AND_SAVE\x10\x02\x12\x15\n\x11VERIFY_AND_COMMIT\x10\x03\x12\n\n\x06\x43OMMIT\x10\x04\x12\x18\n\x14RECONCILE_AND_COMMIT\x10\x05\"%\n#SetForwardingPipelineConfigResponse\"\xac\x01\n\x18\x46orwardingPipelineConfig\x12$\n\x06p4info\x18\x01 \x01(\x0b\x32\x14.p4.config.v1.P4Info\x12\x18\n\x10p4_device_config\x18\x02 \x01(\x0c\x12\x36\n\x06\x63ookie\x18\x03 \x01(\x0b\x32&.p4.v1.ForwardingPipelineConfig.Cookie\x1a\x18\n\x06\x43ookie\x12\x0e\n\x06\x63ookie\x18\x01 \x01(\x04\"\xe5\x01\n\"GetForwardingPipelineConfigRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12M\n\rresponse_type\x18\x02 \x01(\x0e\x32\x36.p4.v1.GetForwardingPipelineConfigRequest.ResponseType\"]\n\x0cResponseType\x12\x07\n\x03\x41LL\x10\x00\x12\x0f\n\x0b\x43OOKIE_ONLY\x10\x01\x12\x15\n\x11P4INFO_AND_COOKIE\x10\x02\x12\x1c\n\x18\x44\x45VICE_CONFIG_AND_COOKIE\x10\x03\"V\n#GetForwardingPipelineConfigResponse\x12/\n\x06\x63onfig\x18\x01 \x01(\x0b\x32\x1f.p4.v1.ForwardingPipelineConfig\"t\n\x05\x45rror\x12\x16\n\x0e\x63\x61nonical_code\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05space\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\x05\x12%\n\x07\x64\x65tails\x18\x05 \x01(\x0b\x32\x14.google.protobuf.Any\"\x15\n\x13\x43\x61pabilitiesRequest\"5\n\x14\x43\x61pabilitiesResponse\x12\x1d\n\x15p4runtime_api_version\x18\x01 \x01(\t*\x8a\x01\n\x07SdnPort\x12\x14\n\x10SDN_PORT_UNKNOWN\x10\x00\x12\x10\n\x0cSDN_PORT_MIN\x10\x01\x12\x19\n\x0cSDN_PORT_MAX\x10\xff\xfd\xff\xff\xff\xff\xff\xff\xff\x01\x12!\n\x14SDN_PORT_RECIRCULATE\x10\xfa\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x19\n\x0cSDN_PORT_CPU\x10\xfd\xff\xff\xff\xff\xff\xff\xff\xff\x01\x32\x83\x04\n\tP4Runtime\x12\x34\n\x05Write\x12\x13.p4.v1.WriteRequest\x1a\x14.p4.v1.WriteResponse\"\x00\x12\x33\n\x04Read\x12\x12.p4.v1.ReadRequest\x1a\x13.p4.v1.ReadResponse\"\x00\x30\x01\x12v\n\x1bSetForwardingPipelineConfig\x12).p4.v1.SetForwardingPipelineConfigRequest\x1a*.p4.v1.SetForwardingPipelineConfigResponse\"\x00\x12v\n\x1bGetForwardingPipelineConfig\x12).p4.v1.GetForwardingPipelineConfigRequest\x1a*.p4.v1.GetForwardingPipelineConfigResponse\"\x00\x12P\n\rStreamChannel\x12\x1b.p4.v1.StreamMessageRequest\x1a\x1c.p4.v1.StreamMessageResponse\"\x00(\x01\x30\x01\x12I\n\x0c\x43\x61pabilities\x12\x1a.p4.v1.CapabilitiesRequest\x1a\x1b.p4.v1.CapabilitiesResponse\"\x00\x42)Z$github.com/p4lang/p4runtime/go/p4/v1\xf8\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x15p4/v1/p4runtime.proto\x12\x05p4.v1\x1a\x19google/protobuf/any.proto\x1a\x17google/rpc/status.proto\x1a\x19p4/config/v1/p4info.proto\x1a\x12p4/v1/p4data.proto\"\x8c\x02\n\x0cWriteRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x13\n\x07role_id\x18\x02 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04role\x18\x06 \x01(\t\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12\x1e\n\x07updates\x18\x04 \x03(\x0b\x32\r.p4.v1.Update\x12\x30\n\tatomicity\x18\x05 \x01(\x0e\x32\x1d.p4.v1.WriteRequest.Atomicity\"O\n\tAtomicity\x12\x15\n\x11\x43ONTINUE_ON_ERROR\x10\x00\x12\x15\n\x11ROLLBACK_ON_ERROR\x10\x01\x12\x14\n\x10\x44\x41TAPLANE_ATOMIC\x10\x02\"\x0f\n\rWriteResponse\"O\n\x0bReadRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x0c\n\x04role\x18\x03 \x01(\t\x12\x1f\n\x08\x65ntities\x18\x02 \x03(\x0b\x32\r.p4.v1.Entity\"/\n\x0cReadResponse\x12\x1f\n\x08\x65ntities\x18\x01 \x03(\x0b\x32\r.p4.v1.Entity\"\x86\x01\n\x06Update\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.p4.v1.Update.Type\x12\x1d\n\x06\x65ntity\x18\x02 \x01(\x0b\x32\r.p4.v1.Entity\";\n\x04Type\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06INSERT\x10\x01\x12\n\n\x06MODIFY\x10\x02\x12\n\n\x06\x44\x45LETE\x10\x03\"\x87\x05\n\x06\x45ntity\x12*\n\x0c\x65xtern_entry\x18\x01 \x01(\x0b\x32\x12.p4.v1.ExternEntryH\x00\x12(\n\x0btable_entry\x18\x02 \x01(\x0b\x32\x11.p4.v1.TableEntryH\x00\x12;\n\x15\x61\x63tion_profile_member\x18\x03 \x01(\x0b\x32\x1a.p4.v1.ActionProfileMemberH\x00\x12\x39\n\x14\x61\x63tion_profile_group\x18\x04 \x01(\x0b\x32\x19.p4.v1.ActionProfileGroupH\x00\x12(\n\x0bmeter_entry\x18\x05 \x01(\x0b\x32\x11.p4.v1.MeterEntryH\x00\x12\x35\n\x12\x64irect_meter_entry\x18\x06 \x01(\x0b\x32\x17.p4.v1.DirectMeterEntryH\x00\x12,\n\rcounter_entry\x18\x07 \x01(\x0b\x32\x13.p4.v1.CounterEntryH\x00\x12\x39\n\x14\x64irect_counter_entry\x18\x08 \x01(\x0b\x32\x19.p4.v1.DirectCounterEntryH\x00\x12N\n\x1fpacket_replication_engine_entry\x18\t \x01(\x0b\x32#.p4.v1.PacketReplicationEngineEntryH\x00\x12/\n\x0fvalue_set_entry\x18\n \x01(\x0b\x32\x14.p4.v1.ValueSetEntryH\x00\x12.\n\x0eregister_entry\x18\x0b \x01(\x0b\x32\x14.p4.v1.RegisterEntryH\x00\x12*\n\x0c\x64igest_entry\x18\x0c \x01(\x0b\x32\x12.p4.v1.DigestEntryH\x00\x42\x08\n\x06\x65ntity\"]\n\x0b\x45xternEntry\x12\x16\n\x0e\x65xtern_type_id\x18\x01 \x01(\r\x12\x11\n\textern_id\x18\x02 \x01(\r\x12#\n\x05\x65ntry\x18\x03 \x01(\x0b\x32\x14.google.protobuf.Any\"\x90\x03\n\nTableEntry\x12\x10\n\x08table_id\x18\x01 \x01(\r\x12 \n\x05match\x18\x02 \x03(\x0b\x32\x11.p4.v1.FieldMatch\x12\"\n\x06\x61\x63tion\x18\x03 \x01(\x0b\x32\x12.p4.v1.TableAction\x12\x10\n\x08priority\x18\x04 \x01(\x05\x12\x1f\n\x13\x63ontroller_metadata\x18\x05 \x01(\x04\x42\x02\x18\x01\x12(\n\x0cmeter_config\x18\x06 \x01(\x0b\x32\x12.p4.v1.MeterConfig\x12(\n\x0c\x63ounter_data\x18\x07 \x01(\x0b\x32\x12.p4.v1.CounterData\x12\x19\n\x11is_default_action\x18\x08 \x01(\x08\x12\x17\n\x0fidle_timeout_ns\x18\t \x01(\x03\x12:\n\x13time_since_last_hit\x18\n \x01(\x0b\x32\x1d.p4.v1.TableEntry.IdleTimeout\x12\x10\n\x08metadata\x18\x0b \x01(\x0c\x1a!\n\x0bIdleTimeout\x12\x12\n\nelapsed_ns\x18\x01 \x01(\x03\"\xda\x03\n\nFieldMatch\x12\x10\n\x08\x66ield_id\x18\x01 \x01(\r\x12(\n\x05\x65xact\x18\x02 \x01(\x0b\x32\x17.p4.v1.FieldMatch.ExactH\x00\x12,\n\x07ternary\x18\x03 \x01(\x0b\x32\x19.p4.v1.FieldMatch.TernaryH\x00\x12$\n\x03lpm\x18\x04 \x01(\x0b\x32\x15.p4.v1.FieldMatch.LPMH\x00\x12(\n\x05range\x18\x06 \x01(\x0b\x32\x17.p4.v1.FieldMatch.RangeH\x00\x12.\n\x08optional\x18\x07 \x01(\x0b\x32\x1a.p4.v1.FieldMatch.OptionalH\x00\x12%\n\x05other\x18\x64 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x1a\x16\n\x05\x45xact\x12\r\n\x05value\x18\x01 \x01(\x0c\x1a&\n\x07Ternary\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x0c\n\x04mask\x18\x02 \x01(\x0c\x1a(\n\x03LPM\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x12\n\nprefix_len\x18\x02 \x01(\x05\x1a\"\n\x05Range\x12\x0b\n\x03low\x18\x01 \x01(\x0c\x12\x0c\n\x04high\x18\x02 \x01(\x0c\x1a\x19\n\x08Optional\x12\r\n\x05value\x18\x01 \x01(\x0c\x42\x12\n\x10\x66ield_match_type\"\xc1\x01\n\x0bTableAction\x12\x1f\n\x06\x61\x63tion\x18\x01 \x01(\x0b\x32\r.p4.v1.ActionH\x00\x12\"\n\x18\x61\x63tion_profile_member_id\x18\x02 \x01(\rH\x00\x12!\n\x17\x61\x63tion_profile_group_id\x18\x03 \x01(\rH\x00\x12\x42\n\x19\x61\x63tion_profile_action_set\x18\x04 \x01(\x0b\x32\x1d.p4.v1.ActionProfileActionSetH\x00\x42\x06\n\x04type\"j\n\x06\x41\x63tion\x12\x11\n\taction_id\x18\x01 \x01(\r\x12#\n\x06params\x18\x04 \x03(\x0b\x32\x13.p4.v1.Action.Param\x1a(\n\x05Param\x12\x10\n\x08param_id\x18\x02 \x01(\r\x12\r\n\x05value\x18\x03 \x01(\x0c\"T\n\x16\x41\x63tionProfileActionSet\x12:\n\x16\x61\x63tion_profile_actions\x18\x01 \x03(\x0b\x32\x1a.p4.v1.ActionProfileAction\"}\n\x13\x41\x63tionProfileAction\x12\x1d\n\x06\x61\x63tion\x18\x01 \x01(\x0b\x32\r.p4.v1.Action\x12\x0e\n\x06weight\x18\x02 \x01(\x05\x12\x13\n\x05watch\x18\x03 \x01(\x05\x42\x02\x18\x01H\x00\x12\x14\n\nwatch_port\x18\x04 \x01(\x0cH\x00\x42\x0c\n\nwatch_kind\"b\n\x13\x41\x63tionProfileMember\x12\x19\n\x11\x61\x63tion_profile_id\x18\x01 \x01(\r\x12\x11\n\tmember_id\x18\x02 \x01(\r\x12\x1d\n\x06\x61\x63tion\x18\x03 \x01(\x0b\x32\r.p4.v1.Action\"\xec\x01\n\x12\x41\x63tionProfileGroup\x12\x19\n\x11\x61\x63tion_profile_id\x18\x01 \x01(\r\x12\x10\n\x08group_id\x18\x02 \x01(\r\x12\x31\n\x07members\x18\x03 \x03(\x0b\x32 .p4.v1.ActionProfileGroup.Member\x12\x10\n\x08max_size\x18\x04 \x01(\x05\x1a\x64\n\x06Member\x12\x11\n\tmember_id\x18\x01 \x01(\r\x12\x0e\n\x06weight\x18\x02 \x01(\x05\x12\x13\n\x05watch\x18\x03 \x01(\x05\x42\x02\x18\x01H\x00\x12\x14\n\nwatch_port\x18\x04 \x01(\x0cH\x00\x42\x0c\n\nwatch_kind\"\x16\n\x05Index\x12\r\n\x05index\x18\x01 \x01(\x03\"_\n\nMeterEntry\x12\x10\n\x08meter_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12\"\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x12.p4.v1.MeterConfig\"^\n\x10\x44irectMeterEntry\x12&\n\x0btable_entry\x18\x01 \x01(\x0b\x32\x11.p4.v1.TableEntry\x12\"\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x12.p4.v1.MeterConfig\"G\n\x0bMeterConfig\x12\x0b\n\x03\x63ir\x18\x01 \x01(\x03\x12\x0e\n\x06\x63\x62urst\x18\x02 \x01(\x03\x12\x0b\n\x03pir\x18\x03 \x01(\x03\x12\x0e\n\x06pburst\x18\x04 \x01(\x03\"a\n\x0c\x43ounterEntry\x12\x12\n\ncounter_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12 \n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\x12.p4.v1.CounterData\"^\n\x12\x44irectCounterEntry\x12&\n\x0btable_entry\x18\x01 \x01(\x0b\x32\x11.p4.v1.TableEntry\x12 \n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x12.p4.v1.CounterData\"7\n\x0b\x43ounterData\x12\x12\n\nbyte_count\x18\x01 \x01(\x03\x12\x14\n\x0cpacket_count\x18\x02 \x01(\x03\"\x9c\x01\n\x1cPacketReplicationEngineEntry\x12;\n\x15multicast_group_entry\x18\x01 \x01(\x0b\x32\x1a.p4.v1.MulticastGroupEntryH\x00\x12\x37\n\x13\x63lone_session_entry\x18\x02 \x01(\x0b\x32\x18.p4.v1.CloneSessionEntryH\x00\x42\x06\n\x04type\"0\n\x07Replica\x12\x13\n\x0b\x65gress_port\x18\x01 \x01(\r\x12\x10\n\x08instance\x18\x02 \x01(\r\"S\n\x13MulticastGroupEntry\x12\x1a\n\x12multicast_group_id\x18\x01 \x01(\r\x12 \n\x08replicas\x18\x02 \x03(\x0b\x32\x0e.p4.v1.Replica\"\x80\x01\n\x11\x43loneSessionEntry\x12\x12\n\nsession_id\x18\x01 \x01(\r\x12 \n\x08replicas\x18\x02 \x03(\x0b\x32\x0e.p4.v1.Replica\x12\x18\n\x10\x63lass_of_service\x18\x03 \x01(\r\x12\x1b\n\x13packet_length_bytes\x18\x04 \x01(\x05\"2\n\x0eValueSetMember\x12 \n\x05match\x18\x01 \x03(\x0b\x32\x11.p4.v1.FieldMatch\"M\n\rValueSetEntry\x12\x14\n\x0cvalue_set_id\x18\x01 \x01(\r\x12&\n\x07members\x18\x02 \x03(\x0b\x32\x15.p4.v1.ValueSetMember\"^\n\rRegisterEntry\x12\x13\n\x0bregister_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12\x1b\n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\r.p4.v1.P4Data\"\x9c\x01\n\x0b\x44igestEntry\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12)\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x19.p4.v1.DigestEntry.Config\x1aO\n\x06\x43onfig\x12\x16\n\x0emax_timeout_ns\x18\x01 \x01(\x03\x12\x15\n\rmax_list_size\x18\x02 \x01(\x05\x12\x16\n\x0e\x61\x63k_timeout_ns\x18\x03 \x01(\x03\"\xce\x01\n\x14StreamMessageRequest\x12\x35\n\x0b\x61rbitration\x18\x01 \x01(\x0b\x32\x1e.p4.v1.MasterArbitrationUpdateH\x00\x12\"\n\x06packet\x18\x02 \x01(\x0b\x32\x10.p4.v1.PacketOutH\x00\x12*\n\ndigest_ack\x18\x03 \x01(\x0b\x32\x14.p4.v1.DigestListAckH\x00\x12%\n\x05other\x18\x04 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x42\x08\n\x06update\"E\n\tPacketOut\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\'\n\x08metadata\x18\x02 \x03(\x0b\x32\x15.p4.v1.PacketMetadata\"3\n\rDigestListAck\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12\x0f\n\x07list_id\x18\x02 \x01(\x04\"\xb1\x02\n\x15StreamMessageResponse\x12\x35\n\x0b\x61rbitration\x18\x01 \x01(\x0b\x32\x1e.p4.v1.MasterArbitrationUpdateH\x00\x12!\n\x06packet\x18\x02 \x01(\x0b\x32\x0f.p4.v1.PacketInH\x00\x12#\n\x06\x64igest\x18\x03 \x01(\x0b\x32\x11.p4.v1.DigestListH\x00\x12\x43\n\x19idle_timeout_notification\x18\x04 \x01(\x0b\x32\x1e.p4.v1.IdleTimeoutNotificationH\x00\x12%\n\x05other\x18\x05 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x12#\n\x05\x65rror\x18\x06 \x01(\x0b\x32\x12.p4.v1.StreamErrorH\x00\x42\x08\n\x06update\"D\n\x08PacketIn\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\'\n\x08metadata\x18\x02 \x03(\x0b\x32\x15.p4.v1.PacketMetadata\"`\n\nDigestList\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12\x0f\n\x07list_id\x18\x02 \x01(\x04\x12\x1b\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\r.p4.v1.P4Data\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\"4\n\x0ePacketMetadata\x12\x13\n\x0bmetadata_id\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\x0c\"\x90\x01\n\x17MasterArbitrationUpdate\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x19\n\x04role\x18\x02 \x01(\x0b\x32\x0b.p4.v1.Role\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12\"\n\x06status\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status\"J\n\x04Role\x12\x0e\n\x02id\x18\x01 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04name\x18\x03 \x01(\t\x12$\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"T\n\x17IdleTimeoutNotification\x12&\n\x0btable_entry\x18\x01 \x03(\x0b\x32\x11.p4.v1.TableEntry\x12\x11\n\ttimestamp\x18\x02 \x01(\x03\"\xeb\x01\n\x0bStreamError\x12\x16\n\x0e\x63\x61nonical_code\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05space\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\x05\x12+\n\npacket_out\x18\x05 \x01(\x0b\x32\x15.p4.v1.PacketOutErrorH\x00\x12\x34\n\x0f\x64igest_list_ack\x18\x06 \x01(\x0b\x32\x19.p4.v1.DigestListAckErrorH\x00\x12(\n\x05other\x18\x07 \x01(\x0b\x32\x17.p4.v1.StreamOtherErrorH\x00\x42\t\n\x07\x64\x65tails\"6\n\x0ePacketOutError\x12$\n\npacket_out\x18\x01 \x01(\x0b\x32\x10.p4.v1.PacketOut\"C\n\x12\x44igestListAckError\x12-\n\x0f\x64igest_list_ack\x18\x01 \x01(\x0b\x32\x14.p4.v1.DigestListAck\"7\n\x10StreamOtherError\x12#\n\x05other\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"$\n\x07Uint128\x12\x0c\n\x04high\x18\x01 \x01(\x04\x12\x0b\n\x03low\x18\x02 \x01(\x04\"\xeb\x02\n\"SetForwardingPipelineConfigRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x13\n\x07role_id\x18\x02 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04role\x18\x06 \x01(\t\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12@\n\x06\x61\x63tion\x18\x04 \x01(\x0e\x32\x30.p4.v1.SetForwardingPipelineConfigRequest.Action\x12/\n\x06\x63onfig\x18\x05 \x01(\x0b\x32\x1f.p4.v1.ForwardingPipelineConfig\"w\n\x06\x41\x63tion\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06VERIFY\x10\x01\x12\x13\n\x0fVERIFY_AND_SAVE\x10\x02\x12\x15\n\x11VERIFY_AND_COMMIT\x10\x03\x12\n\n\x06\x43OMMIT\x10\x04\x12\x18\n\x14RECONCILE_AND_COMMIT\x10\x05\"%\n#SetForwardingPipelineConfigResponse\"\xac\x01\n\x18\x46orwardingPipelineConfig\x12$\n\x06p4info\x18\x01 \x01(\x0b\x32\x14.p4.config.v1.P4Info\x12\x18\n\x10p4_device_config\x18\x02 \x01(\x0c\x12\x36\n\x06\x63ookie\x18\x03 \x01(\x0b\x32&.p4.v1.ForwardingPipelineConfig.Cookie\x1a\x18\n\x06\x43ookie\x12\x0e\n\x06\x63ookie\x18\x01 \x01(\x04\"\xe5\x01\n\"GetForwardingPipelineConfigRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12M\n\rresponse_type\x18\x02 \x01(\x0e\x32\x36.p4.v1.GetForwardingPipelineConfigRequest.ResponseType\"]\n\x0cResponseType\x12\x07\n\x03\x41LL\x10\x00\x12\x0f\n\x0b\x43OOKIE_ONLY\x10\x01\x12\x15\n\x11P4INFO_AND_COOKIE\x10\x02\x12\x1c\n\x18\x44\x45VICE_CONFIG_AND_COOKIE\x10\x03\"V\n#GetForwardingPipelineConfigResponse\x12/\n\x06\x63onfig\x18\x01 \x01(\x0b\x32\x1f.p4.v1.ForwardingPipelineConfig\"t\n\x05\x45rror\x12\x16\n\x0e\x63\x61nonical_code\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05space\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\x05\x12%\n\x07\x64\x65tails\x18\x05 \x01(\x0b\x32\x14.google.protobuf.Any\"\x15\n\x13\x43\x61pabilitiesRequest\"5\n\x14\x43\x61pabilitiesResponse\x12\x1d\n\x15p4runtime_api_version\x18\x01 \x01(\t*\x8a\x01\n\x07SdnPort\x12\x14\n\x10SDN_PORT_UNKNOWN\x10\x00\x12\x10\n\x0cSDN_PORT_MIN\x10\x01\x12\x19\n\x0cSDN_PORT_MAX\x10\xff\xfd\xff\xff\xff\xff\xff\xff\xff\x01\x12!\n\x14SDN_PORT_RECIRCULATE\x10\xfa\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x19\n\x0cSDN_PORT_CPU\x10\xfd\xff\xff\xff\xff\xff\xff\xff\xff\x01\x32\x83\x04\n\tP4Runtime\x12\x34\n\x05Write\x12\x13.p4.v1.WriteRequest\x1a\x14.p4.v1.WriteResponse\"\x00\x12\x33\n\x04Read\x12\x12.p4.v1.ReadRequest\x1a\x13.p4.v1.ReadResponse\"\x00\x30\x01\x12v\n\x1bSetForwardingPipelineConfig\x12).p4.v1.SetForwardingPipelineConfigRequest\x1a*.p4.v1.SetForwardingPipelineConfigResponse\"\x00\x12v\n\x1bGetForwardingPipelineConfig\x12).p4.v1.GetForwardingPipelineConfigRequest\x1a*.p4.v1.GetForwardingPipelineConfigResponse\"\x00\x12P\n\rStreamChannel\x12\x1b.p4.v1.StreamMessageRequest\x1a\x1c.p4.v1.StreamMessageResponse\"\x00(\x01\x30\x01\x12I\n\x0c\x43\x61pabilities\x12\x1a.p4.v1.CapabilitiesRequest\x1a\x1b.p4.v1.CapabilitiesResponse\"\x00\x42)Z$github.com/p4lang/p4runtime/go/p4/v1\xf8\x01\x01\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,p4_dot_config_dot_v1_dot_p4info__pb2.DESCRIPTOR,p4_dot_v1_dot_p4data__pb2.DESCRIPTOR,])
 
@@ -57,8 +57,8 @@ _SDNPORT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=7179,
-  serialized_end=7317,
+  serialized_start=7247,
+  serialized_end=7385,
 )
 _sym_db.RegisterEnumDescriptor(_SDNPORT)
 
@@ -91,8 +91,8 @@ _WRITEREQUEST_ATOMICITY = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=303,
-  serialized_end=382,
+  serialized_start=321,
+  serialized_end=400,
 )
 _sym_db.RegisterEnumDescriptor(_WRITEREQUEST_ATOMICITY)
 
@@ -121,8 +121,8 @@ _UPDATE_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=593,
-  serialized_end=652,
+  serialized_start=625,
+  serialized_end=684,
 )
 _sym_db.RegisterEnumDescriptor(_UPDATE_TYPE)
 
@@ -159,8 +159,8 @@ _SETFORWARDINGPIPELINECONFIGREQUEST_ACTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6327,
-  serialized_end=6446,
+  serialized_start=6395,
+  serialized_end=6514,
 )
 _sym_db.RegisterEnumDescriptor(_SETFORWARDINGPIPELINECONFIGREQUEST_ACTION)
 
@@ -189,8 +189,8 @@ _GETFORWARDINGPIPELINECONFIGREQUEST_RESPONSETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6799,
-  serialized_end=6892,
+  serialized_start=6867,
+  serialized_end=6960,
 )
 _sym_db.RegisterEnumDescriptor(_GETFORWARDINGPIPELINECONFIGREQUEST_RESPONSETYPE)
 
@@ -215,23 +215,30 @@ _WRITEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
+      serialized_options=_b('\030\001'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='role', full_name='p4.v1.WriteRequest.role', index=2,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='election_id', full_name='p4.v1.WriteRequest.election_id', index=2,
+      name='election_id', full_name='p4.v1.WriteRequest.election_id', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='updates', full_name='p4.v1.WriteRequest.updates', index=3,
+      name='updates', full_name='p4.v1.WriteRequest.updates', index=4,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='atomicity', full_name='p4.v1.WriteRequest.atomicity', index=4,
+      name='atomicity', full_name='p4.v1.WriteRequest.atomicity', index=5,
       number=5, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -251,7 +258,7 @@ _WRITEREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=132,
-  serialized_end=382,
+  serialized_end=400,
 )
 
 
@@ -274,8 +281,8 @@ _WRITERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=384,
-  serialized_end=399,
+  serialized_start=402,
+  serialized_end=417,
 )
 
 
@@ -294,7 +301,14 @@ _READREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='entities', full_name='p4.v1.ReadRequest.entities', index=1,
+      name='role', full_name='p4.v1.ReadRequest.role', index=1,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='entities', full_name='p4.v1.ReadRequest.entities', index=2,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -312,8 +326,8 @@ _READREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=401,
-  serialized_end=466,
+  serialized_start=419,
+  serialized_end=498,
 )
 
 
@@ -343,8 +357,8 @@ _READRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=468,
-  serialized_end=515,
+  serialized_start=500,
+  serialized_end=547,
 )
 
 
@@ -382,8 +396,8 @@ _UPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=518,
-  serialized_end=652,
+  serialized_start=550,
+  serialized_end=684,
 )
 
 
@@ -493,8 +507,8 @@ _ENTITY = _descriptor.Descriptor(
       name='entity', full_name='p4.v1.Entity.entity',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=655,
-  serialized_end=1302,
+  serialized_start=687,
+  serialized_end=1334,
 )
 
 
@@ -538,8 +552,8 @@ _EXTERNENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1304,
-  serialized_end=1397,
+  serialized_start=1336,
+  serialized_end=1429,
 )
 
 
@@ -569,8 +583,8 @@ _TABLEENTRY_IDLETIMEOUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1767,
-  serialized_end=1800,
+  serialized_start=1799,
+  serialized_end=1832,
 )
 
 _TABLEENTRY = _descriptor.Descriptor(
@@ -669,8 +683,8 @@ _TABLEENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1400,
-  serialized_end=1800,
+  serialized_start=1432,
+  serialized_end=1832,
 )
 
 
@@ -700,8 +714,8 @@ _FIELDMATCH_EXACT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2090,
-  serialized_end=2112,
+  serialized_start=2122,
+  serialized_end=2144,
 )
 
 _FIELDMATCH_TERNARY = _descriptor.Descriptor(
@@ -737,8 +751,8 @@ _FIELDMATCH_TERNARY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2114,
-  serialized_end=2152,
+  serialized_start=2146,
+  serialized_end=2184,
 )
 
 _FIELDMATCH_LPM = _descriptor.Descriptor(
@@ -774,8 +788,8 @@ _FIELDMATCH_LPM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2154,
-  serialized_end=2194,
+  serialized_start=2186,
+  serialized_end=2226,
 )
 
 _FIELDMATCH_RANGE = _descriptor.Descriptor(
@@ -811,8 +825,8 @@ _FIELDMATCH_RANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2196,
-  serialized_end=2230,
+  serialized_start=2228,
+  serialized_end=2262,
 )
 
 _FIELDMATCH_OPTIONAL = _descriptor.Descriptor(
@@ -841,8 +855,8 @@ _FIELDMATCH_OPTIONAL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2232,
-  serialized_end=2257,
+  serialized_start=2264,
+  serialized_end=2289,
 )
 
 _FIELDMATCH = _descriptor.Descriptor(
@@ -916,8 +930,8 @@ _FIELDMATCH = _descriptor.Descriptor(
       name='field_match_type', full_name='p4.v1.FieldMatch.field_match_type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1803,
-  serialized_end=2277,
+  serialized_start=1835,
+  serialized_end=2309,
 )
 
 
@@ -971,8 +985,8 @@ _TABLEACTION = _descriptor.Descriptor(
       name='type', full_name='p4.v1.TableAction.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2280,
-  serialized_end=2473,
+  serialized_start=2312,
+  serialized_end=2505,
 )
 
 
@@ -1009,8 +1023,8 @@ _ACTION_PARAM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2541,
-  serialized_end=2581,
+  serialized_start=2573,
+  serialized_end=2613,
 )
 
 _ACTION = _descriptor.Descriptor(
@@ -1046,8 +1060,8 @@ _ACTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2475,
-  serialized_end=2581,
+  serialized_start=2507,
+  serialized_end=2613,
 )
 
 
@@ -1077,8 +1091,8 @@ _ACTIONPROFILEACTIONSET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2583,
-  serialized_end=2667,
+  serialized_start=2615,
+  serialized_end=2699,
 )
 
 
@@ -1132,8 +1146,8 @@ _ACTIONPROFILEACTION = _descriptor.Descriptor(
       name='watch_kind', full_name='p4.v1.ActionProfileAction.watch_kind',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2669,
-  serialized_end=2794,
+  serialized_start=2701,
+  serialized_end=2826,
 )
 
 
@@ -1177,8 +1191,8 @@ _ACTIONPROFILEMEMBER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2796,
-  serialized_end=2894,
+  serialized_start=2828,
+  serialized_end=2926,
 )
 
 
@@ -1232,8 +1246,8 @@ _ACTIONPROFILEGROUP_MEMBER = _descriptor.Descriptor(
       name='watch_kind', full_name='p4.v1.ActionProfileGroup.Member.watch_kind',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3033,
-  serialized_end=3133,
+  serialized_start=3065,
+  serialized_end=3165,
 )
 
 _ACTIONPROFILEGROUP = _descriptor.Descriptor(
@@ -1283,8 +1297,8 @@ _ACTIONPROFILEGROUP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2897,
-  serialized_end=3133,
+  serialized_start=2929,
+  serialized_end=3165,
 )
 
 
@@ -1314,8 +1328,8 @@ _INDEX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3135,
-  serialized_end=3157,
+  serialized_start=3167,
+  serialized_end=3189,
 )
 
 
@@ -1359,8 +1373,8 @@ _METERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3159,
-  serialized_end=3254,
+  serialized_start=3191,
+  serialized_end=3286,
 )
 
 
@@ -1397,8 +1411,8 @@ _DIRECTMETERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3256,
-  serialized_end=3350,
+  serialized_start=3288,
+  serialized_end=3382,
 )
 
 
@@ -1449,8 +1463,8 @@ _METERCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3352,
-  serialized_end=3423,
+  serialized_start=3384,
+  serialized_end=3455,
 )
 
 
@@ -1494,8 +1508,8 @@ _COUNTERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3425,
-  serialized_end=3522,
+  serialized_start=3457,
+  serialized_end=3554,
 )
 
 
@@ -1532,8 +1546,8 @@ _DIRECTCOUNTERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3524,
-  serialized_end=3618,
+  serialized_start=3556,
+  serialized_end=3650,
 )
 
 
@@ -1570,8 +1584,8 @@ _COUNTERDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3620,
-  serialized_end=3675,
+  serialized_start=3652,
+  serialized_end=3707,
 )
 
 
@@ -1611,8 +1625,8 @@ _PACKETREPLICATIONENGINEENTRY = _descriptor.Descriptor(
       name='type', full_name='p4.v1.PacketReplicationEngineEntry.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3678,
-  serialized_end=3834,
+  serialized_start=3710,
+  serialized_end=3866,
 )
 
 
@@ -1649,8 +1663,8 @@ _REPLICA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3836,
-  serialized_end=3884,
+  serialized_start=3868,
+  serialized_end=3916,
 )
 
 
@@ -1687,8 +1701,8 @@ _MULTICASTGROUPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3886,
-  serialized_end=3969,
+  serialized_start=3918,
+  serialized_end=4001,
 )
 
 
@@ -1739,8 +1753,8 @@ _CLONESESSIONENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3972,
-  serialized_end=4100,
+  serialized_start=4004,
+  serialized_end=4132,
 )
 
 
@@ -1770,8 +1784,8 @@ _VALUESETMEMBER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4102,
-  serialized_end=4152,
+  serialized_start=4134,
+  serialized_end=4184,
 )
 
 
@@ -1808,8 +1822,8 @@ _VALUESETENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4154,
-  serialized_end=4231,
+  serialized_start=4186,
+  serialized_end=4263,
 )
 
 
@@ -1853,8 +1867,8 @@ _REGISTERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4233,
-  serialized_end=4327,
+  serialized_start=4265,
+  serialized_end=4359,
 )
 
 
@@ -1898,8 +1912,8 @@ _DIGESTENTRY_CONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4407,
-  serialized_end=4486,
+  serialized_start=4439,
+  serialized_end=4518,
 )
 
 _DIGESTENTRY = _descriptor.Descriptor(
@@ -1935,8 +1949,8 @@ _DIGESTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4330,
-  serialized_end=4486,
+  serialized_start=4362,
+  serialized_end=4518,
 )
 
 
@@ -1990,8 +2004,8 @@ _STREAMMESSAGEREQUEST = _descriptor.Descriptor(
       name='update', full_name='p4.v1.StreamMessageRequest.update',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4489,
-  serialized_end=4695,
+  serialized_start=4521,
+  serialized_end=4727,
 )
 
 
@@ -2028,8 +2042,8 @@ _PACKETOUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4697,
-  serialized_end=4766,
+  serialized_start=4729,
+  serialized_end=4798,
 )
 
 
@@ -2066,8 +2080,8 @@ _DIGESTLISTACK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4768,
-  serialized_end=4819,
+  serialized_start=4800,
+  serialized_end=4851,
 )
 
 
@@ -2135,8 +2149,8 @@ _STREAMMESSAGERESPONSE = _descriptor.Descriptor(
       name='update', full_name='p4.v1.StreamMessageResponse.update',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4822,
-  serialized_end=5127,
+  serialized_start=4854,
+  serialized_end=5159,
 )
 
 
@@ -2173,8 +2187,8 @@ _PACKETIN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5129,
-  serialized_end=5197,
+  serialized_start=5161,
+  serialized_end=5229,
 )
 
 
@@ -2225,8 +2239,8 @@ _DIGESTLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5199,
-  serialized_end=5295,
+  serialized_start=5231,
+  serialized_end=5327,
 )
 
 
@@ -2263,8 +2277,8 @@ _PACKETMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5297,
-  serialized_end=5349,
+  serialized_start=5329,
+  serialized_end=5381,
 )
 
 
@@ -2315,8 +2329,8 @@ _MASTERARBITRATIONUPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5352,
-  serialized_end=5496,
+  serialized_start=5384,
+  serialized_end=5528,
 )
 
 
@@ -2333,9 +2347,16 @@ _ROLE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
+      serialized_options=_b('\030\001'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='p4.v1.Role.name', index=1,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='config', full_name='p4.v1.Role.config', index=1,
+      name='config', full_name='p4.v1.Role.config', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2353,8 +2374,8 @@ _ROLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5498,
-  serialized_end=5554,
+  serialized_start=5530,
+  serialized_end=5604,
 )
 
 
@@ -2391,8 +2412,8 @@ _IDLETIMEOUTNOTIFICATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5556,
-  serialized_end=5640,
+  serialized_start=5606,
+  serialized_end=5690,
 )
 
 
@@ -2467,8 +2488,8 @@ _STREAMERROR = _descriptor.Descriptor(
       name='details', full_name='p4.v1.StreamError.details',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5643,
-  serialized_end=5878,
+  serialized_start=5693,
+  serialized_end=5928,
 )
 
 
@@ -2498,8 +2519,8 @@ _PACKETOUTERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5880,
-  serialized_end=5934,
+  serialized_start=5930,
+  serialized_end=5984,
 )
 
 
@@ -2529,8 +2550,8 @@ _DIGESTLISTACKERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5936,
-  serialized_end=6003,
+  serialized_start=5986,
+  serialized_end=6053,
 )
 
 
@@ -2560,8 +2581,8 @@ _STREAMOTHERERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6005,
-  serialized_end=6060,
+  serialized_start=6055,
+  serialized_end=6110,
 )
 
 
@@ -2598,8 +2619,8 @@ _UINT128 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6062,
-  serialized_end=6098,
+  serialized_start=6112,
+  serialized_end=6148,
 )
 
 
@@ -2623,23 +2644,30 @@ _SETFORWARDINGPIPELINECONFIGREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
+      serialized_options=_b('\030\001'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='role', full_name='p4.v1.SetForwardingPipelineConfigRequest.role', index=2,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='election_id', full_name='p4.v1.SetForwardingPipelineConfigRequest.election_id', index=2,
+      name='election_id', full_name='p4.v1.SetForwardingPipelineConfigRequest.election_id', index=3,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='action', full_name='p4.v1.SetForwardingPipelineConfigRequest.action', index=3,
+      name='action', full_name='p4.v1.SetForwardingPipelineConfigRequest.action', index=4,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='config', full_name='p4.v1.SetForwardingPipelineConfigRequest.config', index=4,
+      name='config', full_name='p4.v1.SetForwardingPipelineConfigRequest.config', index=5,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2658,8 +2686,8 @@ _SETFORWARDINGPIPELINECONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6101,
-  serialized_end=6446,
+  serialized_start=6151,
+  serialized_end=6514,
 )
 
 
@@ -2682,8 +2710,8 @@ _SETFORWARDINGPIPELINECONFIGRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6448,
-  serialized_end=6485,
+  serialized_start=6516,
+  serialized_end=6553,
 )
 
 
@@ -2713,8 +2741,8 @@ _FORWARDINGPIPELINECONFIG_COOKIE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6636,
-  serialized_end=6660,
+  serialized_start=6704,
+  serialized_end=6728,
 )
 
 _FORWARDINGPIPELINECONFIG = _descriptor.Descriptor(
@@ -2757,8 +2785,8 @@ _FORWARDINGPIPELINECONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6488,
-  serialized_end=6660,
+  serialized_start=6556,
+  serialized_end=6728,
 )
 
 
@@ -2796,8 +2824,8 @@ _GETFORWARDINGPIPELINECONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6663,
-  serialized_end=6892,
+  serialized_start=6731,
+  serialized_end=6960,
 )
 
 
@@ -2827,8 +2855,8 @@ _GETFORWARDINGPIPELINECONFIGRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6894,
-  serialized_end=6980,
+  serialized_start=6962,
+  serialized_end=7048,
 )
 
 
@@ -2886,8 +2914,8 @@ _ERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6982,
-  serialized_end=7098,
+  serialized_start=7050,
+  serialized_end=7166,
 )
 
 
@@ -2910,8 +2938,8 @@ _CAPABILITIESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7100,
-  serialized_end=7121,
+  serialized_start=7168,
+  serialized_end=7189,
 )
 
 
@@ -2941,8 +2969,8 @@ _CAPABILITIESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7123,
-  serialized_end=7176,
+  serialized_start=7191,
+  serialized_end=7244,
 )
 
 _WRITEREQUEST.fields_by_name['election_id'].message_type = _UINT128
@@ -3678,9 +3706,12 @@ _sym_db.RegisterMessage(CapabilitiesResponse)
 
 
 DESCRIPTOR._options = None
+_WRITEREQUEST.fields_by_name['role_id']._options = None
 _TABLEENTRY.fields_by_name['controller_metadata']._options = None
 _ACTIONPROFILEACTION.fields_by_name['watch']._options = None
 _ACTIONPROFILEGROUP_MEMBER.fields_by_name['watch']._options = None
+_ROLE.fields_by_name['id']._options = None
+_SETFORWARDINGPIPELINECONFIGREQUEST.fields_by_name['role_id']._options = None
 
 _P4RUNTIME = _descriptor.ServiceDescriptor(
   name='P4Runtime',
@@ -3688,8 +3719,8 @@ _P4RUNTIME = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=7320,
-  serialized_end=7835,
+  serialized_start=7388,
+  serialized_end=7903,
   methods=[
   _descriptor.MethodDescriptor(
     name='Write',
