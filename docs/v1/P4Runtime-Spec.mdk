@@ -4785,10 +4785,10 @@ An update can be one of the following types:
 * `INSERT`: Inserts the given P4 entity in the entity container.
   The `entity` field always specifies the full state of the P4 entity.
   If the entity already exists, an `ALREADY_EXISTS` error is returned, and
-  the existing entity remains unchanged.
-  If the entity is malformed, an `INVALID_ARGUMENT` error is returned.
-  If the entity cannot be inserted because the container is already full,
-  a `RESOURCE_EXHAUSTED` error is returned.
+  the existing entity remains unchanged. If the entity is malformed, an
+  `INVALID_ARGUMENT` error is usually returned (unless a more specific error
+  code applies [@gRPCStatusCodes]). If the entity cannot be inserted because the
+  container is already full, a `RESOURCE_EXHAUSTED` error is returned.
 
 * `MODIFY`: Modifies the P4 entity to its new specified state. This uses
   *assign* or *full-snapshot* semantics, &ie; the entity field contains the
