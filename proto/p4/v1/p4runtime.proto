@@ -24,6 +24,7 @@ import "p4/v1/p4data.proto";
 package p4.v1;
 
 option go_package = "github.com/p4lang/p4runtime/go/p4/v1";
+option cc_enable_arenas = true;
 
 service P4Runtime {
   // Update one or more P4 entities on the target.
