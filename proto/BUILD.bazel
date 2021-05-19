@@ -60,6 +60,11 @@ cc_proto_library(
     deps = [":p4info_proto"],
 )
 
+go_proto_library(
+    name = "p4info_go_proto",
+    deps = [":p4info_proto"],
+)
+
 cc_proto_library(
     name = "p4data_cc_proto",
     deps = [":p4data_proto"],
