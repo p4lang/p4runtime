@@ -22,6 +22,15 @@ def p4runtime_deps():
             strip_prefix = "rules_proto-cfdc2fa31879c0aebe31ce7702b1a9c8a4be02d2",
             sha256 = "d8992e6eeec276d49f1d4e63cfa05bbed6d4a26cfe6ca63c972827a0d141ea3b",
         )
+    if not native.existing_rule("io_bazel_rules_go"):
+        http_archive(
+            name = "io_bazel_rules_go",
+            urls = [
+                "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.27.0/rules_go-v0.27.0.tar.gz",
+                "https://github.com/bazelbuild/rules_go/releases/download/v0.27.0/rules_go-v0.27.0.tar.gz",
+            ],
+            sha256 = "69de5c704a05ff37862f7e0f5534d4f479418afc21806c887db544a316f3cb6b",
+        )
     if not native.existing_rule("com_google_googleapis"):
         git_repository(
             name = "com_google_googleapis",

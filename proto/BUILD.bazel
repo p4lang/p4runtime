@@ -6,6 +6,8 @@ package(
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 load("@com_github_grpc_grpc//bazel:python_rules.bzl", "py_proto_library", "py_grpc_library")
+load("@io_bazel_rules_go//go:def.bzl", "GoLibrary")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
     name = "p4types_proto",
@@ -62,7 +64,11 @@ cc_proto_library(
 
 go_proto_library(
     name = "p4info_go_proto",
-    deps = [":p4info_proto"],
+    importpath = "github.com/p4lang/p4runtime/go/p4/config/v1",
+    protos = [
+        ":p4info_proto",
+        ":p4types_proto",
+    ],
 )
 
 cc_proto_library(
