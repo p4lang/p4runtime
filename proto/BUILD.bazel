@@ -105,11 +105,14 @@ go_proto_library(
     importpath = "github.com/p4lang/p4runtime/go/p4/v1",
     protos = [
         ":p4runtime_proto",
-        ":p4info_proto",
         ":p4data_proto",
-        "@com_google_googleapis//google/rpc:status_proto",
+    ],
+    deps = [
+        ":p4info_go_proto",
+        "@com_google_googleapis//google/rpc:status_go_proto",
     ],
 )
+
 
 cc_grpc_library(
     name = "p4runtime_cc_grpc",
