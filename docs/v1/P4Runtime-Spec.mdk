@@ -1610,12 +1610,12 @@ The `ActionProfile` message includes the following fields:
   Action Profile can hold, or, in the case of an Action Selector, the maximum
   sum of all member weights across all selector groups.
 
-* `max_group_size`, an `int32` which is 0 for an Action Profile and represents
-  the maximum sum of all member weights within any given selector group for an
-  Action Selector. `max_group_size` must be no larger than `size`.
-  PSA programs can use the `@max_group_size` annotation to provide this value
-  for Action Selectors. If the annotation is omitted, the P4Info field will
-  default to 0.
+* `max_group_size`, an `int32` which is 0 for an Action Profile, or, for an
+  Action Selector, represents the maximum sum of all member weights within any
+  given selector group. The `max_group_size` must be no larger than `size`. PSA
+  programs can use the `@max_group_size` annotation to provide this value for
+  Action Selectors. If the annotation is omitted, the P4Info field will default
+  to 0.
 
 ### `Counter` & `DirectCounter`
 
