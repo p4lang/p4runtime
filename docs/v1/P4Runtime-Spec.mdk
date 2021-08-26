@@ -859,7 +859,7 @@ current primary if there is one).
 
 1. If `election_id` is greater than or equal to `election_id_past`, then the
    controller becomes primary. The server updates the role configuration to
-   `role.config` for the given `role.id`. Furthermore:
+   `role.config` for the given `role`. Furthermore:
 
     1. If there was no primary for this `device_id` and `role` before and
        there are no `Write` requests still processing from a previous primary,
@@ -908,7 +908,7 @@ primary downgrades its status to a backup, a primary disconnects, or the
 (`device_id`, `role`) are informed of this by sending a
 `StreamMessageResponse`. The `MasterArbitrationUpdate` is populated as follows:
 
-* `device_id` and `role.id` as given.
+* `device_id` and `role` as given.
 
 * `role.config` is set to the role configuration the server received most
   recently in a `MasterArbitrationUpdate` from a primary.
