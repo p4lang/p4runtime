@@ -22,6 +22,7 @@ switched_rules_by_language(
     grpc = True,
     cc = True,
     python = True,
+    go = True,
 )
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")

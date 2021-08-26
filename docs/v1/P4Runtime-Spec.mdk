@@ -4968,6 +4968,7 @@ request is defined as:
 ~ Begin Proto
 message ReadRequest {
   uint64 device_id = 1;
+  string role = 3;
   repeated Entity entities = 2;
 }
 ~ End Proto
@@ -4977,6 +4978,8 @@ any of the devices known to the P4Runtime server, the server must return a
 `NOT_FOUND` error.
 If the `Read` is attempted before `ForwardingPipelineConfig` has been set, the
 server must return a `FAILED_PRECONDITION` error.
+The `role` field acts as a filter, restricting the reported entities based on
+the role to which the entity belongs.
 The `entities` repeated field is a list of P4 entities, each
 acting as a query filter to be applied to P4 entity containers on the server.
 
