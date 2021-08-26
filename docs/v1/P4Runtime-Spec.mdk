@@ -845,30 +845,14 @@ It is the job of the P4Runtime server to remember the `role.config` for every
        (`device_id`, `role`), the P4Runtime server shall terminate the stream
        by returning an `INVALID_ARGUMENT` error.
 
-    5. If the `election_id` matches the one assigned to this stream:
-
-        1. If the controller for this channel is the primary, then the server
-          updates the `role.config` to the one specified in the
-          `MasterArbitrationUpdate`. An advisory client arbitration message is
-          sent to all controllers for this `device_id` and `role` informing
-          them of the new `role.config`.  Since the format of `role.config` is
-          out of scope for the P4Runtime specification, the server will send
-          the advisory message for every update, even if the primary sets the
-          same `role.config` as it has before. See the [following
-          section](#sec-arbitration-notification) for the format of the
-          advisory message.
-
-        2. If the controller is a backup, this is a no-op and the `role.config`
-           is ignored. No response is sent to any controller.
-
-    6. Otherwise, the server updates the `election_id` it has stored for this
+    5. Otherwise, the server updates the `election_id` it has stored for this
        controller. This change might cause a change in the primary client (this
        controller might become primary, or the controller might have downgraded
        itself to a backup, see below), as well as notifications being sent to
        one or more controllers.
 
 If the `MasterArbitrationUpdate` is accepted by either of the two steps above
-(cases 1.5. and 2.6. above), then the server determines if there are changes in
+(cases 1.5. and 2.5. above), then the server determines if there are changes in
 the primary client. Let `election_id_past` be the highest election ID the server
 has ever seen for the given `device_id` and `role` (including the one of the
 current primary if there is one).
