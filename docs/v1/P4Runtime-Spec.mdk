@@ -858,8 +858,8 @@ has ever seen for the given `device_id` and `role` (including the one of the
 current primary if there is one).
 
 1. If `election_id` is greater than or equal to `election_id_past`, then the
-   controller becomes primary. The server updates the role configuration to
-   `role.config` for the given `role`. Furthermore:
+   controller becomes, or stays, primary. The server updates the role
+   configuration to `role.config` for the given `role`. Furthermore:
 
     1. If there was no primary for this `device_id` and `role` before and
        there are no `Write` requests still processing from a previous primary,
@@ -868,8 +868,9 @@ current primary if there is one).
        [following section](#sec-arbitration-notification) for the format of the
        advisory message.
 
-    2. If there was a previous primary or `Write` requests in flight, then the
-       server carries out the following steps (in this order):
+    2. If there was a previous primary, including this controller, or `Write`
+       requests in flight, then the server carries out the following steps
+       (in this order):
 
         1. The server stops accepting `Write` requests from the previous primary
            (if there is one). At this point, the server will reject all `Write`
