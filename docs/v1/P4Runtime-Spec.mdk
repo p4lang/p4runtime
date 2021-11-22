@@ -6167,7 +6167,7 @@ the purpose of adding features for the P4Runtime API.
 | `@description`           | See section [#sec-annotating-p4-entities-with-documentation] |
 | `@id`                    | See section [#sec-id-allocation] |
 | `@max_group_size`        | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
-| `@max_num_members`       | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
+| `@max_num_members`       | See section [#sec-p4info-action-profile] |
 | `@pkginfo`               | See section [#sec-annotating-p4-code-with-pkginfo] |
 | `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +--------------------------+---------------------------------------+
