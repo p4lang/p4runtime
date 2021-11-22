@@ -60,7 +60,7 @@ message PkgInfo {
   // Miscellaneous metadata, free-form; a way to extend PkgInfo
   repeated string annotations = 4;
   // Optional. If present, the location of `annotations[i]` is given by
- // `annotation_locations[i]`.
+  // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 10;
   // the target architecture, e.g. "psa"
   string arch = 5;
@@ -68,7 +68,8 @@ message PkgInfo {
   string organization = 6;
   // contact info for support,e.g. "tech-support@acme.org"
   string contact = 7;
-  // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
+  // url for more information, e.g.
+  // "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
   // Miscellaneous metadata, structured; a way to extend PkgInfo
   repeated StructuredAnnotation structured_annotations = 9;
@@ -136,7 +137,7 @@ message Preamble {
   string alias = 3;
   repeated string annotations = 4;
   // Optional. If present, the location of `annotations[i]` is given by
- // `annotation_locations[i]`.
+  // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 7;
   // Documentation of the entity
   Documentation doc = 5;
@@ -234,7 +235,7 @@ message ActionRef {
   Scope scope = 3;
   repeated string annotations = 2;
   // Optional. If present, the location of `annotations[i]` is given by
- // `annotation_locations[i]`.
+  // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 5;
   repeated StructuredAnnotation structured_annotations = 4;
 }
@@ -264,12 +265,15 @@ message ActionProfile {
   repeated uint32 table_ids = 2;
   // true iff the action profile used dynamic selection
   bool with_selector = 3;
-  // max number of weighted member entries in action profile (across all
-  // selector groups, if the action profile has a selector)
+  // max total weight of all member entries across all groups, or max number of
+  // member entries across all groups if the action profile does not have a
+  // selector
   int64 size = 4;
   // max number of weighted member entries in any given selector group, or 0 if
   // the action profile does not have a selector
   int32 max_group_size = 5;
+  // max number of member entries across all groups
+  int64 max_num_members = 6;
 }
 
 message CounterSpec {
