@@ -724,9 +724,9 @@ follows:
   time.
 
 * The streaming channel between the controller and the server defines the
-  liveness of the controller session. The controller is considered "offline" or
-  "dead" as soon as its stream channel to the switch is broken. When a primary
-  channel gets broken:
+  liveness of the controller session. The controller is considered "offline",
+  "disconnected", or "dead" as soon as its stream channel to the switch is
+  broken. When a primary channel gets broken:
   (i)  an advisory message is sent to all other controllers for that `device_id`
        and `role`, as described in a
        [later section](#sec-arbitration-notification); and
@@ -821,14 +821,14 @@ It is the job of the P4Runtime server to remember the `role.config` for every
        exceeds the supported limit, the P4Runtime server shall terminate the
        stream by returning a `RESOURCE_EXHAUSTED` error.
 
-    5. Otherwise, the controller is added to a list of connected controllers for
+    5. Otherwise, the controller is added to a list of live controllers for
        the given (`device_id`, `role`) and the server remembers the
        controllers `device_id`, `role` and `election_id` for this gRPC
        channel. See below for the rules to determine if this controller becomes
        a primary or backup, and what notifications are sent as a consequence.
 
 2. Otherwise, if the `MasterArbitrationUpdate` message is received from an
-   already connected controller:
+   already live controller:
 
     1. If the `device_id` does not match the one already assigned to this
        stream, the P4Runtime server shall terminate the stream by returning a
