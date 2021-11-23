@@ -744,7 +744,6 @@ follows:
   recommended to use TLS or similar encryption and authentication mechanisms to
   prevent eavesdropping attacks.
 
-
 gRPC enables the server to identify which client originated each message in the
 `StreamChannel` stream. For example, the C++ gRPC library [@gRPCStreamC] in
 synchronous mode enables a server process to cause a function to be called when
