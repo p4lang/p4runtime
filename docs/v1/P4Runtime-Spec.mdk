@@ -3326,7 +3326,7 @@ the server must handle the `meter_config`, `counter_data` and
 `meter_counter_data` fields for read and write requests, based on whether the
 fields are set or not. We do not cover error cases in the list, &ie; we assume
 that we are dealing with a table which is assigned a direct counter / a direct
-meter, and that the action being used for the table entry "executes" the direct 
+meter, and that the action being used for the table entry "executes" the direct
 resource appropriately.
 
 * `meter_config` field
@@ -3366,16 +3366,16 @@ resource appropriately.
 
 * `meter_counter_data` field
     * `WriteRequest (INSERT)`
-        * if **unset**: The initial value for all 3 counter entries is the default
-          (0).
-        * if **set**: The initial value for all 3 counter entries is the default (0).
-          Sub-field values, if any, are ignored. 
+        * if **unset**: The initial value for all 3 counter entries is the
+          default (0).
+        * if **set**: The initial value for all 3 counter entries is the
+	  default (0). Sub-field values, if any, are ignored.
     * `WriteRequest (MODIFY)`
         * if **unset**: All the 3 counter entries are unchanged.
-        * if **set**: All the 3 counters are reset to 0. Sub-field values, 
-          if any, are ignored. 
+        * if **set**: All the 3 counters are reset to 0. Sub-field values,
+          if any, are ignored.
     * `ReadRequest`
-        * if **unset**: The response does not include counter values 
+        * if **unset**: The response does not include counter values
           (`meter_counter_data` is unset in the response).
         * if **set**: The response includes all the 3 counter values read from
           the target.
@@ -4036,7 +4036,7 @@ A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
 Specifying `DirectMeterEntry` in an `Update` message of type `INSERT` or
 `DELETE` is not allowed, and the server must return the error code
 `INVALID_ARGUMENT` in that case. Targets not supporting per color meter
-counters can reject a write request that has this field set with an 
+counters can reject a write request that has this field set with an
 `UNIMPLEMENTED` error code.
 
 A client may use `ReadRequest` in two ways to read a `DirectMeter` config.
@@ -4116,12 +4116,12 @@ matching each color action that was taken.
 
 The `MeterCounterData` P4Runtime message represents the per color counters
 associated with the meter configuration. Whenever a meter is updated and returns
-a color, the corresponding color counter GREEN, YELLOW or RED is updated. 
+a color, the corresponding color counter GREEN, YELLOW or RED is updated.
 
-As seen above, these counters can be associated with a `DirectMeterEntry` or 
+As seen above, these counters can be associated with a `DirectMeterEntry` or
 `MeterEntry`. However, they are implementation specific and targets not capable
-of supporting these counters should return `UNIMPLEMENTED` if the field(s) was set
-in the initial read or write request.
+of supporting these counters should return `UNIMPLEMENTED` if the field(s) was
+set in the initial read or write request.
 
 ~ Begin Proto
 message MeterCounterData {
