@@ -2848,9 +2848,9 @@ the `TableEntry` entity, which has the following fields:
   counter entry attached to this table entry, if any. See [Direct
   resources](#sec-direct-resources) section for more information.
 
-* `meter_counter_data`, which is used to read and write the color counter values
-  for the direct meter entry attached to this table entry, if any. See [Direct
-  resources](#sec-direct-resources) section for more information.
+* `meter_counter_data`, which is used to read and write the per-color counter
+  values for the direct meter entry attached to this table entry, if any.
+  See [Direct resources](#sec-direct-resources) section for more information.
 
 * `is_default_action`, a boolean flag which indicates whether the table entry is
   the default entry for the table. See [Default entry](#sec-default-entry)
@@ -3976,13 +3976,13 @@ stream using two configured rates --- the Peak Information Rate (PIR) and
 Committed Information Rate (CIR), and their associated burst sizes --- and
 "marks" its packets as GREEN, YELLOW or RED based on the observed rate.
 
-`Meter` & `DirectMeter` have an additional field `counter_data` that holds
-the per color meter counter data. It has a granular list of the counters
-applicable to the possible meter color such as GREEN, YELLOW and RED. The unit
-of these counters is the same as the `counter_data` field. The primary purpose
-of the color counters is for debugging purposes. Note that certain
-implementations might not support these counters and it is okay to return an
-`UNIMPLEMENTED` error by the server in those circumstances.
+`Meter` & `DirectMeter` have an additional field `counter_data` that may hold
+per color counter data. It has a granular list of the counters applicable to the
+possible meter colors such as GREEN, YELLOW and RED. The counter associated with
+a specific color is incremented when a packet is "marked" with that color. The
+primary purpose of the color counters is for debugging purposes. Note that
+certain implementations might not support these counters and it is okay to
+return an `UNIMPLEMENTED` error by the server in those circumstances.
 
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
@@ -4026,12 +4026,12 @@ A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
   specified by the client. Note that if this Protobuf field is not set, the
   meter config is set to execute the default behavior (GREEN for all packets).
 
-* `counter_data` is used to set the per color counter values for the
-   corresponding meter entry to the default value of (0), which is
-   essentially clearing the counters. Targets not supporting this counter should
-   return `UNIMPLEMENTED` if any or all of the subfields are set. Note that if
-   this Protobuf field or any of the specific color <color> field is not set,
-   the counter value is not changed.
+* `counter_data` is used to set the per color counter values to the default
+  value of (0), which is essentially clearing the counters. If the field is
+  unset, the counter values are left untouched. If the field is set, targets
+  supporting this counter should reset all the color counters to (0),
+  irrespective of whether the sub-field is set or not, and targets not
+  supporting this counter should always return `UNIMPLEMENTED`.
 
 Specifying `DirectMeterEntry` in an `Update` message of type `INSERT` or
 `DELETE` is not allowed, and the server must return the error code
@@ -4049,8 +4049,9 @@ A client may use `ReadRequest` in two ways to read a `DirectMeter` config.
   in the `ReadRequest`. The `table_entry.match` field must match the
   `TableEntry` whose meter config is being read. If no such entry is found, the
   server returns the error code `NOT_FOUND`. Read responses also include the
-  per color counter data for the meter config, if supported and specified in
-  the request message.
+  per color counter data for the meter entry, if supported and specified in
+  the request message. Targets not supporting the color counters should return
+  `UNIMPLEMENTED`, if the field was set in the read request.
 
 ### `MeterEntry`
 
@@ -4109,10 +4110,6 @@ supported as follows:
   indirect meters in the array identified by the unique id `meter_id`.
 
 ### `MeterCounterData`
-
-Packets are marked as GREEN, YELLOW or RED based on the observed rate and the
-`MeterCounterData` helps to provide the detailed view of packets/bytes
-matching each color action that was taken.
 
 The `MeterCounterData` P4Runtime message represents the per color counters
 associated with the meter configuration. Whenever a meter is updated and returns
