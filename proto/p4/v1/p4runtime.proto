@@ -165,9 +165,9 @@ message TableEntry {
   // a Read RPC. This is deprecated in favor of the more flexible metadata
   // field.
   uint64 controller_metadata = 5 [deprecated=true];
-  // meter_config and counter_data are convenience fields that enable the
-  // controller to configure the direct resources associated with the table at
-  // the same time as a match-action entry is inserted or modified.
+  // meter_config, color_counters and counter_data are convenience fields that
+  // enable the controller to configure the direct resources associated with
+  // the table at the same time as a match-action entry is inserted or modified.
   // Table write:
   //   - If the table does not contain a direct resource, then setting the
   //     corresponding direct resource field in any table write operation will
@@ -206,6 +206,8 @@ message TableEntry {
   IdleTimeout time_since_last_hit = 10;
   // Arbitrary metadata from the controller that is opaque to the target.
   bytes metadata = 11;
+  // Per color counters for the MeterConfig.
+  ColorCounters color_counters = 12;
 }
 
 // field_match_type ::= exact | ternary | lpm | range | optional
@@ -347,6 +349,7 @@ message DirectMeterEntry {
   // table_entry.action is ignored. Other fields specify the match.
   TableEntry table_entry = 1;
   MeterConfig config = 2;
+  ColorCounters color_counters = 3;
 }
 
 // Modeled as RFC 2698: A Two Rate Three Color Marker (trTCM)
@@ -395,6 +398,16 @@ message DirectCounterEntry {
 message CounterData {
   int64 byte_count = 1;
   int64 packet_count = 2;
+}
+
+//------------------------------------------------------------------------------
+// For WriteRequest, Update.Type must be MODIFY.
+// For ReadRequest, the scope is defined as follows:
+// - Specific color counter for red, yellow or green if index is set.
+// - All 3 color counters if index is unset (default).
+message ColorCounters {
+  Index index = 1;
+  repeated CounterData color_data = 2;
 }
 
 //------------------------------------------------------------------------------
