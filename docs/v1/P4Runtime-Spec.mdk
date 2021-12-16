@@ -3369,11 +3369,13 @@ resource appropriately.
         * if **unset**: The initial value for all 3 counter entries is the
           default (0).
         * if **set**: The initial value for all 3 counter entries is the
-	  default (0). Sub-field values, if any, are ignored.
+	  default (0). Sub-field, if any, can only have zero (0) as its value.
+	  `INVALID_ARGUMENT` error is returned for any non-zero sub-field value.
     * `WriteRequest (MODIFY)`
         * if **unset**: All the 3 counter entries are unchanged.
-        * if **set**: All the 3 counters are reset to 0. Sub-field values,
-          if any, are ignored.
+        * if **set**: All the 3 counters are reset to 0. Sub-field, if any,
+	  can only have zero (0) as its value. `INVALID_ARGUMENT` error is
+	  returned for any non-zero sub-field value.
     * `ReadRequest`
         * if **unset**: The response does not include counter values
           (`meter_counter_data` is unset in the response).
