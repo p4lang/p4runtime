@@ -2848,7 +2848,7 @@ the `TableEntry` entity, which has the following fields:
   counter entry attached to this table entry, if any. See [Direct
   resources](#sec-direct-resources) section for more information.
 
-* `meter_counter_data`, which is used to read and write the per-color counter values
+* `meter_counter_data`, which is used to read and write the color counter values
   for the direct meter entry attached to this table entry, if any. See [Direct
   resources](#sec-direct-resources) section for more information.
 
@@ -3365,20 +3365,18 @@ meter, and that the action being used for the table entry "executes" the direct 
 
 * `meter_counter_data` field
     * `WriteRequest (INSERT)`
-        * if **unset**: The initial value for the counter entry is the default
+        * if **unset**: The initial value for all 3 counter entries is the default
           (0).
-        * if **set**: The initial value for the counter entry is the one
-          provided by the client, although most implementations might allow
-	  only a value (0) to be set.
+        * if **set**: The initial value for all 3 counter entries is the default (0).
+        Sub-field values, if any set, are ignored. 
     * `WriteRequest (MODIFY)`
-        * if **unset**: The counter entry's value is not changed.
-        * if **set**: The value provided by the client is written to the counter
-          entry, although most implementations might allow only a value (0)
-	  to be set.
+        * if **unset**: All the 3 counter entry's value is not changed.
+        * if **set**: All the 3 counter entry's value is reset to 0. 
     * `ReadRequest`
         * if **unset**: The response does not include the counter entry's value
           (`meter_counter_data` is unset in the response).
-        * if **set**: The response includes the meter entry's counter value read from the target.
+        * if **set**: The response includes all the 3 counter entry's value read from
+          the target.
 
 In its default configuration, a meter returns the GREEN color for every packet
 when it is executed. This default configuration can be achieved by leaving the
@@ -4123,9 +4121,9 @@ if not supported.
 
 ~ Begin Proto
 message MeterCounterData {
-  CounterData green_counter_data = 1;
-  CounterData yellow_counter_data = 2;
-  CounterData red_counter_data = 3;
+  CounterData green = 1;
+  CounterData yellow = 2;
+  CounterData red = 3;
 }
 ~ End Proto
 
