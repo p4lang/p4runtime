@@ -3980,11 +3980,12 @@ Committed Information Rate (CIR), and their associated burst sizes --- and
 
 `MeterEntry` & `DirectMeterEntry` have an additional field `counter_data` that
 may hold per color counter data for targets that support it, and that must
-always be unset for targets that do not support it. These provide a granular
-list of the counters applicable to the possible meter colors GREEN, YELLOW and
-RED. The counter associated with a specific color is incremented when a packet
-is "marked" with that color. The primary purpose of the color counters is for
-debugging purposes.
+always be unset for targets that do not support it. If set and unsupported by
+a target, an `UNIMPLEMENTED` error code should be returned. These counters
+provide a granular list of the counters applicable to the possible meter colors
+GREEN, YELLOW and RED. The counter associated with a specific color is
+incremented when a packet is "marked" with that color. The primary purpose of
+the color counters is for debugging purposes.
 
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
@@ -4033,14 +4034,11 @@ A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
   unset, the counter values are left untouched. If the field is set, targets
   supporting these counters should reset all the color counters to (0), if any
   of the sub-fields are set to a non-zero value, then an `INVALID_ARGUMENT`
-  error should be returned. Targets not supporting this counter should always
-  return an `UNIMPLEMENTED` error code.
+  error should be returned.
 
 Specifying `DirectMeterEntry` in an `Update` message of type `INSERT` or
 `DELETE` is not allowed, and the server must return the error code
-`INVALID_ARGUMENT` in that case. Targets not supporting per color meter
-counters must reject a write request that has this field set with an
-`UNIMPLEMENTED` error code.
+`INVALID_ARGUMENT` in that case.
 
 A client may use `ReadRequest` in two ways to read a `DirectMeter` config.
 
@@ -4053,8 +4051,7 @@ A client may use `ReadRequest` in two ways to read a `DirectMeter` config.
   `TableEntry` whose meter config is being read. If no such entry is found, the
   server returns the error code `NOT_FOUND`. Read responses also include the
   per color counter data for the meter entry, if supported and specified in
-  the request message. Targets not supporting the color counters should return
-  `UNIMPLEMENTED`, if the field was set in the read request.
+  the request message.
 
 ### `MeterEntry`
 
