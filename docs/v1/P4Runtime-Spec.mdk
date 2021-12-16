@@ -3976,13 +3976,13 @@ stream using two configured rates --- the Peak Information Rate (PIR) and
 Committed Information Rate (CIR), and their associated burst sizes --- and
 "marks" its packets as GREEN, YELLOW or RED based on the observed rate.
 
-`Meter` & `DirectMeter` have an additional field `counter_data` that may hold
-per color counter data. It has a granular list of the counters applicable to the
-possible meter colors such as GREEN, YELLOW and RED. The counter associated with
-a specific color is incremented when a packet is "marked" with that color. The
-primary purpose of the color counters is for debugging purposes. Note that
-certain implementations might not support these counters and it is okay to
-return an `UNIMPLEMENTED` error by the server in those circumstances.
+`MeterEntry` & `DirectMeterEntry` have an additional field `counter_data` that
+may hold per color counter data for targets that support it, and that must
+always be unset for targets that do not support it. These provide a granular
+list of the counters applicable to the possible meter colors GREEN, YELLOW and
+RED. The counter associated with a specific color is incremented when a packet
+is "marked" with that color. The primary purpose of the color counters is for
+debugging purposes.
 
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
@@ -4112,13 +4112,13 @@ supported as follows:
 ### `MeterCounterData`
 
 The `MeterCounterData` P4Runtime message represents the per color counters
-associated with the meter configuration. Whenever a meter is updated and returns
+associated with a meter entry. Whenever a meter is executed and returns
 a color, the corresponding color counter GREEN, YELLOW or RED is updated.
 
 As seen above, these counters can be associated with a `DirectMeterEntry` or
-`MeterEntry`. However, they are implementation specific and targets not capable
-of supporting these counters should return `UNIMPLEMENTED` if the field(s) was
-set in the initial read or write request.
+`MeterEntry`. Targets not capable of supporting these counters should return
+`UNIMPLEMENTED` if a `MeterCounterData` field was set in the initial read or
+write request.
 
 ~ Begin Proto
 message MeterCounterData {
