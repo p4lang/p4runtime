@@ -3980,12 +3980,12 @@ Committed Information Rate (CIR), and their associated burst sizes --- and
 
 `MeterEntry` & `DirectMeterEntry` have an additional field `counter_data` that
 may hold per color counter data for targets that support it, and that must
-always be unset for targets that do not support it. If set and unsupported by
-a target, an `UNIMPLEMENTED` error code should be returned. These counters
-provide a granular list of the counters applicable to the possible meter colors
-GREEN, YELLOW and RED. The counter associated with a specific color is
-incremented when a packet is "marked" with that color. The primary purpose
-of the color counters is for debugging purposes.
+always be unset for targets that do not support it. If set in a request and
+unsupported by a target, an `UNIMPLEMENTED` error code should be returned.
+These counters provide a granular list of the counters applicable to the
+possible meter colors GREEN, YELLOW and RED. The counter associated with a
+specific color is incremented when a packet is "marked" with that color. The
+primary purpose of the color counters is for debugging purposes.
 
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
