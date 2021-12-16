@@ -189,7 +189,7 @@ message TableEntry {
   //     be unset in the response as well.
   MeterConfig meter_config = 6;
   CounterData counter_data = 7;
-  // Per color counters for the meter_config.
+  // Per color counters for tables with a direct meter.
   MeterCounterData meter_counter_data = 12;
   // Set to true if the table entry is being used to update the non-const
   // default action of the table. If true, the "match" field must be empty and
