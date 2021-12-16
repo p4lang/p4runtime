@@ -4025,11 +4025,11 @@ A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
   meter config is set to execute the default behavior (GREEN for all packets).
 
 * `counter_data` is used to set the per color counter values for the
-   corresponding meter entry to the value specified by the client. Some
-   implementations might honor only a value of (0) to be set, which is
-   essentially clearing the counters. Note that if this Protobuf field or any
-   of the specific color <color> field is not set, the counter value is
-   not modified.
+   corresponding meter entry to the default value of (0), which is
+   essentially clearing the counters. Targets not supporting this counter should
+   return `UNIMPLEMENTED` if any or all of the subfields are set. Note that if
+   this Protobuf field or any of the specific color <color> field is not set,
+   the counter value is not changed.
 
 Specifying `DirectMeterEntry` in an `Update` message of type `INSERT` or
 `DELETE` is not allowed, and the server must return the error code
@@ -4115,9 +4115,8 @@ The `MeterCounterData` P4Runtime message represents the per color counters
 associated with the meter configuration. Whenever a meter is updated and returns
 a color, the corresponding color counter GREEN, YELLOW or RED is updated. 
 
-As seen above, these counter can be associated with a `DirectMeterEntry` or `MeterEntry`.
-However, they are implementation specific and will have the fields unset in the responses,
-if not supported.
+As seen above, these counters can be associated with a `DirectMeterEntry` or `MeterEntry`.
+However, they are implementation specific and targets not capable of supporting these counters should return `UNIMPLEMENTED` if the field(s) was set in the initial read or write request.
 
 ~ Begin Proto
 message MeterCounterData {
