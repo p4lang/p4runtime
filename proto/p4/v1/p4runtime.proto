@@ -178,16 +178,19 @@ message TableEntry {
   //     is always green.
   //   - When updating a table entry, leaving meter_config unset will reset the
   //     meter (if any) to its default configuration, while leaving counter_data
-  //     unset means that the counter (if any) will not be updated.
+  //     or meter_counter_data unset means that the counter (if any) will not be
+  //     updated.
   // Table read:
   //   - If the table does not contain a direct resource, then the corresponding
   //     field will not be set in the read table entry.
   //   - If meter_config is unset in the request, or if the meter has a default
   //     configuration, meter_config will not be set in the response.
-  //   - If counter_data is unset in the request, it will be unset in the
-  //     response as well.
+  //   - If counter_data or meter_counter_data is unset in the request, it will
+  //     be unset in the response as well.
   MeterConfig meter_config = 6;
   CounterData counter_data = 7;
+  // Per color counters for the meter_config.
+  MeterCounterData meter_counter_data = 12;
   // Set to true if the table entry is being used to update the non-const
   // default action of the table. If true, the "match" field must be empty and
   // the "action" field must be populated with a valid direct action.
@@ -349,7 +352,7 @@ message DirectMeterEntry {
   // table_entry.action is ignored. Other fields specify the match.
   TableEntry table_entry = 1;
   MeterConfig config = 2;
-  ColorCounters color_counters = 3;
+  MeterCounterData meter_counter_data = 3;
 }
 
 // Modeled as RFC 2698: A Two Rate Three Color Marker (trTCM)
@@ -398,6 +401,12 @@ message DirectCounterEntry {
 message CounterData {
   int64 byte_count = 1;
   int64 packet_count = 2;
+}
+
+message MeterCounterData {
+  CounterData green_counter_data = 1;
+  CounterData yellow_counter_data = 2;
+  CounterData red_counter_data = 3;
 }
 
 //------------------------------------------------------------------------------
