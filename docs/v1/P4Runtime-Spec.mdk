@@ -2855,7 +2855,7 @@ the `TableEntry` entity, which has the following fields:
   counter entry attached to this table entry, if any. See [Direct
   resources](#sec-direct-resources) section for more information.
 
-* `meter_counter_data`, which is used to read and write the color counter values
+* `meter_counter_data`, which is used to read and write the per-color counter values
   for the direct meter entry attached to this table entry, if any. See [Direct
   resources](#sec-direct-resources) section for more information.
 
@@ -3385,8 +3385,7 @@ meter, and that the action being used for the table entry "executes" the direct 
     * `ReadRequest`
         * if **unset**: The response does not include the counter entry's value
           (`meter_counter_data` is unset in the response).
-        * if **set**: The response includes the counter entry's value read from
-          the target.
+        * if **set**: The response includes the meter entry's counter value read from the target.
 
 In its default configuration, a meter returns the GREEN color for every packet
 when it is executed. This default configuration can be achieved by leaving the
