@@ -336,6 +336,7 @@ message MeterEntry {
   uint32 meter_id = 1;
   Index index = 2;
   MeterConfig config = 3;
+  MeterCounterData meter_counter_data = 4;
 }
 
 //------------------------------------------------------------------------------
