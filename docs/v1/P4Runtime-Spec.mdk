@@ -4047,7 +4047,8 @@ A client may use `ReadRequest` in two ways to read a `DirectMeter` config.
   in the `ReadRequest`. The `table_entry.match` field must match the
   `TableEntry` whose meter config is being read. If no such entry is found, the
   server returns the error code `NOT_FOUND`. Read responses also include the
-  per color counter data for the meter config, if supported.
+  per color counter data for the meter config, if supported and specified in
+  the request message.
 
 ### `MeterEntry`
 
