@@ -336,7 +336,7 @@ message MeterEntry {
   uint32 meter_id = 1;
   Index index = 2;
   MeterConfig config = 3;
-  MeterCounterData meter_counter_data = 4;
+  MeterCounterData counter_data = 4;
 }
 
 //------------------------------------------------------------------------------
@@ -352,7 +352,7 @@ message DirectMeterEntry {
   // table_entry.action is ignored. Other fields specify the match.
   TableEntry table_entry = 1;
   MeterConfig config = 2;
-  MeterCounterData meter_counter_data = 3;
+  MeterCounterData counter_data = 3;
 }
 
 // Modeled as RFC 2698: A Two Rate Three Color Marker (trTCM)
@@ -404,9 +404,9 @@ message CounterData {
 }
 
 message MeterCounterData {
-  CounterData green_counter_data = 1;
-  CounterData yellow_counter_data = 2;
-  CounterData red_counter_data = 3;
+  CounterData green = 1;
+  CounterData yellow = 2;
+  CounterData red = 3;
 }
 
 //------------------------------------------------------------------------------

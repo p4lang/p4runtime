@@ -1684,13 +1684,6 @@ type](#sec-user-defined-types). This is useful for
 [translation](#sec-psa-metadata-translation). The underlying built-in type must
 be a fixed-width unsigned bitstring (`bit<W>`).
 
-`Meter` & `DirectMeter` has an additional field `MeterCounterData` that holds
-the per color meter counter data. It has a granular list of the counters
-applicable to the possible color actions such as RED, YELLOW and GREEN.The unit
-of these counters are the same as the `counter_data` field. Note that certain
-implementations might not support these counters and it is okay to return an
-UNIMPLEMENTED error by the server in those circumstances.
-
 ### `ControllerPacketMetadata` { #sec-controller-packet-meta}
 
 `ControllerPacketMetadata` messages are used to describe any metadata associated
@@ -3983,10 +3976,11 @@ stream using two configured rates --- the Peak Information Rate (PIR) and
 Committed Information Rate (CIR), and their associated burst sizes --- and
 "marks" its packets as GREEN, YELLOW or RED based on the observed rate.
 
-`Meter` & `DirectMeter` has an additional field `MeterCounterData` that holds
+`Meter` & `DirectMeter` have an additional field `counter_data` that holds
 the per color meter counter data. It has a granular list of the counters
-applicable to the possible meter color such as GREEN, YELLOW and RED.The unit
-of these counters are the same as the `counter_data` field. Note that certain
+applicable to the possible meter color such as GREEN, YELLOW and RED. The unit
+of these counters is the same as the `counter_data` field. The primary purpose of
+the color counters is for debugging purposes. Note that certain
 implementations might not support these counters and it is okay to return an
 UNIMPLEMENTED error by the server in those circumstances.
 
@@ -4016,7 +4010,7 @@ direct meter entry can no longer be accessed.
 message DirectMeterEntry {
   TableEntry table_entry = 1;
   MeterConfig config = 2;
-  MeterCounterData meter_counter_data = 3;
+  MeterCounterData counter_data = 3;
 }
 ~ End Proto
 
@@ -4032,11 +4026,11 @@ A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
   specified by the client. Note that if this Protobuf field is not set, the
   meter config is set to execute the default behavior (GREEN for all packets).
 
-* `meter_counter_data` is used to set the per color counter values for the
+* `counter_data` is used to set the per color counter values for the
    corresponding meter entry to the value specified by the client. Some
    implementations might honor only a value of (0) to be set, which is
    essentially clearing the counters. Note that if this Protobuf field or any
-   of the specific color <color>_counter_data is not set, the counter value is
+   of the specific color <color> field is not set, the counter value is
    not modified.
 
 Specifying `DirectMeterEntry` in an `Update` message of type `INSERT` or
@@ -4072,7 +4066,7 @@ follows:
 * `config` is a Protobuf message of type `MeterConfig`, which represents the
   meter configuration.
 
-* `meter_counter_data` is a Protobuf message of type `MeterCounterData`, which
+* `counter_data` is a Protobuf message of type `MeterCounterData`, which
   represents the per color counter values associated with the corresponding
   meter.
 
@@ -4081,7 +4075,7 @@ message MeterEntry {
   uint32 meter_id = 1;
   Index index = 2;
   MeterConfig config = 3;
-  MeterCounterData meter_counter_data = 4;
+  MeterCounterData counter_data = 4;
 }
 ~ End Proto
 
@@ -4121,7 +4115,7 @@ matching each color action that was taken.
 
 The `MeterCounterData` P4Runtime message represents the per color counters
 associated with the meter configuration. Whenever a meter is updated and returns
-a color, the corresponding color counter GREEN, YELLOW or RED is updated.
+a color, the corresponding color counter GREEN, YELLOW or RED is updated. 
 
 As seen above, these counter can be associated with a `DirectMeterEntry` or `MeterEntry`.
 However, they are implementation specific and will have the fields unset in the responses,
