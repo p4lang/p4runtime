@@ -3979,10 +3979,10 @@ Committed Information Rate (CIR), and their associated burst sizes --- and
 `Meter` & `DirectMeter` have an additional field `counter_data` that holds
 the per color meter counter data. It has a granular list of the counters
 applicable to the possible meter color such as GREEN, YELLOW and RED. The unit
-of these counters is the same as the `counter_data` field. The primary purpose of
-the color counters is for debugging purposes. Note that certain
+of these counters is the same as the `counter_data` field. The primary purpose
+of the color counters is for debugging purposes. Note that certain
 implementations might not support these counters and it is okay to return an
-UNIMPLEMENTED error by the server in those circumstances.
+`UNIMPLEMENTED` error by the server in those circumstances.
 
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
