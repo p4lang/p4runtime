@@ -3373,9 +3373,9 @@ resource appropriately.
 	  `INVALID_ARGUMENT` error is returned for any non-zero sub-field value.
     * `WriteRequest (MODIFY)`
         * if **unset**: All the 3 counter entries are unchanged.
-        * if **set**: All the 3 counters are reset to 0. Sub-field, if any,
-	  can only have zero (0) as its value. `INVALID_ARGUMENT` error is
-	  returned for any non-zero sub-field value.
+        * if **set**: All the 3 counters are reset to 0. Sub-field, if any, can
+	  only have zero (0) as its value. `INVALID_ARGUMENT` error is returned
+	  for any non-zero sub-field value.
     * `ReadRequest`
         * if **unset**: The response does not include counter values
           (`meter_counter_data` is unset in the response).
