@@ -4031,14 +4031,15 @@ A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
 * `counter_data` is used to set the per color counter values to the default
   value of (0), which is essentially clearing the counters. If the field is
   unset, the counter values are left untouched. If the field is set, targets
-  supporting this counter should reset all the color counters to (0),
-  irrespective of whether the sub-field is set or not, and targets not
-  supporting this counter should always return `UNIMPLEMENTED`.
+  supporting these counters should reset all the color counters to (0), if any
+  of the sub-fields are set to a non-zero value, then an `INVALID_ARGUMENT`
+  error should be returned. Targets not supporting this counter should always
+  return an `UNIMPLEMENTED` error code.
 
 Specifying `DirectMeterEntry` in an `Update` message of type `INSERT` or
 `DELETE` is not allowed, and the server must return the error code
 `INVALID_ARGUMENT` in that case. Targets not supporting per color meter
-counters can reject a write request that has this field set with an
+counters must reject a write request that has this field set with an
 `UNIMPLEMENTED` error code.
 
 A client may use `ReadRequest` in two ways to read a `DirectMeter` config.
@@ -4119,8 +4120,8 @@ a color, the corresponding color counter GREEN, YELLOW or RED is updated.
 
 As seen above, these counters can be associated with a `DirectMeterEntry` or
 `MeterEntry`. Targets not capable of supporting these counters should return
-`UNIMPLEMENTED` if a `MeterCounterData` field was set in the initial read or
-write request.
+`UNIMPLEMENTED` if a `MeterCounterData` field was set in a read or write
+request.
 
 ~ Begin Proto
 message MeterCounterData {
