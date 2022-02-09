@@ -714,6 +714,16 @@ message ForwardingPipelineConfig {
     uint64 cookie = 1;
   }
   Cookie cookie = 3;
+  // Optional: Translations for `@p4runtime_translation`-annotated types, keyed
+  // by the unique resource identifiers (URIs) of the types.
+  map<string, P4RuntimeTranslation> p4runtime_translation_by_uri = 4;
+}
+
+message P4RuntimeTranslation {
+  // Specifies the mapping between values in P4 and values in P4Runtime for
+  // some type annotated with a `@p4runtime_translation`. The mapping is
+  // required to be reversible (injective).
+  map<bytes, bytes> p4_value_by_p4runtime_value;
 }
 
 message GetForwardingPipelineConfigRequest {
