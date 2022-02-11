@@ -31,7 +31,7 @@ docker run --rm -u "$(id -u):$(id -g)" \
        -e "GOPATH=/tmp/gopath" \
        -v "$(pwd):/p4runtime" \
        -w /p4runtime \
-       golang:1.14 bash -c "go mod tidy"
+       golang:1.17 bash -c "go mod tidy"
 
 rm -rf "$tmpdir"
 

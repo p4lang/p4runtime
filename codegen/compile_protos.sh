@@ -63,11 +63,7 @@ $PROTOC $PROTOS --grpc_out "$BUILD_DIR/grpc_out" --plugin=protoc-gen-grpc="$GRPC
 # an old version of the Python plugin.
 $PROTOC $PROTOS --python_out "$BUILD_DIR/py_out" $PROTOFLAGS --grpc_out "$BUILD_DIR/py_out" --plugin=protoc-gen-grpc="$GRPC_PY_PLUGIN"
 
-# our version of protoc-gen-go requires multiple invocations
-# see https://github.com/golang/protobuf/issues/39
-$PROTOC "$PROTO_DIR/p4/config/v1/p4types.proto" "$PROTO_DIR/p4/config/v1/p4info.proto" --go_out="$BUILD_DIR/go_out" $PROTOFLAGS
-$PROTOC "$PROTO_DIR/p4/v1/p4data.proto" --go_out="$BUILD_DIR/go_out" $PROTOFLAGS
-$PROTOC "$PROTO_DIR/p4/v1/p4runtime.proto" --go_out=plugins=grpc:"$BUILD_DIR/go_out" $PROTOFLAGS
+$PROTOC $PROTOS --go_out="$BUILD_DIR/go_out" --go-grpc_out="$BUILD_DIR/go_out" $PROTOFLAGS
 
 set +o xtrace
 
