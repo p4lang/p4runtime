@@ -1,0 +1,270 @@
+{
+  "_preamble": "",
+  "_comments": "",
+  "p4runtimerepo": {
+    "id": "P4RuntimeRepo",
+    "type": "webpage",
+    "title": "p4lang/p4Runtime repository:P4Runtime Protobuf definition files and specification",
+    "URL": "https://github.com/p4lang/p4runtime",
+    "_line": "references.bib:1"
+  },
+  "grpc": {
+    "id": "gRPC",
+    "type": "webpage",
+    "title": "gRPC main site",
+    "URL": "https://grpc.io",
+    "_line": "references.bib:7"
+  },
+  "proto": {
+    "id": "Proto",
+    "type": "webpage",
+    "title": "Protocol buffers main site",
+    "URL": "https://developers.google.com/protocol-buffers",
+    "_line": "references.bib:12"
+  },
+  "p4.org": {
+    "id": "P4.org",
+    "type": "webpage",
+    "title": "P4.org main site",
+    "URL": "https://p4.org/",
+    "_line": "references.bib:17"
+  },
+  "openconfig": {
+    "id": "OpenConfig",
+    "type": "webpage",
+    "title": "the OpenConfig project",
+    "URL": "http://openconfig.net",
+    "_line": "references.bib:22"
+  },
+  "stratum": {
+    "id": "Stratum",
+    "type": "webpage",
+    "title": "the Stratum project",
+    "URL": "https://stratumproject.org/",
+    "_line": "references.bib:27"
+  },
+  "p4complextypes": {
+    "id": "P4ComplexTypes",
+    "type": "webpage",
+    "title": "Complex types in $P4_{16}$",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-p4-type",
+    "_line": "references.bib:32"
+  },
+  "protodefaults": {
+    "id": "ProtoDefaults",
+    "type": "webpage",
+    "title": "Default values for Protobuf 3 ($proto3$) fields",
+    "URL": "https://developers.google.com/protocol-buffers/docs/proto3#default",
+    "_line": "references.bib:37"
+  },
+  "pirepo": {
+    "id": "PIRepo",
+    "type": "webpage",
+    "title": "p4lang/PI repository:Legacy repository for P4Runtime, includes reference implementation",
+    "URL": "https://github.com/p4lang/PI",
+    "_line": "references.bib:42"
+  },
+  "p4tableproperties": {
+    "id": "P4TableProperties",
+    "type": "webpage",
+    "title": "Table properties in $P4_{16}$",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-table-props",
+    "_line": "references.bib:48"
+  },
+  "p4valuesets": {
+    "id": "P4ValueSets",
+    "type": "webpage",
+    "title": "Value Sets in $P4_{16}$",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-value-set",
+    "_line": "references.bib:53"
+  },
+  "p4selectexpr": {
+    "id": "P4SelectExpr",
+    "type": "webpage",
+    "title": "Select expressions in $P4_{16}$",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-select",
+    "_line": "references.bib:58"
+  },
+  "p4revisions110": {
+    "id": "P4Revisions110",
+    "type": "webpage",
+    "title": "Summary of changes made in $P4_{16}$ version 1.1.0",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-summary-of-changes-made-in-version-110",
+    "_line": "references.bib:63"
+  },
+  "p4spec": {
+    "id": "P4Spec",
+    "type": "webpage",
+    "title": "$P4_{16}$ 1.2.0 specification",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html",
+    "_line": "references.bib:68"
+  },
+  "psa": {
+    "id": "PSA",
+    "type": "webpage",
+    "title": "Portable Switch Architecture specification (v1.1.0)",
+    "URL": "https://p4.org/p4-spec/docs/PSA-v1.1.0.html",
+    "_line": "references.bib:73"
+  },
+  "p4enums": {
+    "id": "P4Enums",
+    "type": "webpage",
+    "title": "Enums in $P4_{16}$",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-enum-types",
+    "_line": "references.bib:78"
+  },
+  "protoany": {
+    "id": "ProtoAny",
+    "type": "webpage",
+    "title": "the Any Protobuf message",
+    "URL": "https://developers.google.com/protocol-buffers/docs/proto3#any",
+    "_line": "references.bib:83"
+  },
+  "grpcstatus": {
+    "id": "gRPCStatus",
+    "type": "webpage",
+    "title": "the gRPC $Status$ class",
+    "URL": "https://github.com/grpc/grpc/blob/master/include/grpcpp/impl/codegen/status.h",
+    "_line": "references.bib:88"
+  },
+  "grpcstatuscodes": {
+    "id": "gRPCStatusCodes",
+    "type": "webpage",
+    "title": "the gRPC canonical status codes",
+    "URL": "https://developers.google.com/maps-booking/reference/grpc-api/status_codes",
+    "_line": "references.bib:93"
+  },
+  "protostatus": {
+    "id": "ProtoStatus",
+    "type": "webpage",
+    "title": "status.proto:the Protobuf Status message",
+    "URL": "https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto",
+    "_line": "references.bib:98"
+  },
+  "grpcerrordetails": {
+    "id": "gRPCErrorDetails",
+    "type": "webpage",
+    "title": "the gRPC C++ error details library",
+    "URL": "https://github.com/grpc/grpc/blob/master/include/grpcpp/support/error_details.h",
+    "_line": "references.bib:104"
+  },
+  "p4apiwgcharter": {
+    "id": "P4APIWGCharter",
+    "type": "webpage",
+    "title": "P4.org API Working Group Charter",
+    "URL": "https://p4.org/p4-spec/docs/P4_API_WG_charter.html",
+    "_line": "references.bib:109"
+  },
+  "p4newtypes": {
+    "id": "P4NewTypes",
+    "type": "webpage",
+    "title": "Introducing new types in $P4_{16}$",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-newtype",
+    "_line": "references.bib:114"
+  },
+  "apiversioning": {
+    "id": "APIVersioning",
+    "type": "webpage",
+    "title": "Google Cloud APIs versioning",
+    "URL": "https://cloud.google.com/apis/design/versioning",
+    "_line": "references.bib:119"
+  },
+  "apiversioningbackwardscompatibility": {
+    "id": "APIVersioningBackwardsCompatibility",
+    "type": "webpage",
+    "title": "Google Cloud APIs versioning - Backwards-compatibility",
+    "URL": "https://cloud.google.com/apis/design/versioning#backwards_compatibility",
+    "_line": "references.bib:124"
+  },
+  "semver": {
+    "id": "SemVer",
+    "type": "webpage",
+    "title": "Semantic versioning",
+    "URL": "https://semver.org/",
+    "_line": "references.bib:129"
+  },
+  "rfc2698": {
+    "id": "RFC2698",
+    "type": "webpage",
+    "title": "A Two Rate Three Color Marker",
+    "URL": "https://tools.ietf.org/html/rfc2698",
+    "_line": "references.bib:134"
+  },
+  "p4matchtypes": {
+    "id": "P4MatchTypes",
+    "type": "webpage",
+    "title": "Match types in P4",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-match-kind-type",
+    "_line": "references.bib:139"
+  },
+  "grpcstreamc": {
+    "id": "gRPCStreamC",
+    "type": "webpage",
+    "title": "gRPC Streaming RPCs in C++",
+    "URL": "https://grpc.io/docs/tutorials/basic/c.html#streaming-rpcs",
+    "_line": "references.bib:144"
+  },
+  "grpcauth": {
+    "id": "gRPCAuth",
+    "type": "webpage",
+    "title": "gRPC Authentication",
+    "URL": "https://grpc.io/docs/guides/auth.html",
+    "_line": "references.bib:149"
+  },
+  "p4actionannotations": {
+    "id": "P4ActionAnnotations",
+    "type": "webpage",
+    "title": "P4 standard annotations on table actions",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-table-action-anno",
+    "_line": "references.bib:154"
+  },
+  "psaactionselector": {
+    "id": "PSAActionSelector",
+    "type": "webpage",
+    "title": "PSA Action Selector",
+    "URL": "https://p4.org/p4-spec/docs/PSA-v1.1.0.html#sec-action-selector",
+    "_line": "references.bib:159"
+  },
+  "psaemptygroupactionappendix": {
+    "id": "PSAEmptyGroupActionAppendix",
+    "type": "webpage",
+    "title": "PSA Empty Group Action Appendix",
+    "URL": "https://p4.org/p4-spec/docs/PSA-v1.1.0.html#appendix-empty-action-selector-groups",
+    "_line": "references.bib:164"
+  },
+  "psaatomicityofcontrolplaneops": {
+    "id": "PSAAtomicityOfControlPlaneOps",
+    "type": "webpage",
+    "title": "PSA Atomicity of Control Plane Operations",
+    "URL": "https://p4.org/p4-spec/docs/PSA-v1.1.0.html#sec-atomicity-of-control-plane-api-operations",
+    "_line": "references.bib:169"
+  },
+  "p4concurrency": {
+    "id": "P4Concurrency",
+    "type": "webpage",
+    "title": "P4 Concurrency Model",
+    "URL": "https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-concurrency",
+    "_line": "references.bib:174"
+  },
+  "psatranslation": {
+    "id": "PSATranslation",
+    "type": "webpage",
+    "title": "PSA Data Plane vs Control Plane Types",
+    "URL": "https://p4.org/p4-spec/docs/PSA-v1.1.0.html#sec-data-plane-vs-control-plane-values",
+    "_line": "references.bib:179"
+  },
+  "protomessagedifferencer": {
+    "id": "ProtoMessageDifferencer",
+    "type": "webpage",
+    "title": "The Protobuf MessageDifferencer in the C++ API",
+    "URL": "https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.util.message_differencer",
+    "_line": "references.bib:184"
+  },
+  "protooneofbackwardscompatibility": {
+    "id": "ProtoOneOfBackwardsCompatibility",
+    "type": "webpage",
+    "title": "Protobuf OneOf backwards-compatibility issues",
+    "URL": "https://developers.google.com/protocol-buffers/docs/proto3#backwards-compatibility-issues",
+    "_line": "references.bib:189"
+  }
+}
