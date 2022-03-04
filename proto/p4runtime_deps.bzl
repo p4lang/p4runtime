@@ -41,7 +41,7 @@ def p4runtime_deps():
     if not native.existing_rule("com_github_grpc_grpc"):
         http_archive(
             name = "com_github_grpc_grpc",
-            url = "https://github.com/grpc/grpc/archive/v1.44.0-pre1.tar.gz",
-            strip_prefix = "grpc-1.44.0-pre1",
-            sha256 = "477f9760fcef65660319831251adac02d20b1220f3af0aff19b5400707de445f",
+            url = "https://github.com/grpc/grpc/archive/v1.44.0.tar.gz",
+            strip_prefix = "grpc-1.44.0",
+            sha256 = "8c05641b9f91cbc92f51cc4a5b3a226788d7a63f20af4ca7aaca50d92cc94a0d",
         )
