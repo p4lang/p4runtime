@@ -1,7 +1,7 @@
 Dockerfile.madoko is used to build a Docker image which we use to render the
-P4Runtime specification (HTML & PDF) in Travis CI. The image can also be used
-locally to build the specification without having to worry about installing all
-the dependencies yourself.
+P4Runtime specification (HTML & PDF) in CI. The image can also be used locally
+to build the specification without having to worry about installing all the
+dependencies yourself.
 
 Only maintainers of this repository need to build the Docker image when a new
 image needs to be pushed to dockerhub. Contributors to the specification can
