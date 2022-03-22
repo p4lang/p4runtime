@@ -10,7 +10,7 @@ jobs:
     if: ${{ github.repository == 'p4lang/p4runtime' }}
     runs-on: [ubuntu-latest]
     env:
-      TAG: ${{ github.ref }}
+      TAG: ${{ github.ref_name }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -30,7 +30,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-west-2'
         SOURCE_DIR: 'docs/v1/build'
-        DEST_DIR: docs/${{ github.ref }}
+        DEST_DIR: docs/${{ github.ref_name }}
     - name: Prepare spec for upload to gh-pages
       run: |
         git checkout gh-pages
