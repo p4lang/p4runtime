@@ -1,5 +1,5 @@
 Title : P4Runtime Specification
-Title Note: version 1.3.0
+Title Note: version 1.4.0-dev
 Title Footer: &date;
 Author: The P4.org API Working Group
 Heading depth: 5
@@ -223,7 +223,7 @@ protocol-independent runtime APIs for P4-defined or P4-described data
 planes. This document specifies one such API, called *P4Runtime*. It is meant to
 disambiguate and augment the programmatic API definition expressed in Protobuf
 format and available at
-[https://github.com/p4lang/p4runtime/tree/v1.3.0/proto](https://github.com/p4lang/p4runtime/tree/v1.3.0/proto).
+[https://github.com/p4lang/p4runtime/tree/main/proto](https://github.com/p4lang/p4runtime/tree/main/proto).
 
 ## P4 Language Version Applicability
 
@@ -6155,6 +6155,10 @@ properties, but we may include on in future versions of the API.
 # Appendix { @h1:"A"}
 
 ## Revision History
+
+### Changes in v1.4.0 (under development)
+
+TODO
 
 ### Changes in v1.3.0
 
