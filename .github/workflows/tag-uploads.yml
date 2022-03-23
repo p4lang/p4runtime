@@ -74,9 +74,9 @@ jobs:
         --outdir dist/
         .
     - name: Publish distribution to PyPI
-      working-directory: py
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+        packages_dir: py/dist/
         skip_existing: true
