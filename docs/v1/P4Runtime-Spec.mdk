@@ -727,10 +727,12 @@ follows:
   liveness of the controller session. The controller is considered "offline",
   "disconnected", or "dead" as soon as its stream channel to the switch is
   broken. When a primary channel gets broken:
-  1. an advisory message is sent to all other controllers for that `device_id`
+
+  1. An advisory message is sent to all other controllers for that `device_id`
      and `role`, as described in a
      [later section](#sec-arbitration-notification); and
-  2. the P4Runtime server will be without a primary controller, until a client
+
+  2. The P4Runtime server will be without a primary controller, until a client
      sends a successful `MasterArbitrationUpdate` (as per the rules in a
      [later section](#sec-arbitration-updates)).
 
