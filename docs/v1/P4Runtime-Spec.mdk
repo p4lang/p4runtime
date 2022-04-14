@@ -3792,7 +3792,7 @@ the P4Runtime client is encouraged not to do so, as the same can be achieved by
 using the `weight` field. Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
-a separate member for the purposes of e.g. `max_num_members`.
+a separate member for the purposes of &eg; `max_num_members`.
 
 All the tables associated with an action selector may either be programmed
 exclusively with one shots, or exclusively with `ActionProfileMember` and
