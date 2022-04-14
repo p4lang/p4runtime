@@ -1595,6 +1595,12 @@ The `ActionProfile` message includes the following fields:
   Action Profile can hold, or, in the case of an Action Selector, the maximum
   sum of all member weights across all selector groups.
 
+* `max_num_members`, an `int64` representing the maximum number of member
+  entries that an Action Profile or Action Selector can hold. PSA programs can
+  use the `@max_num_members` annotation to provide this value.  For Action
+  Profiles, this should always be equal to the size. If the annotation is
+  omitted, the P4Info field will default to the same value as `size`.
+
 * `max_group_size`, an `int32` which is 0 for an Action Profile, or, for an
   Action Selector, represents the maximum sum of all member weights within any
   given selector group. The `max_group_size` must be no larger than `size`. PSA
@@ -3785,7 +3791,8 @@ exact `action` specification in one `ActionProfileActionSet` message. However,
 the P4Runtime client is encouraged not to do so, as the same can be achieved by
 using the `weight` field. Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
-specification into one.
+specification into one. Additionally, each `action` specification would count as
+a separate member for the purposes of e.g. `max_num_members`.
 
 All the tables associated with an action selector may either be programmed
 exclusively with one shots, or exclusively with `ActionProfileMember` and
@@ -6232,6 +6239,7 @@ the purpose of adding features for the P4Runtime API.
 | `@description`           | See section [#sec-annotating-p4-entities-with-documentation] |
 | `@id`                    | See section [#sec-id-allocation] |
 | `@max_group_size`        | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
+| `@max_num_members`       | See section [#sec-p4info-action-profile] |
 | `@pkginfo`               | See section [#sec-annotating-p4-code-with-pkginfo] |
 | `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +--------------------------+---------------------------------------+
