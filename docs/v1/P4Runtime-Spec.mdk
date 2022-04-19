@@ -668,16 +668,16 @@ follows:
   more roles. For each (`device_id`, `role`), the controller receives an
   `election_id`. This `election_id` can be the same for different roles and/or
   devices, as long as the tuple (`device_id`, `role`, `election_id`) is
-  unique. For each (`device_id`, `role`) that the controller wishes to
-  control, it establishes a `StreamChannel` with the P4Runtime server
-  responsible for that device, and sends a `MasterArbitrationUpdate` message
-  containing that tuple of (`device_id`, `role`, `election_id`) values. The
-  P4Runtime server selects a primary independently for each (`device_id`,
-  `role`) pair. The primary is the client that has the highest `election_id`
-  that the device has ever received for the same (`device_id`,
-  `role`) values.  A connection between a controller instance and a device id
-  --- which involves a persistent `StreamChannel` --- can be referred to as a
-  P4Runtime client.
+  unique among live controllers, as defined below. For each (`device_id`,
+  `role`) that the controller wishes to control, it establishes a
+  `StreamChannel` with the P4Runtime server responsible for that device, and
+  sends a `MasterArbitrationUpdate` message containing that tuple of
+  (`device_id`, `role`, `election_id`) values. The P4Runtime server selects a
+  primary independently for each (`device_id`, `role`) pair. The primary is the
+  client that has the highest `election_id` that the device has ever received
+  for the same (`device_id`, `role`) values.  A connection between a controller
+  instance and a device id --- which involves a persistent `StreamChannel` ---
+  can be referred to as a P4Runtime client.
 
   Note that the P4Runtime server does not assign a `role` or `election_id` to
   any controller. It is up to an arbitration mechanism outside of the server to
@@ -685,12 +685,12 @@ follows:
   `StreamChannel`. The P4Runtime server only keeps track of the (`device_id`,
   `role`, `election_id`) of each `StreamChannel` that has sent a successful
   `MasterArbitrationUpdate` message, and maintains the invariant that all such
-  3-tuples are unique. A server must use all three of these values from a
-  `WriteRequest` message to identify which client is making the `WriteRequest`,
-  not only the `election_id`. This enables controllers to re-use the same
-  numeric `election_id` values across different (`device_id`, `role`)
-  pairs. P4Runtime does not require `election_id` values be reused across such
-  different (`device_id`, `role`) pairs; it allows it.
+  3-tuples are unique among live controllers. A server must use all three of
+  these values from a `WriteRequest` message to identify which client is making
+  the `WriteRequest`, not only the `election_id`. This enables controllers to
+  re-use the same numeric `election_id` values across different (`device_id`,
+  `role`) pairs. P4Runtime does not require `election_id` values be reused
+  across such different (`device_id`, `role`) pairs; it allows it.
 
 * To start a controller session, a controller first opens a bidirectional stream
   channel to the server via the `StreamChannel` RPC for each device. This stream
@@ -724,22 +724,25 @@ follows:
   time.
 
 * The streaming channel between the controller and the server defines the
-  liveness of the controller session. The controller is considered "offline" or
-  "dead" as soon as its stream channel to the switch is broken. When a primary
-  channel gets broken: (i) an advisory message is sent to all other controllers
-  for that `device_id` and `role`, as described in the
-  [following section](#sec-arbitration-notification) (ii) the P4Runtime server
-  will be without a primary controller, until a client sends a successful
-  `MasterArbitrationUpdate` (as per the rules in a
-  [later section](#sec-arbitration-updates)).
+  liveness of the controller session. The controller is considered "offline",
+  "disconnected", or "dead" as soon as its stream channel to the switch is
+  broken. When a primary channel gets broken:
 
-* The mechanism via which the controller receives the P4Runtime server details
-  which includes the `device_id`, `ip` and `port`, as well as the mechanism via
-  which it receives the Forwarding Pipeline Config, are implementation specific
-  and beyond the scope of this specification. Similarly, the mechanism via which
-  the P4Runtime server receives its switch config (which notably includes the
-  `device_id`) is beyond the scope of this specification.  Nevertheless, if the
-  server details or switch config are transferred via the network, it is
+  1. An advisory message is sent to all other controllers for that `device_id`
+     and `role`, as described in a
+     [later section](#sec-arbitration-notification); and
+
+  2. The P4Runtime server will be without a primary controller, until a client
+     sends a successful `MasterArbitrationUpdate` (as per the rules in a
+     [later section](#sec-arbitration-updates)).
+
+* The mechanism through which the controller receives the P4Runtime server
+  details are implementation specific and beyond the scope of this
+  specification. This includes includes the `device_id`, `ip` and `port`, as
+  well as the Forwarding Pipeline Config. Similarly, the mechanism through
+  which the P4Runtime server receives its switch config (which notably includes
+  the `device_id`) is beyond the scope of this specification.  Nevertheless, if
+  the server details or switch config are transferred via the network, it is
   recommended to use TLS or similar encryption and authentication mechanisms to
   prevent eavesdropping attacks.
 
@@ -747,9 +750,9 @@ gRPC enables the server to identify which client originated each message in the
 `StreamChannel` stream. For example, the C++ gRPC library [@gRPCStreamC] in
 synchronous mode enables a server process to cause a function to be called when
 a new client creates a `StreamChannel` stream. This function should not return
-until the stream is closed and the server has done any cleanup required when a
-`StreamChannel` is closed normally (or broken, &eg; because a client process
-unexpectedly terminated). Thus the server can easily associate all
+until the stream is closed and the server has completed any cleanup required
+when a `StreamChannel` is closed normally (or broken, &eg; because a client
+process unexpectedly terminated). Thus the server can easily associate all
 `StreamChannel` messages received from the same client, because they are
 processed within the context of the same function call.
 
@@ -808,9 +811,9 @@ It is the job of the P4Runtime server to remember the `role.config` for every
        server, the server shall terminate the stream by returning a
        `NOT_FOUND` error.
 
-    2. If the `election_id` is set and is already used by another controller for
-       the same (`device_id`, `role`), the P4Runtime server shall terminate
-       the stream by returning an `INVALID_ARGUMENT` error.
+    2. If the `election_id` is set and is already used by another live
+       controller for the same (`device_id`, `role`), the P4Runtime server shall
+       terminate the stream by returning an `INVALID_ARGUMENT` error.
 
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
@@ -819,14 +822,14 @@ It is the job of the P4Runtime server to remember the `role.config` for every
        exceeds the supported limit, the P4Runtime server shall terminate the
        stream by returning a `RESOURCE_EXHAUSTED` error.
 
-    5. Otherwise, the controller is added to a list of connected controllers for
+    5. Otherwise, the controller is added to a list of live controllers for
        the given (`device_id`, `role`) and the server remembers the
        controllers `device_id`, `role` and `election_id` for this gRPC
        channel. See below for the rules to determine if this controller becomes
        a primary or backup, and what notifications are sent as a consequence.
 
 2. Otherwise, if the `MasterArbitrationUpdate` message is received from an
-   already connected controller:
+   already live controller:
 
     1. If the `device_id` does not match the one already assigned to this
        stream, the P4Runtime server shall terminate the stream by returning a
@@ -840,8 +843,8 @@ It is the job of the P4Runtime server to remember the `role.config` for every
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
 
-    4. If the `election_id` is set and is already used by another controller
-       (excluding the controller making the request) for the same
+    4. If the `election_id` is set and is already used by another live
+       controller (excluding the controller making the request) for the same
        (`device_id`, `role`), the P4Runtime server shall terminate the stream
        by returning an `INVALID_ARGUMENT` error.
 
