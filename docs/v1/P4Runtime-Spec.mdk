@@ -738,7 +738,7 @@ follows:
 
 * The mechanism through which the controller receives the P4Runtime server
   details are implementation specific and beyond the scope of this
-  specification. This includes includes the `device_id`, `ip` and `port`, as
+  specification. This includes the `device_id`, `ip` and `port`, as
   well as the Forwarding Pipeline Config. Similarly, the mechanism through
   which the P4Runtime server receives its switch config (which notably includes
   the `device_id`) is beyond the scope of this specification.  Nevertheless, if
