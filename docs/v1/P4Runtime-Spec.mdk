@@ -1598,8 +1598,8 @@ The `ActionProfile` message includes the following fields:
 * `max_num_members`, an `int64` representing the maximum number of member
   entries that an Action Profile or Action Selector can hold. PSA programs can
   use the `@max_num_members` annotation to provide this value.  For Action
-  Profiles, this should always be equal to the size. If the annotation is
-  omitted, the P4Info field will default to the same value as `size`.
+  Profiles, this must be equal to the size. If the annotation is omitted, the
+  P4Info field will default to the same value as `size`.
 
 * `max_group_size`, an `int32` which is 0 for an Action Profile, or, for an
   Action Selector, represents the maximum sum of all member weights within any
