@@ -6166,9 +6166,35 @@ properties, but we may include on in future versions of the API.
 
 ## Revision History
 
-### Changes in v1.4.0 (under development)
+### Changes in v1.4.0
 
-TODO
+* Clarify that the limitation on supported types for `FieldMatch`, action
+  `Param`, and Packet IO metadata fields (no support for signed integers, with
+  type `int<W>`) apply to all minor revisions of P4Runtime v1, not just to
+  P4Runtime v1.0.
+* Fix invalid `action_profile_id` in the One Shot Action Selector Programming
+  example.
+* Specify Read behavior in the absence of a P4Info (`ForwardingPipelineConfig`
+  not set yet).
+* Clarify that for updates of type `INSERT`, error codes other than
+  `INVALID_ARGUMENT` can be returned when applicable.
+* Enable C++ Arena Allocation [@ArenaAllocation] by default in p4runtime.proto.
+* Add support for string role identifiers and deprecate integer role
+  identifiers.
+* Add support for specifying a role in `ReadRequest` messages: if present, only
+  entities belonging to this specific role are returned.
+* Specify that `max_group_size` must be less than or equal to `size` for Action
+  Selectors.
+* Simplify specification for arbitration updates for which there is no change to
+  the controller's `election_id`; in particular, a "no-op" arbitration update
+  from a primary controller (the controller already was, and remains, the
+  primary controller) is essentially treated the same way as an arbitration
+  update which leads to the election of a new primary controller.
+* Enable P4Runtime servers to provide per-color counter values when direct or
+  indirect meter entries are read.
+* Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only unique
+  for live controllers.
+* Add a `max_num_members` field to the `ActionProfile` message in P4Info.
 
 ### Changes in v1.3.0
 
