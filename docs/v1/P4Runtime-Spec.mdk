@@ -1595,21 +1595,30 @@ The `ActionProfile` message includes the following fields:
   instance of a PSA Action Selector extern.
 
 * `size`, an `int64` representing the maximum number of member entries that the
-  Action Profile can hold, or, in the case of an Action Selector, the maximum
-  sum of all member weights across all selector groups.
-
-* `max_num_members`, an `int64` representing the maximum number of member
-  entries that an Action Profile or Action Selector can hold. PSA programs can
-  use the `@max_num_members` annotation to provide this value.  For Action
-  Profiles, this must be equal to the size. If the annotation is omitted, the
-  P4Info field will default to the same value as `size`.
+  Action Profile can hold. For Action Selectors, its semantics is specified by
+  the `selector_group_size_computation` value as described below.
 
 * `max_group_size`, an `int32` which is 0 for an Action Profile, or, for an
-  Action Selector, represents the maximum sum of all member weights within any
-  given selector group. The `max_group_size` must be no larger than `size`. PSA
-  programs can use the `@max_group_size` annotation to provide this value for
-  Action Selectors. If the annotation is omitted, the P4Info field will default
-  to 0.
+  Action Selector, its semantics is specified by the
+  `selector_group_size_computation` value as described below.
+  The `max_group_size` must be no larger than `size`. PSA programs can use the
+  `@max_group_size` annotation to provide this value for Action Selectors.
+  If the annotation is omitted, the P4Info field will default to 0.
+
+* `selector_group_size_computation`, a oneof message for Action Selectors that
+  specifies how `size` and `max_group_size` are calculated. It can be either:
+        * `sum_of_weights`, an empty field indicating that `size` and
+          `max_group_size` represent the maximum sum of weights that can be
+          present across all selector groups and within a single selector group
+          respectively. PSA programs can use the `@sum_of_weights` annotation to
+          provide this value.
+        * `sum_of_members`, an empty field indicating that `size` and
+          `max_group_size` represent the maximum number of members that can be
+          present across all selector groups and within a single selector group
+          respectively. PSA programs can use the `@sum_of_members` annotation to
+          provide this value.
+  Must be unset for Action Profiles. For Action Selectors, this will default to
+  `sum_of_weights` unless otherwise specified.
 
 ### `Counter` & `DirectCounter`
 
@@ -3795,7 +3804,8 @@ the P4Runtime client is encouraged not to do so, as the same can be achieved by
 using the `weight` field. Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
-a separate member for the purposes of &eg; `max_num_members`.
+a separate member for the purposes of &eg; the `sum_of_members` group size
+calculation for Action Selectors.
 
 All the tables associated with an action selector may either be programmed
 exclusively with one shots, or exclusively with `ActionProfileMember` and
@@ -6194,7 +6204,8 @@ properties, but we may include on in future versions of the API.
   indirect meter entries are read.
 * Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only unique
   for live controllers.
-* Add a `max_num_members` field to the `ActionProfile` message in P4Info.
+* Add a `selector_group_size_computation` field to the `ActionProfile` message
+  in P4Info.
 
 ### Changes in v1.3.0
 
@@ -6268,7 +6279,8 @@ the purpose of adding features for the P4Runtime API.
 | `@description`           | See section [#sec-annotating-p4-entities-with-documentation] |
 | `@id`                    | See section [#sec-id-allocation] |
 | `@max_group_size`        | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
-| `@max_num_members`       | See section [#sec-p4info-action-profile] |
+| `@sum_of_weights`        | See section [#sec-p4info-action-profile] |
+| `@sum_of_members`        | See section [#sec-p4info-action-profile] |
 | `@pkginfo`               | See section [#sec-annotating-p4-code-with-pkginfo] |
 | `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +--------------------------+---------------------------------------+

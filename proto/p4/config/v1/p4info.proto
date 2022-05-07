@@ -265,15 +265,26 @@ message ActionProfile {
   repeated uint32 table_ids = 2;
   // true iff the action profile used dynamic selection
   bool with_selector = 3;
-  // max total weight of all member entries across all groups, or max number of
-  // member entries across all groups if the action profile does not have a
-  // selector
+  // max number of member entries across all groups if the action profile does
+  // not have a selector. Otherwise, semantics as specified by
+  // `selector_group_size_computation` below.
   int64 size = 4;
-  // max number of member entries across all groups
-  int64 max_num_members = 6;
-  // max number of weighted member entries in any given selector group, or 0 if
-  // the action profile does not have a selector
+  // 0 if the action profile does not have a selector. Otherwise, semantics as
+  // specified by `selector_group_size_computation` below.
   int32 max_group_size = 5;
+  // specifies the semantics of `size` and `max_group_size` above
+  message SumOfWeights {}
+  message SumOfMembers {}
+  oneof selector_group_size_computation {
+    // indicates that `size` and `max_group_size` represent the maximum sum of
+    // weights that can be present across all selector groups and within a
+    // single selector group respectively.
+    SumOfWeights sum_of_weights = 6;
+    // indicates that `size` and `max_group_size` represent the maximum number
+    // of members that can be present across all selector groups and within a
+    // single selector group respectively.
+    SumOfMembers sum_of_members = 7;
+  }
 }
 
 message CounterSpec {
