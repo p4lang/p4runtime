@@ -1607,16 +1607,16 @@ The `ActionProfile` message includes the following fields:
 
 * `selector_group_size_computation`, a oneof message for Action Selectors that
   specifies how `size` and `max_group_size` are calculated. It can be either:
-        * `sum_of_weights`, an empty field indicating that `size` and
-          `max_group_size` represent the maximum sum of weights that can be
-          present across all selector groups and within a single selector group
-          respectively. PSA programs can use the `@sum_of_weights` annotation to
-          provide this value.
-        * `sum_of_members`, an empty field indicating that `size` and
-          `max_group_size` represent the maximum number of members that can be
-          present across all selector groups and within a single selector group
-          respectively. PSA programs can use the `@sum_of_members` annotation to
-          provide this value.
+    * `sum_of_weights`, an empty field indicating that `size` and
+      `max_group_size` represent the maximum sum of weights that can be present
+      across all selector groups and within a single selector group
+      respectively. PSA programs can use the `@sum_of_weights` annotation to
+      provide this value.
+    * `sum_of_members`, an empty field indicating that `size` and
+      `max_group_size` represent the maximum number of members that can be
+      present across all selector groups and within a single selector group
+      respectively. PSA programs can use the `@sum_of_members` annotation to
+      provide this value.
   Must be unset for Action Profiles. For Action Selectors, this will default to
   `sum_of_weights` unless otherwise specified.
 
