@@ -1615,6 +1615,7 @@ The `ActionProfile` message includes the following fields:
       the maximum number of members that can be present across all selector
       groups and within a single selector group respectively. PSA programs can
       use the `@sum_of_members` annotation to provide this value.
+  
   Must be unset for Action Profiles. For Action Selectors, this will default to
   `SUM_OF_WEIGHTS` unless otherwise specified.
 
