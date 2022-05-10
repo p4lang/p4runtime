@@ -273,18 +273,17 @@ message ActionProfile {
   // specified by `selector_group_size_computation` below.
   int32 max_group_size = 5;
   // specifies the semantics of `size` and `max_group_size` above
-  message SumOfWeights {}
-  message SumOfMembers {}
-  oneof selector_group_size_computation {
+  enum SelectorGroupSizeComputation {
     // indicates that `size` and `max_group_size` represent the maximum sum of
     // weights that can be present across all selector groups and within a
     // single selector group respectively.
-    SumOfWeights sum_of_weights = 6;
+    SUM_OF_WEIGHTS = 0;
     // indicates that `size` and `max_group_size` represent the maximum number
     // of members that can be present across all selector groups and within a
     // single selector group respectively.
-    SumOfMembers sum_of_members = 7;
+    SUM_OF_MEMBERS = 1;
   }
+  SelectorGroupSizeComputation selector_group_size_computation = 6;
 }
 
 message CounterSpec {

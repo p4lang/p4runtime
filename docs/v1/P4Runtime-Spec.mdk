@@ -1605,20 +1605,18 @@ The `ActionProfile` message includes the following fields:
   `@max_group_size` annotation to provide this value for Action Selectors.
   If the annotation is omitted, the P4Info field will default to 0.
 
-* `selector_group_size_computation`, a oneof message for Action Selectors that
+* `selector_group_size_computation`, an enum for Action Selectors that
   specifies how `size` and `max_group_size` are calculated. It can be either:
-    * `sum_of_weights`, an empty field indicating that `size` and
-      `max_group_size` represent the maximum sum of weights that can be present
-      across all selector groups and within a single selector group
-      respectively. PSA programs can use the `@sum_of_weights` annotation to
-      provide this value.
-    * `sum_of_members`, an empty field indicating that `size` and
-      `max_group_size` represent the maximum number of members that can be
-      present across all selector groups and within a single selector group
-      respectively. PSA programs can use the `@sum_of_members` annotation to
-      provide this value.
+    * `SUM_OF_WEIGHTS`, indicating that `size` and `max_group_size` represent
+      the maximum sum of weights that can be present across all selector groups
+      and within a single selector group respectively. PSA programs can use the
+      `@sum_of_weights` annotation to provide this value.
+    * `SUM_OF_MEMBERS`, indicating that `size` and `max_group_size` represent
+      the maximum number of members that can be present across all selector
+      groups and within a single selector group respectively. PSA programs can
+      use the `@sum_of_members` annotation to provide this value.
   Must be unset for Action Profiles. For Action Selectors, this will default to
-  `sum_of_weights` unless otherwise specified.
+  `SUM_OF_WEIGHTS` unless otherwise specified.
 
 ### `Counter` & `DirectCounter`
 
@@ -3804,7 +3802,7 @@ the P4Runtime client is encouraged not to do so, as the same can be achieved by
 using the `weight` field. Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
-a separate member for the purposes of &eg; the `sum_of_members` group size
+a separate member for the purposes of &eg; the `SUM_OF_MEMBERS` group size
 calculation for Action Selectors.
 
 All the tables associated with an action selector may either be programmed
