@@ -1596,28 +1596,28 @@ The `ActionProfile` message includes the following fields:
 
 * `size`, an `int64` representing the maximum number of member entries that the
   Action Profile can hold. For Action Selectors, its semantics is specified by
-  the `selector_group_size_computation` value as described below.
+  the `selector_size_semantics` value as described below.
 
 * `max_group_size`, an `int32` which is 0 for an Action Profile, or, for an
   Action Selector, its semantics is specified by the
-  `selector_group_size_computation` value as described below.
+  `selector_size_semantics` value as described below.
   The `max_group_size` must be no larger than `size`. PSA programs can use the
   `@max_group_size` annotation to provide this value for Action Selectors.
   If the annotation is omitted, the P4Info field will default to 0.
 
-* `selector_group_size_computation`, an enum for Action Selectors that
+* `selector_size_semantics`, an enum for Action Selectors that
   specifies how `size` and `max_group_size` are calculated. It can be either:
     * `SUM_OF_WEIGHTS`, indicating that `size` and `max_group_size` represent
       the maximum sum of weights that can be present across all selector groups
-      and within a single selector group respectively. PSA programs can use the
-      `@sum_of_weights` annotation to provide this value.
+      and within a single selector group respectively.
     * `SUM_OF_MEMBERS`, indicating that `size` and `max_group_size` represent
       the maximum number of members that can be present across all selector
-      groups and within a single selector group respectively. PSA programs can
-      use the `@sum_of_members` annotation to provide this value.
-  
-  Must be unset for Action Profiles. For Action Selectors, this will default to
-  `SUM_OF_WEIGHTS` unless otherwise specified.
+      groups and within a single selector group respectively.
+
+  PSA programs can use the `@selector_size_semantics` annotation with one of
+  `SUM_OF_WEIGHTS` or `SUM_OF_MEMBERS` to specify this value for Action
+  Selectors. It will default to `SUM_OF_WEIGHTS` unless otherwise specified.
+  This value must be unset for Action Profiles.
 
 ### `Counter` & `DirectCounter`
 
@@ -3660,10 +3660,10 @@ in the P4Info message:
 
 * If `max_group_size` is greater than 0, then `max_size` must be greater than 0,
   and less than or equal to `max_group_size`. We assume that the target can
-  support selector groups for which the sum of all member weights is up to
-  `max_group_size`, or the P4Runtime server would have rejected the Forwarding
-  Pipeline Config. If `max_size` is greater than `max_group_size`, the server
-  must return `INVALID_ARGUMENT`.
+  support selector groups for which the size of the members (as defined by
+  `selector_size_semantics`) is up to `max_group_size`, or the P4Runtime server
+  would have rejected the Forwarding Pipeline Config. If `max_size` is greater
+  than `max_group_size`, the server must return `INVALID_ARGUMENT`.
 
 * Otherwise (&ie; if `max_group_size` is 0), the P4Runtime client can set
   `max_size` to any value greater than or equal to 0.
@@ -3688,17 +3688,21 @@ does not need to keep track of group ids and member ids.
 
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
-`ActionProfileAction` messages, which in turn have the following fields:
+`ActionProfileAction` messages. This set should have cardinality no greater than
+`max_group_size` (if greater than 0) if `selector_size_semantics` is
+`SUM_OF_MEMBERS`, or else the server must return `INVALID_ARGUMENT`. Each
+`ActionProfileAction` message has the following fields:
 
 * `action` is one of the actions specified by the table that is being
   programmed.
 
 * `weight` specifying the probability of the action's selection at runtime. 0 is
   not a valid `weight` value and the server must return `INVALID_ARGUMENT` if
-  the client attempts to use it. The sum of all weights across all
-  `ActionProfileAction` messages for that `ActionProfileActionSet` message must
-  not exceed the `max_group_size` specificed in the P4Info (if greater than 0),
-  or the server must return `INVALID_ARGUMENT`.
+  the client attempts to use it. If `selector_size_semantics` is
+  `SUM_OF_WEIGHTS`, then the sum of all weights across all `ActionProfileAction`
+  messages for that `ActionProfileActionSet` message must not exceed the
+  `max_group_size` specified in the P4Info (if greater than 0), or the server
+  must return `INVALID_ARGUMENT`.
 
 * `watch_port` is the controller-defined port that the action's liveness depends
   on. At runtime, the action must be excluded from selection if the watch port
@@ -6203,7 +6207,7 @@ properties, but we may include on in future versions of the API.
   indirect meter entries are read.
 * Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only unique
   for live controllers.
-* Add a `selector_group_size_computation` field to the `ActionProfile` message
+* Add a `selector_size_semantics` field to the `ActionProfile` message
   in P4Info.
 
 ### Changes in v1.3.0
@@ -6270,19 +6274,18 @@ the purpose of adding features for the P4Runtime API.
 ~ TableFigure { #tab-p4-annotations; \
     caption: "P4 annotations introduced by P4Runtime"; \
     page-align: forcehere; }
-|--------------------------|---------------------------------------|
-| Annotation               | Description                           |
-+--------------------------+---------------------------------------+
-| `@brief`                 | See section [#sec-annotating-p4-entities-with-documentation] |
-| `@controller_header`     | See section [#sec-controller-packet-meta] |
-| `@description`           | See section [#sec-annotating-p4-entities-with-documentation] |
-| `@id`                    | See section [#sec-id-allocation] |
-| `@max_group_size`        | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
-| `@sum_of_weights`        | See section [#sec-p4info-action-profile] |
-| `@sum_of_members`        | See section [#sec-p4info-action-profile] |
-| `@pkginfo`               | See section [#sec-annotating-p4-code-with-pkginfo] |
-| `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
-+--------------------------+---------------------------------------+
+|--------------------------  |---------------------------------------|
+| Annotation                 | Description                           |
++----------------------------+---------------------------------------+
+| `@brief`                   | See section [#sec-annotating-p4-entities-with-documentation] |
+| `@controller_header`       | See section [#sec-controller-packet-meta] |
+| `@description`             | See section [#sec-annotating-p4-entities-with-documentation] |
+| `@id`                      | See section [#sec-id-allocation] |
+| `@max_group_size`          | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
+| `@selector_size_semantics` | See section [#sec-p4info-action-profile] |
+| `@pkginfo`                 | See section [#sec-annotating-p4-code-with-pkginfo] |
+| `@p4runtime_translation`   | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
++----------------------------+---------------------------------------+
 ~
 
 ## A More Complex Value Set Example { #sec-value-set-example}

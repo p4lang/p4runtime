@@ -267,13 +267,13 @@ message ActionProfile {
   bool with_selector = 3;
   // max number of member entries across all groups if the action profile does
   // not have a selector. Otherwise, semantics as specified by
-  // `selector_group_size_computation` below.
+  // `selector_size_semantics` below.
   int64 size = 4;
   // 0 if the action profile does not have a selector. Otherwise, semantics as
-  // specified by `selector_group_size_computation` below.
+  // specified by `selector_size_semantics` below.
   int32 max_group_size = 5;
   // specifies the semantics of `size` and `max_group_size` above
-  enum SelectorGroupSizeComputation {
+  enum SelectorSizeSemantics {
     // indicates that `size` and `max_group_size` represent the maximum sum of
     // weights that can be present across all selector groups and within a
     // single selector group respectively.
@@ -283,7 +283,7 @@ message ActionProfile {
     // single selector group respectively.
     SUM_OF_MEMBERS = 1;
   }
-  SelectorGroupSizeComputation selector_group_size_computation = 6;
+  SelectorSizeSemantics selector_size_semantics = 6;
 }
 
 message CounterSpec {
