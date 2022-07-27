@@ -272,7 +272,6 @@ message ActionProfile {
   // 0 if the action profile does not have a selector. Otherwise, semantics as
   // specified by `selector_size_semantics` below.
   int32 max_group_size = 5;
-  // specifies the semantics of `size` and `max_group_size` above
   enum SelectorSizeSemantics {
     // indicates that `size` and `max_group_size` represent the maximum sum of
     // weights that can be present across all selector groups and within a
@@ -283,6 +282,7 @@ message ActionProfile {
     // single selector group respectively.
     SUM_OF_MEMBERS = 1;
   }
+  // specifies the semantics of `size` and `max_group_size` above
   SelectorSizeSemantics selector_size_semantics = 6;
 }
 
