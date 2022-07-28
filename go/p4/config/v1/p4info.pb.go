@@ -288,7 +288,6 @@ func (ActionRef_Scope) EnumDescriptor() ([]byte, []int) {
 	return file_p4_config_v1_p4info_proto_rawDescGZIP(), []int{9, 0}
 }
 
-// specifies the semantics of `size` and `max_group_size` above
 type ActionProfile_SelectorSizeSemantics int32
 
 const (
@@ -1503,7 +1502,8 @@ type ActionProfile struct {
 	Size int64 `protobuf:"varint,4,opt,name=size,proto3" json:"size,omitempty"`
 	// 0 if the action profile does not have a selector. Otherwise, semantics as
 	// specified by `selector_size_semantics` below.
-	MaxGroupSize          int32                               `protobuf:"varint,5,opt,name=max_group_size,json=maxGroupSize,proto3" json:"max_group_size,omitempty"`
+	MaxGroupSize int32 `protobuf:"varint,5,opt,name=max_group_size,json=maxGroupSize,proto3" json:"max_group_size,omitempty"`
+	// specifies the semantics of `size` and `max_group_size` above
 	SelectorSizeSemantics ActionProfile_SelectorSizeSemantics `protobuf:"varint,6,opt,name=selector_size_semantics,json=selectorSizeSemantics,proto3,enum=p4.config.v1.ActionProfile_SelectorSizeSemantics" json:"selector_size_semantics,omitempty"`
 }
 
