@@ -1599,25 +1599,33 @@ The `ActionProfile` message includes the following fields:
   the `selector_size_semantics` value as described below.
 
 * `max_group_size`, an `int32` which is 0 for an Action Profile, or, for an
-  Action Selector, its semantics is specified by the
-  `selector_size_semantics` value as described below.
+  Action Selector, its semantics is specified by the  `selector_size_semantics`
+  value as described below.
   The `max_group_size` must be no larger than `size`. PSA programs can use the
   `@max_group_size` annotation to provide this value for Action Selectors.
   If the annotation is omitted, the P4Info field will default to 0.
 
-* `selector_size_semantics`, an enum for Action Selectors that
+* `selector_size_semantics`, a oneof for Action Selectors that
   specifies how `size` and `max_group_size` are interpreted. It can be either:
-    * `SUM_OF_WEIGHTS`, indicating that `size` and `max_group_size` represent
+    * `sum_of_weights`, indicating that `size` and `max_group_size` represent
       the maximum sum of weights that can be present across all selector groups
       and within a single selector group respectively.
-    * `SUM_OF_MEMBERS`, indicating that `size` and `max_group_size` represent
+    * `sum_of_members`, indicating that `size` and `max_group_size` represent
       the maximum number of members that can be present across all selector
-      groups and within a single selector group respectively.
+      groups and within a single selector group respectively. The SumOfMembers 
+      message used to represent this value also contains an optional int32 
+      `max_member_weight`, which indicates the maximum weight of each 
+      individual member. If unset, any 32-bit integer is allowable for weight.
+      
 
   PSA programs can use the `@selector_size_semantics` annotation with one of
-  `SUM_OF_WEIGHTS` or `SUM_OF_MEMBERS` to specify this value for Action
-  Selectors. It will default to `SUM_OF_WEIGHTS` unless otherwise specified.
-  This value must be unset for Action Profiles.
+  `sum_of_weights` or `sum_of_members` to specify this value for Action
+  Selectors. In the `sum_of_members` case, the `@max_member_weight` annotation 
+  can be used to specify `max_member_weight`. Unless otherwise specified, the 
+  value of `selector_size_semantics` should default to `sum_of_weights`.
+  However, an unset `selector_size_semantics` should also be treated as 
+  `sum_of_weights` for backwards compatibility in Action Selectors. In Action
+  Profiles, this value must be unset.
 
 ### `Counter` & `DirectCounter`
 
@@ -3690,7 +3698,7 @@ One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
 `ActionProfileAction` messages. This set should have cardinality no greater than
 `max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
-is `SUM_OF_MEMBERS`, or else the server must return `INVALID_ARGUMENT`. Each
+is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
 `ActionProfileAction` message has the following fields:
 
 * `action` is one of the actions specified by the table that is being
@@ -3699,10 +3707,13 @@ is `SUM_OF_MEMBERS`, or else the server must return `INVALID_ARGUMENT`. Each
 * `weight` specifying the probability of the action's selection at runtime. 0 is
   not a valid `weight` value and the server must return `INVALID_ARGUMENT` if
   the client attempts to use it. If `selector_size_semantics` is
-  `SUM_OF_WEIGHTS`, then the sum of all weights across all `ActionProfileAction`
+  `sum_of_weights`, then the sum of all weights across all `ActionProfileAction`
   messages for that `ActionProfileActionSet` message must not exceed the
   `max_group_size` specified in the P4Info (if greater than 0), or the server
-  must return `INVALID_ARGUMENT`.
+  must return `INVALID_ARGUMENT`. If `selector_size_semantics` is 
+  `sum_of_members`, the individual weight of each member must not exceed 
+  `max_member_weight` (if greater than 0), or the server must return 
+  `INVALID_ARGUMENT`. 
 
 * `watch_port` is the controller-defined port that the action's liveness depends
   on. At runtime, the action must be excluded from selection if the watch port
@@ -3807,7 +3818,7 @@ the P4Runtime client is encouraged not to do so, as the same can be achieved by
 using the `weight` field. Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
-a separate member for the purposes of &eg; the `SUM_OF_MEMBERS` group size
+a separate member for the purposes of &eg; the `sum_of_members` group size
 calculation for Action Selectors.
 
 All the tables associated with an action selector may either be programmed
@@ -6283,6 +6294,7 @@ the purpose of adding features for the P4Runtime API.
 | `@id`                      | See section [#sec-id-allocation] |
 | `@max_group_size`          | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
 | `@selector_size_semantics` | See section [#sec-p4info-action-profile] |
+| `@max_member_weight`       | See section [#sec-p4info-action-profile] |
 | `@pkginfo`                 | See section [#sec-annotating-p4-code-with-pkginfo] |
 | `@p4runtime_translation`   | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +----------------------------+---------------------------------------+
