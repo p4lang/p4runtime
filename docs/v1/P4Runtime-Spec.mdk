@@ -3607,7 +3607,7 @@ An `ActionProfileGroup` entity update message has the following fields:
       a group are excluded for this reason. If `watch_port` is empty, then the
       member is always included in the selection, regardless of the status of
       any port of the device.  The value must be empty or the SDN port of an
-      existing port on the device, otherwise the server must return
+      existing, usable port on the device, otherwise the server must return
       `INVALID_ARGUMENT`.
 
 * `max_size` is the maximum sum of all member weights for the group. This field
