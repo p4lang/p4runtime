@@ -1612,7 +1612,7 @@ The `ActionProfile` message includes the following fields:
       and within a single selector group respectively.
     * `sum_of_members`, indicating that `size` and `max_group_size` represent
       the maximum number of members that can be present across all selector
-      groups and within a single selector group respectively. The `SumOfMembers`
+      groups and within a single selector group respectively, irrespective of their weight. The `SumOfMembers`
       message used to represent this value also contains an optional int32
       `max_member_weight`, which indicates the maximum weight of each
       individual member. If unset, any 32-bit integer is allowable for weight.
