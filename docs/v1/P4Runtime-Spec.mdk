@@ -1599,7 +1599,7 @@ The `ActionProfile` message includes the following fields:
   the `selector_size_semantics` value as described below.
 
 * `max_group_size`, an `int32` which is 0 for an Action Profile, or, for an
-  Action Selector, its semantics is specified by the  `selector_size_semantics`
+  Action Selector, its semantics is specified by the `selector_size_semantics`
   value as described below.
   The `max_group_size` must be no larger than `size`. PSA programs can use the
   `@max_group_size` annotation to provide this value for Action Selectors.
@@ -1612,10 +1612,11 @@ The `ActionProfile` message includes the following fields:
       and within a single selector group respectively.
     * `sum_of_members`, indicating that `size` and `max_group_size` represent
       the maximum number of members that can be present across all selector
-      groups and within a single selector group respectively, irrespective of their weight. The `SumOfMembers`
-      message used to represent this value also contains an optional int32
-      `max_member_weight`, which indicates the maximum weight of each
-      individual member. If unset, any 32-bit integer is allowable for weight.
+      groups and within a single selector group respectively, irrespective of
+      their weight. The `SumOfMembers` message used to represent this value also
+      contains an optional int32 `max_member_weight`, which indicates the
+      maximum weight of each individual member. If unset, any 32-bit integer is
+      allowed for weight.
 
 
   PSA programs can use the `@selector_size_semantics` annotation with one of
