@@ -3621,7 +3621,7 @@ An `ActionProfileGroup` entity update message has the following fields:
 
 * `max_size` is the maximum sum of all members or member weights (as per the
   `selector_size_semantics`) for the group. This field is defined when the group
-  is inserted, and must not be changed in a  `MODIFY` update, otherwise an
+  is inserted, and must not be changed in a `MODIFY` update, otherwise an
   `INVALID_ARGUMENT` error is returned. See the subsection below for the
   [rules on setting `max_size`](#sec-max-size-rules).
 
