@@ -179,10 +179,10 @@ pip3 install p4runtime==1.3.0
 
 ## Guidelines for using Google Protobuf in backwards-compatible ways
 
-There are no strict rules here for updating P4Runtime Protobuf message
+There are no strict rules here for updating P4Runtime protobuf message
 definitions, only advice written by those with experience in using
-Google Protobuf for applications while they have been extended over
-time.  They are here for learning and reference.
+protobuf for applications while they have been extended over
+time.  They are here for learning and reference:
 
 * [Updating Proto Definitions Without Updating Code](https://developers.google.com/protocol-buffers/docs/overview#updating-defs)
 * [Updating A Message Type](https://developers.google.com/protocol-buffers/docs/proto3#updating)
