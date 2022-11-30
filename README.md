@@ -177,4 +177,40 @@ pip3 install p4runtime
 pip3 install p4runtime==1.3.0
 ```
 
+## Guidelines for using Protocol Buffers (protobuf) in backwards-compatible ways
+
+P4Runtime generally follows "Live at Head" development principles - new
+development happens on the `main` branch and there are no support branches.
+New releases are periodically created from the head of `main`.
+
+P4Runtime follows [semantic versioning](https://semver.org/) for release
+numbering, which means changes to the P4Runtime protobuf definitions have
+implications on the next release number. The team has tried its best so
+far to avoid a major version number bump, but recognizes that one may be
+necessary in the future.
+
+Whenever possible, it is best to introduce new functionality in backward
+compatible ways. For example when role config was introduced, an unset
+(empty) role configuration implies full pipeline access, which was the
+default behavior before the feature was introduced.
+
+There are no strict rules here for updating P4Runtime protobuf message
+definitions, only advice written by those with experience in using
+protobuf for applications while they have been extended over
+time.  They are here for learning and reference:
+
+* [Updating Proto Definitions Without Updating Code](https://developers.google.com/protocol-buffers/docs/overview#updating-defs)
+* [Updating A Message Type](https://developers.google.com/protocol-buffers/docs/proto3#updating)
+* [Backwards-compatibility issues in `oneof` fields](https://developers.google.com/protocol-buffers/docs/proto3#backwards-compatibility_issues)
+* [API design guide](https://cloud.google.com/apis/design)
+
+Some brief points, but not the full story:
+
+* Do not change or reuse field numbers.
+* Be careful when changing types.
+* You can deprecate fields, but do not remove them (and make sure that
+  you continue to support them) until you are sure that all clients
+  and servers are updated.
+
+
 [P4 Slack Workspace]: https://p4-lang.slack.com/join/shared_invite/enQtODA0NzY4Mjc5MTExLTRlMWVmN2I5ZTY4MTAzMDI3MGQ1OTZjM2ZmM2Q1MWE2YzZjYTQ2ZWMyMGUyYjQ2ZmIxMjFjZDE4ZThiN2ZkZWI
