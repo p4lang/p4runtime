@@ -177,7 +177,7 @@ pip3 install p4runtime
 pip3 install p4runtime==1.3.0
 ```
 
-## Guidelines for using Google Protobuf in backwards-compatible ways
+## Guidelines for using Protocol Buffers (protobuf) in backwards-compatible ways
 
 There are no strict rules here for updating P4Runtime protobuf message
 definitions, only advice written by those with experience in using
