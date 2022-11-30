@@ -178,6 +178,7 @@ pip3 install p4runtime==1.3.0
 ```
 
 ## Guidelines for using Protocol Buffers (protobuf) in backwards-compatible ways
+
 P4Runtime generally follows "Live at Head" development principles - new
 development happens on the `main` branch and there are no support branches.
 New releases are periodically created from the head of `main`.
