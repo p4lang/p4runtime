@@ -186,6 +186,7 @@ time.  They are here for learning and reference:
 
 * [Updating Proto Definitions Without Updating Code](https://developers.google.com/protocol-buffers/docs/overview#updating-defs)
 * [Updating A Message Type](https://developers.google.com/protocol-buffers/docs/proto3#updating)
+* [Backwards-compatibility issues in `oneof` fields](https://developers.google.com/protocol-buffers/docs/proto3#backwards-compatibility_issues)
 * [API design guide](https://cloud.google.com/apis/design)
 
 Some brief points, but not the full story:
