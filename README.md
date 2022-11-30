@@ -178,6 +178,20 @@ pip3 install p4runtime==1.3.0
 ```
 
 ## Guidelines for using Protocol Buffers (protobuf) in backwards-compatible ways
+P4Runtime generally follows "Live at Head" development principles - new
+development happens on the `main` branch and there are no support branches.
+New releases are periodically created from the head of `main`.
+
+P4Runtime follows [semantic versioning](https://semver.org/) for release
+numbering, which means changes to the P4Runtime protobuf definitions have
+implications on the next release number. The team has tried its best so
+far to avoid a major version number bump, but recognizes that one may be
+necessary in the future.
+
+Whenever possible, it is best to introduce new functionality in backward
+compatible ways. For example when role config was introduced, an unset
+(empty) role configuration implies full pipeline access, which was the
+default behavior before the feature was introduced.
 
 There are no strict rules here for updating P4Runtime protobuf message
 definitions, only advice written by those with experience in using
