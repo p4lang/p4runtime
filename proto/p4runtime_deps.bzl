@@ -5,12 +5,36 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def p4runtime_deps():
     """Loads dependencies needed to compile p4runtime."""
+    # A recent absl version is required for gRPC, and the one pulled in by
+    # com_google_protobuf is not recent enough.
+    if "com_google_absl" not in native.existing_rules():
+        http_archive(
+            name = "com_google_absl",
+            sha256 = "4208129b49006089ba1d6710845a45e31c59b0ab6bff9e5788a87f55c5abd602",
+            strip_prefix = "abseil-cpp-20220623.0",
+            urls = [
+                "https://storage.googleapis.com/grpc-bazel-mirror/github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz",
+                "https://github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz",
+            ],
+        )
+    # Also required by the current gRPC version.
+    # Can probably be removed when Protobuf dependencies are updated.
+    if "upb" not in native.existing_rules():
+        http_archive(
+            name = "upb",
+            sha256 = "017a7e8e4e842d01dba5dc8aa316323eee080cd1b75986a7d1f94d87220e6502",
+            strip_prefix = "upb-e4635f223e7d36dfbea3b722a4ca4807a7e882e2",
+            urls = [
+                "https://storage.googleapis.com/grpc-bazel-mirror/github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
+                "https://github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
+            ],
+        )
     if not native.existing_rule("com_google_protobuf"):
         http_archive(
             name = "com_google_protobuf",
-            url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.18.1/protobuf-all-3.18.1.tar.gz",
-            strip_prefix = "protobuf-3.18.1",
-            sha256 = "b8ab9bbdf0c6968cf20060794bc61e231fae82aaf69d6e3577c154181991f576",
+            url = "https://github.com/protocolbuffers/protobuf/releases/download/v21.10/protobuf-all-21.10.tar.gz",
+            strip_prefix = "protobuf-21.10",
+            sha256 = "6fc9b6efc18acb2fd5fb3bcf981572539c3432600042b662a162c1226b362426",
         )
     if not native.existing_rule("rules_proto"):
         http_archive(
@@ -26,10 +50,10 @@ def p4runtime_deps():
         http_archive(
             name = "io_bazel_rules_go",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.29.0/rules_go-v0.29.0.zip",
-                "https://github.com/bazelbuild/rules_go/releases/download/v0.29.0/rules_go-v0.29.0.zip",
+                "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.36.0/rules_go-v0.36.0.zip",
+                "https://github.com/bazelbuild/rules_go/releases/download/v0.36.0/rules_go-v0.36.0.zip",
             ],
-            sha256 = "2b1641428dff9018f9e85c0384f03ec6c10660d935b750e3fa1492a281a53b0f",
+            sha256 = "ae013bf35bd23234d1dea46b079f1e05ba74ac0321423830119d3e787ec73483",
         )
     if not native.existing_rule("com_google_googleapis"):
         git_repository(
@@ -41,7 +65,7 @@ def p4runtime_deps():
     if not native.existing_rule("com_github_grpc_grpc"):
         http_archive(
             name = "com_github_grpc_grpc",
-            url = "https://github.com/grpc/grpc/archive/v1.44.0.tar.gz",
-            strip_prefix = "grpc-1.44.0",
-            sha256 = "8c05641b9f91cbc92f51cc4a5b3a226788d7a63f20af4ca7aaca50d92cc94a0d",
+            url = "https://github.com/grpc/grpc/archive/v1.51.1.tar.gz",
+            strip_prefix = "grpc-1.51.1",
+            sha256 = "b55696fb249669744de3e71acc54a9382bea0dce7cd5ba379b356b12b82d4229",
         )
