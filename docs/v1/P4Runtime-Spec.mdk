@@ -2266,12 +2266,12 @@ corresponding meter is updated in the data plane.
 #### CounterEntry
 
 The field `data` is modified by the data plane when the corresponding
-meter is updated in the data plane.
+counter is updated in the data plane.
 
 #### DirectCounterEntry
 
 The field `data` is modified by the data plane when the corresponding
-meter is updated in the data plane.
+counter is updated in the data plane.
 
 #### PacketReplicationEngineEntry
 
