@@ -2153,8 +2153,10 @@ counter_id: <id>
 The reads and writes a client issues towards a server should be symmetrical and
 unambiguous. More specifically, if a client writes a P4 entity and then reads it
 back then the client should expect that the message it wrote and the message it
-read should match if the RPCs finished successfully. Consider the following
-pseudocode as an example:
+read should match if the RPCs finished successfully (with the exception of parts
+of the response known to be data plane volatile, as explained in section
+[#sec-data-plane-volatile-objects]). Consider the following pseudocode as an
+example:
 
 ~ Begin Pseudo
 intended_value = value
@@ -2185,7 +2187,7 @@ C++ API supports comparing messages while treating repeated fields as sets, so
 that different orderings of the same elements are considered equal. This method
 of comparing Protobuf messages may come at a cost in performance.
 
-### Data plane volatile objects
+### Data plane volatile objects { #sec-data-plane-volatile-objects }
 
 An exception to read-write symmetry are objects whose contents or
 fields can change by the action of the data plane alone, even if no
