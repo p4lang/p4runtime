@@ -106,6 +106,8 @@ message P4Ids {
 
     // externs for other architectures (vendor extensions)
     OTHER_EXTERNS_START = 0x80;
+    MATCH_LOOKUP_TABLE = 0x81;
+    TERNARY_MATCH_LOOKUP_TABLE = 0x82;
 
     // max value for an unsigned 8-bit byte
     MAX = 0xff;
@@ -113,6 +115,72 @@ message P4Ids {
     // reserved 0x100 to max;
   }
 }
+
+message MvlutParam {
+  message Param {
+    uint32 param_id = 1;
+    bytes value = 2;
+  }
+  repeated Param params = 1;
+}
+
+message MvlutEntry {
+  uint32 mvlut_id = 1;
+  repeated FieldMatch match = 2;
+ MvlutParam param = 3;
+}
+
+message MatchValueLookupTable {
+  p4.config.v1.Preamble preamble = 1;
+  repeated p4.config.v1.MatchField match_fields = 2;
+  message Param {
+    uint32 id = 1;
+    string name = 2;
+    uint32 bitwidth = 3;
+  }
+  repeated Param params = 3;
+  uint32 size = 4;
+}
+
+message FieldMatch {
+  uint32 field_id = 1;
+
+  // Matches can be performed on arbitrarily-large inputs; the protobuf type
+  // 'bytes' is used to model arbitrarily-large values.
+  message Exact {
+    bytes value = 1;
+  }
+  message Ternary {
+    bytes value = 1;
+    bytes mask = 2;
+  }
+  message LPM {
+    bytes value = 1;
+    int32 prefix_len = 2;  // in bits
+  }
+  // A Range is logically a set that contains all values numerically between
+  // 'low' and 'high' inclusively.
+  message Range {
+    bytes low = 1;
+    bytes high = 2;
+  }
+  // If the Optional match should be a wildcard, the FieldMatch must be omitted.
+  // Otherwise, this behaves like an exact match.
+  message Optional {
+    bytes value = 1;
+  }
+  oneof field_match_type {
+    Exact exact = 2;
+    Ternary ternary = 3;
+    LPM lpm = 4;
+    Range range = 6;
+    Optional optional = 7;
+    // Architecture-specific match value; it corresponds to the other_match_type
+    // in the P4Info MatchField message.
+    .google.protobuf.Any other = 100;
+  }
+}
+
 
 message Preamble {
   // ids share the same number-space; e.g. table ids cannot overlap with counter

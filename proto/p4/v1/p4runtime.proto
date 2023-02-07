@@ -149,6 +149,21 @@ message ExternEntry {
   .google.protobuf.Any entry = 3;
 }
 
+message MvlutParam {
+  message Param {
+    uint32 param_id = 1;
+    bytes value = 2;
+  }
+  repeated Param params = 1;
+}
+
+// MatchValueLookupTable
+message MvlutEntry {
+  uint32 mvlut_id = 1;
+  repeated FieldMatch match = 2;
+  MvlutParam param = 3;
+}
+
 message TableEntry {
   uint32 table_id = 1;
   repeated FieldMatch match = 2;
