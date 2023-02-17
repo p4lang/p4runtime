@@ -2153,8 +2153,10 @@ counter_id: <id>
 The reads and writes a client issues towards a server should be symmetrical and
 unambiguous. More specifically, if a client writes a P4 entity and then reads it
 back then the client should expect that the message it wrote and the message it
-read should match if the RPCs finished successfully. Consider the following
-pseudocode as an example:
+read should match if the RPCs finished successfully (with the exception of parts
+of the response known to be data plane volatile, as explained in section
+[#sec-data-plane-volatile-objects]). Consider the following pseudocode as an
+example:
 
 ~ Begin Pseudo
 intended_value = value
@@ -2184,6 +2186,114 @@ preserved, it will be explicitly stated in this document. The
 C++ API supports comparing messages while treating repeated fields as sets, so
 that different orderings of the same elements are considered equal. This method
 of comparing Protobuf messages may come at a cost in performance.
+
+### Data plane volatile objects { #sec-data-plane-volatile-objects }
+
+An exception to read-write symmetry are objects whose contents or
+fields can change by the action of the data plane alone, even if no
+controller modifies them.  These objects are called data plane
+volatile.
+
+The following sections describe all possible values of an `Entity`
+message, since these are the messages that a controller can use to
+modify objects in the data plane via an `Update` message.  For each, a
+description is given of the parts of that entity that are data plane
+volatile.
+
+#### ExternEntry
+
+Data plane volatility depends upon the definition of the extern and
+its control plane API.
+
+#### TableEntry
+
+For a table with a direct counter associated with it, the `counter_data`
+field of a `TableEntry` can be modified by the data plane when packets
+match the entry.
+
+For a table with a direct meter associated with it, the
+`meter_counter_data` field of a `TableEntry` can be modified by the data
+plane when packets match the entry.
+
+For a PSA [@PSA] table with property `psa_idle_timeout` equal to
+`PSA_IdleTimeout_t.NOTIFY_CONTROL`, the data plane can modify the
+`elapsed_ns` field of a `TableEntry` when _no_ packets match the entry
+for an implementation-specific amount of time.
+
+For a PNA [@PNA] table with property `pna_idle_timeout` equal to
+`PNA_IdleTimeout_t.NOTIFY_CONTROL` or `PNA_IdleTimeout_t.AUTO_DELETE`
+the data plane can modify the `elapsed_ns` field of a `TableEntry`
+when _no_ packets cause the extern function `restart_expire_timer` to
+be called for an implementation-specific amount of time (nor any other
+extern function defined to also have the same effect as
+`restart_expire_timer`).
+
+Similarly, for a table in PNA with any of the values of
+`pna_idle_timeout` listed above, the data plane can modify the
+`idle_timeout_ns` field of a `TableEntry` when packets match the entry
+and the action calls the `set_entry_expire_time` extern function (or any
+of the other extern functions defined to have an effect similar to
+calling `set_entry_expire_time`).
+
+For a PNA [@PNA] table with the property `add_on_miss` equal to `true`
+the data plane can insert new entries into the table without any
+controller's involvement.
+
+For a PNA [@PNA] table with the property `pna_idle_timeout` equal to
+`PNA_IdleTimeout_t.AUTO_DELETE`, the data plane can delete existing
+entries from the table without any controller's involvement.
+
+#### ActionProfileMember
+
+Not data plane volatile in any architectures defined by P4.org
+specifications.
+
+#### ActionProfileGroup
+
+Not data plane volatile in any architectures defined by P4.org
+specifications. The `watch_port` feature does affect how action
+selectors behave while processing packets, but this feature does not
+affect what a P4Runtime client sees when it reads the configuration.
+
+#### MeterEntry
+
+The field `counter_data` is modified by the data plane when the
+corresponding meter is updated in the data plane.
+
+#### DirectMeterEntry
+
+The field `counter_data` is modified by the data plane when the
+corresponding meter is updated in the data plane.
+
+#### CounterEntry
+
+The field `data` is modified by the data plane when the corresponding
+counter is updated in the data plane.
+
+#### DirectCounterEntry
+
+The field `data` is modified by the data plane when the corresponding
+counter is updated in the data plane.
+
+#### PacketReplicationEngineEntry
+
+Not data plane volatile in any architectures defined by P4.org
+specifications.
+
+#### ValueSetEntry
+
+Not data plane volatile in any architectures defined by P4.org
+specifications.
+
+#### RegisterEntry
+
+The field `data` can be modified by the data plane when the
+corresponding register entry is updated in the data plane.
+
+#### DigestEntry
+
+Not data plane volatile in any architectures defined by P4.org
+specifications.
 
 ## Zero as Reserved Value
 
