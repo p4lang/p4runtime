@@ -4205,10 +4205,10 @@ entity {
   packet_replication_engine_entry {
     multicast_group_entry {
       multicast_group_id: 1
-      replicas { egress_port: 5 instance: 1 }
-      replicas { egress_port: 12 instance: 2 }
-      replicas { egress_port: 18 instance: 3 }
-      replicas { egress_port: 24 instance: 4 }
+      replicas { port: "\x05" instance: 1 }
+      replicas { port: "\x0c" instance: 2 }
+      replicas { port: "\x12" instance: 3 }
+      replicas { port: "\x18" instance: 4 }
     }
   }
 }
@@ -4236,10 +4236,10 @@ semantics.
   P4Runtime server must return an `INVALID_ARGUMENT` error. The replica
   `instance` ID is also a `uint32`, and its value may not exceed the maximum
   allowed by the target for the `EgressInstance_t` type (0 is allowed), or the
-  server must return an `INVALID_ARGUMENT` error. The egress port must be a
-  32-bit SDN port number and must refer to a singleton port. No two replicas may
-  have identical values of *both* `egress_port` and `instance`, or the server
-  must return `INVALID_ARGUMENT`.
+  server must return an `INVALID_ARGUMENT` error. The egress port (`port` field)
+  must be an SDN port and must refer to a singleton port. No two replicas may
+  have identical values of *both* `port` and `instance`, or the server must
+  return `INVALID_ARGUMENT`.
 * `MODIFY`: Modify the set of replicas for a given multicast group entry,
   indexed by the given `multicast_group_id`. Same restrictions as `INSERT` apply
   here.
@@ -4309,7 +4309,7 @@ entity {
   packet_replication_engine_entry {
     clone_session_entry {
       session_id: 100
-      replicas { egress_port: 0xfffffffd instance: 1 } # to CPU
+      replicas { port: "\xff\xff\xff\xfd" instance: 1 } # to CPU
       class_of_service: 2
       packet_length_bytes: 4096
     }
@@ -4329,7 +4329,8 @@ bytes.
 The cloned replica will appear in the egress pipeline as an independent packet
 with egress port set to CPU (corresponding to SDN port `0xfffffffd`; see
 [Translation of Port Numbers](#sec-translation-of-port-numbers)). Note that the
-egress port must be a 32-bit SDN port number and must refer to a singleton port.
+egress port (`port` field) must be an SDN port and must refer to a singleton
+port.
 
 If the `clone_session_id` data plane metadata is set to a value that is not
 programmed in the PRE, then no clones are created.
@@ -4343,8 +4344,8 @@ semantics:
   server must return an `INVALID_ARGUMENT` error. The replica `instance` ID is
   also a `uint32`, and its value may not exceed the maximum allowed by the
   target for the `EgressInstance_t` type (0 is allowed), or the server must also
-  return an `INVALID_ARGUMENT` error. The egress port in the replica must be a
-  32-bit SDN port number and must refer to a singleton port. The class of
+  return an `INVALID_ARGUMENT` error. The egress port (`port` field) in the
+  replica must be an SDN port and must refer to a singleton port. The class of
   service for each clone packet instance will be set to the value programmed in
   the clone session entry (`class_of_service` field). This value must be a valid
   value for the PSA `ClassOfService_t` type, which supports runtime translation
@@ -5945,10 +5946,11 @@ the device-specific data plane port number for implementing the fast-failover
 functionality on the target device.
 
 The Packet Replication Engine (PRE) API in P4Runtime supports cloning and
-multicasting to a set of ports. The egress port fields defined in the PRE
-multicast entry and clone session entry are of type `uint32` to carry the 32-bit
-SDN port number(s). The P4Runtime server will translate these SDN port numbers
-to device-specific port numbers for multicasting and cloning in the data plane.
+multicasting to a set of ports. The egress `port` fields defined in the PRE
+multicast entry and clone session entry are of type `bytes` to carry the SDN
+representation of the port(s). The P4Runtime server will translate these SDN
+ports to device-specific port numbers for multicasting and cloning in the data
+plane.
 
 ### Using Port as an Index to a Register, Indirect Counter or Indirect Meter
 
