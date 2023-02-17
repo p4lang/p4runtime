@@ -2217,7 +2217,7 @@ plane when packets match the entry.
 
 For a PSA [@PSA] table with property `psa_idle_timeout` equal to
 `PSA_IdleTimeout_t.NOTIFY_CONTROL`, the data plane can modify the
-`elapsed_ns` field of a `TabeEntry` when _no_ packets match the entry
+`elapsed_ns` field of a `TableEntry` when _no_ packets match the entry
 for an implementation-specific amount of time.
 
 For a PNA [@PNA] table with property `pna_idle_timeout` equal to
