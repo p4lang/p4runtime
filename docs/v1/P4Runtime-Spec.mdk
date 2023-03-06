@@ -2058,7 +2058,7 @@ numeric types such as `int32`, and the empty string `""` for string types
 (`string` and `bytes`). An application, such as the P4Runtime client or
 server, is **unable to distinguish** between an unset scalar field and a scalar
 field set to its default value. Therefore, we usually reserve the default
-values 0 and "" of scalar fields to mean unset.
+values 0 and "" of scalar fields to mean "unset".
 
 In particular, 0 is not a valid P4 object ID and it
 is an error to specify 0 for any P4 object ID in a non-read request towards the
