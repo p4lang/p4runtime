@@ -2046,7 +2046,12 @@ message to clearly identify cases where a cookie is not present.
 
 # General Principles for Message Formatting {#sec-message-formatting-principles}
 
-## Zero and Empty String as Reserved Values
+## Default-valued Fields {#sec-default-valued-fields}
+
+There is a subtle distinction between the treatment of default-valued scalar
+fields vs default-valued message fields in P4Runtime.
+
+### Set / Unset Scalar Fields
 
 In Protobuf version 3 (*proto3*), the default value of scalar fields is `0` for
 numeric types such as `int32`, and the empty string `""` for string types
@@ -2063,7 +2068,7 @@ In contrast to scalar fields, note that for message fields, we often do make
 a distinction between an unset message field vs a message field set to its
 default value, see the next section.
 
-## Set / Unset Protobuf Field
+### Set / Unset Message Fields
 
 In Protobuf version 3 (*proto3*), the default value for a message field is
 "unset" [@ProtoDefaults]. An application, such as the P4Runtime client or
@@ -5417,7 +5422,7 @@ Note that
 election_id : { high: 0 low: 0 }
 ```
 is different from an unset `election_id`, see
-[the section on message formatting principles](#sec-message-formatting-principles).
+[the section on default-valued fields](#sec-default-valued-fields).
 
 
 ## Digest Messages
