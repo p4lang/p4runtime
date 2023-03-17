@@ -1,0 +1,82 @@
+name: Tag uploads
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  tag-uploads:
+    if: ${{ github.repository == 'p4lang/p4runtime' }}
+    runs-on: [ubuntu-latest]
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        # fetch all history for all branches and tags
+        fetch-depth: 0
+    - name: Build spec
+      run: |
+        docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make
+        ls docs/v1/build
+    - name: Upload spec to S3
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      with:
+        args: --acl public-read --follow-symlinks --delete
+      env:
+        AWS_S3_BUCKET: 'p4runtime'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-west-2'
+        SOURCE_DIR: 'docs/v1/build'
+        DEST_DIR: docs/${{ github.ref_name }}
+    - name: Prepare spec for upload to gh-pages
+      run: |
+        git checkout gh-pages
+        mkdir -p spec
+        rm -rf spec/$TAG
+        cp -r docs/v1/build spec/$TAG
+    - name: Upload spec to gh-pages
+      uses: EndBug/add-and-commit@v9
+      with:
+        add: 'spec'
+        author_name: 'P4Runtime CI'
+        author_email: 'p4-api@lists.p4.org'
+        default_author: github_actions
+        message: 'Publish spec from Github Actions'
+        commit: '--amend'
+        push: 'origin gh-pages --force'
+
+  publish-to-pypi:
+    name: Publish a Python distribution to PyPI
+    if: ${{ github.repository == 'p4lang/p4runtime' }}
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Install pypa/build
+      run: >-
+        python -m
+        pip install
+        build
+        --user
+    - name: Build a binary wheel and a source tarball
+      working-directory: py
+      run: >-
+        python -m
+        build
+        --sdist
+        --wheel
+        --outdir dist/
+        .
+    - name: Publish distribution to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        packages_dir: py/dist/
+        skip_existing: true

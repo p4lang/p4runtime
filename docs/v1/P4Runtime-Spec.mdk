@@ -1,5 +1,5 @@
 Title : P4Runtime Specification
-Title Note: version 1.2.0-rc.1
+Title Note: version 1.4.0-dev
 Title Footer: &date;
 Author: The P4.org API Working Group
 Heading depth: 5
@@ -223,7 +223,7 @@ protocol-independent runtime APIs for P4-defined or P4-described data
 planes. This document specifies one such API, called *P4Runtime*. It is meant to
 disambiguate and augment the programmatic API definition expressed in Protobuf
 format and available at
-[https://github.com/p4lang/p4runtime/tree/master/proto](https://github.com/p4lang/p4runtime/tree/master/proto).
+[https://github.com/p4lang/p4runtime/tree/main/proto](https://github.com/p4lang/p4runtime/tree/main/proto).
 
 ## P4 Language Version Applicability
 
@@ -290,8 +290,8 @@ The following are not in scope of this specification document:
 
 * arbitration
   : Refers to the process through which P4Runtime ensures that at any given
-    time, there is a single master (&ie; a client with write access) for a given
-    role. Also referred to as "master-slave arbitration".
+    time, there is a single primary controller (&ie; a client with write access)
+    for a given role. Also referred to as "client arbitration".
 * client
   : The gRPC client is the software entity which controls the P4 target or
     device by communicating with the gRPC agent or server. The client may be
@@ -357,8 +357,7 @@ The following are not in scope of this specification document:
   : Refers to a gRPC Stream, which is a RPC on which several messages can be
     sent and received. P4Runtime defines one Stream RPC (`StreamChannel`), which
     is a bidirectional stream (both the client and the server can send messages)
-    which is used for packet I/O and master-slave arbitration, among other
-    things.
+    which is used for packet I/O and client arbitration, among other things.
 * switch config
   : Refers to the non-forwarding config (different from the P4 Forwarding
     Pipeline Config) that is delivered to the switch via a different
@@ -375,12 +374,14 @@ The following are not in scope of this specification document:
 
 Figure [#fig-reference-architecture] represents the P4Runtime Reference
 Architecture. The device or target to be controlled is at the bottom, and one or
-more controllers is shown at the top. A multi-master protocol allows more than
-one controller to participate, and a role-based arbitration scheme ensures only
-one controller has write access to each read/write entity, or the pipeline
-config itself. Any controller may perform read access to any entity or the
-pipeline config. Later sections describe this in detail. For the sake of
-brevity, the term controller may refer to one or more controllers.
+more controllers is shown at the top. P4Runtime only grants write access to a
+single primary controller for each read/write entity. A role defines a grouping
+of P4 entities. P4Runtime allows for a primary controller for each role, and a
+role-based client arbitration scheme ensures only one controller has
+write access to each read/write entity, or the pipeline config itself. Any
+controller may perform read access to any entity or the pipeline config. Later
+sections describe this in detail. For the sake of brevity, the term controller
+may refer to one or more controllers.
 
 The P4Runtime API defines the messages and semantics of the interface between
 the client(s) and the server. The API is specified by the p4runtime.proto
@@ -413,6 +414,27 @@ caption: "P4Runtime Reference Architecture." }
 ~
 [reference-architecture]: build/reference-architecture.[svg,png] \
 { height: 7cm; page-align: here }
+
+## P4Runtime Service Implementation
+
+The P4Runtime API is implemented by a program that runs a gRPC server which
+binds an implementation of auto-generated P4Runtime Service interface. This
+program is called the "P4Runtime server." The server must listen on TCP port
+9559 by default, which is the port that has been allocated by IANA for the
+P4Runtime service. Servers should allow users to override the default port
+using a configuration file or flag when starting the server. Uses of other
+port numbers as the default should be discontinued.
+
+### Security concerns
+
+Appropriate measures and security best practices must be in place to protect
+the P4Runtime server and client, and the communication channel between the two.
+For example, firewalling and authenticating the incoming connections to the
+P4Runtime server can prevent a malicious actor from taking over the switch.
+Similarly, using TLS to authenticate and encrypt the gRPC channel can prevent
+man-in-the-middle attacks between the server and client. Mutual TLS (mTLS) may
+be used to facilitate the authentication of the client by the server and
+vice-versa.
 
 ## Idealized Workflow
 
@@ -525,7 +547,7 @@ may have the ability to access information from memory before the upgrade.
 
 P4Runtime allows for more than one controller. The mechanisms and semantics are
 described in a later
-[section](#sec-master-slave-arbitration-and-controller-replication). Here we
+[section](#sec-client-arbitration-and-controller-replication). Here we
 present a number of use-cases. Each use-case highlights a particular aspect of
 P4Runtime's flexibility and is not intended to be exhaustive. Real-world
 use-cases may combine various techniques and be more complex.
@@ -603,12 +625,12 @@ build/embedded-plus-two-remote-controllers.[svg,png] \
 ## Embedded Controller + Two High-Availability Remote Controllers
 
 Figure [#fig-embedded-plus-two-remote-ha-controllers] illustrates a single
-embedded controller plus two remote controllers in an active-standby HA
-(High-Availability) configuration. Controller #1 is the active controller and is
-in charge of some entities. If it fails, Controller #2 takes over and manages
-the tables formerly owned by Controller #1. The mechanics of HA architectures
-are beyond the scope of this document, but the P4Runtime multi-master
-arbitration scheme supports it.
+embedded controller plus two remote controllers in an active-standby (&ie;
+primary-backup) HA (High-Availability) configuration. Controller #1 is the
+active controller and is in charge of some entities. If it fails, Controller #2
+takes over and manages the tables formerly owned by Controller #1. The mechanics
+of HA architectures are beyond the scope of this document, but the P4Runtime
+role-based client arbitration scheme supports it.
 
 ~ Figure { #fig-embedded-plus-two-remote-ha-controllers; \
 caption: "Use-Case: Embedded Plus Two Remote High-Availability Controllers" }
@@ -618,23 +640,23 @@ caption: "Use-Case: Embedded Plus Two Remote High-Availability Controllers" }
 build/embedded-plus-two-remote-ha-controllers.[svg,png] \
 { height: 7cm; page-align: forcehere }
 
-# Master-Slave Arbitration and Controller Replication {\
-  #sec-master-slave-arbitration-and-controller-replication}
+# Client Arbitration and Controller Replication {\
+  #sec-client-arbitration-and-controller-replication}
 
-The P4Runtime interface allows multiple controllers to be connected to the
-P4Runtime server running on the device at the same time for the following
-reasons:
+The P4Runtime interface allows multiple clients (&ie; controllers) to be
+connected to the P4Runtime server running on the device at the same time for the
+following reasons:
 
 1. Partitioning of the control plane: Multiple controllers may have orthogonal,
    non-overlapping, "roles" (or "realms") and should be able to push forwarding
    entities simultaneously. The control plane can be partitioned into multiple
    roles and each role will have a set of controllers, one of which is the
-   master and the rest are slaves. Role definition, &ie; how P4 entities get
+   primary and the rest are backups. Role definition, &ie; how P4 entities get
    assigned to each role, is **out-of-scope** of this document.
 
 2. Redundancy and fault tolerance: Supporting multiple controllers allows having
-   one or more standby slave controllers. These can already have a connection
-   open, which can help them become master more quickly, especially in the case
+   one or more standby backup controllers. These can already have a connection
+   open, which can help them become primary more quickly, especially in the case
    where the control-plane traffic is in-band and connection setup might be more
    involved.
 
@@ -643,32 +665,32 @@ via `StreamChannel` RPC) for session management. The workflow is described as
 follows:
 
 * Each controller instance (&eg; a controller process) can participate in one or
-  more roles. For each (`device_id`, `role_id`), the controller receives an
+  more roles. For each (`device_id`, `role`), the controller receives an
   `election_id`. This `election_id` can be the same for different roles and/or
-  devices, as long as the tuple (`device_id`, `role_id`, `election_id`) is
-  unique. For each (`device_id`, `role_id`) that the controller wishes to
-  control, it establishes a `StreamChannel` with the P4Runtime server
-  responsible for that device, and sends a `MasterArbitrationUpdate` message
-  containing that tuple of (`device_id`, `role_id`, `election_id`) values. The
-  P4Runtime server selects a master independently for each (`device_id`,
-  `role_id`) pair. The master is the client that has the highest `election_id`
-  that the device has ever received for the same (`device_id`,
-  `role_id`) values.  A connection between a controller instance and a device id
-  --- which involves a persistent `StreamChannel` --- can be referred to as a
-  P4Runtime client.
+  devices, as long as the tuple (`device_id`, `role`, `election_id`) is
+  unique among live controllers, as defined below. For each (`device_id`,
+  `role`) that the controller wishes to control, it establishes a
+  `StreamChannel` with the P4Runtime server responsible for that device, and
+  sends a `MasterArbitrationUpdate` message containing that tuple of
+  (`device_id`, `role`, `election_id`) values. The P4Runtime server selects a
+  primary independently for each (`device_id`, `role`) pair. The primary is the
+  client that has the highest `election_id` that the device has ever received
+  for the same (`device_id`, `role`) values.  A connection between a controller
+  instance and a device id --- which involves a persistent `StreamChannel` ---
+  can be referred to as a P4Runtime client.
 
-  Note that the P4Runtime server does not assign a `role_id` or `election_id` to
+  Note that the P4Runtime server does not assign a `role` or `election_id` to
   any controller. It is up to an arbitration mechanism outside of the server to
   decide on the controller roles, and the `election_id` values used for each
   `StreamChannel`. The P4Runtime server only keeps track of the (`device_id`,
-  `role_id`, `election_id`) of each `StreamChannel` that has sent a successful
+  `role`, `election_id`) of each `StreamChannel` that has sent a successful
   `MasterArbitrationUpdate` message, and maintains the invariant that all such
-  3-tuples are unique. A server must use all three of these values from a
-  `WriteRequest` message to identify which client is making the `WriteRequest`,
-  not only the `election_id`. This enables controllers to re-use the same
-  numeric `election_id` values across different (`device_id`, `role_id`)
-  pairs. P4Runtime does not require `election_id` values be reused across such
-  different (`device_id`, `role_id`) pairs; it allows it.
+  3-tuples are unique among live controllers. A server must use all three of
+  these values from a `WriteRequest` message to identify which client is making
+  the `WriteRequest`, not only the `election_id`. This enables controllers to
+  re-use the same numeric `election_id` values across different (`device_id`,
+  `role`) pairs. P4Runtime does not require `election_id` values be reused
+  across such different (`device_id`, `role`) pairs; it allows it.
 
 * To start a controller session, a controller first opens a bidirectional stream
   channel to the server via the `StreamChannel` RPC for each device. This stream
@@ -677,7 +699,7 @@ follows:
     * **Session management:** As soon as the controller opens the stream
       channel, it sends a `StreamMessageRequest` message to the switch. The
       controller populates the `MasterArbitrationUpdate` field in this message
-      using its `role_id` and `election_id`, as well as the `device_id` of the
+      using its `role` and `election_id`, as well as the `device_id` of the
       device. Note that the `status` field in the `MasterArbitrationUpdate` is
       not populated by the controller. This field is populated by the P4Runtime
       server when it sends a response back to the client, as explained below.
@@ -685,8 +707,8 @@ follows:
     * **Streaming of notifications (&eg; digests) and packet I/O:** The same
       streaming channel will be used for streaming notifications, as well as for
       packet-in and packet-out messages. Note that unless specified otherwise by
-      the role definitions, only the master controller can participate in packet
-      I/O. This feature is explained in more details in the [Packet
+      the role definitions, only the primary controller can participate in
+      packet I/O. This feature is explained in more details in the [Packet
       I/O](#sec-packet-i_o) section.
 
   Note that a controller session is only required if the controller wants to do
@@ -694,29 +716,33 @@ follows:
 
 * Note that the stream is opened per device. In case a switching platform has
   multiple devices (&eg; multi-ASIC line card) which are all controlled via the
-  same P4Runtime server, it is possible to have different masters for different
-  devices. In this case, it is the responsibility of the P4Runtime server to
-  keep track of the master for each device (and role). More specifically, the
-  P4Runtime server will know which stream corresponds to the master controller
-  for each pair of (`device_id`, `role_id`) at any point of time.
+  same P4Runtime server, it is possible to have different primary clients for
+  different devices. In this case, it is the responsibility of the P4Runtime
+  server to keep track of the primary for each device (and role). More
+  specifically, the P4Runtime server will know which stream corresponds to the
+  primary controller for each pair of (`device_id`, `role`) at any point of
+  time.
 
 * The streaming channel between the controller and the server defines the
-  liveness of the controller session. The controller is considered "offline" or
-  "dead" as soon as its stream channel to the switch is broken. When a master
-  channel gets broken: (i) an advisory message is sent to all other controllers
-  for that `device_id` and `role_id`, as described in the
-  [following section](#sec-mastership-notification) (ii) the P4Runtime server
-  will be without a master, until a client sends a successful
-  `MasterArbitrationUpdate` (as per the rules in a
-  [later section](#sec-mastership-updates)).
+  liveness of the controller session. The controller is considered "offline",
+  "disconnected", or "dead" as soon as its stream channel to the switch is
+  broken. When a primary channel gets broken:
 
-* The mechanism via which the controller receives the P4Runtime server details
-  which includes the `device_id`, `ip` and `port`, as well as the mechanism via
-  which it receives the Forwarding Pipeline Config, are implementation specific
-  and beyond the scope of this specification. Similarly, the mechanism via which
-  the P4Runtime server receives its switch config (which notably includes the
-  `device_id`) is beyond the scope of this specification.  Nevertheless, if the
-  server details or switch config are transferred via the network, it is
+  1. An advisory message is sent to all other controllers for that `device_id`
+     and `role`, as described in a
+     [later section](#sec-arbitration-notification); and
+
+  2. The P4Runtime server will be without a primary controller, until a client
+     sends a successful `MasterArbitrationUpdate` (as per the rules in a
+     [later section](#sec-arbitration-updates)).
+
+* The mechanism through which the controller receives the P4Runtime server
+  details are implementation specific and beyond the scope of this
+  specification. This includes the `device_id`, `ip` and `port`, as
+  well as the Forwarding Pipeline Config. Similarly, the mechanism through
+  which the P4Runtime server receives its switch config (which notably includes
+  the `device_id`) is beyond the scope of this specification.  Nevertheless, if
+  the server details or switch config are transferred via the network, it is
   recommended to use TLS or similar encryption and authentication mechanisms to
   prevent eavesdropping attacks.
 
@@ -724,9 +750,9 @@ gRPC enables the server to identify which client originated each message in the
 `StreamChannel` stream. For example, the C++ gRPC library [@gRPCStreamC] in
 synchronous mode enables a server process to cause a function to be called when
 a new client creates a `StreamChannel` stream. This function should not return
-until the stream is closed and the server has done any cleanup required when a
-`StreamChannel` is closed normally (or broken, &eg; because a client process
-unexpectedly terminated). Thus the server can easily associate all
+until the stream is closed and the server has completed any cleanup required
+when a `StreamChannel` is closed normally (or broken, &eg; because a client
+process unexpectedly terminated). Thus the server can easily associate all
 `StreamChannel` messages received from the same client, because they are
 processed within the context of the same function call.
 
@@ -735,7 +761,7 @@ information with unary RPC messages that identify which client they came from.
 Unary RPC messages include requests to write table entries in the data plane, or
 read state from the data plane, among others described later. P4Runtime relies
 on clients identifying themselves in every write request, by including the
-values `device_id`, `role_id`, and `election_id` in all write requests. The
+values `device_id`, `role`, and `election_id` in all write requests. The
 server trusts clients not to use a triple of values other than their own in
 their write requests. gRPC provides authentication methods [@gRPCAuth] that
 should be deployed to prevent untrusted clients from creating channels, and thus
@@ -744,10 +770,10 @@ from making changes or even reading the state of the server.
 ## Default Role
 
 A controller can omit the role message in `MasterArbitrationUpdate`. This
-implies the "default role", which corresponds to "full pipeline access". This
-also implies that a default role has a `role.id` of 0 (default). If using a
-default role, all RPCs from the controller (&eg; `Write`) must set the `role_id`
-to 0.
+implies the "default role", which corresponds to "full pipeline access".
+This also implies that a default role has a `role_id` of `""` (default).
+If using a default role, all RPCs from the controller (&eg; `Write`) must
+leave the `role` unset.
 
 ## Role Config { #sec-arbitration-role-config}
 
@@ -774,9 +800,9 @@ desired, the P4Runtime client(s) and server need to agree on a role definition
 scheme in an out-of-band fashion.
 
 It is the job of the P4Runtime server to remember the `role.config` for every
-`device_id` and `role_id` pair.
+`device_id` and `role` pair.
 
-## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers { #sec-mastership-updates }
+## Rules for Handling `MasterArbitrationUpdate` Messages Received from Controllers { #sec-arbitration-updates }
 
 1. If the `MasterArbitrationUpdate` message is received for the first time on
    this particular channel (&ie; for a newly connected controller):
@@ -785,31 +811,31 @@ It is the job of the P4Runtime server to remember the `role.config` for every
        server, the server shall terminate the stream by returning a
        `NOT_FOUND` error.
 
-    2. If the `election_id` is set and is already used by another controller for
-       the same (`device_id`, `role_id`), the P4Runtime server shall terminate
-       the stream by returning an `INVALID_ARGUMENT` error.
+    2. If the `election_id` is set and is already used by another live
+       controller for the same (`device_id`, `role`), the P4Runtime server shall
+       terminate the stream by returning an `INVALID_ARGUMENT` error.
 
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
 
-    4. If the number of open streams for the given (`device_id`, `role_id`)
+    4. If the number of open streams for the given (`device_id`, `role`)
        exceeds the supported limit, the P4Runtime server shall terminate the
        stream by returning a `RESOURCE_EXHAUSTED` error.
 
-    5. Otherwise, the controller is added to a list of connected controllers for
-       the given (`device_id`, `role_id`) and the server remembers the
-       controllers `device_id`, `role_id` and `election_id` for this gRPC
+    5. Otherwise, the controller is added to a list of live controllers for
+       the given (`device_id`, `role`) and the server remembers the
+       controllers `device_id`, `role` and `election_id` for this gRPC
        channel. See below for the rules to determine if this controller becomes
-       a master or slave, and what notifications are sent as a consequence.
+       a primary or backup, and what notifications are sent as a consequence.
 
 2. Otherwise, if the `MasterArbitrationUpdate` message is received from an
-   already connected controller:
+   already live controller:
 
     1. If the `device_id` does not match the one already assigned to this
        stream, the P4Runtime server shall terminate the stream by returning a
        `FAILED_PRECONDITION` error.
 
-    2. If the `role.id` does not match the current `role_id` assigned to this
+    2. If the `role` does not match the current `role` assigned to this
        stream, the P4Runtime server shall terminate the stream by returning a
        `FAILED_PRECONDITION` error. If the controller wishes to change its role,
        it must close the current stream channel and open a new one.
@@ -817,121 +843,106 @@ It is the job of the P4Runtime server to remember the `role.config` for every
     3. If `role.config` does not match the "out-of-band" scheme previously
        agreed upon, the server must return an `INVALID_ARGUMENT` error.
 
-    4. If the `election_id` is set and is already used by another controller
-       (excluding the controller making the request) for the same
-       (`device_id`, `role_id`), the P4Runtime server shall terminate the stream
+    4. If the `election_id` is set and is already used by another live
+       controller (excluding the controller making the request) for the same
+       (`device_id`, `role`), the P4Runtime server shall terminate the stream
        by returning an `INVALID_ARGUMENT` error.
 
-    5. If the `election_id` matches the one assigned to this stream:
-
-        1. If the controller for this channel is the master, then the server
-           updates the `role.config` to the one specified in the
-           `MasterArbitrationUpdate`. An advisory mastership message is sent to
-           all controllers for this `device_id` and `role_id` informing
-           them of the new `role.config`.  Since the format of `role.config` is
-           out of scope for the P4Runtime specification, the server will send
-           the advisory message for every update, even if the master sets the
-           same `role.config` as it has before. See the
-           [following section](#sec-mastership-notification) for the format of
-           the advisory message.
-
-        2. If the controller is a slave, this is a no-op and the `role.config`
-           is ignored. No response is sent to any controller.
-
-    6. Otherwise, the server updates the `election_id` it has stored for this
-       controller. This change might cause a change in mastership (this
-       controller might become master, or the controller might have downgraded
-       itself to a slave, see below), as well as notifications being sent to one
-       or more controllers.
+    5. Otherwise, the server updates the `election_id` it has stored for this
+       controller. This change might cause a change in the primary client (this
+       controller might become primary, or the controller might have downgraded
+       itself to a backup, see below), as well as notifications being sent to
+       one or more controllers.
 
 If the `MasterArbitrationUpdate` is accepted by either of the two steps above
-(cases 1.5. and 2.6. above), then the server determines if there are changes in
-mastership. Let `election_id_past` be the highest election ID the server has
-ever seen for the given `device_id` and `role_id` (including the one of the
-current master if there is one).
+(cases 1.5. and 2.5. above), then the server determines if there are changes in
+the primary client. Let `election_id_past` be the highest election ID the server
+has ever seen for the given `device_id` and `role` (including the one of the
+current primary if there is one).
 
 1. If `election_id` is greater than or equal to `election_id_past`, then the
-   controller becomes master. The server updates the role configuration to
-   `role.config` for the given `role.id`. Furthermore:
+   controller becomes, or stays, primary. The server updates the role
+   configuration to `role.config` for the given `role`. Furthermore:
 
-    1. If there was no master for this `device_id` and `role_id` before and
-       there are no `Write` requests still processing from a previous master,
+    1. If there was no primary for this `device_id` and `role` before and
+       there are no `Write` requests still processing from a previous primary,
        then the server immediately sends an advisory notification to all
-       controllers for this `device_id` and `role_id`. See the
-       [following section](#sec-mastership-notification) for the format of the
+       controllers for this `device_id` and `role`. See the
+       [following section](#sec-arbitration-notification) for the format of the
        advisory message.
 
-    2. If there was a previous master or `Write` requests in flight, then the
-       server carries out the following steps (in this order):
+    2. If there was a previous primary, including this controller, or `Write`
+       requests in flight, then the server carries out the following steps
+       (in this order):
 
-        1. The server stops accepting `Write` requests from the previous master
+        1. The server stops accepting `Write` requests from the previous primary
            (if there is one). At this point, the server will reject all `Write`
            requests with `PERMISSION_DENIED`.
 
-        2. The server notifies all controllers other than the new master of the
-           mastership change by sending the advisory notification described in
-           the [following section](#sec-mastership-notification).
+        2. The server notifies all controllers other than the new primary client
+           of the change by sending the advisory notification described in
+           the [following section](#sec-arbitration-notification).
 
         3. The server will finish processing any `Write` requests that have
            already started. If there are errors, they are reported as usual to
-           the previous master. If the previous master has already disconnected,
-           any possible errors are dropped and not reported.
+           the previous primary. If the previous primary has already
+           disconnected, any possible errors are dropped and not reported.
 
-        4. The server now accepts the current controller as the new master, thus
-           accepting `Write` requests from this controller. The server updates
-           the highest election ID (&ie; `election_id_past`) it has seen for
-           this `device_id` and `role_id` to `election_id`.
+        4. The server now accepts the current controller as the new primary,
+           thus accepting `Write` requests from this controller. The server
+           updates the highest election ID (&ie; `election_id_past`) it has seen
+           for this `device_id` and `role` to `election_id`.
 
-        5. The server notifies the new master by sending the advisory message
-           described in the [following section](#sec-mastership-notification).
+        5. The server notifies the new primary by sending the advisory message
+           described in the [following section](#sec-arbitration-notification).
 
-2. Otherwise, the controller becomes a slave. If the controller was previously a
-   master (and downgraded itself), then an advisory message is sent to all
-   controllers for this `device_id` and `role_id`.  Otherwise, the advisory
+2. Otherwise, the controller becomes a backup. If the controller was previously
+   a primary (and downgraded itself), then an advisory message is sent to all
+   controllers for this `device_id` and `role`.  Otherwise, the advisory
    message is only sent to the controller that sent the initial
    `MasterArbitrationUpdate`.  See the
-   [following section](#sec-mastership-notification) for the format of the
+   [following section](#sec-arbitration-notification) for the format of the
    advisory message.
 
-## Mastership Notifications { #sec-mastership-notification}
+## Client Arbitration Notifications { #sec-arbitration-notification}
 
-For any given `device_id` and `role_id`, any time a new master is chosen, a
-master downgrades its status to a slave, a master disconnects, or the
-`role.config` is updated by the master, all controllers for that
-(`device_id`, `role_id`) are informed of this by sending a
+For any given `device_id` and `role`, any time a new primary is chosen, a
+primary downgrades its status to a backup, a primary disconnects, or the
+`role.config` is updated by the primary, all controllers for that
+(`device_id`, `role`) are informed of this by sending a
 `StreamMessageResponse`. The `MasterArbitrationUpdate` is populated as follows:
 
-* `device_id` and `role.id` as given.
+* `device_id` and `role` as given.
 
 * `role.config` is set to the role configuration the server received most
-  recently in a `MasterArbitrationUpdate` from a master.
+  recently in a `MasterArbitrationUpdate` from a primary.
 
 * `election_id` is populated as follows:
 
-    * If there has not been any master at all, the election_id is left unset.
+    * If there has not been any primary at all, the election_id is left unset.
 
     * Otherwise, `election_id` is set to the highest election ID that the server
-      has seen for this `device_id` and `role_id` (which is the `election_id` of
-      the current master if there is any).
+      has seen for this `device_id` and `role` (which is the `election_id` of
+      the current primary if there is any).
 
 * `status` is set differently based on whether the notification is sent to the
-  master or a slave controller:
+  primary or a backup controller:
 
-    * If there is a master:
+    * If there is a primary:
 
-        * For the master, `status` is OK (with `status.code` set to
+        * For the primary, `status` is OK (with `status.code` set to
           `google.rpc.OK`).
 
-        * For all slave controllers, `status` is set to non-OK (with
+        * For all backup controllers, `status` is set to non-OK (with
           `status.code` set to `google.rpc.ALREADY_EXISTS`).
 
-    * Otherwise, if there is no master currently, for all slave controllers,
+    * Otherwise, if there is no primary currently, for all backup controllers,
       `status` is set to non-OK (with `status.code` set to
       `google.rpc.NOT_FOUND`).
 
-Note that on mastership changes with outstanding `Write` request, some
+Note that on primary client changes with outstanding `Write` request, some
 notifications might be delayed, see the
-[previous section](#sec-mastership-updates) for details.
+[previous section](#sec-arbitration-updates) for details.
 
 # The P4Info Message
 
@@ -988,7 +999,8 @@ message Preamble {
   // object (TBD).
   string alias = 3;
   repeated string annotations = 4;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 7;
   // Documentation of the entity
   Documentation doc = 5;
@@ -1075,7 +1087,7 @@ message StructuredAnnotation {
     ExpressionList expression_list = 2;
     KeyValuePairList kv_pair_list = 3;
   }
-  // Location of the '@' symbol of this annotation in the source code.
+  // Optional. Location of the '@' symbol of this annotation in the source code.
   SourceLocation source_location = 4;
 }
 ~ End Proto
@@ -1216,17 +1228,19 @@ processing, as it allows tools to point out the precise source of errors for
 invalid annotations.
 
 The `SourceLocation` message associated with an annotation holds the location of
-the `@` symbol introducing the annotation in the P4 source code; the message can
+the `@` symbol introducing the annotation in the P4 source code; the message can
 be found in the following place:
 
 * For **unstructured annotations**, every message containing a field
   `repeated string annotations` also contains a field
-  `repeated SourceLocation annotation_locations`. The i-th member of
+  `repeated SourceLocation annotation_locations`. The field must either be empty
+   or match the size of `annotations`. In the latter case, the i-th member of
   `annotation_locations` is the source location of the i-th member of
   `annotations`.
 
 * For **structured annotations**, every `StructuredAnnotation` message contains
-  a field `SourceLocation source_location` holding its source location.
+  an optional field `SourceLocation source_location` holding its source
+  location, if present.
 
 
 ## `PkgInfo` Message
@@ -1581,14 +1595,38 @@ The `ActionProfile` message includes the following fields:
   instance of a PSA Action Selector extern.
 
 * `size`, an `int64` representing the maximum number of member entries that the
-  Action Profile can hold, or, in the case of an Action Selector, the maximum
-  sum of all member weights across all selector groups.
+  Action Profile can hold. For Action Selectors, its semantics is specified by
+  the `selector_size_semantics` value as described below.
 
-* `max_group_size`, an `int32` representing the maximum sum of all member
-  weights within any given selector group, in the case of an Action Selector, or
-  0 for an Action Profile. PSA programs can use the `@max_group_size` annotation
-  to provide this value for Action Selectors. If the annotation is omitted, the
-  P4Info field will default to 0.
+* `max_group_size`, an `int32` which is 0 for an Action Profile, or, for an
+  Action Selector, its semantics is specified by the `selector_size_semantics`
+  value as described below.
+  The `max_group_size` must be no larger than `size`. PSA programs can use the
+  `@max_group_size` annotation to provide this value for Action Selectors.
+  If the annotation is omitted, the P4Info field will default to 0.
+
+* `selector_size_semantics`, a oneof for Action Selectors that
+  specifies how `size` and `max_group_size` are interpreted. It can be either:
+    * `sum_of_weights`, indicating that `size` and `max_group_size` represent
+      the maximum sum of weights that can be present across all selector groups
+      and within a single selector group respectively.
+    * `sum_of_members`, indicating that `size` and `max_group_size` represent
+      the maximum number of members that can be present across all selector
+      groups and within a single selector group respectively, irrespective of
+      their weight. The `SumOfMembers` message used to represent this value also
+      contains an optional int32 `max_member_weight`, which indicates the
+      maximum weight of each individual member. If unset, any 32-bit integer is
+      allowed for weight.
+
+
+  PSA programs can use the `@selector_size_semantics` annotation with one of
+  `sum_of_weights` or `sum_of_members` to specify this value for Action
+  Selectors. In the `sum_of_members` case, the `@max_member_weight` annotation
+  can be used to specify `max_member_weight`. Unless otherwise specified, the
+  value of `selector_size_semantics` should default to `sum_of_weights`.
+  However, an unset `selector_size_semantics` should also be treated as
+  `sum_of_weights` for backwards compatibility in Action Selectors. In Action
+  Profiles, this value must be unset.
 
 ### `Counter` & `DirectCounter`
 
@@ -2137,8 +2175,10 @@ counter_id: <id>
 The reads and writes a client issues towards a server should be symmetrical and
 unambiguous. More specifically, if a client writes a P4 entity and then reads it
 back then the client should expect that the message it wrote and the message it
-read should match if the RPCs finished successfully. Consider the following
-pseudocode as an example:
+read should match if the RPCs finished successfully (with the exception of parts
+of the response known to be data plane volatile, as explained in section
+[#sec-data-plane-volatile-objects]). Consider the following pseudocode as an
+example:
 
 ~ Begin Pseudo
 intended_value = value
@@ -2168,6 +2208,122 @@ preserved, it will be explicitly stated in this document. The
 C++ API supports comparing messages while treating repeated fields as sets, so
 that different orderings of the same elements are considered equal. This method
 of comparing Protobuf messages may come at a cost in performance.
+
+### Data plane volatile objects { #sec-data-plane-volatile-objects }
+
+An exception to read-write symmetry are objects whose contents or
+fields can change by the action of the data plane alone, even if no
+controller modifies them.  These objects are called data plane
+volatile.
+
+The following sections describe all possible values of an `Entity`
+message, since these are the messages that a controller can use to
+modify objects in the data plane via an `Update` message.  For each, a
+description is given of the parts of that entity that are data plane
+volatile.
+
+#### ExternEntry
+
+Data plane volatility depends upon the definition of the extern and
+its control plane API.
+
+#### TableEntry
+
+For a table with a direct counter associated with it, the `counter_data`
+field of a `TableEntry` can be modified by the data plane when packets
+match the entry.
+
+For a table with a direct meter associated with it, the
+`meter_counter_data` field of a `TableEntry` can be modified by the data
+plane when packets match the entry.
+
+For a PSA [@PSA] table with property `psa_idle_timeout` equal to
+`PSA_IdleTimeout_t.NOTIFY_CONTROL`, the data plane can modify the
+`elapsed_ns` field of a `TableEntry` when _no_ packets match the entry
+for an implementation-specific amount of time.
+
+For a PNA [@PNA] table with property `pna_idle_timeout` equal to
+`PNA_IdleTimeout_t.NOTIFY_CONTROL` or `PNA_IdleTimeout_t.AUTO_DELETE`
+the data plane can modify the `elapsed_ns` field of a `TableEntry`
+when _no_ packets cause the extern function `restart_expire_timer` to
+be called for an implementation-specific amount of time (nor any other
+extern function defined to also have the same effect as
+`restart_expire_timer`).
+
+Similarly, for a table in PNA with any of the values of
+`pna_idle_timeout` listed above, the data plane can modify the
+`idle_timeout_ns` field of a `TableEntry` when packets match the entry
+and the action calls the `set_entry_expire_time` extern function (or any
+of the other extern functions defined to have an effect similar to
+calling `set_entry_expire_time`).
+
+For a PNA [@PNA] table with the property `add_on_miss` equal to `true`
+the data plane can insert new entries into the table without any
+controller's involvement.
+
+For a PNA [@PNA] table with the property `pna_idle_timeout` equal to
+`PNA_IdleTimeout_t.AUTO_DELETE`, the data plane can delete existing
+entries from the table without any controller's involvement.
+
+#### ActionProfileMember
+
+Not data plane volatile in any architectures defined by P4.org
+specifications.
+
+#### ActionProfileGroup
+
+Not data plane volatile in any architectures defined by P4.org
+specifications. The `watch_port` feature does affect how action
+selectors behave while processing packets, but this feature does not
+affect what a P4Runtime client sees when it reads the configuration.
+
+#### MeterEntry
+
+The field `counter_data` is modified by the data plane when the
+corresponding meter is updated in the data plane.
+
+#### DirectMeterEntry
+
+The field `counter_data` is modified by the data plane when the
+corresponding meter is updated in the data plane.
+
+#### CounterEntry
+
+The field `data` is modified by the data plane when the corresponding
+counter is updated in the data plane.
+
+#### DirectCounterEntry
+
+The field `data` is modified by the data plane when the corresponding
+counter is updated in the data plane.
+
+#### PacketReplicationEngineEntry
+
+Not data plane volatile in any architectures defined by P4.org
+specifications.
+
+#### ValueSetEntry
+
+Not data plane volatile in any architectures defined by P4.org
+specifications.
+
+#### RegisterEntry
+
+The field `data` can be modified by the data plane when the
+corresponding register entry is updated in the data plane.
+
+#### DigestEntry
+
+Not data plane volatile in any architectures defined by P4.org
+specifications.
+
+## Zero as Reserved Value
+
+p4runtime.proto uses proto3 syntax, and so it does not allow not specifying a
+scalar data type, such as a `uint32`. Therefore, we usually reserve value 0 for
+those fields to mean unset. In particular, 0 is not a valid P4 object ID and it
+is an error to specify 0 for any P4 object ID in a non-read request towards the
+switch, such as in a `WriteRequest` or a `SetForwardingPipelineConfigRequest`.
 
 ## Bytestrings { #sec-bytestrings}
 
@@ -2206,11 +2362,11 @@ either end of the message transmission.  If a message sender attempts to send a
 value larger than the receiver expects, the receiver will detect it as out of
 range.
 
-In the P4Runtime API version 1.0, values of table key fields, action parameters,
-and fields in packet-in and packet-out headers between a device and the
-controller (see [#sec-controller-packet-meta]), may not be of type `int<W>`.
-The rules for encoding signed values thus only apply to messages of type
-`P4Data` (see [#sec-p4data-in-p4runtime-proto]).
+In the P4Runtime API version 1.0 (including minor version revisions), values
+of table key fields, action parameters, and fields in packet-in and packet-out
+headers between a device and the controller (see [#sec-controller-packet-meta]),
+may not be of type `int<W>`. The rules for encoding signed values thus only
+apply to messages of type `P4Data` (see [#sec-p4data-in-p4runtime-proto]).
 
 For a value of type `bit<W>`, the fewest number of bits required to represent
 the integer value $V > 0$ is the smallest integer $A$ such that $V \leq 2^A -
@@ -2850,6 +3006,10 @@ the `TableEntry` entity, which has the following fields:
   counter entry attached to this table entry, if any. See [Direct
   resources](#sec-direct-resources) section for more information.
 
+* `meter_counter_data`, which is used to read and write the per-color counter
+  values for the direct meter entry attached to this table entry, if any.
+  See [Direct resources](#sec-direct-resources) section for more information.
+
 * `is_default_action`, a boolean flag which indicates whether the table entry is
   the default entry for the table. See [Default entry](#sec-default-entry)
   section for more information.
@@ -3182,6 +3342,8 @@ fields may be used to select and filter results:
 * `is_default_action`: If default (false), all non-default entries from the
   specified table will be considered. Otherwise, only the default entry will be
   considered.
+* `role`: If default (unset), all table entries will be considered. Otherwise,
+  table entries will be filtered based on the provided role value.
 
 For example, in order to read all entries from all tables from device 3, the
 client can use the following `ReadRequest` message.
@@ -3318,11 +3480,12 @@ error code.
 We leverage Protobuf's ability to differentiate between set and unset fields to
 give the P4Runtime client fined-grained control over how direct resources are
 read and written through the `TableEntry` message. The list below describes how
-the server must handle the `meter_config` and `counter_data` fields for read and
-write requests, based on whether the fields are set or not. We do not cover
-error cases in the list, &ie; we assume that we are dealing with a table which
-is assigned a direct counter / a direct meter, and that the action being used
-for the table entry "executes" the direct resource appropriately.
+the server must handle the `meter_config`, `counter_data` and
+`meter_counter_data` fields for read and write requests, based on whether the
+fields are set or not. We do not cover error cases in the list, &ie; we assume
+that we are dealing with a table which is assigned a direct counter / a direct
+meter, and that the action being used for the table entry "executes" the direct
+resource appropriately.
 
 * `meter_config` field
     * `WriteRequest (INSERT)`
@@ -3359,6 +3522,24 @@ for the table entry "executes" the direct resource appropriately.
         * if **set**: The response includes the counter entry's value read from
           the target.
 
+* `meter_counter_data` field
+    * `WriteRequest (INSERT)`
+        * if **unset**: The initial value for all 3 counter entries is the
+          default (0).
+        * if **set**: The initial value for all 3 counter entries is the
+	  default (0). Sub-field, if any, can only have zero (0) as its value.
+	  `INVALID_ARGUMENT` error is returned for any non-zero sub-field value.
+    * `WriteRequest (MODIFY)`
+        * if **unset**: All the 3 counter entries are unchanged.
+        * if **set**: All the 3 counters are reset to 0. Sub-field, if any, can
+	  only have zero (0) as its value. `INVALID_ARGUMENT` error is returned
+	  for any non-zero sub-field value.
+    * `ReadRequest`
+        * if **unset**: The response does not include counter values
+          (`meter_counter_data` is unset in the response).
+        * if **set**: The response includes all the 3 counter values read from
+          the target.
+
 In its default configuration, a meter returns the GREEN color for every packet
 when it is executed. This default configuration can be achieved by leaving the
 `meter_config` field unset when inserting **or modifying** a table entry. When
@@ -3373,7 +3554,7 @@ the client can specify a Time-To-Live (TTL) value. If at any time during its
 lifetime, the data plane entry is not "hit" (&ie; not selected by any packet
 lookup) for a lapse of time greater or equal to its TTL, the P4Runtime should,
 with best effort, generate a stream notification --- using the
-`IdleTimeoutNotification` message --- to the master client, which can then take
+`IdleTimeoutNotification` message --- to the primary client, which can then take
 action, such as remove the idle table entry.
 
 Two fields of the `TableEntry` Protobuf message are used to implement idle
@@ -3560,19 +3741,23 @@ An `ActionProfileGroup` entity update message has the following fields:
     * `weight` specifying the probability of the member's selection at
       runtime. 0 is not a valid `weight` value and the server must return
       `INVALID_ARGUMENT` if the client attempts to use it.
-    * `watch` is the controller-defined 32-bit port number that the member's
+    * `watch_port` is the controller-defined port that the member's
       liveness depends on. At runtime, the member must be excluded from
       selection if the watch port is down.  See Section
       [#action-selector-constraints] for notes on the behavior if all members in
-      a group are excluded for this reason. If `watch` is 0, then the member is
-      always included in the selection, regardless of the status of any port of
-      the device.  The value must be 0 or the SDN port number of an existing
-      port on the device, otherwise the server must return `INVALID_ARGUMENT`.
+      a group are excluded for this reason. If `watch_port` is empty, then the
+      member is always included in the selection, regardless of the status of
+      any port of the device.  The value must be empty or the SDN port of an
+      existing port on the device, otherwise the server must return
+      `INVALID_ARGUMENT`. If the target does not support using the SDN port as a
+      watch port (&eg; on some targets LAGs cannot be used for this purpose),
+      the server must return `UNIMPLEMENTED`.
 
-* `max_size` is the maximum sum of all member weights for the group. This field
-  is defined when the group is inserted, and must not be changed in a
-  `MODIFY` update. See the subsection below for the [rules on setting
-  `max_size`](#sec-max-size-rules).
+* `max_size` is the maximum sum of all members or member weights (as per the
+  `selector_size_semantics`) for the group. This field is defined when the group
+  is inserted, and must not be changed in a `MODIFY` update, otherwise an
+  `INVALID_ARGUMENT` error is returned. See the subsection below for the
+  [rules on setting `max_size`](#sec-max-size-rules).
 
 An action profile group may be inserted, modified or deleted as per the
 following semantics.
@@ -3619,10 +3804,10 @@ in the P4Info message:
 
 * If `max_group_size` is greater than 0, then `max_size` must be greater than 0,
   and less than or equal to `max_group_size`. We assume that the target can
-  support selector groups for which the sum of all member weights is up to
-  `max_group_size`, or the P4Runtime server would have rejected the Forwarding
-  Pipeline Config. If `max_size` is greater than `max_group_size`, the server
-  must return `INVALID_ARGUMENT`.
+  support selector groups for which the size of the members (as defined by
+  `selector_size_semantics`) is up to `max_group_size`, or the P4Runtime server
+  would have rejected the Forwarding Pipeline Config. If `max_size` is greater
+  than `max_group_size`, the server must return `INVALID_ARGUMENT`.
 
 * Otherwise (&ie; if `max_group_size` is 0), the P4Runtime client can set
   `max_size` to any value greater than or equal to 0.
@@ -3647,23 +3832,30 @@ does not need to keep track of group ids and member ids.
 
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
-`ActionProfileAction` messages, which in turn have the following fields:
+`ActionProfileAction` messages. This set should have cardinality no greater than
+`max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
+is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
+`ActionProfileAction` message has the following fields:
 
 * `action` is one of the actions specified by the table that is being
   programmed.
 
 * `weight` specifying the probability of the action's selection at runtime. 0 is
   not a valid `weight` value and the server must return `INVALID_ARGUMENT` if
-  the client attempts to use it. The sum of all weights across all
-  `ActionProfileAction` messages for that `ActionProfileActionSet` message must
-  not exceed the `max_group_size` specificed in the P4Info (if greater than 0),
-  or the server must return `INVALID_ARGUMENT`.
+  the client attempts to use it. If `selector_size_semantics` is
+  `sum_of_weights`, then the sum of all weights across all `ActionProfileAction`
+  messages for that `ActionProfileActionSet` message must not exceed the
+  `max_group_size` specified in the P4Info (if greater than 0), or the server
+  must return `INVALID_ARGUMENT`. If `selector_size_semantics` is
+  `sum_of_members`, the individual weight of each member must not exceed
+  `max_member_weight` (if greater than 0), or the server must return
+  `INVALID_ARGUMENT`.
 
-* `watch` is the controller-defined 32-bit port number that the action's
-  liveness depends on. At runtime, the action must be excluded from selection if
-  the watch port is down. See Section
-  [#sec-action-profile-group-programming] for more details on the `watch` field,
-  which also apply for one shot action selector programming.
+* `watch_port` is the controller-defined port that the action's liveness depends
+  on. At runtime, the action must be excluded from selection if the watch port
+  is down. See Section [#sec-action-profile-group-programming] for more details
+  on the `watch_port` field, which also apply for one shot action selector
+  programming.
 
 
 Semantically, one shots are equivalent to programming the table entry, group,
@@ -3688,17 +3880,17 @@ table_entry {
       action_profile_actions {
         action { /* set nexthop 1 */ }
         weight: 1
-        watch: 1
+        watch_port: "\x01"
       }
       action_profile_actions {
         action { /* set nexthop 2 */ }
         weight: 2
-        watch: 2
+        watch_port: "\x02"
       }
       action_profile_actions {
         action { /* set nexthop 3 */ }
         weight: 3
-        watch: 3
+        watch_port: "\x03"
       }
     }
   }
@@ -3710,17 +3902,17 @@ Which would be equivalent to the following updates, where `GROUP_ID`,
 
 ~ Begin Prototext
 action_profile_member {
-  action_profile_id: 1
+  action_profile_id: 0x11ab12cd
   member_id: MEMBER_ID_1
   action { /* set nexthop 1 */ }
 }
 action_profile_member {
-  action_profile_id: 1
+  action_profile_id: 0x11ab12cd
   member_id: MEMBER_ID_2
   action { /* set nexthop 2 */ }
 }
 action_profile_member {
-  action_profile_id: 1
+  action_profile_id: 0x11ab12cd
   member_id: MEMBER_ID_3
   action {  /* set nexthop 3 */ }
 }
@@ -3730,17 +3922,17 @@ action_profile_group {
   members {
     member_id: MEMBER_ID_1
     weight: 1
-    watch: 1
+    watch_port: "\x01"
   }
   members {
     member_id: MEMBER_ID_2
     weight: 2
-    watch: 2
+    watch_port: "\x02"
   }
   members {
     member_id: MEMBER_ID_3
     weight: 3
-    watch: 3
+    watch_port: "\x03"
   }
 }
 table_entry {
@@ -3761,7 +3953,9 @@ exact `action` specification in one `ActionProfileActionSet` message. However,
 the P4Runtime client is encouraged not to do so, as the same can be achieved by
 using the `weight` field. Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
-specification into one.
+specification into one. Additionally, each `action` specification would count as
+a separate member for the purposes of &eg; the `sum_of_members` group size
+calculation for Action Selectors.
 
 All the tables associated with an action selector may either be programmed
 exclusively with one shots, or exclusively with `ActionProfileMember` and
@@ -3954,6 +4148,15 @@ stream using two configured rates --- the Peak Information Rate (PIR) and
 Committed Information Rate (CIR), and their associated burst sizes --- and
 "marks" its packets as GREEN, YELLOW or RED based on the observed rate.
 
+`MeterEntry` & `DirectMeterEntry` have an additional field `counter_data` that
+may hold per color counter data for targets that support it, and that must
+always be unset for targets that do not support it. If set in a request and
+unsupported by a target, an `UNIMPLEMENTED` error code should be returned.
+These counters provide a granular list of the counters applicable to the
+possible meter colors GREEN, YELLOW and RED. The counter associated with a
+specific color is incremented when a packet is "marked" with that color. The
+primary purpose of the color counters is for debugging purposes.
+
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
 
@@ -3980,6 +4183,7 @@ direct meter entry can no longer be accessed.
 message DirectMeterEntry {
   TableEntry table_entry = 1;
   MeterConfig config = 2;
+  MeterCounterData counter_data = 3;
 }
 ~ End Proto
 
@@ -3995,6 +4199,13 @@ A `WriteRequest` may only include an `Update` message of type `MODIFY` with a
   specified by the client. Note that if this Protobuf field is not set, the
   meter config is set to execute the default behavior (GREEN for all packets).
 
+* `counter_data` is used to set the per color counter values to the default
+  value of (0), which is essentially clearing the counters. If the field is
+  unset, the counter values are left untouched. If the field is set, targets
+  supporting these counters should reset all the color counters to (0), if any
+  of the sub-fields are set to a non-zero value, then an `INVALID_ARGUMENT`
+  error should be returned.
+
 Specifying `DirectMeterEntry` in an `Update` message of type `INSERT` or
 `DELETE` is not allowed, and the server must return the error code
 `INVALID_ARGUMENT` in that case.
@@ -4008,7 +4219,9 @@ A client may use `ReadRequest` in two ways to read a `DirectMeter` config.
 * Explicitly request the meter configuration by including the `DirectMeterEntry`
   in the `ReadRequest`. The `table_entry.match` field must match the
   `TableEntry` whose meter config is being read. If no such entry is found, the
-  server returns the error code `NOT_FOUND`.
+  server returns the error code `NOT_FOUND`. Read responses also include the
+  per color counter data for the meter entry, if supported and specified in
+  the request message.
 
 ### `MeterEntry`
 
@@ -4025,11 +4238,16 @@ follows:
 * `config` is a Protobuf message of type `MeterConfig`, which represents the
   meter configuration.
 
+* `counter_data` is a Protobuf message of type `MeterCounterData`, which
+  represents the per color counter values associated with the corresponding
+  meter.
+
 ~ Begin Proto
 message MeterEntry {
   uint32 meter_id = 1;
   Index index = 2;
   MeterConfig config = 3;
+  MeterCounterData counter_data = 4;
 }
 ~ End Proto
 
@@ -4060,6 +4278,26 @@ supported as follows:
 
 * If the `index` field is not set, the server returns the configuration for all
   indirect meters in the array identified by the unique id `meter_id`.
+
+### `MeterCounterData`
+
+The `MeterCounterData` P4Runtime message represents the per color counters
+associated with a meter entry. Whenever a meter is executed and returns
+a color, the corresponding color counter GREEN, YELLOW or RED is updated.
+
+As seen above, these counters can be associated with a `DirectMeterEntry` or
+`MeterEntry`. Targets not capable of supporting these counters should return
+`UNIMPLEMENTED` if a `MeterCounterData` field was set in a read or write
+request.
+
+~ Begin Proto
+message MeterCounterData {
+  CounterData green = 1;
+  CounterData yellow = 2;
+  CounterData red = 3;
+}
+~ End Proto
+
 
 ## `PacketReplicationEngineEntry`
 
@@ -4099,10 +4337,10 @@ entity {
   packet_replication_engine_entry {
     multicast_group_entry {
       multicast_group_id: 1
-      replicas { egress_port: 5 instance: 1 }
-      replicas { egress_port: 12 instance: 2 }
-      replicas { egress_port: 18 instance: 3 }
-      replicas { egress_port: 24 instance: 4 }
+      replicas { port: "\x05" instance: 1 }
+      replicas { port: "\x0c" instance: 2 }
+      replicas { port: "\x12" instance: 3 }
+      replicas { port: "\x18" instance: 4 }
     }
   }
 }
@@ -4130,10 +4368,10 @@ semantics.
   P4Runtime server must return an `INVALID_ARGUMENT` error. The replica
   `instance` ID is also a `uint32`, and its value may not exceed the maximum
   allowed by the target for the `EgressInstance_t` type (0 is allowed), or the
-  server must return an `INVALID_ARGUMENT` error. The egress port must be a
-  32-bit SDN port number and must refer to a singleton port. No two replicas may
-  have identical values of *both* `egress_port` and `instance`, or the server
-  must return `INVALID_ARGUMENT`.
+  server must return an `INVALID_ARGUMENT` error. The egress port (`port` field)
+  must be an SDN port and must refer to a singleton port. No two replicas may
+  have identical values of *both* `port` and `instance`, or the server must
+  return `INVALID_ARGUMENT`.
 * `MODIFY`: Modify the set of replicas for a given multicast group entry,
   indexed by the given `multicast_group_id`. Same restrictions as `INSERT` apply
   here.
@@ -4203,7 +4441,7 @@ entity {
   packet_replication_engine_entry {
     clone_session_entry {
       session_id: 100
-      replicas { egress_port: 0xfffffffd instance: 1 } # to CPU
+      replicas { port: "\xff\xff\xff\xfd" instance: 1 } # to CPU
       class_of_service: 2
       packet_length_bytes: 4096
     }
@@ -4223,7 +4461,8 @@ bytes.
 The cloned replica will appear in the egress pipeline as an independent packet
 with egress port set to CPU (corresponding to SDN port `0xfffffffd`; see
 [Translation of Port Numbers](#sec-translation-of-port-numbers)). Note that the
-egress port must be a 32-bit SDN port number and must refer to a singleton port.
+egress port (`port` field) must be an SDN port and must refer to a singleton
+port.
 
 If the `clone_session_id` data plane metadata is set to a value that is not
 programmed in the PRE, then no clones are created.
@@ -4237,8 +4476,8 @@ semantics:
   server must return an `INVALID_ARGUMENT` error. The replica `instance` ID is
   also a `uint32`, and its value may not exceed the maximum allowed by the
   target for the `EgressInstance_t` type (0 is allowed), or the server must also
-  return an `INVALID_ARGUMENT` error. The egress port in the replica must be a
-  32-bit SDN port number and must refer to a singleton port. The class of
+  return an `INVALID_ARGUMENT` error. The egress port (`port` field) in the
+  replica must be an SDN port and must refer to a singleton port. The class of
   service for each clone packet instance will be set to the value programmed in
   the clone session entry (`class_of_service` field). This value must be a valid
   value for the PSA `ClassOfService_t` type, which supports runtime translation
@@ -4462,17 +4701,17 @@ A server should buffer digest messages until either:
   data plane and added to the buffer
 
 At which point the server should, with best effort, generate a `DigestList`
-stream message with the buffer contents and send it to the master client. All
+stream message with the buffer contents and send it to the primary client. All
 the messages in a digest list must be distinct, which means that duplicates must
 either be filtered-out directly by the device or in the P4Runtime server
 software.
 
 To avoid sending duplicate digest messages across different `DigestList`
 messages, which could make the channel busy, we define an acknowledgement
-mechanism through which the master client indicates that it has received the
+mechanism through which the primary client indicates that it has received the
 digest list and acted on it. The server must keep a "cache" containing the set
 of all digest messages that have been sent, but not acknowledged yet by the
-master client, up-to `ack_timeout_ns` in the past. The server must delete all
+primary client, up-to `ack_timeout_ns` in the past. The server must delete all
 cache entries for a given digest list when they are at least `ack_timeout_ns`
 old or when a matching `DigestListAck` message (&ie; with the same `digest_id`
 and `list_id` fields as the `DigestList` message) is received.
@@ -4493,7 +4732,7 @@ lists: the server can use any non-zero value as long as it honors the
 `max_timeout_ns` configuration parameter.
 
 The P4Runtime server may empty the digest message cache in case of a client
-mastership change.
+status change.
 
 Here is some pseudo-code implementing the handling of digest messages in the
 P4Runtime server:
@@ -4715,7 +4954,7 @@ defined as follows:
 ~ Begin Proto
 message WriteRequest {
   uint64 device_id = 1;
-  uint64 role_id = 2;
+  string role = 6;
   Uint128 election_id = 3;
   repeated Update updates = 4;
   enum Atomicity {
@@ -4727,19 +4966,19 @@ message WriteRequest {
 }
 ~ End Proto
 
-The `device_id` uniquely identifies the target P4 device. The `role_id` and
+The `device_id` uniquely identifies the target P4 device. The `role` and
 `election_id` define the client role and election-id as described in the
-[Master-Slave Arbitration and Controller
-Replication](#sec-master-slave-arbitration-and-controller-replication)
+[Primary-Backup Arbitration and Controller
+Replication](#sec-client-arbitration-and-controller-replication)
 section. The server is expected to perform the following checks (in this order)
 before processing the `updates` list:
 
 1. If `device_id` does not match any of the devices known to the P4Runtime
-   server or if `role_id` does not match any of the roles for the device, the
+   server or if `role` does not match any of the roles for the device, the
    server must return a `NOT_FOUND` error.
 
-2. If the client is not the master for (`device_id`, `role_id`) according to the
-   `election_id` value, the server must return a `PERMISSION_DENIED` error.
+2. If the client is not the primary for (`device_id`, `role`) according to
+   the `election_id` value, the server must return a `PERMISSION_DENIED` error.
 
 3. If the `Write` is attempted before a `ForwardingPipelineConfig` has been set,
    the server must return a `FAILED_PRECONDITION` error.
@@ -4772,10 +5011,10 @@ An update can be one of the following types:
 * `INSERT`: Inserts the given P4 entity in the entity container.
   The `entity` field always specifies the full state of the P4 entity.
   If the entity already exists, an `ALREADY_EXISTS` error is returned, and
-  the existing entity remains unchanged.
-  If the entity is malformed, an `INVALID_ARGUMENT` error is returned.
-  If the entity cannot be inserted because the container is already full,
-  a `RESOURCE_EXHAUSTED` error is returned.
+  the existing entity remains unchanged. If the entity is malformed, an
+  `INVALID_ARGUMENT` error is usually returned (unless a more specific error
+  code applies [@gRPCStatusCodes]). If the entity cannot be inserted because the
+  container is already full, a `RESOURCE_EXHAUSTED` error is returned.
 
 * `MODIFY`: Modifies the P4 entity to its new specified state. This uses
   *assign* or *full-snapshot* semantics, &ie; the entity field contains the
@@ -4952,13 +5191,19 @@ request is defined as:
 ~ Begin Proto
 message ReadRequest {
   uint64 device_id = 1;
+  string role = 3;
   repeated Entity entities = 2;
 }
 ~ End Proto
 
 The `device_id` uniquely identifies the target P4 device. If it does not match
 any of the devices known to the P4Runtime server, the server must return a
-`NOT_FOUND` error. The `entities` repeated field is a list of P4 entities, each
+`NOT_FOUND` error.
+If the `Read` is attempted before `ForwardingPipelineConfig` has been set, the
+server must return a `FAILED_PRECONDITION` error.
+The `role` field acts as a filter, restricting the reported entities based on
+the role to which the entity belongs.
+The `entities` repeated field is a list of P4 entities, each
 acting as a query filter to be applied to P4 entity containers on the server.
 
 Since `ReadRequest`s do not mutate any state on the switch, they do not
@@ -5152,7 +5397,7 @@ message SetForwardingPipelineConfigRequest {
     RECONCILE_AND_COMMIT = 5;
   }
   uint64 device_id = 1;
-  uint64 role_id = 2;
+  string role = 6;
   Uint128 election_id = 3;
   Action action = 4;
   ForwardingPipelineConfig config = 5;
@@ -5163,11 +5408,11 @@ The server is expected to perform the following checks (in this order)
 before performing the required `action`:
 
 1. If `device_id` does not match any of the devices known to the P4Runtime
-   server or if `role_id` does not match any of the roles for the device, the
+   server or if `role` does not match any of the roles for the device, the
    server must return a `NOT_FOUND` error.
 
-2. If the client is not the master for (`device_id`, `role_id`) according to the
-   `election_id` value, the server must return a `PERMISSION_DENIED` error.
+2. If the client is not the primary for (`device_id`, `role`) according to
+   the `election_id` value, the server must return a `PERMISSION_DENIED` error.
 
 The action is the type of configuration action requested, it can be one of:
 
@@ -5343,31 +5588,31 @@ message PacketMetadata {
   the section on [Stream Error Reporting](#sec-stream-error-reporting) for more
   information on `error`.
 
-## Master Arbitration Update
+## Client Arbitration Update
 
-P4Runtime's master arbitration mechanism ensures that only the current master
+P4Runtime's client arbitration mechanism ensures that only the current primary
 can modify state on the switch, and that the `election_id` is monotonically
 increasing. For example, the switch must finish all previous write operations
-before changing masters, and must only accept write requests from the current
-master.
+before before selecting a different primary, and must only accept write requests
+from the current primary.
 
 As explained earlier in this document, the controller uses the `StreamChannel`
 RPC for session management as well as Packet I/O. In fact, before a controller
 becomes able to do Packet I/O or program any forwarding entry (via `Write` RPC),
-it needs to start a controller session and become a "master". To do so, the
+it needs to start a controller session and become a "primary". To do so, the
 controller first opens a bidirectional stream channel to the server via
 `StreamChannel` for each device and sends a `StreamMessageRequest` message. The
 controller populates the `MasterArbitrationUpdate` field in this message using
-its `role_id` and `election_id` and the `device_id` of the device, as explained
-in detail in the [Master-Slave Arbitration and Controller
-Replication](#sec-master-slave-arbitration-and-controller-replication)
-section. For any given `(device_id, role_id)`, the P4Runtime server keeps track
+its `role` and `election_id` and the `device_id` of the device, as explained
+in detail in the [Client Arbitration and Controller
+Replication](#sec-client-arbitration-and-controller-replication)
+section. For any given `(device_id, role)`, the P4Runtime server keeps track
 of the highest `election_id` that it has ever received. If a controller's
 `election_id` is equal to the highest `election_id` that the server has ever
-received, that controller is the master. All other controllers are slaves. Note
-that it is possible that all controllers are slaves, and that there is no
-master. There can be at most one master, because for any given
-`(device_id, role_id)`, each connected controller has a unique `election_id`.
+received, that controller is the primary. All other controllers are backups.
+Note that it is possible that all controllers are backups, and that there is no
+primary. There can be at most one primary, because for any given
+`(device_id, role)`, each connected controller has a unique `election_id`.
 
 This invariant must be maintained across in-service software upgrades, and the
 P4Runtime server must remember the highest `election_id` after such a restart.
@@ -5377,26 +5622,32 @@ reset. In fact, a full restart is the only way to reset the `election_id`.
 The `MasterArbitrationUpdate` message is defined as follows:
 
 ~ Begin Proto
-message Role {
-  // role_id for this role. Defined offline in agreement across the
-  // entire control plane.
-  uint64 id = 1;
-  // Describes the role configuration.
-  google.protobuf.Any config = 2;
+message MasterArbitrationUpdate {
+  uint64 device_id = 1;
+  // The role for which the primary client is being arbitrated. For use-cases
+  // where multiple roles are not needed, the controller can leave this unset,
+  // implying default role and full pipeline access.
+  Role role = 2;
+  // The stream RPC with the highest election_id is the primary. The 'primary'
+  // controller instance populates this with its latest election_id. Switch
+  // populates with the highest election ID it has received from all connected
+  // controllers.
+  Uint128 election_id = 3;
+  // Switch populates this with OK for the client that is the primary, and
+  // with an error status for all other connected clients (at every primary
+  // client change). The controller does not populate this field.
+  .google.rpc.Status status = 4;
 }
 
-message MasterArbitrationUpdate {
-  // Identifies the device (aka target or node or switching chip).
-  uint64 device_id = 1;
-  // The role for which the mastership is being arbitrated.
-  Role role = 2;
-  // The election_id (unique per role).
-  Uint128 election_id = 3;
-  // Switch populates this with OK for the client that is the master,
-  // and with an error status for all other connected clients (at
-  // every mastership change). The controller does not populate this
-  // field.
-  google.rpc.Status status = 4;
+message Role {
+  // Uniquely identifies this role.
+  string name = 3;
+  // Describes the role configuration, i.e. what operations, P4 entities,
+  // behaviors, etc. are in the scope of a given role. If config is not set
+  // (default case), it implies all P4 objects and control behaviors are in
+  // scope, i.e. full pipeline access. The format of this message is
+  // out-of-scope of P4Runtime.
+  .google.protobuf.Any config = 2;
 }
 ~ End Proto
 
@@ -5406,7 +5657,7 @@ when it sends a `StreamMessageResponse` message back to the controller, in which
 it populates the `MasterArbitrationUpdate` message using the `device_id`,
 `role`, and `election_id` it previously received from the controller. The server
 also populates the `status` field in the `MasterArbitrationUpdate` according to
-the rules in an [earlier section](#sec-mastership-updates).
+the rules in an [earlier section](#sec-arbitration-updates).
 
 ### Unset Election ID
 
@@ -5431,13 +5682,13 @@ See the [DigestEntry](#sec-digestentry) section.
 
 ## Table Idle Timeout Notification { #sec-table-idle-timeout-notification}
 
-When a table supports idle timeout (as per the P4Info message), the master
+When a table supports idle timeout (as per the P4Info message), the primary
 client can specify a TTL value for each entry in the table (see
 [Idle-timeout](#sec-idle-timeout) section). If the data plane entry is not hit
 for a lapse of time greater or equal to the TTL, the P4Runtime server should,
 with best effort, generate an `IdleTimeoutNotification` message on the
-`StreamChannel` bidirectional stream to the master client. The master client can
-then take the action of its choice, most likely remove the idle entry.
+`StreamChannel` bidirectional stream to the primary client. The primary client
+can then take the action of its choice, most likely remove the idle entry.
 
 The `IdleTimeoutNotification` Protobuf message has the following fields:
 
@@ -5464,7 +5715,7 @@ message with an empty `table_entry` repeated field.
 After generating an idle notification, the P4Runtime server must "reset" the
 timer for the corresponding entry, which means a new notification will be
 generated after another TTL if the entry is not hit. As a result, there is no
-need to guarantee reliable delivery of idle notifications to the master client
+need to guarantee reliable delivery of idle notifications to the primary client
 and the server may drop notifications if they are generated faster than the
 server software, the channel or the client can handle.
 
@@ -5554,10 +5805,10 @@ The server may choose to assign a lower priority to error reporting messages and
 drop them first if the stream channel comes under heavy load, &eg; because of a
 burst of `PacketIn` messages.
 
-Note that master-arbitration errors are never reported using the `StreamError`
+Note that client arbitration errors are never reported using the `StreamError`
 message. Invalid `MasterArbitrationUpdate` messages sent by the client cause the
 stream to be terminated and the appropriate error code to be returned to the
-client immediately. See section [#sec-mastership-updates].
+client immediately. See section [#sec-arbitration-updates].
 
 ### Examples of `StreamError` Messages
 
@@ -5695,7 +5946,7 @@ the recirculation port as follows:
 
 ~ Begin Proto
 enum SdnPort {
-  SDN_PORT_UNSPECIFIED = 0;
+  SDN_PORT_UNKNOWN = 0;
 
   // SDN ports are numbered starting from 1.
   SDN_PORT_MIN = 1;
@@ -5829,17 +6080,18 @@ member in an action profile group that is programmed in a selector. This field
 is used to implement fast-failover in the target, where the P4Runtime server can
 locally prune the member from the group if a port is down. This pruning does not
 require intervention from the controller. Conversely, if the port comes back up,
-the P4Runtime server can re-enable the member in the group. The watch field is
-of type `uint32` to carry the 32-bit SDN representation of the port being
-watched. The P4Runtime server will translate the given watch port number into
+the P4Runtime server can re-enable the member in the group. The `watch_port`
+field is of type `bytes` to carry the SDN representation of the port being
+watched. The P4Runtime server will translate the given watch port into
 the device-specific data plane port number for implementing the fast-failover
 functionality on the target device.
 
 The Packet Replication Engine (PRE) API in P4Runtime supports cloning and
-multicasting to a set of ports. The egress port fields defined in the PRE
-multicast entry and clone session entry are of type `uint32` to carry the 32-bit
-SDN port number(s). The P4Runtime server will translate these SDN port numbers
-to device-specific port numbers for multicasting and cloning in the data plane.
+multicasting to a set of ports. The egress `port` fields defined in the PRE
+multicast entry and clone session entry are of type `bytes` to carry the SDN
+representation of the port(s). The P4Runtime server will translate these SDN
+ports to device-specific port numbers for multicasting and cloning in the data
+plane.
 
 ### Using Port as an Index to a Register, Indirect Counter or Indirect Meter
 
@@ -6081,18 +6333,51 @@ properties, but we may include on in future versions of the API.
   in particular, there is no way for a client to query the supported minor +
   patch version numbers.
 
-# Security concerns for P4Runtime
-
-Appropriate measures and security best practices need to be in place to protect
-the P4Runtime server and client, and the communication channel between the two.
-For example, firewalling and authenticating the incoming connections to the
-P4Runtime server can prevent a malicious actor from taking over the switch.
-Similarly, using TLS to authenticate and encrypt the gRPC channel can prevent
-man-in-the-middle attacks between the server and client.
-
 # Appendix { @h1:"A"}
 
 ## Revision History
+
+### Changes in v1.4.0
+
+* Clarify that the limitation on supported types for `FieldMatch`, action
+  `Param`, and Packet IO metadata fields (no support for signed integers, with
+  type `int<W>`) apply to all minor revisions of P4Runtime v1, not just to
+  P4Runtime v1.0.
+* Fix invalid `action_profile_id` in the One Shot Action Selector Programming
+  example.
+* Specify Read behavior in the absence of a P4Info (`ForwardingPipelineConfig`
+  not set yet).
+* Clarify that for updates of type `INSERT`, error codes other than
+  `INVALID_ARGUMENT` can be returned when applicable.
+* Enable C++ Arena Allocation [@ArenaAllocation] by default in p4runtime.proto.
+* Add support for string role identifiers and deprecate integer role
+  identifiers.
+* Add support for specifying a role in `ReadRequest` messages: if present, only
+  entities belonging to this specific role are returned.
+* Specify that `max_group_size` must be less than or equal to `size` for Action
+  Selectors.
+* Simplify specification for arbitration updates for which there is no change to
+  the controller's `election_id`; in particular, a "no-op" arbitration update
+  from a primary controller (the controller already was, and remains, the
+  primary controller) is essentially treated the same way as an arbitration
+  update which leads to the election of a new primary controller.
+* Enable P4Runtime servers to provide per-color counter values when direct or
+  indirect meter entries are read.
+* Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only unique
+  for live controllers.
+* Add a `selector_size_semantics` field to the `ActionProfile` message
+  in P4Info.
+
+### Changes in v1.3.0
+
+* Add IANA assigned TCP port, 9559, to P4Runtime server discussion.
+* Move "Security considerations" section to P4Runtime server discussion.
+* Deprecate `watch` field (int32) in favor of `watch_port` (bytes). This allows
+  using the watch port feature with the `p4runtime_translation` feature.
+* Replace master, slave, master arbitration with more inclusive language:
+  primary, backup, and client arbitration
+* Clarify that source locations for annotations are optional in the P4Info
+  message.
 
 ### Changes in v1.2.0
 
@@ -6147,17 +6432,19 @@ the purpose of adding features for the P4Runtime API.
 ~ TableFigure { #tab-p4-annotations; \
     caption: "P4 annotations introduced by P4Runtime"; \
     page-align: forcehere; }
-|--------------------------|---------------------------------------|
-| Annotation               | Description                           |
-+--------------------------+---------------------------------------+
-| `@brief`                 | See section [#sec-annotating-p4-entities-with-documentation] |
-| `@controller_header`     | See section [#sec-controller-packet-meta] |
-| `@description`           | See section [#sec-annotating-p4-entities-with-documentation] |
-| `@id`                    | See section [#sec-id-allocation] |
-| `@max_group_size`        | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
-| `@pkginfo`               | See section [#sec-annotating-p4-code-with-pkginfo] |
-| `@p4runtime_translation` | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
-+--------------------------+---------------------------------------+
+|--------------------------  |---------------------------------------|
+| Annotation                 | Description                           |
++----------------------------+---------------------------------------+
+| `@brief`                   | See section [#sec-annotating-p4-entities-with-documentation] |
+| `@controller_header`       | See section [#sec-controller-packet-meta] |
+| `@description`             | See section [#sec-annotating-p4-entities-with-documentation] |
+| `@id`                      | See section [#sec-id-allocation] |
+| `@max_group_size`          | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
+| `@selector_size_semantics` | See section [#sec-p4info-action-profile] |
+| `@max_member_weight`       | See section [#sec-p4info-action-profile] |
+| `@pkginfo`                 | See section [#sec-annotating-p4-code-with-pkginfo] |
+| `@p4runtime_translation`   | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
++----------------------------+---------------------------------------+
 ~
 
 ## A More Complex Value Set Example { #sec-value-set-example}
@@ -6306,6 +6593,5 @@ the server did not deem necessary to increase the default value ---, unless the
 clients are aware that the server is using a larger maximum receive message
 size. The gRPC server running the P4Runtime service must not set the maximum
 receive message size to a value smaller than the default (4MB).
-
 
 [BIB]

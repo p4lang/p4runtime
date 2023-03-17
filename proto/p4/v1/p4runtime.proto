@@ -24,6 +24,7 @@ import "p4/v1/p4data.proto";
 package p4.v1;
 
 option go_package = "github.com/p4lang/p4runtime/go/p4/v1";
+option cc_enable_arenas = true;
 
 service P4Runtime {
   // Update one or more P4 entities on the target.
@@ -45,11 +46,11 @@ service P4Runtime {
   // Represents the bidirectional stream between the controller and the
   // switch (initiated by the controller), and is managed for the following
   // purposes:
-  // - connection initiation through master arbitration
+  // - connection initiation through client arbitration
   // - indicating switch session liveness: the session is live when switch
-  //   sends a positive master arbitration update to the controller, and is
+  //   sends a positive client arbitration update to the controller, and is
   //   considered dead when either the stream breaks or the switch sends a
-  //   negative update for master arbitration
+  //   negative update for client arbitration
   // - the controller sending/receiving packets to/from the switch
   // - streaming of notifications from the switch
   rpc StreamChannel(stream StreamMessageRequest)
@@ -63,7 +64,8 @@ service P4Runtime {
 //------------------------------------------------------------------------------
 message WriteRequest {
   uint64 device_id = 1;
-  uint64 role_id = 2;
+  uint64 role_id = 2 [deprecated=true];
+  string role = 6;
   Uint128 election_id = 3;
   // The write batch, comprising a list of Update operations. The P4Runtime
   // server may arbitrarily reorder messages within a batch to maximize
@@ -102,6 +104,8 @@ message WriteResponse {
 
 message ReadRequest {
   uint64 device_id = 1;
+  // When specified, only return table entries for the given role.
+  string role = 3;
   repeated Entity entities = 2;
 }
 
@@ -161,9 +165,10 @@ message TableEntry {
   // a Read RPC. This is deprecated in favor of the more flexible metadata
   // field.
   uint64 controller_metadata = 5 [deprecated=true];
-  // meter_config and counter_data are convenience fields that enable the
-  // controller to configure the direct resources associated with the table at
-  // the same time as a match-action entry is inserted or modified.
+  // meter_config, counter_data and meter_counter_data are convenience fields
+  // that enable the controller to configure the direct resources associated
+  // with the table at the same time as a match-action entry is inserted or
+  // modified.
   // Table write:
   //   - If the table does not contain a direct resource, then setting the
   //     corresponding direct resource field in any table write operation will
@@ -174,16 +179,19 @@ message TableEntry {
   //     is always green.
   //   - When updating a table entry, leaving meter_config unset will reset the
   //     meter (if any) to its default configuration, while leaving counter_data
-  //     unset means that the counter (if any) will not be updated.
+  //     or meter_counter_data unset means that the counter (if any) will not be
+  //     updated.
   // Table read:
   //   - If the table does not contain a direct resource, then the corresponding
   //     field will not be set in the read table entry.
   //   - If meter_config is unset in the request, or if the meter has a default
   //     configuration, meter_config will not be set in the response.
-  //   - If counter_data is unset in the request, it will be unset in the
-  //     response as well.
+  //   - If counter_data or meter_counter_data is unset in the request, it will
+  //     be unset in the response as well.
   MeterConfig meter_config = 6;
   CounterData counter_data = 7;
+  // Per color counters for tables with a direct meter.
+  MeterCounterData meter_counter_data = 12;
   // Set to true if the table entry is being used to update the non-const
   // default action of the table. If true, the "match" field must be empty and
   // the "action" field must be populated with a valid direct action.
@@ -271,7 +279,11 @@ message ActionProfileActionSet {
 message ActionProfileAction {
   Action action = 1;
   int32 weight = 2;
-  int32 watch = 3;
+  oneof watch_kind {
+    // Using int32 as ports is deprecated, use watch_port instead.
+    int32 watch = 3 [deprecated=true];
+    bytes watch_port = 4;
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -288,7 +300,11 @@ message ActionProfileGroup {
   message Member {
     uint32 member_id = 1;
     int32 weight = 2;
-    uint32 watch = 3;
+    oneof watch_kind {
+      // Using int32 as ports is deprecated, use watch_port instead.
+      int32 watch = 3 [deprecated=true];
+      bytes watch_port = 4;
+    }
   }
   repeated Member members = 3;
   // Max number of weighted member entries in this group. It cannot be modified
@@ -320,6 +336,7 @@ message MeterEntry {
   uint32 meter_id = 1;
   Index index = 2;
   MeterConfig config = 3;
+  MeterCounterData counter_data = 4;
 }
 
 //------------------------------------------------------------------------------
@@ -335,6 +352,7 @@ message DirectMeterEntry {
   // table_entry.action is ignored. Other fields specify the match.
   TableEntry table_entry = 1;
   MeterConfig config = 2;
+  MeterCounterData counter_data = 3;
 }
 
 // Modeled as RFC 2698: A Two Rate Three Color Marker (trTCM)
@@ -385,6 +403,12 @@ message CounterData {
   int64 packet_count = 2;
 }
 
+message MeterCounterData {
+  CounterData green = 1;
+  CounterData yellow = 2;
+  CounterData red = 3;
+}
+
 //------------------------------------------------------------------------------
 // Only one instance of a Packet Replication Engine (PRE) is expected in the
 // P4 pipeline. Hence, no instance id is needed to access the PRE.
@@ -397,15 +421,19 @@ message PacketReplicationEngineEntry {
 
 // Used for replicas created for cloning and multicasting actions.
 message Replica {
-  uint32 egress_port = 1;
+  oneof port_kind {
+    // Using uint32 as ports is deprecated, use port field instead.
+    uint32 egress_port = 1 [deprecated=true];
+    bytes port = 3;
+  }
   uint32 instance = 2;
 }
 
-// The (egress_port, instance) pair must be unique for each replica in a given
+// The (port, instance) pair must be unique for each replica in a given
 // multicast group entry. A packet may be multicast by setting the
 // multicast_group field of PSA ingress output metadata to multicast_group_id
-// of a programmed multicast group entry. The egress_port and instance fields of
-// each replica's egress input metadata will be set to the respective values
+// of a programmed multicast group entry. The port and instance fields of each
+// replica's egress input metadata will be set to the respective values
 // programmed in the multicast group entry.
 message MulticastGroupEntry {
   uint32 multicast_group_id = 1;
@@ -556,24 +584,25 @@ message PacketMetadata {
 
 message MasterArbitrationUpdate {
   uint64 device_id = 1;
-  // The role for which the mastership is being arbitrated. For use-cases where
+  // The role for which the primary client is being arbitrated. For use-cases
   // where multiple roles are not needed, the controller can leave this unset,
   // implying default role and full pipeline access.
   Role role = 2;
-  // The stream RPC with the highest election_id is the master. The 'master'
+  // The stream RPC with the highest election_id is the primary. The 'primary'
   // controller instance populates this with its latest election_id. Switch
   // populates with the highest election ID it has received from all connected
   // controllers.
   Uint128 election_id = 3;
-  // Switch populates this with OK for the client that is the master, and with
-  // an error status for all other connected clients (at every mastership
-  // change). The controller does not populate this field.
+  // Switch populates this with OK for the client that is the primary, and
+  // with an error status for all other connected clients (at every primary
+  // client change). The controller does not populate this field.
   .google.rpc.Status status = 4;
 }
 
 message Role {
   // Uniquely identifies this role.
-  uint64 id = 1;
+  uint64 id = 1 [deprecated=true];
+  string name = 3;
   // Describes the role configuration, i.e. what operations, P4 entities,
   // behaviors, etc. are in the scope of a given role. If config is not set
   // (default case), it implies all P4 objects and control behaviors are in
@@ -676,7 +705,8 @@ message SetForwardingPipelineConfigRequest {
     RECONCILE_AND_COMMIT = 5;
   }
   uint64 device_id = 1;
-  uint64 role_id = 2;
+  uint64 role_id = 2 [deprecated=true];
+  string role = 6;
   Uint128 election_id = 3;
   Action action = 4;
   ForwardingPipelineConfig config = 5;

@@ -99,7 +99,8 @@ message P4BitstringLikeTypeSpec {
   // Useful to identify well-known types, such as IP address or Ethernet MAC
   // address.
   repeated string annotations = 4;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 5;
   repeated StructuredAnnotation structured_annotations = 6;
 }
@@ -129,7 +130,8 @@ message P4StructTypeSpec {
   }
   repeated Member members = 1;
   repeated string annotations = 2;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 3;
   repeated StructuredAnnotation structured_annotations = 4;
 }
@@ -141,7 +143,8 @@ message P4HeaderTypeSpec {
   }
   repeated Member members = 1;
   repeated string annotations = 2;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 3;
   repeated StructuredAnnotation structured_annotations = 4;
 }
@@ -153,7 +156,8 @@ message P4HeaderUnionTypeSpec {
   }
   repeated Member members = 1;
   repeated string annotations = 2;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 3;
   repeated StructuredAnnotation structured_annotations = 4;
 }
@@ -195,7 +199,7 @@ message StructuredAnnotation {
     ExpressionList expression_list = 2;
     KeyValuePairList kv_pair_list = 3;
   }
-  // Location of the '@' symbol of this annotation in the source code.
+  // Optional. Location of the '@' symbol of this annotation in the source code.
   SourceLocation source_location = 4;
 }
 
@@ -214,13 +218,15 @@ message P4EnumTypeSpec {
   message Member {
     string name = 1;
     repeated string annotations = 2;
-    // The location of `annotations[i]` is given by `annotation_locations[i]`.
+    // Optional. If present, the location of `annotations[i]` is given by
+   // `annotation_locations[i]`.
     repeated SourceLocation annotation_locations = 4;
     repeated StructuredAnnotation structured_annotations = 3;
   }
   repeated Member members = 1;
   repeated string annotations = 2;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 4;
   repeated StructuredAnnotation structured_annotations = 3;
 }
@@ -233,14 +239,16 @@ message P4SerializableEnumTypeSpec {
     string name = 1;
     bytes value = 2;
     repeated string annotations = 3;
-    // The location of `annotations[i]` is given by `annotation_locations[i]`.
+    // Optional. If present, the location of `annotations[i]` is given by
+   // `annotation_locations[i]`.
     repeated SourceLocation annotation_locations = 5;
     repeated StructuredAnnotation structured_annotations = 4;
   }
   P4BitTypeSpec underlying_type = 1;
   repeated Member members = 2;
   repeated string annotations = 3;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 5;
   repeated StructuredAnnotation structured_annotations = 4;
 }
@@ -278,7 +286,8 @@ message P4NewTypeSpec {
   }
   // for other annotations (not @p4runtime_translation)
   repeated string annotations = 3;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 5;
   repeated StructuredAnnotation structured_annotations = 4;
 }

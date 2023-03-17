@@ -2,9 +2,11 @@ name: "build protobufs"
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -19,12 +21,17 @@ jobs:
     - name: Mount bazel cache
       uses: actions/cache@v2
       with:
-        path: "~/.cache/bazel"  # See https://docs.bazel.build/versions/master/output_directories.html
-        key: bazel
+        # See https://docs.bazel.build/versions/master/output_directories.html
+        path: "~/.cache/bazel"
+        # Create a new cache entry whenever Bazel files change.
+        # See https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
+        key: bazel-${{ runner.os }}-build-${{ hashFiles('**/*.bzl', '**/*.bazel') }}
+        restore-keys: |
+          bazel-${{ runner.os }}-build-
 
     - name: Install bazelisk
       run: |
-        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.4.0/$BAZEL"
+        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.15.0/$BAZEL"
         chmod +x $BAZEL
         sudo mv $BAZEL /usr/local/bin/bazel
 

@@ -38,7 +38,7 @@ representing the name of the library, its major version, etc.
 
 ## Handling P4_16 `type` and the `p4runtime_translation` annotation
 
-The P4Runtime v1.2 specification restricts the types that it supports
+The P4Runtime v1.3 specification restricts the types that it supports
 for the following kinds of things:
 
 + table search key fields, defined in the P4Info message in a
@@ -54,13 +54,13 @@ for the following kinds of things:
 
 Later in this section, we will use the term "constrained value" for
 brevity, instead of repeating all of the kinds of objects listed
-above.  For such values, the P4Runtime specification v1.2 supports all
+above.  For such values, the P4Runtime specification v1.3 supports all
 of the following types, but currently no others:
 
 + `bit<W>`
 + an `enum` with an underlying type of `bit<W>`, also called a
   serializable `enum` (TBD whether all of the pieces needed to make
-  this work are actually supported for P4Runtime 1.2)
+  this work are actually supported for P4Runtime 1.3)
 + a `typedef` or `type` name that, when "followed back" to the lowest
   base type, is one of the above.  (As of the P4_16 language
   specification version 1.2.1, it is not required to support a `type`
@@ -100,7 +100,7 @@ type_list(x) {
 Note that `type_list(x)` always starts with zero or more `type` names,
 and always ends with one type that is neither a `type` nor `typedef`
 name, e.g. `bit<W>`, a header type, struct type, etc.  It never
-contains the name of a type declared using `typedef`.  P4Runtime v1.2
+contains the name of a type declared using `typedef`.  P4Runtime v1.3
 only supports `p4runtime_translation` annotations on `type`
 definitions.  If any such annotations occur on a `typedef` definition,
 they should be ignored.
@@ -111,7 +111,7 @@ of type names.  In order to create such a cycle, the first `type` or
 type name, and this is not allowed.
 
 If the last type is not `bit<W>` or `enum bit<W>`, that is an error
-for P4Runtime v1.2.  The "base" type must always be one of those for
+for P4Runtime v1.3.  The "base" type must always be one of those for
 every constrained value.
 
 

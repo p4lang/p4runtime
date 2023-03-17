@@ -1,0 +1,22 @@
+name: Check generated code
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-codegen:
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Compile protobufs
+      run: |
+        docker build -t p4runtime-ci -f codegen/Dockerfile .
+        docker run -t p4runtime-ci /p4runtime/codegen/compile_protos.sh /tmp
+    - name: Check codegen
+      run: |
+        ./CI/check_codegen.sh

@@ -59,7 +59,8 @@ message PkgInfo {
   Documentation doc = 3;
   // Miscellaneous metadata, free-form; a way to extend PkgInfo
   repeated string annotations = 4;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 10;
   // the target architecture, e.g. "psa"
   string arch = 5;
@@ -67,7 +68,8 @@ message PkgInfo {
   string organization = 6;
   // contact info for support,e.g. "tech-support@acme.org"
   string contact = 7;
-  // url for more information, e.g. "http://support.p4.org/ref/p4/switch.p4_v1.0"
+  // url for more information, e.g.
+  // "http://support.p4.org/ref/p4/switch.p4_v1.0"
   string url = 8;
   // Miscellaneous metadata, structured; a way to extend PkgInfo
   repeated StructuredAnnotation structured_annotations = 9;
@@ -134,7 +136,8 @@ message Preamble {
   // object (TBD).
   string alias = 3;
   repeated string annotations = 4;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 7;
   // Documentation of the entity
   Documentation doc = 5;
@@ -161,7 +164,8 @@ message MatchField {
   uint32 id = 1;
   string name = 2;
   repeated string annotations = 3;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 10;
   int32 bitwidth = 4;
   enum MatchType {
@@ -230,7 +234,8 @@ message ActionRef {
   }
   Scope scope = 3;
   repeated string annotations = 2;
-  // The location of `annotations[i]` is given by `annotation_locations[i]`.
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
   repeated SourceLocation annotation_locations = 5;
   repeated StructuredAnnotation structured_annotations = 4;
 }
@@ -241,7 +246,8 @@ message Action {
     uint32 id = 1;
     string name = 2;
     repeated string annotations = 3;
-    // The location of `annotations[i]` is given by `annotation_locations[i]`.
+    // Optional. If present, the location of `annotations[i]` is given by
+    // `annotation_locations[i]`.
     repeated SourceLocation annotation_locations = 8;
     int32 bitwidth = 4;
     // Documentation of the Param
@@ -259,12 +265,34 @@ message ActionProfile {
   repeated uint32 table_ids = 2;
   // true iff the action profile used dynamic selection
   bool with_selector = 3;
-  // max number of weighted member entries in action profile (across all
-  // selector groups, if the action profile has a selector)
+  // max number of member entries across all groups if the action profile does
+  // not have a selector. Otherwise, semantics as specified by
+  // `selector_size_semantics` below.
   int64 size = 4;
-  // max number of weighted member entries in any given selector group, or 0 if
-  // the action profile does not have a selector
+  // 0 if the action profile does not have a selector. Otherwise, semantics as
+  // specified by `selector_size_semantics` below.
   int32 max_group_size = 5;
+
+  // indicates that `size` and `max_group_size` represent the maximum sum of
+  // weights that can be present across all selector groups and within a
+  // single selector group respectively.
+  message SumOfWeights {}
+
+  // indicates that `size` and `max_group_size` represent the maximum number
+  // of members that can be present across all selector groups and within a
+  // single selector group respectively.
+  message SumOfMembers {
+    // the maximum weight of each individual member in a group.
+    optional int32 max_member_weight = 1;
+  }
+
+  // specifies the semantics of `size` and `max_group_size` above
+  oneof selector_size_semantics {
+    // group size is the sum of the group's weights.
+    SumOfWeights sum_of_weights = 6;
+    // group size is the sum of the group's members.
+    SumOfMembers sum_of_members = 7;
+  }
 }
 
 message CounterSpec {
@@ -337,7 +365,8 @@ message ControllerPacketMetadata {
     // to e.g. Action.Param.name.
     string name = 2;
     repeated string annotations = 3;
-    // The location of `annotations[i]` is given by `annotation_locations[i]`.
+    // Optional. If present, the location of `annotations[i]` is given by
+    // `annotation_locations[i]`.
     repeated SourceLocation annotation_locations = 7;
     int32 bitwidth = 4;
     // unset if not user-defined type
