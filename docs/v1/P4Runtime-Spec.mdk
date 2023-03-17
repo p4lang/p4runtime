@@ -2062,7 +2062,7 @@ values 0 and "" of scalar fields to mean "unset".
 
 In particular, 0 is not a valid P4 object ID and it
 is an error to specify 0 for any P4 object ID in a non-read request towards the
-switch, such as in a `WriteRequest` or a `SetForwardingPipelineConfigRequest`.
+server, such as in a `WriteRequest` or a `SetForwardingPipelineConfigRequest`.
 
 In contrast to scalar fields, note that for message fields, we often do make
 a distinction between an unset message field vs a message field set to its
