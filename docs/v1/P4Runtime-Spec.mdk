@@ -5663,10 +5663,10 @@ the rules in an [earlier section](#sec-arbitration-updates).
 
 The sender need not specify an `election_id`. If the `election_id` is
 unset, the sender's `election_id` is considered lower than any
-`election_id`, and the sender will thus never become master. This way, a
-controller can choose to be a standby controller, in order to avoid master
+`election_id`, and the sender will thus never become primary. This way, a
+controller can choose to be a standby controller, in order to avoid primary
 "flapping" (if a standby controller connects to the switch shortly before the
-actual master controller, therefore becoming master temporarily).
+actual primary controller, therefore becoming primary temporarily).
 
 Note that
 ```
