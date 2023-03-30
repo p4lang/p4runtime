@@ -2317,14 +2317,6 @@ corresponding register entry is updated in the data plane.
 Not data plane volatile in any architectures defined by P4.org
 specifications.
 
-## Zero as Reserved Value
-
-p4runtime.proto uses proto3 syntax, and so it does not allow not specifying a
-scalar data type, such as a `uint32`. Therefore, we usually reserve value 0 for
-those fields to mean unset. In particular, 0 is not a valid P4 object ID and it
-is an error to specify 0 for any P4 object ID in a non-read request towards the
-switch, such as in a `WriteRequest` or a `SetForwardingPipelineConfigRequest`.
-
 ## Bytestrings { #sec-bytestrings}
 
 P4Runtime integer values may be too large to fit in Protobuf primitive data
