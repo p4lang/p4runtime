@@ -2082,13 +2082,35 @@ When writing the config via a `SetForwardingPipelineConfig` RPC, the cookie
 field is optional. For this reason, the actual value is wrapped in its own
 message to clearly identify cases where a cookie is not present.
 
-# General Principles for Message Formatting
+# General Principles for Message Formatting {#sec-message-formatting-principles}
 
-## Set / Unset Protobuf Field
+## Default-valued Fields {#sec-default-valued-fields}
+
+There is a subtle distinction between the treatment of default-valued scalar
+fields vs default-valued message fields in P4Runtime.
+
+### Set / Unset Scalar Fields
+
+In Protobuf version 3 (*proto3*), the default value of scalar fields is `0` for
+numeric types such as `int32`, and the empty string `""` for string types
+(`string` and `bytes`). An application, such as the P4Runtime client or
+server, is **unable to distinguish** between an unset scalar field and a scalar
+field set to its default value. Therefore, we usually reserve the default
+values 0 and "" of scalar fields to mean "unset".
+
+In particular, 0 is not a valid P4 object ID and it
+is an error to specify 0 for any P4 object ID in a non-read request towards the
+server, such as in a `WriteRequest` or a `SetForwardingPipelineConfigRequest`.
+
+In contrast to scalar fields, note that for message fields, we often do make
+a distinction between an unset message field vs a message field set to its
+default value, see the next section.
+
+### Set / Unset Message Fields
 
 In Protobuf version 3 (*proto3*), the default value for a message field is
 "unset" [@ProtoDefaults]. An application, such as the P4Runtime client or
-server, is able to distinguish between an unset message field and a message
+server, is **able to distinguish** between an unset message field and a message
 field set to its default value. We often use this distinction in P4Runtime
 and the meaning of a message can vary based on which of its message fields are
 set. For example, when reading values from an indirect PSA counter using the
@@ -2294,14 +2316,6 @@ corresponding register entry is updated in the data plane.
 
 Not data plane volatile in any architectures defined by P4.org
 specifications.
-
-## Zero as Reserved Value
-
-p4runtime.proto uses proto3 syntax, and so it does not allow not specifying a
-scalar data type, such as a `uint32`. Therefore, we usually reserve value 0 for
-those fields to mean unset. In particular, 0 is not a valid P4 object ID and it
-is an error to specify 0 for any P4 object ID in a non-read request towards the
-switch, such as in a `WriteRequest` or a `SetForwardingPipelineConfigRequest`.
 
 ## Bytestrings { #sec-bytestrings}
 
@@ -5637,12 +5651,21 @@ it populates the `MasterArbitrationUpdate` message using the `device_id`,
 also populates the `status` field in the `MasterArbitrationUpdate` according to
 the rules in an [earlier section](#sec-arbitration-updates).
 
-The sender need not specify an `election_id`. If the `election_id` is not
-specified, the sender's `election_id` is considered lower than any
+### Unset Election ID
+
+The sender need not specify an `election_id`. If the `election_id` is
+unset, the sender's `election_id` is considered lower than any
 `election_id`, and the sender will thus never become primary. This way, a
-controller can choose to be a backup controller, in order to avoid
-"flapping" (if a backup controller connects to the switch shortly before the
+controller can choose to be a standby controller, in order to avoid primary
+"flapping" (if a standby controller connects to the switch shortly before the
 actual primary controller, therefore becoming primary temporarily).
+
+Note that
+```
+election_id : { high: 0 low: 0 }
+```
+is different from an unset `election_id`, see
+[the section on default-valued fields](#sec-default-valued-fields).
 
 
 ## Digest Messages
