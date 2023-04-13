@@ -138,6 +138,7 @@ message Entity {
     ValueSetEntry value_set_entry = 10;
     RegisterEntry register_entry = 11;
     DigestEntry digest_entry = 12;
+    GenericTableEntry generic_table_entry = 13;
   }
 }
 
@@ -239,6 +240,43 @@ message FieldMatch {
   // Otherwise, this behaves like an exact match.
   message Optional {
     bytes value = 1;
+  }
+
+  oneof field_match_type {
+    Exact exact = 2;
+    Ternary ternary = 3;
+    LPM lpm = 4;
+    Range range = 6;
+    Optional optional = 7;
+    // Architecture-specific match value; it corresponds to the other_match_type
+    // in the P4Info MatchField message.
+    .google.protobuf.Any other = 100;
+  }
+}
+message GenericFieldMatch {
+  uint32 field_id = 1;
+
+  message Exact {
+    GenericData value = 1;
+  }
+  message Ternary {
+    bytes value = 1;
+    bytes mask = 2;
+  }
+  message LPM {
+    bytes value = 1;
+    int32 prefix_len = 2;  // in bits
+  }
+  // A Range is logically a set that contains all values numerically between
+  // 'low' and 'high' inclusively.
+  message Range {
+    bytes low = 1;
+    bytes high = 2;
+  }
+  // If the Optional match should be a wildcard, the FieldMatch must be omitted.
+  // Otherwise, this behaves like an exact match.
+  message Optional {
+    GenericData value = 1;
   }
 
   oneof field_match_type {
@@ -508,6 +546,33 @@ message DigestEntry {
     int64 ack_timeout_ns = 3;  // timeout for DigestListAck message
   }
   Config config = 2;
+}
+
+message GenericTableEntry {
+  uint32 table_id = 1;
+  repeated GenericFieldMatch match = 2;
+  TableDataUnion table_data_union = 3;
+  // Should only be set if the match implies a TCAM lookup, i.e. at least one of
+  // the match fields is Optional, Ternary or Range.  A higher number indicates
+  // higher priority.  Only a highest priority entry that matches the packet
+  // must be selected.  Multiple entries in the same table with the same
+  // priority value are permitted.  See Section "TableEntry" in the
+  // specification for details of the behavior.
+  int32 priority = 4;
+  // Set to true if the table entry is being used to update the single default
+  // entry of the table. If true, the "match" field must be empty and
+  // the "data union" field must be populated with a valid data union.
+  bool is_default_entry = 5;
+  // Arbitrary metadata from the controller that is opaque to the target.
+  bytes metadata = 6;
+}
+message TableDataUnion {
+  uint32 union_id = 1;
+  message Param {
+    uint32 param_id = 2;
+    GenericData value = 3;
+  }
+  repeated Param params = 4;
 }
 
 //------------------------------------------------------------------------------

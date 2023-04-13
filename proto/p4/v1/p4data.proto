@@ -34,6 +34,24 @@ message P4Data {
     bytes enum_value = 12;  // serializable enums only
   }
 }
+message GenericData {
+  oneof data {
+    bytes bitstring = 1;
+    float float = 2;
+    bool bool = 3;
+    GenericStructLike generic_struct = 4; // one struct
+    GenericList generic_list = 5; // list of bytes/floats/bool/structs/strings/enums/enum_values.
+    string string = 6;  // control plane arbitrary length string
+    string enum = 7;  // safe (non-serializable) enums only
+    bytes enum_value = 8;  // serializable enums only
+  }
+}
+message GenericStructLike {
+  repeated GenericData members = 1;
+}
+message GenericList {
+  repeated GenericStructLike members = 1;
+}
 
 message P4Varbit {
   bytes bitstring = 1;
