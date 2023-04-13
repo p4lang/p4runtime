@@ -2007,6 +2007,15 @@ The `Digest` message defines the following fields:
   notification using a `P4DataTypeSpec` message (see section on [Representation
   of Arbitrary P4 Types](#sec-representation-of-arbitrary-p4-types)).
 
+### `GenericTable` { #sec-p4info-generic-table}
+`GenericTable` messages are used to map non-PSA P4 externs or non-P4 target-
+specific features to their implementation in a generic way. The same can be achieved
+via Extern, but GenericTable provides a structured way in which every feature is
+represented as a set of match-fields and data-fields. The data consists of unions
+wihch are similar to actions. The best use of GenericTable in a server backend is
+with TDI (Table Driven Interface), but targets can use Generic table to map to their
+own specific feature implementations as well.
+
 ### `Extern` { #sec-p4info-extern}
 
 `Extern` messages are used to specify all extern instances across all extern
@@ -2041,6 +2050,9 @@ the following fields:
 
 If the P4 program does not include any instance of a given extern type, the
 `Extern` message instance for that type should be omitted from the P4Info.
+
+
+
 
 ## Support for Arbitrary P4 Types with P4TypeInfo
 

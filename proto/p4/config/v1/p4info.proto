@@ -37,6 +37,7 @@ message P4Info {
   repeated Register registers = 11;
   repeated Digest digests = 12;
   repeated GenericTable generic_tables = 13;
+  repeated Union unions = 14;
   repeated Extern externs = 100;
   P4TypeInfo type_info = 200;
 }
