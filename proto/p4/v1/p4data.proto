@@ -50,7 +50,7 @@ message GenericStructLike {
   repeated GenericData members = 1;
 }
 message GenericList {
-  repeated GenericStructLike members = 1;
+  repeated GenericData members = 1;
 }
 
 message P4Varbit {
