@@ -229,7 +229,7 @@ message Table {
 message GenericTable {
   Preamble preamble = 1;
   repeated MatchField match_fields = 2;
-  repeated UnionRef union_refs = 3;
+  repeated ActionRef union_refs = 3;
   // 0 (default value) means that the table does not have a const default action
   uint32 const_default_union_id= 4;
   int64 size = 5;  // max number of entries in table
@@ -238,41 +238,6 @@ message GenericTable {
   // architecture-specific table properties which are not part of the core P4
   // language or of the PSA architecture.
   google.protobuf.Any other_properties = 100;
-}
-
-// used to list all possible unions in a Table
-message UnionRef {
-  uint32 id = 1;
-  enum Scope {
-    TABLE_AND_DEFAULT = 0;
-    TABLE_ONLY = 1;
-    DEFAULT_ONLY = 2;
-  }
-  Scope scope = 3;
-  repeated string annotations = 2;
-  // Optional. If present, the location of `annotations[i]` is given by
-  // `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 5;
-  repeated StructuredAnnotation structured_annotations = 4;
-}
-
-message Union {
-  Preamble preamble = 1;
-  message Param {
-    uint32 id = 1;
-    string name = 2;
-    repeated string annotations = 3;
-    // Optional. If present, the location of `annotations[i]` is given by
-    // `annotation_locations[i]`.
-    repeated SourceLocation annotation_locations = 8;
-    int32 bitwidth = 4;
-    // Documentation of the Param
-    Documentation doc = 5;
-    // unset if not user-defined type
-    P4NamedType type_name = 6;
-    repeated StructuredAnnotation structured_annotations = 7;
-  }
-  repeated Param params = 2;
 }
 
 // used to list all possible actions in a Table
