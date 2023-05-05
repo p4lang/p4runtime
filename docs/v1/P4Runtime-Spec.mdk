@@ -2394,7 +2394,7 @@ complement representation, this is called "sign extension", and leaves the
 numeric value represented unchanged.
 
 Upon receiving a binary string, the P4Runtime receiver (whether the server or
-the client) does not impose any restrictions on the length of the string
+the client) does not impose any restrictions on the maximum length of the string
 itself. Instead, the receiver verifies that the value encoded by the string fits
 within the expected type (signed or unsigned) and P4Info-specified bitwidth for
 the P4 object value.
