@@ -5565,15 +5565,27 @@ message PacketMetadata {
 * `payload` is used to carry the full packet content, including the headers.
 
 * `metadata` is a repeated field of `PacketMetadata` messages used to carry the
-  arbitrary controller metadata. The size and value of each metadata entry need
+  arbitrary controller metadata. When a P4Runtime client (or server)
+  generates a `PacketOut` (or `PacketIn`) message, it must populate precisely
+  one `metadata` field for each `metadata` field in the
+  `ControllerPacketMetadata` for packet-out (or packet-in) in the P4Info, such
+  that the two `metadata.id` fields match.
+  The size and value of each `PacketIn`/`PacketOut` metadata entry needs
   to be consistent with what is specified in the corresponding P4Info
-  `ControllerPacketMetadata`. Indeed, when a P4Runtime client (or server)
-  generates a `PacketOut` (or `PacketIn`) message, it needs to populate the
-  `metadata` field with as many values as in `ControllerPacketMetadata.metadata`
-  for the packet-out (or packet-in) case. Each `PacketMetadata.value` is a
-  binary string and must conform to the [Bytestrings](#sec-bytestrings)
-  requirements based on the corresponding P4Info
-  `ControllerPacketMetadata.metadata` specification. If the `metadata` field
+  `ControllerPacketMetadata.Metadata` message with the same `id`, in the
+  following sense:
+  + If `ControllerPacketMetadata.Metadata.bitwidth` is set, or if
+    `ControllerPacketMetadata.Metadata.type_name` is set and
+    `P4NewTypeSpec.translated_type.sdn_bitwidth` is set in the `P4NewTypeSpec`
+    for the type name, then `PacketMetadata.value` must be a binary string of
+    the specified bit width conforming to the [Bytestrings](#sec-bytestrings)
+    requirements.
+  + If `ControllerPacketMetadata.Metadata.type_name` is set and
+    `P4NewTypeSpec.translated_type.sdn_string` is set in the
+    `P4NewTypeSpec` message for the specified type name, then
+    `PacketMetadata.value` can be an arbitrary SDN string subject to the
+    `@p4runtime_translation`.
+  If a `metadata` field
   does not match the P4Info specification, the server must drop the `PacketOut`
   message and may generate a `StreamMessageResponse` message with the `error`
   field set to report the error to the client which issued the `PacketOut`. See
