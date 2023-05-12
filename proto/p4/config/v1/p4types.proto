@@ -333,17 +333,18 @@ message GenericBoolType { }
 message GenericFloatType { }
 
 message GenericBitstringLikeTypeSpec {
-  oneof type_spec { // Variable bit isn't required since list can be used for the same
+  oneof type_spec {
     GenericBitTypeSpec bit = 1;  // bit<W>
     GenericIntTypeSpec int = 2;  // int<W>
+    GenericVarbitTypeSpec varbit = 3;  // varbit<W>
   }
   // Useful to identify well-known types, such as IP address or Ethernet MAC
   // address.
-  repeated string annotations = 3;
+  repeated string annotations = 4;
   // Optional. If present, the location of `annotations[i]` is given by
  // `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 4;
-  repeated StructuredAnnotation structured_annotations = 5;
+  repeated SourceLocation annotation_locations = 5;
+  repeated StructuredAnnotation structured_annotations = 6;
 }
 
 message GenericBitTypeSpec {
@@ -354,6 +355,9 @@ message GenericIntTypeSpec {
   int32 bitwidth = 1;
 }
 
+message GenericVarbitTypeSpec {
+  int32 max_bitwidth = 1;
+}
 message GenericStructTypeSpec {
   message Member {
     string name = 1;
@@ -367,6 +371,7 @@ message GenericStructTypeSpec {
   repeated StructuredAnnotation structured_annotations = 6;
 }
 
+// If a field is of type list, then repeated = true in p4info
 message GenericListTypeSpec {
   message Member {
     string name = 1;
@@ -376,8 +381,8 @@ message GenericListTypeSpec {
   repeated string annotations = 2;
   // Optional. If present, the location of `annotations[i]` is given by
   // `annotation_locations[i]`.
-  int32 min_size = 4;
-  int32 max_size = 5;
+  int32 min_size = 4; // 0 if not present
+  int32 max_size = 5; // no max size defined if not present
   repeated SourceLocation annotation_locations = 6;
   repeated StructuredAnnotation structured_annotations = 7;
 }
