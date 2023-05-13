@@ -4875,7 +4875,7 @@ details in the PSA specification [@PSAAtomicityOfControlPlaneOps].
 The P4~16~ language introduces an `@atomic` annotation [@P4Concurrency], to
 guarantee atomic data plane execution of entire blocks of P4 code. P4Runtime
 implementations are required to honor the `@atomic` annotation for `Write`
-operations, as well as [non-wildcard `Read` operations](#wildcard-reads),
+operations, as well as [non-wildcard `Read` operations](#sec-wildcard-reads),
 relative to data plane execution. Consider the following P4 example written for
 PSA:
 
