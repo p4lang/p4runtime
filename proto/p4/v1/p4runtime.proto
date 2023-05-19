@@ -211,6 +211,10 @@ message TableEntry {
   IdleTimeout time_since_last_hit = 10;
   // Arbitrary metadata from the controller that is opaque to the target.
   bytes metadata = 11;
+  // list of GenericTableEntry
+  // The match fields aren't used.
+  // Only the union fields and priority
+  repeated GenericTableEntry resources = 13;
 }
 
 // field_match_type ::= exact | ternary | lpm | range | optional
@@ -566,6 +570,7 @@ message GenericTableEntry {
   // Arbitrary metadata from the controller that is opaque to the target.
   bytes metadata = 6;
 }
+
 message TableDataUnion {
   uint32 union_id = 1;
   message Param {

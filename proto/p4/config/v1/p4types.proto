@@ -319,7 +319,12 @@ message GenericDataTypeSpec {
     GenericNamedType string = 6;
     GenericNamedType enum = 7;
     GenericNamedType serializable_enum = 8;
-    GenericNamedType new_type = 12;
+    GenericNamedType new_type = 9;
+    // P4 data type spec can help achieve parity with types being used
+    // in P4 externs. For example, if Register is using a type in P4
+    // Data type spec, then it will make it easier to map here when using
+    // GenericTables
+    P4DataTypeSpec p4_type = 10;
   }
 }
 
@@ -373,11 +378,7 @@ message GenericStructTypeSpec {
 
 // If a field is of type list, then repeated = true in p4info
 message GenericListTypeSpec {
-  message Member {
-    string name = 1;
-    GenericDataTypeSpec type_spec = 2;
-  }
-  repeated Member members = 1;
+  GenericDataTypeSpec type_spec = 1;
   repeated string annotations = 2;
   // Optional. If present, the location of `annotations[i]` is given by
   // `annotation_locations[i]`.
