@@ -6293,6 +6293,24 @@ can use Generic table to map to their own specific feature implementations as
 well.
 It defines the following fields
 
+* `generic_table_type_id`, a 8-bit unsigned integer which uniquely identifies the
+  generic_table_type in the context of the architecture.
+  This value is in the range of `[0x00, 0xff]`. 
+  The ID in the preamble is created as `0x18` `generic_table_type_id` `16 bits of
+  genereted ID`.
+  Note that this value does not need
+  to be unique across all architectures from all organizations, since at any
+  given time every device managed by a P4Runtime server maps to a single P4Info
+  message and a single architecture.
+
+* `generic_table_type_name`, which specifies the fully-qualified P4 name of the
+  generic_table in case of P4 entities. In cases of non-P4 entities, it is a
+  name which uniquely identifies this entity in the entire space including P4
+  objects
+
+* `generic_table_category_type`, please check section [GenericTable categories](#sec-generic-table-categories) for more details
+
+
 * `preamble`, a `Preamble` message with the ID, name, and alias of this 
   GenericTable.
 
@@ -6325,7 +6343,7 @@ It defines the following fields
   architecture-specific or target-specific table properties [@P4TableProperties]
   that the target wants to convey.
 
-### `GenericData` { #sec-p4data-generic-data}
+## `GenericData` { #sec-p4data-generic-data}
 
 `GenericData` is an addition to p4data.proto- which aims at adding support for
 data types which aren't covered by P4Data. This incorporates all the data types
@@ -6345,7 +6363,7 @@ used as primitive data types like bytes, float, strings. It contains P
   * enum : String representation with which safe enums are realized
   * enum_val : bytes value with which unsafe/serializable enums are defined
 
-### `GenericTableEntry` { #sec-generic-table-entry}
+## `GenericTableEntry` { #sec-generic-table-entry}
 See section [GenericTableEntry p4runtime](#sec-p4runtime-generic-table-entry) for more info
 
 GenericTableEntry can be used to program non-PSA externs or non-P4 target-specific
@@ -6419,13 +6437,25 @@ limitation. It is recommended that, for the sake of portability, P4Runtime
 clients do not try to insert additional entries once the size indicated in
 P4Info has been reached.
 
+## GenericTable Categories
 
+All tables fall into certain "categories" which define what APIs are
+applicable on the table and the APIs.
 
+  * Regular tables: Read, INSERT, MODIFY, DELETE work as intended. Entries in
+    a table can be inserted, modified and deleted.
 
-
-
-
-
+  * Modify-only tables: Entries exists from the time of initialization. Entries
+    cannot be inserted but only modified. Delete resets the entry to init time.
+    Read works as intended.
+  
+  * Read-only tables: Entries can only be read. Write RPC doesn't work.
+  
+  * Calculation tables: Entries can only be read. However different from
+    Read-only in the sense that there is no defined size of the table since
+    the possible range of matchfields can be immense. For example, hash
+    calculation tables where matchfields are the field values and the union
+    data contains the hash value.
 
 
 # Known Limitations of Current P4Runtime Version

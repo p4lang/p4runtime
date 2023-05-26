@@ -48,8 +48,8 @@ unions {
     id: 1
     name: "instance"
     type {
-      repetition_type : "list"
-      repetition_max_size : 10
+      container_type : "list"
+      container_max_size : 10
       type : "bytes"
       width : 32
     }
@@ -58,8 +58,8 @@ unions {
     id: 2
     name: "port"
     type {
-      repetition_type : "list"
-      repetition_max_size : 10
+      container_type : "list"
+      container_max_size : 10
       type : "varbytes"
       max_bit_width : 64
     }
@@ -82,7 +82,7 @@ unions {
     id: 1
     name: "replica"
     type {
-      repetition_type : "list"
+      container_type : "list"
       type : "struct"
     }
     params {
