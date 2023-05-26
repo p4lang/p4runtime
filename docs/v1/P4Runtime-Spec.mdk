@@ -2008,47 +2008,7 @@ The `Digest` message defines the following fields:
   of Arbitrary P4 Types](#sec-representation-of-arbitrary-p4-types)).
 
 ### `GenericTable` { #sec-p4info-generic-table}
-`GenericTable` messages are used to map non-PSA P4-externs or non-P4 target-
-specific "fixed" features to their implementation in a generic way. The same can be achieved
-via `Extern`, but GenericTable provides a structured way in which every feature is
-represented as a set of match-fields and data-fields. The data consists of unions
-wihch are similar to actions. One use of GenericTable in a server backend is
-with TDI [Table Driven Interface](https://github.com/p4lang/tdi), but targets
-can use Generic table to map to their own specific feature implementations as
-well.
-It defines the following fields
-
-* `preamble`, a `Preamble` message with the ID, name, and alias of this 
-  GenericTable.
-
-* `match_fields`, a repeated field of type `MatchField` representing the data to
-  be used to construct the lookup key matched in this table. For information check
-  the match_fields info in the [Table section](#sec-table)
-
-* `union_refs`, a repeated `UnionRef` field representing the set of possible
-  unions for this table. Functionally, it behaves same as that of ActionRefs.
-  Hence it has been kept as ActionRefs itself.
-  Please check the action_refs info in the [Table section](#sec-table)
-
-* `const_default_union_id`, if this table has a constant default union, this
-  field will carry the `uint32` identifier of that action, otherwise its value
-  will be 0. A default union is the data when the key is null. It is similar to
-  a default action for Match Tables.
-  Being constant means that the control plane cannot
-  set a different default union at runtime or change the default union's
-  arguments.
-
-* `size`, an `int64` describing the desired number of table entries that the
-  target should support for the table.  See the "Size" subsection within the
-  "Table Properties" section of the P4~16~ language specification for details
-  [@P4TableProperties].
-
-* `is_const_table`, a boolean flag indicating that the table cannot be modified
-  by the control plane at runtime.
-
-* `other_properties`, an `Any` Protobuf message [@ProtoAny] to embed
-  architecture-specific or target-specific table properties [@P4TableProperties]
-  that the target wants to convey.
+See section [GenericTable p4info](#sec-p4info-generic-table) for more info
 
 ### `Extern` { #sec-p4info-extern}
 
@@ -2977,24 +2937,8 @@ tables {
 ~ End Prototext
 
 ### GenericData
-
-`GenericData` is an addition to p4data.proto- which aims at adding support for
-data types which aren't covered by P4Data. This incorporates all the data types
-used as primitive data types like bytes, float, strings.
-
-  * bitstring : Bytes type used for simple unsigned integers or bytes
-  * float : Floating type values
-  * bool : Boolean type values
-  * generic_struct : Used to define a structure that can contain
-    one or more of the other members. So one structure can contain
-    different members of different types in GenericData
-  * generic_list : Used to define a list of same types. Even though the def
-    is same as that of generic_struct, this only allows for a variable list
-    of the same type. It can also be a list of generic_structs
-  * string : Used to define control plane strings. The max string length is
-    defined by the size
-  * enum : String representation with which safe enums are realized
-  * enum_val : bytes value with which unsafe/serializable enums are defined
+See section [GenericData p4types](#sec-p4data-generic-data) for more info on the info type.
+See section [GenericData p4data](#sec-p4types-generic-data) for more info on the runtime type.
 
 # P4 Entity Messages { #sec-p4-entity-msgs}
 
@@ -4850,78 +4794,8 @@ message should be defined in a separate architecture-specific Protobuf file. See
 section on [Extending P4Runtime for non-PSA
 Architectures](#sec-extending-p4runtime) for more information.
 
-## `GenericTableEntry` { #sec-generic-table-entry}
-
-GenericTableEntry can be used to program non-PSA externs or non-P4 target-specific
-"fixed" features to their implementation in a generic way. This provides an alternative
-to `Extern` in a structured way and within p4runtime guidelines and semantics.
-The idea has been borrowed from TDI [Table Driven Interface](https://github.com/p4lang/tdi),
-that every state can be representated as a table or multiple tables. A table here is any
-data structure with one or more entries and each entry can be represented as a set of
-key fields and data fields.
-Actions in P4 tables behave like unions and that has been borrowed here in GenericTable.
-This can be potentially used targets to map to either TDI based backends, or even non-TDI
-based backends. If using TDI, then potentially, for every new feature to be added, only
-TDI backend support and remote client code will be required to make use of that function.
-All other middle layers should theoretically remain unchanged.
-
-P4Runtime supports inserting, modifying, deleting and reading GenericTable entries with
-the `GenericTableEntry` entity, which has the following fields:
-
-* `table_id`, which identifies the table instance; the `table_id` is determined
-  by the P4Info message.
-
-* `match`, a repeated field of `GenericFieldMatch` messages. Each element in the
-  repeated field is used to provide a value for the corresponding element in the
-  p4info.
-
-* `union`, which indicates which of the table's unions to execute in case of
-  match and with which argument values.
-
-* `priority`, a 32-bit integer used to order entries when the table's match key
-  includes an optional, ternary or range match.
-
-* `is_default_action`, a boolean flag which indicates whether the table entry is
-  the default entry for the table. See [Default entry](#sec-default-entry)
-  section for more information.
-
-* `metadata`, an arbitrary `bytes` value which is opaque to the
-  target. There is no requirement of where this is stored, but it must be
-  returned by the server along with the rest of the entry when the client
-  performs a read on the entry.
-
-The `priority` field must be set to a non-zero value if the match key includes a
-ternary match (&ie; in the case of PSA if the P4Info entry for the table
-indicates that one or more of its match fields has an `OPTIONAL`, `TERNARY` or
-`RANGE` match
-type) or to zero otherwise. A higher priority number indicates that the entry
-must be given higher priority when performing a table lookup. Clients must allow
-multiple entries to be added with the same priority value.  If a packet can
-match multiple entries with the same priority, it is not deterministic in the
-data plane which entry a packet will match.  If a client wishes to make the
-matching behavior deterministic, it must use different priority values for any
-pair of table entries that the same packet matches.
-
-The `match` and `priority` fields are used to uniquely identify an entry within
-a table. Therefore, these fields cannot be modified after the entry has been
-inserted and must be provided for `MODIFY` and `DELETE` updates. When deleting
-an entry, these key fields (along with `is_default_action`) are the only fields
-considered by the server. All other fields must be ignored, even if they have
-nonsensical values (such as an invalid action field). In the case of a *keyless*
-table (the table has an empty match key), the server must reject all attempts to
-`INSERT` a match entry and return an `INVALID_ARGUMENT` error.
-
-The number of match entries that a table *should* support is indicated in P4Info
-(`size` field of `Table` message). The guarantees provided to the P4Runtime
-client are the same as the ones described in the P4~16~ specification for the
-`size` property [@P4TableProperties]. In particular, some implementations may
-not be able to always accommodate an arbitrary set of entries up to the
-requested size, and other implementations may provide the P4Runtime client with
-more entries than requested. The P4Runtime server must return
-`RESOURCE_EXHAUSTED` when a table entry cannot be inserted because of a size
-limitation. It is recommended that, for the sake of portability, P4Runtime
-clients do not try to insert additional entries once the size indicated in
-P4Info has been reached.
+## `GenericTableEntry`
+See section [GenericTableEntry p4runtime](#sec-p4runtime-generic-table-entry) for more info
 
 # Error Reporting Messages { #sec-error-reporting-messages}
 
@@ -6404,6 +6278,155 @@ information contained in table properties in P4Info, which is why the
 field [@ProtoAny]. At the moment, there is not any mechanism to extend the
 `p4.v1.TableEntry` message based on the value of architecture-specific table
 properties, but we may include on in future versions of the API.
+
+# GenericTable { #sec-generic-table}
+
+## GenericTable p4info { #sec-p4info-generic-table}
+
+`GenericTable` messages are used to map non-PSA P4-externs or non-P4 target-
+specific "fixed" features to their implementation in a generic way. The same can be achieved
+via `Extern`, but GenericTable provides a structured way in which every feature is
+represented as a set of match-fields and data-fields. The data consists of unions
+wihch are similar to actions. One use of GenericTable in a server backend is
+with TDI [Table Driven Interface](https://github.com/p4lang/tdi), but targets
+can use Generic table to map to their own specific feature implementations as
+well.
+It defines the following fields
+
+* `preamble`, a `Preamble` message with the ID, name, and alias of this 
+  GenericTable.
+
+* `match_fields`, a repeated field of type `MatchField` representing the data to
+  be used to construct the lookup key matched in this table. For information check
+  the match_fields info in the [Table section](#sec-table)
+
+* `union_refs`, a repeated `UnionRef` field representing the set of possible
+  unions for this table. Functionally, it behaves same as that of ActionRefs.
+  Hence it has been kept as ActionRefs itself.
+  Please check the action_refs info in the [Table section](#sec-table)
+
+* `const_default_union_id`, if this table has a constant default union, this
+  field will carry the `uint32` identifier of that action, otherwise its value
+  will be 0. A default union is the data when the key is null. It is similar to
+  a default action for Match Tables.
+  Being constant means that the control plane cannot
+  set a different default union at runtime or change the default union's
+  arguments.
+
+* `size`, an `int64` describing the desired number of table entries that the
+  target should support for the table.  See the "Size" subsection within the
+  "Table Properties" section of the P4~16~ language specification for details
+  [@P4TableProperties].
+
+* `is_const_table`, a boolean flag indicating that the table cannot be modified
+  by the control plane at runtime.
+
+* `other_properties`, an `Any` Protobuf message [@ProtoAny] to embed
+  architecture-specific or target-specific table properties [@P4TableProperties]
+  that the target wants to convey.
+
+### `GenericData` { #sec-p4data-generic-data}
+
+`GenericData` is an addition to p4data.proto- which aims at adding support for
+data types which aren't covered by P4Data. This incorporates all the data types
+used as primitive data types like bytes, float, strings. It contains P
+
+  * bitstring : Bytes type used for simple unsigned integers or bytes
+  * float : Floating type values
+  * bool : Boolean type values
+  * generic_struct : Used to define a structure that can contain
+    one or more of the other members. So one structure can contain
+    different members of different types in GenericData
+  * generic_list : Used to define a list of same types. Even though the def
+    is same as that of generic_struct, this only allows for a variable list
+    of the same type. It can also be a list of generic_structs
+  * string : Used to define control plane strings. The max string length is
+    defined by the size
+  * enum : String representation with which safe enums are realized
+  * enum_val : bytes value with which unsafe/serializable enums are defined
+
+### `GenericTableEntry` { #sec-generic-table-entry}
+See section [GenericTableEntry p4runtime](#sec-p4runtime-generic-table-entry) for more info
+
+GenericTableEntry can be used to program non-PSA externs or non-P4 target-specific
+"fixed" features to their implementation in a generic way. This provides an alternative
+to `Extern` in a structured way and within p4runtime guidelines and semantics.
+The idea has been borrowed from TDI [Table Driven Interface](https://github.com/p4lang/tdi),
+that every state can be representated as a table or multiple tables. A table here is any
+data structure with one or more entries and each entry can be represented as a set of
+key fields and data fields.
+Actions in P4 tables behave like unions and that has been borrowed here in GenericTable.
+This can be potentially used targets to map to either TDI based backends, or even non-TDI
+based backends. If using TDI, then potentially, for every new feature to be added, only
+TDI backend support and remote client code will be required to make use of that function.
+All other middle layers should theoretically remain unchanged.
+
+P4Runtime supports inserting, modifying, deleting and reading GenericTable entries with
+the `GenericTableEntry` entity, which has the following fields:
+
+* `table_id`, which identifies the table instance; the `table_id` is determined
+  by the P4Info message.
+
+* `match`, a repeated field of `GenericFieldMatch` messages. Each element in the
+  repeated field is used to provide a value for the corresponding element in the
+  p4info.
+
+* `union`, which indicates which of the table's unions to execute in case of
+  match and with which argument values.
+
+* `priority`, a 32-bit integer used to order entries when the table's match key
+  includes an optional, ternary or range match.
+
+* `is_default_action`, a boolean flag which indicates whether the table entry is
+  the default entry for the table. See [Default entry](#sec-default-entry)
+  section for more information.
+
+* `metadata`, an arbitrary `bytes` value which is opaque to the
+  target. There is no requirement of where this is stored, but it must be
+  returned by the server along with the rest of the entry when the client
+  performs a read on the entry.
+
+The `priority` field must be set to a non-zero value if the match key includes a
+ternary match (&ie; in the case of PSA if the P4Info entry for the table
+indicates that one or more of its match fields has an `OPTIONAL`, `TERNARY` or
+`RANGE` match
+type) or to zero otherwise. A higher priority number indicates that the entry
+must be given higher priority when performing a table lookup. Clients must allow
+multiple entries to be added with the same priority value.  If a packet can
+match multiple entries with the same priority, it is not deterministic in the
+data plane which entry a packet will match.  If a client wishes to make the
+matching behavior deterministic, it must use different priority values for any
+pair of table entries that the same packet matches.
+
+The `match` and `priority` fields are used to uniquely identify an entry within
+a table. Therefore, these fields cannot be modified after the entry has been
+inserted and must be provided for `MODIFY` and `DELETE` updates. When deleting
+an entry, these key fields (along with `is_default_action`) are the only fields
+considered by the server. All other fields must be ignored, even if they have
+nonsensical values (such as an invalid action field). In the case of a *keyless*
+table (the table has an empty match key), the server must reject all attempts to
+`INSERT` a match entry and return an `INVALID_ARGUMENT` error.
+
+The number of match entries that a table *should* support is indicated in P4Info
+(`size` field of `Table` message). The guarantees provided to the P4Runtime
+client are the same as the ones described in the P4~16~ specification for the
+`size` property [@P4TableProperties]. In particular, some implementations may
+not be able to always accommodate an arbitrary set of entries up to the
+requested size, and other implementations may provide the P4Runtime client with
+more entries than requested. The P4Runtime server must return
+`RESOURCE_EXHAUSTED` when a table entry cannot be inserted because of a size
+limitation. It is recommended that, for the sake of portability, P4Runtime
+clients do not try to insert additional entries once the size indicated in
+P4Info has been reached.
+
+
+
+
+
+
+
+
+
 
 # Known Limitations of Current P4Runtime Version
 

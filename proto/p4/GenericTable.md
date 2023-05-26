@@ -34,8 +34,8 @@ repeated fields. So the check on `len(instance_array) == len(port_array)`
 needs to be a runtime check. This however keeps implementation simpler
 and faster since we avoid further recursive nesting.
 
-`port` is a varbytes of max size 64 bits each. The field is repeated so it
-is defined as list of varbits through p4info.
+`port` is a varbytes of max size 64 bits each. The field has a `repeated_type`
+as well, so it is defined as list of varbits through p4info.
 
 ```
 unions {
@@ -47,8 +47,9 @@ unions {
   params {
     id: 1
     name: "instance"
-    repeated: true
     type {
+      repetition_type : "list"
+      repetition_max_size : 10
       type : "bytes"
       width : 32
     }
@@ -56,8 +57,9 @@ unions {
   params {
     id: 2
     name: "port"
-    repeated: true
     type {
+      repetition_type : "list"
+      repetition_max_size : 10
       type : "varbytes"
       max_bit_width : 64
     }
@@ -79,15 +81,14 @@ unions {
   params {
     id: 1
     name: "replica"
-    repeated: true
     type {
-      type : "list"
+      repetition_type : "list"
+      type : "struct"
     }
     params {
       param {
         id: 1
         name: "instance"
-        repeated: true
         type {
           type : "bytes"
           width : 32
@@ -96,7 +97,6 @@ unions {
       param : {
         id: 2
         name: "port"
-        repeated: true
         type {
           type : "varbytes"
           max_bit_width : 64
