@@ -3270,10 +3270,13 @@ indirect tables --- tables with an ActionProfile or ActionSelector
 `implementation` property --- to a constant `NoAction` action entry, with the
 hope that it would simplify the implementation of the P4Runtime service.
 
-### Constant Tables
+### Constant Tables { #sec-constant-tables }
 
-Constant tables are defined as tables whose match entries are immutable. They
-are identified by the `is_const_table` flag in P4Info.
+Constant tables are defined as tables whose match entries are
+immutable. They are identified by the table property `const entries`
+in the P4~16~ source code, and the `is_const_table` flag in P4Info.
+For tables declared with the `entries` property, without `const`
+before `entries` see Section [#sec-tables-with-initial-entries].
 
 The only write updates which are allowed for constant tables are `MODIFY`
 operations on direct resources, and the default action (assuming the default
@@ -3297,6 +3300,64 @@ that P4~16~ does not support assigning explicit priorities to static
 entries. When a priority value is required (&eg; for tables including `RANGE`,
 `TERNARY` or `OPTIONAL` matches), it is inferred based on the order in which
 entries appear in the table declaration.
+
+TODO: With the recent change to the P4~16~ specification for initial
+entries, it might no longer be explicitly clear whether `const
+entries` can have a priority value specified for them in the P4~16~
+source code.  Resolve this question and update the language spec and
+this specification to match, if changes are required in either or both
+of them.
+
+### Tables with initial entries { #sec-tables-with-initial-entries }
+
+Tables with initial entries are those identified by the table property
+`entries` in the P4~16~ source code (with no `const` qualifier before
+`entries`), and the `has_initial_entries` flag in P4Info.  For tables
+declared with `const entries`, see Section [#sec-constant-tables].
+
+For every P4 table, it will fall into one of these three categories:
+
+* Neither `entries` nor `const entries` are declared in the source
+  code, and thus `is_const_table` and `has_initial_entries` will both
+  be false.  This will be called a "normal table" in this section
+  below.
+* The table has `const entries` declared, and thus a separate
+  `entries` property is not permitted by the language.  Such a table
+  will have `is_const_table` true and `has_initial_entries` false.
+* The table has `entries` declared, and thus a separate `const
+  entries` property is not permitted by the language.  Such a table
+  will have `is_const_table` false and `has_initial_entries` true.
+
+Since a table may not have both `entries` and `const entries`
+declared, no table will have `is_const_table` true and
+`has_initial_entries` true.
+
+A table with initial entries is allowed to have a mix of some entries
+marked `const`, and other entries not marked `const`.
+
+Entries not marked `const` may be modified or deleted, just as a
+client may do for any entry in a normal table.
+
+Entries marked `const` behave like entries in a constant table,
+i.e. only `MODIFY` operations on direct resources are allowed.
+
+Unlike a table with `is_const_table = true`, a client may insert
+entries into a table with `has_initial_entries = true`, subject to
+capacity constraints on the number of entries supported by the target
+for the table.
+
+The contents of tables with initial entries can be queried by the
+client through a `ReadRequest`.  When reading entries from a table
+with initial entris, the following fields must be set by the server:
+`table_id`, `match`, `action`, `is_default_action`, and `priority` (if
+required).  This is in addition to any direct resources that are being
+queried.  Idle timeouts are not supported for such tables.
+
+If the table requires a priority value for entries, the priorities of
+the initial entries are determined according to the P4~16~ language
+specification.  After the P4 program is initially loaded, the entries
+not marked `const` can be modified at run time just as table entries
+in a normal table can.
 
 ### Wildcard Reads { #sec-table-wildcard-reads}
 

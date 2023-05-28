@@ -217,8 +217,17 @@ message Table {
   }
   // is idle timeout supported for this table?
   IdleTimeoutBehavior idle_timeout_behavior = 9;
-  // table with static P4 entries, cannot be modified at runtime
+  // is_const_table is true if and only if the table's entries are
+  // immutable, i.e. defined using the 'const entries' table property
+  // in the P4 source code, and thus entries cannot be deleted,
+  // modified, or inserted at run time.
   bool is_const_table = 10;
+  // has_initial_entries is true if and only if the table has initial
+  // entries defined using the 'entries' table property in the P4
+  // source code, with no 'const' qualifier on 'entries'.  Note that
+  // no table will have both is_const_table=true and
+  // has_initial_entries=true.
+  bool has_initial_entries = 11;
   // architecture-specific table properties which are not part of the core P4
   // language or of the PSA architecture.
   google.protobuf.Any other_properties = 100;
