@@ -3359,6 +3359,10 @@ specification.  After the P4 program is initially loaded, the entries
 not marked `const` can be modified at run time just as table entries
 in a normal table can.
 
+TODO: Is there already a place in this specification where the
+contents of P4Runtime "entries" files are defined?  If not, should the
+contents of files be defined in this spec?
+
 ### Wildcard Reads { #sec-table-wildcard-reads}
 
 When performing a `ReadRequest`, the P4Runtime client can select all entries
