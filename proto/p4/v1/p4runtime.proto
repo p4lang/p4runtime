@@ -231,7 +231,7 @@ message TableEntry {
   // reject this TableEntry part of the WriteRequest, perhaps with a
   // specific error status returned (which one? `PERMISSION_DENIED`?
   // `INVALID_ARGUMENT`?).
-  bool const = 12;
+  bool const = 13;
 }
 
 // field_match_type ::= exact | ternary | lpm | range | optional

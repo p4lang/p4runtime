@@ -3339,7 +3339,7 @@ Entries not marked `const` may be modified or deleted, just as a
 client may do for any entry in a normal table.
 
 Entries marked `const` behave like entries in a constant table,
-i.e. only `MODIFY` operations on direct resources are allowed.
+&ie; only `MODIFY` operations on direct resources are allowed.
 
 Unlike a table with `is_const_table = true`, a client may insert
 entries into a table with `has_initial_entries = true`, subject to
