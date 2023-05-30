@@ -3043,6 +3043,10 @@ limitation. It is recommended that, for the sake of portability, P4Runtime
 clients do not try to insert additional entries once the size indicated in
 P4Info has been reached.
 
+The `const` field must be `false` in any `INSERT`, `MODIFY`, or
+`DELETE` write request of a table entry.  If it is true, the server
+must reject the operation and return an `INVALID_ARGUMENT` error.
+
 ### Match Format { #sec-match-format}
 
 The bytes fields in the `FieldMatch` message follow the format described in

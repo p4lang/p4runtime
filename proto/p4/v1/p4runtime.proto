@@ -225,12 +225,6 @@ message TableEntry {
   // table, if it was declared as `const default_action` in the P4
   // source code?  Would that be considered a backwards-compatible
   // change in this specification?
-  //
-  // TODO: Find an appropriate place in the spec to mention that if
-  // this const field is true in a WriteRequest, the server must
-  // reject this TableEntry part of the WriteRequest, perhaps with a
-  // specific error status returned (which one? `PERMISSION_DENIED`?
-  // `INVALID_ARGUMENT`?).
   bool const = 13;
 }
 
