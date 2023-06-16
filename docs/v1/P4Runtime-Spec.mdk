@@ -6565,9 +6565,19 @@ table category. By default, if absent, they are all always false
 
 |Table Cat name| Read-only | Modify-only | Reset-only | Indexed | Keyless | Calculation | Volatile |
 | ----         | ----      | ----        | ----       | ----    | ----    | ----        | ----     |
-| Read-Only    | True      | False       | False      | T/F     | T/F     | T/F         | T/F      |
-| Modify-Only  | False     | True        | False      | T/F     | T/F     | False       | T/F      |
-| Reset-Only   | False     | False       | True       | T/F     | T/F     | False       | T/F      |
+| Read-Only    | True      | False       | False      | True    | False   | False       | T/F      |
+| Read-Only    | True      | False       | False      | False   | True    | False       | T/F      |
+| Read-Only    | True      | False       | False      | False   | False   | False       | T/F      |
+| Read-Only-Cal| True      | False       | False      | False   | False   | True        | False    |
+
+| Modify-Only  | False     | True        | False      | True    | False   | False       | T/F      |
+| Modify-Only  | False     | True        | False      | False   | True    | False       | T/F      |
+| Modify-Only  | False     | True        | False      | False   | False   | False       | T/F      |
+
+| Reset-Only   | False     | False       | True       | True    | False   | False       | T/F      |
+| Reset-Only   | False     | False       | True       | False   | True    | False       | T/F      |
+| Reset-Only   | False     | False       | True       | False   | False   | False       | T/F      |
+
 | Indexed      | T/F       | T/F         | T/F        | T/F     | False   | False       | T/F      |
 | Calculation  | True      | False       | False      | False   | False   | True        | False    |
 
