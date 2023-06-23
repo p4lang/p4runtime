@@ -6287,7 +6287,7 @@ properties, but we may include on in future versions of the API.
 specific "fixed" features to their implementation in a generic way. The same can be achieved
 via `Extern`, but GenericTable provides a structured way in which every feature is
 represented as a set of match-fields and data-fields. The data consists of unions
-wihch are similar to actions. One use of GenericTable in a server backend is
+which are similar to actions. One use of GenericTable in a server backend is
 with TDI [Table Driven Interface](https://github.com/p4lang/tdi), but targets
 can use Generic table to map to their own specific feature implementations as
 well.
@@ -6297,7 +6297,7 @@ It defines the following fields
   generic_table_type in the context of the architecture.
   This value is in the range of `[0x00, 0xff]`. 
   The ID in the preamble is created as `0x18` `generic_table_type_id` `16 bits of
-  genereted ID`.
+  generated ID`.
   Note that this value does not need
   to be unique across all architectures from all organizations, since at any
   given time every device managed by a P4Runtime server maps to a single P4Info
@@ -6347,10 +6347,13 @@ It defines the following fields
 
 `GenericData` is an addition to p4data.proto- which aims at adding support for
 data types which aren't covered by P4Data. This incorporates all the data types
-used as primitive data types like bytes, float, strings. It contains P
+used as primitive data types like bytes, float, strings. It contains p4type as
+well. P4type is to be used for any data type present in P4. If there is a
+conflict, like bool, then the P4 data type should be used.
 
   * bitstring : Bytes type used for simple unsigned integers or bytes
-  * float : Floating type values
+  * float : Floating type values. Target might return a lower-precision
+    ceiled value even if field is non-volatile.
   * bool : Boolean type values
   * generic_struct : Used to define a structure that can contain
     one or more of the other members as named. One structure can contain
@@ -6386,9 +6389,9 @@ that every state can be representated as a table or multiple tables. A table her
 data structure with one or more entries and each entry can be represented as a set of
 key fields and data fields.
 Actions in P4 tables behave like unions and that has been borrowed here in GenericTable.
-This can be potentially used targets to map to either TDI based backends, or even non-TDI
-based backends. If using TDI, then potentially, for every new feature to be added, only
-TDI backend support and remote client code will be required to make use of that function.
+This can be potentially used targets to map to either TDI based targets, or even non-TDI
+based targets. If using TDI, then potentially, for every new feature to be added, only
+TDI target support and remote client code will be required to make use of that function.
 All other middle layers should theoretically remain unchanged.
 
 P4Runtime supports inserting, modifying, deleting and reading GenericTable entries with
@@ -6456,9 +6459,10 @@ applicable on the table and the APIs.
 
   * Regular tables: Read, INSERT, MODIFY, DELETE work as intended. Entries in
     a table can be inserted, modified and deleted.
-    * `INSERT` : The union field must be set for every `INSERT` update. If
-      another entry with same match key exists, then `ALREADY_EXISTS` is
-      returned.
+    * `INSERT` : If another entry with same match key exists, then
+      `ALREADY_EXISTS` is returned. If no union has been defined, then the
+      union from the default entry of the table is used. Some tables might
+      not have a default entry, then the union is required to be set.
       If `default_entry` is true, then it is treated as a MODIFY. Const
       default union rules apply. Match fields and priority should not be set.
     * `MODIFY` : Union field must be set since all data fields are under a
@@ -6506,7 +6510,8 @@ applicable on the table and the APIs.
       fields should not be set in this case.
       Wildcard read does NOT return default entry.
   
-  * Read-only tables: Entries can only be read. Write RPC doesn't work.
+  * Read-only tables: Entries can only be read. Write RPC doesn't work and
+    `NOT_SUPPORTED` is returned.
     * `READ` : The Read RPC. All entries can be read. If no entities are
       provided in request, then all entries are read, AKA wildcard read.
       If `default_entry` is true, then the default entry is returned. Match
@@ -6537,8 +6542,10 @@ applicable on the table and the APIs.
     the possible range of matchfields can be immense. For example, hash
     calculation tables where matchfields are the field values and the union
     data contains the hash value. There is no default_entry for such tables.
+    Write RPC returns `NOT_SUPPORTED`.
     * `READ` : The Read RPC. Wildcard read doesn't exist for this table.
-      Match fields should always be set
+      `NOT_SUPPORTED` is returned if wildcard read is attempted.
+      If match fields aren't set, then default values for the fields are used.
 
   * Indexed tables : Entries are ordered.
 
@@ -6594,8 +6601,10 @@ table category. By default, if absent, they are all always false
 * Read-only
 * Modify-only
 * Reset-only
-* Mandatory
+* Mandatory : Whether user is required to provide value
+  during `INSERT`. Can be skipped on `MODIFY`.
 * Volatile : Data plane volatile. Example counter bytes.
+
 
 # Known Limitations of Current P4Runtime Version
 
