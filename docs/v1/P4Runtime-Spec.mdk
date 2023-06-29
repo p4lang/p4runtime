@@ -6353,21 +6353,18 @@ conflict, like bool, then the P4 data type should be used.
 
   * bitstring : Bytes type used for simple unsigned integers or bytes
   * float : Floating type values. Target might return a lower-precision
-    ceiled value even if field is non-volatile.
+    ceiled value even if field is non-volatile. Target might choose to show a
+    field as volatile if it allows user to insert a certain value but does its
+    own modifications to the value when writing to hardware.
   * bool : Boolean type values
   * generic_struct : Used to define a structure that can contain
     one or more of the other members as named. One structure can contain
     different members of different types in GenericData.
-  * generic_bag : Unordered collection of members of same type. Duplicates
-    are allowed.
   * generic_list : Used to define a list of same types. Only allows for a
     collection of the same type. It can also be a list of generic_structs.
     Members are ordered and duplicates are allowed.
-  * generic_set : Used to define a set of same types. It can also be a set
+  * generic_unordered_set : Used to define a set of same types. It can also be a set
     of generic_structs. Members are unordered and duplicates are not allowed.
-  * generic_ordered_set : Used to define an ordered set of same types.
-    It can also be a set of generic_structs. Members are ordered and
-    duplicates are not allowed.
   * string : Used to define control plane strings. The max string length is
     defined by the size
   * enum : String representation with which safe enums are realized
@@ -6465,6 +6462,15 @@ applicable on the table and the APIs.
       not have a default entry, then the union is required to be set.
       If `default_entry` is true, then it is treated as a MODIFY. Const
       default union rules apply. Match fields and priority should not be set.
+
+~ Figure { #fig-generic-tables-insert-flow; \
+caption: "Generic Tables : INSERT decision flow" }
+![generic-tables-insert-flow]
+~
+[generic-tables-insert-flow]: \
+build/generic-tables-insert-flow.[svg,png] \
+{ height: 7cm; page-align: forcehere }
+
     * `MODIFY` : Union field must be set since all data fields are under a
       union. Modifies the union spec to new union or new field values if
       same union.
@@ -6543,11 +6549,12 @@ applicable on the table and the APIs.
     calculation tables where matchfields are the field values and the union
     data contains the hash value. There is no default_entry for such tables.
     Write RPC returns `NOT_SUPPORTED`.
+    They can be volatile as well. It is possible that the returned values aren't
+    always the same. For example, the hash calc table can return different
+    values depending upon if the hash configuration has been changed.
     * `READ` : The Read RPC. Wildcard read doesn't exist for this table.
       `NOT_SUPPORTED` is returned if wildcard read is attempted.
       If match fields aren't set, then default values for the fields are used.
-
-  * Indexed tables : Entries are ordered.
 
 
 ## GenericTable properties
@@ -6562,7 +6569,13 @@ table category. By default, if absent, they are all always false
 * Read-only : No Add/Del/Mod work
 * Modify-only : Table entries can only be modifed
 * Reset-only : Table can only be reset. Either entire table or individual entries.
-* Indexed : The entries are ordered. Handles define the indexes.
+* Indexed : The entries are ordered. Every entry has an index associated with
+  it. Indexed tables can be either of modify-only, read-only, reset-only or
+  regular tables. If regular tables, then the target is expected to fill up gaps
+  when deleting and then adding entries again. Duplicate entries can exist or
+  not depending upon the table restrictions. Duplicate entries cannot be present
+  in regular tables because there is no way to differentiate between the added
+  entries.
 * Keyless : Only one entry, i.e., default entry exists.
 * Calculation : No defined range of key values. For example, hash calculation table
     for a set of field values.
@@ -6570,26 +6583,36 @@ table category. By default, if absent, they are all always false
 
 #### Combinations that are possible
 
-|Table Cat name| Read-only | Modify-only | Reset-only | Indexed | Keyless | Calculation | Volatile |
-| ----         | ----      | ----        | ----       | ----    | ----    | ----        | ----     |
-| Read-Only    | True      | False       | False      | True    | False   | False       | T/F      |
-| Read-Only    | True      | False       | False      | False   | True    | False       | T/F      |
-| Read-Only    | True      | False       | False      | False   | False   | False       | T/F      |
-| Read-Only-Cal| True      | False       | False      | False   | False   | True        | False    |
+|Table Cat name | Read-only | Modify-only | Reset-only | Indexed | Keyless | Calculation | Volatile | Example |
+| ----          | ----      | ----        | ----       | ----    | ----    | ----        | ----     | ----    |
+| Regular       | False     | False       | False      | False   | False   | False       | T/F      | MatchActionTable                 |
+| Regular-In    | False     | False       | False      | True    | False   | False       | T/F      | MatchActionTable with indexes    |
 
-| Modify-Only  | False     | True        | False      | True    | False   | False       | T/F      |
-| Modify-Only  | False     | True        | False      | False   | True    | False       | T/F      |
-| Modify-Only  | False     | True        | False      | False   | False   | False       | T/F      |
+| Read-Only     | True      | False       | False      | False   | False   | False       | T/F      | Port ID to name map              |
+| Read-Only-Kl  | True      | False       | False      | False   | True    | False       | T/F      | Target Efuse information table   |
+| Read-Only-In  | True      | False       | False      | True    | False   | False       | T/F      | Virtual port ID to name map      |
+| Read-Only-Cal | True      | False       | False      | False   | False   | True        | T/F      | Hash calc table for field values |
 
-| Reset-Only   | False     | False       | True       | True    | False   | False       | T/F      |
-| Reset-Only   | False     | False       | True       | False   | True    | False       | T/F      |
-| Reset-Only   | False     | False       | True       | False   | False   | False       | T/F      |
+| Modify-Only   | False     | True        | False      | False   | False   | False       | T/F      |                                  |
+| Modify-Only-Kl| False     | True        | False      | False   | True    | False       | T/F      | Target configuration table       |
+| Modify-Only-In| False     | True        | False      | True    | False   | False       | T/F      | Counter table                    |
+ 
+| Reset-Only    | False     | False       | True       | False   | False   | False       | T/F      | Port stats                       |
+| Reset-Only-Kl | False     | False       | True       | False   | True    | False       | T/F      | Target stats                     |
+| Reset-Only-In | False     | False       | True       | True    | False   | False       | T/F      | Virtual port stats               |
 
-| Indexed      | T/F       | T/F         | T/F        | T/F     | False   | False       | T/F      |
-| Calculation  | True      | False       | False      | False   | False   | True        | False    |
+Where,
+Kl  - Keyless
+In  - Indexed
+Cal - Calculation
 
+In the above examples, Virtual ports have been considered to be an example where they are indexed but ports aren't.
 
 ### Entry properties
+
+These properties do not go as part of p4info since these are entry-specific and
+not table specific. They go in as part of the entries fiel generated by the
+compiler.
 
 * Const (read-only)
 * Non-const init

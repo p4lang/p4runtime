@@ -315,19 +315,17 @@ message GenericDataTypeSpec {
     GenericFloatType float = 2;
     GenericBoolType bool = 3;
     GenericNamedType struct = 4;
-    GenericNamedType bag = 5;
-    GenericNamedType list = 6;
-    GenericNamedType set = 7;
-    GenericNamedType ordered_set = 8;
-    GenericNamedType string = 9;
-    GenericNamedType enum = 10;
-    GenericNamedType serializable_enum = 11;
-    GenericNamedType new_type = 12;
+    GenericNamedType list = 5;
+    GenericNamedType unordered_set = 6;
+    GenericNamedType string = 7;
+    GenericNamedType enum = 8;
+    GenericNamedType serializable_enum = 9;
+    GenericNamedType new_type = 10;
     // P4 data type spec can help achieve parity with types being used
     // in P4 externs. For example, if Register is using a type in P4
     // Data type spec, then it will make it easier to map here when using
     // GenericTables
-    P4DataTypeSpec p4_type = 13;
+    P4DataTypeSpec p4_type = 11;
   }
 }
 
@@ -379,19 +377,6 @@ message GenericStructTypeSpec {
   repeated StructuredAnnotation structured_annotations = 6;
 }
 
-// If a field is of type bag, then container_type is in p4info
-// and value == "bag"
-// unordered and duplicates_allowed
-message GenericBagTypeSpec {
-  GenericDataTypeSpec type_spec = 1;// The element_type
-  repeated string annotations = 2;
-  // Optional. If present, the location of `annotations[i]` is given by
-  // `annotation_locations[i]`.
-  int32 min_size = 4; // 0 if not present
-  int32 max_size = 5; // no max size defined if not present
-  repeated SourceLocation annotation_locations = 6;
-  repeated StructuredAnnotation structured_annotations = 7;
-}
 // If a field is of type list, then container_type is in p4info
 // and value == "list"
 // ordered and duplicates allowed.
@@ -406,22 +391,9 @@ message GenericListTypeSpec {
   repeated SourceLocation annotation_locations = 6;
   repeated StructuredAnnotation structured_annotations = 7;
 }
-// If a field is of type set, then container_type is in p4info
-// and value == "set"
-// Unordered and duplicates not allowed
-message GenericSetTypeSpec {
-  GenericDataTypeSpec type_spec = 1;// The element_type
-  repeated string annotations = 2;
-  // Optional. If present, the location of `annotations[i]` is given by
-  // `annotation_locations[i]`.
-  int32 min_size = 4; // 0 if not present
-  int32 max_size = 5; // no max size defined if not present
-  repeated SourceLocation annotation_locations = 6;
-  repeated StructuredAnnotation structured_annotations = 7;
-}
 // If a field is of type "unordered_set", then container_type is in p4info
 // value == "unordered_set"
-// ordered and duplicates not allowed
+// Unordered and duplicates not allowed
 message GenericUnorderedSetTypeSpec {
   GenericDataTypeSpec type_spec = 1;// The element_type
   repeated string annotations = 2;
@@ -431,6 +403,17 @@ message GenericUnorderedSetTypeSpec {
   int32 max_size = 5; // no max size defined if not present
   repeated SourceLocation annotation_locations = 6;
   repeated StructuredAnnotation structured_annotations = 7;
+}
+
+message GenericStringSpec {
+  string name = 1;
+  int32 min_size = 2; // 0 if not present
+  int32 max_size = 3; // no max size defined if not present
+  repeated string annotations = 4;
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
+  repeated StructuredAnnotation structured_annotations = 6;
 }
 message GenericEnumTypeSpec {
   message Member {
@@ -499,4 +482,4 @@ message GenericNewTypeSpec {
   repeated StructuredAnnotation structured_annotations = 4;
 }
 
-// End of P4 type specs --------------------------------------------------------
+// End of Generic type specs --------------------------------------------------------
