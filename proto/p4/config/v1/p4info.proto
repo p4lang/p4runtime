@@ -417,6 +417,8 @@ message Digest {
   P4DataTypeSpec type_spec = 2;
 }
 
+////// Begin : GenericTables messages
+
 message GenericMatchField {
   uint32 id = 1;
   string name = 2;
@@ -483,7 +485,9 @@ message Union {
 message GenericTable {
   uint32 generic_table_type_id = 1;
   string generic_table_type_name = 2;
-  repeated GenericTableInstance instances = 3;
+  string generic_table_category = 3;
+  repeated string generic_table_properties = 4
+  repeated GenericTableInstance instances = 5;
 }
 
 message GenericTableInstance {
@@ -500,3 +504,4 @@ message GenericTableInstance {
   google.protobuf.Any other_properties = 100;
 }
 
+////// End: GenericTables

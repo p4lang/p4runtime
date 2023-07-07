@@ -34,31 +34,6 @@ message P4Data {
     bytes enum_value = 12;  // serializable enums only
   }
 }
-message GenericData {
-  oneof data {
-    bytes bitstring = 1;
-    GenericVarbit varbitstring = 2;
-    float float = 3;
-    bool bool = 4;
-    GenericStructLike generic_struct = 5; // one struct
-    GenericList generic_list = 6; // list of bytes/floats/bool/structs/strings/enums/enum_values.
-    string string = 7;  // control plane arbitrary length string
-    string enum = 8;  // safe (non-serializable) enums only
-    bytes enum_value = 9;  // serializable enums only
-  }
-}
-message GenericStructLike {
-  repeated GenericData members = 1;
-}
-message GenericList {
-  repeated GenericData members = 1;
-}
-
-message GenericVarbit {
-  bytes bitstring = 1;
-  int32 bitwidth = 2;  // dynamic bitwidth of the field
-}
-
 message P4Varbit {
   bytes bitstring = 1;
   int32 bitwidth = 2;  // dynamic bitwidth of the field
@@ -93,3 +68,30 @@ message P4HeaderUnionStack {
   // size of the header union stack, which is specified in P4Info.
   repeated P4HeaderUnion entries = 1;
 }
+////// Begin : GenericTables messages
+message GenericData {
+  oneof data {
+    bytes bitstring = 1;
+    GenericVarbit varbitstring = 2;
+    float float = 3;
+    bool bool = 4;
+    GenericStructLike generic_struct = 5; // one struct
+    GenericList generic_list = 6; // list of bytes/floats/bool/structs/strings/enums/enum_values.
+    string string = 7;  // control plane arbitrary length string
+    string enum = 8;  // safe (non-serializable) enums only
+    bytes enum_value = 9;  // serializable enums only
+  }
+}
+message GenericStructLike {
+  repeated GenericData members = 1;
+}
+message GenericList {
+  repeated GenericData members = 1;
+}
+
+message GenericVarbit {
+  bytes bitstring = 1;
+  int32 bitwidth = 2;  // dynamic bitwidth of the field
+}
+
+////// End: GenericTables
