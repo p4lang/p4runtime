@@ -6669,10 +6669,9 @@ receive message size to a value smaller than the default (4MB).
 
 ## P4Runtime Entries files { #sec-entries-files }
 
-When at least one table in a P4 program has a table property
-`entries`, with or without a `const` qualifier before `entries`, the
-open source P4 compiler `p4c` [@p4c] will generate a file containing
-all of the entries in the source code for those tables.
+The open source P4 compiler `p4c` [@p4c] implements an option to
+generate an "entries file", i.e. a file that contains all table
+entries declared via the `entries` table property within the program.
 
 An example P4~16~ program that can be used to demonstrate this
 capability is `table-entries-ternary-bmv2.p4`
@@ -6691,7 +6690,7 @@ format is a binary P4Runtime API protobuf message format.  The `.txt`
 format is the text encoding of the same Protobuf messages.
 
 Target devices are *not* required to use this file.  For example, if a
-target has a P4 compiler back end that encodes all of necessary
+target has a P4 compiler back end that encodes all of the necessary
 details from the P4 source program, including the `entries` of tables,
 in a target-specific binary format, then that target might hae no
 reason to generate these entries files.
