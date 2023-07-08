@@ -6670,7 +6670,7 @@ receive message size to a value smaller than the default (4MB).
 ## P4Runtime Entries files { #sec-entries-files }
 
 The open source P4 compiler `p4c` [@p4c] implements an option to
-generate an "entries file", i.e. a file that contains all table
+generate an "entries file", &ie; a file that contains all table
 entries declared via the `entries` table property within the program.
 
 An example P4~16~ program that can be used to demonstrate this
