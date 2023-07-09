@@ -3363,9 +3363,9 @@ specification.  After the P4 program is initially loaded, the entries
 not marked `const` can be modified at run time just as table entries
 in a normal table can.
 
-TODO: Is there already a place in this specification where the
-contents of P4Runtime "entries" files are defined?  If not, should the
-contents of files be defined in this spec?
+The contents of all table entries within `entries` table properties in
+a P4 program can be written to a separate output file by the open
+source `p4c` compiler.  See Section [#sec-entries-files] for details.
 
 ### Wildcard Reads { #sec-table-wildcard-reads}
 
@@ -6674,15 +6674,15 @@ generate an "entries file", &ie; a file that contains all table
 entries declared via the `entries` table property within the program.
 
 An example P4~16~ program that can be used to demonstrate this
-capability is `table-entries-ternary-bmv2.p4`
-[@p4cTestProgramForConstEntries]:
+capability is `table-entries-ternary-bmv2.p4` [@p4cTestProgramForConstEntries]:
 
-~ Begin text
-git clone https://github.com/p4lang/p4c
-cd p4c/testdata/p4_16_samples
-mkdir tmp
-p4test --arch v1model --p4runtime-files tmp/p4info.txt --p4runtime-entries-files tmp/entries.txt table-entries-ternary-bmv2.p4
-~ End text
+    git clone https://github.com/p4lang/p4c
+    cd p4c/testdata/p4_16_samples
+    mkdir tmp
+    p4test --arch v1model \
+        --p4runtime-files tmp/p4info.txt \
+        --p4runtime-entries-files tmp/entries.txt \
+        table-entries-ternary-bmv2.p4
 
 You can replace the `.txt` suffix of the file name `tmp/entries.txt`
 in the example command above with `.json` or `.bin`.  The `.bin`
