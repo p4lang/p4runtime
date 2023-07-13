@@ -4795,7 +4795,7 @@ section on [Extending P4Runtime for non-PSA
 Architectures](#sec-extending-p4runtime) for more information.
 
 ## `GenericTableEntry`
-See section [GenericTableEntry p4runtime](#sec-p4runtime-generic-table-entry) for more info
+See section [GenericTableEntry p4runtime](#sec-generic-table-entry) for more info
 
 # Error Reporting Messages { #sec-error-reporting-messages}
 
@@ -6293,11 +6293,20 @@ can use Generic table to map to their own specific feature implementations as
 well.
 It defines the following fields
 
-* `generic_table_type_id`, a 8-bit unsigned integer which uniquely identifies the
-  generic_table_type in the context of the architecture.
+* `generic_table_type_id`, an 8-bit unsigned integer which uniquely identifies
+  the generic_table_type in the context of the architecture.
   This value is in the range of `[0x00, 0xff]`. 
-  The ID in the preamble is created as `0x18` `generic_table_type_id` `16 bits of
-  generated ID`.
+  The ID in the preamble is created as `0x18 + generic_table_type_id + 16 bits
+  of generated ID by compiler`. The `generic_table_type` depicts a new table
+  "type" which would have similar properties. The organization of the table
+  type space is left up to the target. Some optional guidelines
+  * For P4 externs, any new extern to have a new table type.
+  * For non-P4 externs, options are
+    * All non-P4 tables grouped under one giant non_p4 table type
+    * Tables divided on the basis of categories. Categories are defined in the
+      spec but aren't part of the p4info.
+    * Every table has its own table-type. This can however lead to running out
+      of the 8 bit type ID space soon.
   Note that this value does not need
   to be unique across all architectures from all organizations, since at any
   given time every device managed by a P4Runtime server maps to a single P4Info
@@ -6308,36 +6317,39 @@ It defines the following fields
   name which uniquely identifies this entity in the entire space including P4
   objects
 
-* `generic_table_category_type`, please check section [GenericTable categories](#sec-generic-table-categories) for more details
+* `repeated string generic_table_properties`, please check generic-table
+  properties under section [GenericTable categories]
+  (#sec-generic-table-categories) for more details
 
+* `repeated GenericTableInstance`, contains the info for one instance of
+  a generic-table-type. All tables of one type are grouped under this.
 
+GenericTableInstance
 * `preamble`, a `Preamble` message with the ID, name, and alias of this 
   GenericTable.
 
-* `match_fields`, a repeated field of type `MatchField` representing the data to
-  be used to construct the lookup key matched in this table. For information check
-  the match_fields info in the [Table section](#sec-table)
+* `generic_match_fields`, a repeated field of type `GenericMatchField` representing
+  the data to be used to construct the lookup key matched in this table. For
+  information check the generic_match_fields info in the [Generic Table section]
+  (#sec-generic-table-entry)
 
 * `union_refs`, a repeated `UnionRef` field representing the set of possible
   unions for this table. Functionally, it behaves same as that of ActionRefs.
   Hence it has been kept as ActionRefs itself.
-  Please check the action_refs info in the [Table section](#sec-table)
+  Please check the union_refs info in the [Generic Table section]
+  (#sec-generic-table-entry)
 
 * `const_default_union_id`, if this table has a constant default union, this
   field will carry the `uint32` identifier of that action, otherwise its value
   will be 0. A default union is the data when the key is null. It is similar to
-  a default action for Match Tables.
-  Being constant means that the control plane cannot
-  set a different default union at runtime or change the default union's
-  arguments.
+  a default action for Match Tables. Being constant means that the control
+  plane cannot set a different default union at runtime or change the default
+  union's arguments.
 
 * `size`, an `int64` describing the desired number of table entries that the
   target should support for the table.  See the "Size" subsection within the
   "Table Properties" section of the P4~16~ language specification for details
   [@P4TableProperties].
-
-* `is_const_table`, a boolean flag indicating that the table cannot be modified
-  by the control plane at runtime.
 
 * `other_properties`, an `Any` Protobuf message [@ProtoAny] to embed
   architecture-specific or target-specific table properties [@P4TableProperties]
@@ -6376,7 +6388,6 @@ conflict, like bool, then the P4 data type should be used.
     used. Otherwise, the GenericDataType is used
 
 ## `GenericTableEntry` { #sec-generic-table-entry}
-See section [GenericTableEntry p4runtime](#sec-p4runtime-generic-table-entry) for more info
 
 GenericTableEntry can be used to program non-PSA externs or non-P4 target-specific
 "fixed" features to their implementation in a generic way. This provides an alternative
@@ -6449,7 +6460,7 @@ limitation. It is recommended that, for the sake of portability, P4Runtime
 clients do not try to insert additional entries once the size indicated in
 P4Info has been reached.
 
-## GenericTable Categories
+## GenericTable Categories {#sec-generic-table-categories}
 
 All tables fall into certain "categories" which define what APIs are
 applicable on the table and the APIs.

@@ -8,7 +8,6 @@ defining the data fields has been presented. Only 1 of them is required.
 generic_tables {
   generic_table_type_id : 145
   generic_table_type_name : "MulticastGroup"
-  generic_table_category : "Regular-In"
   generic_table_properties : {
     read-only : False
   }
