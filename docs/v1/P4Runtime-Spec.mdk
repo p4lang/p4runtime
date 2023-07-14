@@ -3300,17 +3300,16 @@ direct resources that are being queried.  Idle timeouts are not supported for
 static entries. If the table requires a priority value for entries, the server
 must populate the `priority` field appropriately, starting at 1 for the lowest
 priority entry and incrementing the value by 1 for each successive entry. Note
-that P4~16~ does not support assigning explicit priorities to static
-entries. When a priority value is required (&eg; for tables including `RANGE`,
-`TERNARY` or `OPTIONAL` matches), it is inferred based on the order in which
-entries appear in the table declaration.
+that P4~16~ does not support assigning explicit priorities to entries
+declared with `const entries`[^ConstEntriesPriorities].  When a
+priority value is required (&eg; for tables including `RANGE`,
+`TERNARY` or `OPTIONAL` matches), it is inferred based on the order in
+which entries appear in the table declaration.
 
-TODO: With the recent change to the P4~16~ specification for initial
-entries, it might no longer be explicitly clear whether `const
-entries` can have a priority value specified for them in the P4~16~
-source code.  Resolve this question and update the language spec and
-this specification to match, if changes are required in either or both
-of them.
+[^ConstEntriesPriorities]: This is not yet explicit in the P4~16~
+    language specification, but will become so if this or a similar
+    clarification is added to it:
+    <https://github.com/p4lang/p4-spec/pull/1259>
 
 ### Tables with initial entries { #sec-tables-with-initial-entries }
 
