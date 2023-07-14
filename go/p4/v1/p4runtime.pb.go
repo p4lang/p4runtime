@@ -1013,9 +1013,10 @@ type TableEntry struct {
 	// modified, e.g. any of the following:
 	//   - Any entry read from a table declared with `const entries`
 	//   - The default entry read from a table declared with `const default_action`
-	//   - Any entry declared with `entries`, and thus the table has
-	//     `has_initial_entries = true`, where the individual entry has the
-	//     `const` qualifier on it in the P4 source code.
+	//   - Any entry declared with `entries` without the `const` qualifier
+	//     before `entries`, and thus the table has `has_initial_entries =
+	//     true`, where the individual entry has the `const` qualifier on
+	//     it in the P4 source code.
 	//
 	// Note: Older P4Runtime API servers before the `const` field was
 	// added to this message will not return a value for `const` in the
