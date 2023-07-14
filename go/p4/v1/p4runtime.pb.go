@@ -1010,26 +1010,16 @@ type TableEntry struct {
 	// Arbitrary metadata from the controller that is opaque to the target.
 	Metadata []byte `protobuf:"bytes,11,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// const is true only for entries that cannot be deleted or
-	// modified, e.g. those in a table with `has_initial_entries = true`
-	// that have been marked `const` _on that individual entry_ in the
-	// P4 source code within its `entries` table property.
+	// modified, e.g. any of the following:
+	//   - Any entry read from a table declared with `const entries`
+	//   - The default entry read from a table declared with `const default_action`
+	//   - Any entry declared with `entries`, and thus the table has
+	//     `has_initial_entries = true`, where the individual entry has the
+	//     `const` qualifier on it in the P4 source code.
 	//
-	// TODO: Should const be true for all entries read from a table
-	// declared with `const entries`?  Would that be considered a
-	// backwards-compatible change in this specification?  If it is
-	// considered backwards-incompatible, is it an acceptable
-	// incompatibility?
-	//
-	// TODO: Should const be true when reading a default entry from a
-	// table, if it was declared as `const default_action` in the P4
-	// source code?  Would that be considered a backwards-compatible
-	// change in this specification?
-	//
-	// TODO: Find an appropriate place in the spec to mention that if
-	// this const field is true in a WriteRequest, the server must
-	// reject this TableEntry part of the WriteRequest, perhaps with a
-	// specific error status returned (which one? `PERMISSION_DENIED`?
-	// `INVALID_ARGUMENT`?).
+	// Note: Older P4Runtime API servers before the `const` field was
+	// added to this message will not return a value for `const` in the
+	// first two cases above, but newer P4Runtime API servers will.
 	Const bool `protobuf:"varint,13,opt,name=const,proto3" json:"const,omitempty"`
 }
 
