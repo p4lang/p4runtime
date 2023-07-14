@@ -1524,6 +1524,11 @@ control plane. This message contains the following fields:
 * `is_const_table`, a boolean flag indicating that the table is filled with
   static entries and cannot be modified by the control plane at runtime.
 
+* `has_initial_entries`, a boolean flag indicating that the table has
+  entries populated into it when the P4 program is loaded, which is
+  true for tables in the P4 source code with either the `entries` or
+  `const entries` properties.
+
 * `other_properties`, an `Any` Protobuf message [@ProtoAny] to embed
   architecture-specific table properties [@P4TableProperties] which are not part
   of the core P4 language or of the PSA architecture.
@@ -3278,7 +3283,8 @@ hope that it would simplify the implementation of the P4Runtime service.
 
 Constant tables are defined as tables whose match entries are
 immutable. They are identified by the table property `const entries`
-in the P4~16~ source code, and the `is_const_table` flag in P4Info.
+in the P4~16~ source code.  In the P4Info, such tables have both
+`is_const_table` and `has_initial_entries` flags equal to true.
 For tables declared with the `entries` property, without `const`
 before `entries` see Section [#sec-tables-with-initial-entries].
 
@@ -3315,7 +3321,8 @@ which entries appear in the table declaration.
 
 Tables with initial entries are those identified by the table property
 `entries` in the P4~16~ source code (with no `const` qualifier before
-`entries`), and the `has_initial_entries` flag in P4Info.  For tables
+`entries`).  In the P4Info, such tables have `has_initial_entries`
+flag equal to true, but `is_const_table` is false.  For tables
 declared with `const entries`, see Section [#sec-constant-tables].
 
 For every P4 table, it will fall into one of these three categories:
@@ -3326,14 +3333,10 @@ For every P4 table, it will fall into one of these three categories:
   below.
 * The table has `const entries` declared, and thus a separate
   `entries` property is not permitted by the language.  Such a table
-  will have `is_const_table` true and `has_initial_entries` false.
+  will have `is_const_table` true and `has_initial_entries` true.
 * The table has `entries` declared, and thus a separate `const
   entries` property is not permitted by the language.  Such a table
   will have `is_const_table` false and `has_initial_entries` true.
-
-Since a table may not have both `entries` and `const entries`
-declared, no table will have `is_const_table` true and
-`has_initial_entries` true.
 
 A table with initial entries is allowed to have a mix of some entries
 marked `const`, and other entries not marked `const`.
@@ -3345,9 +3348,9 @@ Entries marked `const` behave like entries in a constant table,
 &ie; only `MODIFY` operations on direct resources are allowed.
 
 Unlike a table with `is_const_table = true`, a client may insert
-entries into a table with `has_initial_entries = true`, subject to
-capacity constraints on the number of entries supported by the target
-for the table.
+entries into a table with `has_initial_entries = true` and
+`is_const_table = false`, subject to capacity constraints on the
+number of entries supported by the target for the table.
 
 The contents of tables with initial entries can be queried by the
 client through a `ReadRequest`.  When reading entries from a table
@@ -6691,10 +6694,10 @@ format is the text encoding of the same Protobuf messages.
 Target devices are *not* required to use this file.  For example, if a
 target has a P4 compiler back end that encodes all of the necessary
 details from the P4 source program, including the `entries` of tables,
-in a target-specific binary format, then that target might hae no
+in a target-specific binary format, then that target might have no
 reason to generate these entries files.
 
-Some target devices might choose to generates entries files, and also
+Some target devices might choose to generate entries files, and also
 to require doing so in order to have a correct implementation.  For
 example, a target runtime implementation might take a target-specific
 binary format for the compiled P4 program that does *not* contain any
