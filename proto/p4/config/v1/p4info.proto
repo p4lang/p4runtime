@@ -217,15 +217,16 @@ message Table {
   }
   // is idle timeout supported for this table?
   IdleTimeoutBehavior idle_timeout_behavior = 9;
-  // is_const_table is true if and only if the table's entries are
-  // immutable, i.e. defined using the 'const entries' table property
-  // in the P4 source code, and thus entries cannot be deleted,
-  // modified, or inserted at run time.
+  // True if and only if the table's entries are immutable,
+  // i.e. defined using the 'const entries' table property in the P4
+  // source code, and thus entries cannot be deleted, modified, or
+  // inserted at run time.
   bool is_const_table = 10;
-  // has_initial_entries is true if and only if the table has initial
-  // entries defined using the 'entries' table property in the P4
-  // source code, either with or without the 'const' qualifier on
-  // 'entries'.
+  // True if and only if the table has initial entries defined using
+  // the 'entries' table property in the P4 source code, either with
+  // or without the 'const' qualifier on 'entries'.  Note that this
+  // field is true even if the list of entries is empty in the P4
+  // source code.
   bool has_initial_entries = 11;
   // architecture-specific table properties which are not part of the core P4
   // language or of the PSA architecture.
