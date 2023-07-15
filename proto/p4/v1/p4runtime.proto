@@ -210,18 +210,18 @@ message TableEntry {
   IdleTimeout time_since_last_hit = 10;
   // Arbitrary metadata from the controller that is opaque to the target.
   bytes metadata = 11;
-  // const is true only for entries that cannot be deleted or
-  // modified, e.g. any of the following:
+  // True if and only if the entry cannot be deleted or modified,
+  // i.e. any of the following:
   // + Any entry read from a table declared with `const entries`
   // + The default entry read from a table declared with `const default_action`
   // + Any entry declared with `entries` without the `const` qualifier
   //   before `entries`, and thus the table has `has_initial_entries =
   //   true`, where the individual entry has the `const` qualifier on
   //   it in the P4 source code.
-  // Note: Older P4Runtime API servers before the `const` field was
-  // added to this message will not return a value for `const` in the
-  // first two cases above, but newer P4Runtime API servers will.
-  bool const = 13;
+  // Note: Older P4Runtime API servers before the `is_const` field was
+  // added to this message will not return a value for `is_const` in
+  // the first two cases above, but newer P4Runtime API servers will.
+  bool is_const = 13;
 }
 
 // field_match_type ::= exact | ternary | lpm | range | optional
