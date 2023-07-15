@@ -1189,15 +1189,16 @@ type Table struct {
 	Size              int64    `protobuf:"varint,8,opt,name=size,proto3" json:"size,omitempty"` // max number of entries in table
 	// is idle timeout supported for this table?
 	IdleTimeoutBehavior Table_IdleTimeoutBehavior `protobuf:"varint,9,opt,name=idle_timeout_behavior,json=idleTimeoutBehavior,proto3,enum=p4.config.v1.Table_IdleTimeoutBehavior" json:"idle_timeout_behavior,omitempty"`
-	// is_const_table is true if and only if the table's entries are
-	// immutable, i.e. defined using the 'const entries' table property
-	// in the P4 source code, and thus entries cannot be deleted,
-	// modified, or inserted at run time.
+	// True if and only if the table's entries are immutable,
+	// i.e. defined using the 'const entries' table property in the P4
+	// source code, and thus entries cannot be deleted, modified, or
+	// inserted at run time.
 	IsConstTable bool `protobuf:"varint,10,opt,name=is_const_table,json=isConstTable,proto3" json:"is_const_table,omitempty"`
-	// has_initial_entries is true if and only if the table has initial
-	// entries defined using the 'entries' table property in the P4
-	// source code, either with or without the 'const' qualifier on
-	// 'entries'.
+	// True if and only if the table has initial entries defined using
+	// the 'entries' table property in the P4 source code, either with
+	// or without the 'const' qualifier on 'entries'.  Note that this
+	// field is true even if the list of entries is empty in the P4
+	// source code.
 	HasInitialEntries bool `protobuf:"varint,11,opt,name=has_initial_entries,json=hasInitialEntries,proto3" json:"has_initial_entries,omitempty"`
 	// architecture-specific table properties which are not part of the core P4
 	// language or of the PSA architecture.
