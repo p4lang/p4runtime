@@ -1196,9 +1196,9 @@ type Table struct {
 	IsConstTable bool `protobuf:"varint,10,opt,name=is_const_table,json=isConstTable,proto3" json:"is_const_table,omitempty"`
 	// True if and only if the table has initial entries defined using
 	// the 'entries' table property in the P4 source code, either with
-	// or without the 'const' qualifier on 'entries'.  Note that this
-	// field is true even if the list of entries is empty in the P4
-	// source code.
+	// or without the 'const' qualifier on 'entries', and there is at
+	// least one entry in that list.  This field is false if the list of
+	// entries is empty in the P4 source code.
 	HasInitialEntries bool `protobuf:"varint,11,opt,name=has_initial_entries,json=hasInitialEntries,proto3" json:"has_initial_entries,omitempty"`
 	// architecture-specific table properties which are not part of the core P4
 	// language or of the PSA architecture.
