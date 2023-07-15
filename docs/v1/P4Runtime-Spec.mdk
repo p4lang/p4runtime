@@ -1527,7 +1527,8 @@ control plane. This message contains the following fields:
 * `has_initial_entries`, a boolean flag indicating that the table has
   entries populated into it when the P4 program is loaded, which is
   true for tables in the P4 source code with either the `entries` or
-  `const entries` properties.
+  `const entries` properties, and there is at least one entry in the
+  list.
 
 * `other_properties`, an `Any` Protobuf message [@ProtoAny] to embed
   architecture-specific table properties [@P4TableProperties] which are not part
@@ -3283,10 +3284,12 @@ hope that it would simplify the implementation of the P4Runtime service.
 
 Constant tables are defined as tables whose match entries are
 immutable. They are identified by the table property `const entries`
-in the P4~16~ source code.  In the P4Info, such tables have both
-`is_const_table` and `has_initial_entries` flags equal to true.
-For tables declared with the `entries` property, without `const`
-before `entries` see Section [#sec-preinitialized-tables].
+in the P4~16~ source code.  In the P4Info, such tables have
+`is_const_table` equal to true, and if the list of entries in the
+source code has at least one entry in it, they also have
+`has_initial_entries` flag equal to true.  For tables declared with
+the `entries` property, without `const` before `entries` see Section
+[#sec-preinitialized-tables].
 
 The only write updates which are allowed for constant tables are `MODIFY`
 operations on direct resources, and the default action (assuming the default
@@ -3321,23 +3324,27 @@ which entries appear in the table declaration.
 
 Preinitialized tables are those defined with an `entries` table
 property in the P4~16~ source code, with no `const` qualifier before
-`entries`.  In the P4Info, such tables have `has_initial_entries` flag
-equal to true, but `is_const_table` is false.  For tables declared
-with `const entries`, see Section [#sec-constant-tables].
+`entries`, and at least one entry in that list.  In the P4Info, such
+tables have `has_initial_entries` flag equal to true, but
+`is_const_table` is false.  For tables declared with `const entries`,
+see Section [#sec-constant-tables].
 
 Every P4 table falls into one of three categories:
 
 * *Normal table*: Neither `entries` nor `const entries` are declared
   in the source code, and thus `is_const_table` and
-  `has_initial_entries` will both be false.
+  `has_initial_entries` will both be false.  A corner case is that if
+  it has `entries = { }` with no `const` before `entries`, &ie; an
+  empty list of entries, that is also a normal table.
 * *Constant table*: The table has `const entries` declared, and thus a
   separate `entries` property is not permitted by the language.  Such
-  a table will have `is_const_table` true and `has_initial_entries`
-  true.
+  a table will have `is_const_table` true.  Such a table will have
+  `has_initial_entries` true if there is at least one entry in the
+  source code, or false if the list is empty.
 * *Preinitialized table*: The table has `entries` declared, and thus a
   separate `const entries` property is not permitted by the language.
-  Such a table will have `is_const_table` false and
-  `has_initial_entries` true.
+  It also has at least one entry in the list.  Such a table will have
+  `is_const_table` false and `has_initial_entries` true.
 
 A preinitialized table is allowed to have a mix of some entries marked
 `const`, and other entries not marked `const`.

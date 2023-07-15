@@ -224,9 +224,9 @@ message Table {
   bool is_const_table = 10;
   // True if and only if the table has initial entries defined using
   // the 'entries' table property in the P4 source code, either with
-  // or without the 'const' qualifier on 'entries'.  Note that this
-  // field is true even if the list of entries is empty in the P4
-  // source code.
+  // or without the 'const' qualifier on 'entries', and there is at
+  // least one entry in that list.  This field is false if the list of
+  // entries is empty in the P4 source code.
   bool has_initial_entries = 11;
   // architecture-specific table properties which are not part of the core P4
   // language or of the PSA architecture.
