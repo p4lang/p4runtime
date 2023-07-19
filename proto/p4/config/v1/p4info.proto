@@ -227,6 +227,7 @@ message Table {
   // or without the 'const' qualifier on 'entries', and there is at
   // least one entry in that list.  This field is false if the list of
   // entries is empty in the P4 source code.
+  // Added in 1.4.0.
   bool has_initial_entries = 11;
   // architecture-specific table properties which are not part of the core P4
   // language or of the PSA architecture.

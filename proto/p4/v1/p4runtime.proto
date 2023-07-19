@@ -221,6 +221,7 @@ message TableEntry {
   // Note: Older P4Runtime API servers before the `is_const` field was
   // added to this message will not return a value for `is_const` in
   // the first two cases above, but newer P4Runtime API servers will.
+  // Added in 1.4.0.
   bool is_const = 13;
 }
 

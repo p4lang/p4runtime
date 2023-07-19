@@ -1021,6 +1021,7 @@ type TableEntry struct {
 	// Note: Older P4Runtime API servers before the `is_const` field was
 	// added to this message will not return a value for `is_const` in
 	// the first two cases above, but newer P4Runtime API servers will.
+	// Added in 1.4.0.
 	IsConst bool `protobuf:"varint,13,opt,name=is_const,json=isConst,proto3" json:"is_const,omitempty"`
 }
 

@@ -1199,6 +1199,7 @@ type Table struct {
 	// or without the 'const' qualifier on 'entries', and there is at
 	// least one entry in that list.  This field is false if the list of
 	// entries is empty in the P4 source code.
+	// Added in 1.4.0.
 	HasInitialEntries bool `protobuf:"varint,11,opt,name=has_initial_entries,json=hasInitialEntries,proto3" json:"has_initial_entries,omitempty"`
 	// architecture-specific table properties which are not part of the core P4
 	// language or of the PSA architecture.
