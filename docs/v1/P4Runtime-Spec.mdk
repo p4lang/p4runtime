@@ -3016,6 +3016,9 @@ the `TableEntry` entity, which has the following fields:
   implement idle-timeout support for the table, if applicable. See
   [Idle-timeout](#sec-idle-timeout) section for more information.
 
+* `is_const`, a boolean value that is `true` if and only if the entry
+  cannot be modified or deleted by the client.
+
 The `priority` field must be set to a non-zero value if the match key includes a
 ternary match (&ie; in the case of PSA if the P4Info entry for the table
 indicates that one or more of its match fields has an `OPTIONAL`, `TERNARY` or
@@ -3362,7 +3365,7 @@ number of entries supported by the target for the table.
 
 The contents of preinitialized tables can be queried by the client
 through a `ReadRequest`.  The server fills in the same fields in the
-response as it does for csontant tables, as described in Section
+response as it does for constant tables, as described in Section
 [#sec-constant-tables], and with the same restrictions on table
 features supported.
 
