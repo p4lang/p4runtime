@@ -6722,11 +6722,9 @@ defined via an `entries` table property.  All `Update` sub-messages
 have `type` equal to `INSERT`, and `entity` is a `TableEntry` message
 containing the data for one table entry.
 
-Note that for a table with `const entries`, or with `entries` having
-one or more individual entries declared `const`, it would be an error
-for a P4Runtime client to send a `WriteRequest` to a P4Runtime server
-with the contents of the entries file, because the server should
-reject and return an error when attempting to insert entries that are
-immutable at run time.
+Note that if a P4Runtime client attempted to send a `WriteRequest` to
+a P4Runtime server with the contents of the entries file, the server
+must return an error for each entry that has `is_const` true, as
+described in Section [#sec-table-entry].
 
 [BIB]
