@@ -485,7 +485,7 @@ message Union {
 message GenericTable {
   uint32 generic_table_type_id = 1;
   string generic_table_type_name = 2;
-  repeated string generic_table_properties = 3
+  repeated string generic_table_properties = 3;
   repeated GenericTableInstance instances = 4;
 }
 
