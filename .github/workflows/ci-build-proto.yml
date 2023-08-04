@@ -2,9 +2,13 @@ name: "build protobufs"
 
 on:
   push:
-    branches: [ main ]
+    branches: 
+      - main
+      - '*-dev'
   pull_request:
-    branches: [ main ]
+    branches: 
+      - main
+      - '*-dev'
   schedule:
     - cron: "0 0 * * *"
 
