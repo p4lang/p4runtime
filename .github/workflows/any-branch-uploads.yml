@@ -16,6 +16,7 @@ jobs:
         docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make
         ls docs/v1/build
     - name: Upload spec to S3 if needed
+      if: ${{ github.actor != 'dependabot[bot]' }}
       uses: jakejarvis/s3-sync-action@v0.5.1
       with:
         args: --acl public-read --follow-symlinks --delete
