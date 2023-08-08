@@ -2951,8 +2951,9 @@ tables {
 ~ End Prototext
 
 ### GenericData
-See section [GenericData p4types](#sec-p4data-generic-data) for more info on the info type.
-See section [GenericData p4data](#sec-p4types-generic-data) for more info on the runtime type.
+See section [GenericData p4types](#sec-p4data-generic-data) for more info on the
+info type.  See section [GenericData p4data](#sec-p4types-generic-data) for more
+info on the runtime type.
 
 # P4 Entity Messages { #sec-p4-entity-msgs}
 
@@ -4809,7 +4810,8 @@ section on [Extending P4Runtime for non-PSA
 Architectures](#sec-extending-p4runtime) for more information.
 
 ## `GenericTableEntry`
-See section [GenericTableEntry p4runtime](#sec-generic-table-entry) for more info
+See section [GenericTableEntry p4runtime](#sec-generic-table-entry) for more
+info
 
 # Error Reporting Messages { #sec-error-reporting-messages}
 
@@ -6319,18 +6321,18 @@ properties, but we may include on in future versions of the API.
 ## GenericTable p4info { #sec-p4info-generic-table}
 
 `GenericTable` messages are used to map non-PSA P4-externs or non-P4 target-
-specific "fixed" features to their implementation in a generic way. The same can be achieved
-via `Extern`, but GenericTable provides a structured way in which every feature is
-represented as a set of match-fields and data-fields. The data consists of unions
-which are similar to actions. One use of GenericTable in a server backend is
-with TDI [Table Driven Interface](https://github.com/p4lang/tdi), but targets
-can use Generic table to map to their own specific feature implementations as
-well.
-It defines the following fields
+specific "fixed" features to their implementation in a generic way. The same can
+be achieved via `Extern`, but GenericTable provides a structured way in which
+every feature is represented as a set of match-fields and data-fields. The data
+consists of unions which are similar to actions. One use of GenericTable in a
+server backend is with TDI [Table Driven
+Interface](https://github.com/p4lang/tdi), but targets can use Generic table to
+map to their own specific feature implementations as well.  It defines the
+following fields
 
 * `generic_table_type_id`, an 8-bit unsigned integer which uniquely identifies
   the generic_table_type in the context of the architecture.
-  This value is in the range of `[0x00, 0xff]`. 
+  This value is in the range of `[0x00, 0xff]`.
   The ID in the preamble is created as `0x18 + generic_table_type_id + 16 bits
   of generated ID by compiler`. The `generic_table_type` depicts a new table
   "type" which would have similar properties. The organization of the table
@@ -6360,13 +6362,13 @@ It defines the following fields
   a generic-table-type. All tables of one type are grouped under this.
 
 GenericTableInstance
-* `preamble`, a `Preamble` message with the ID, name, and alias of this 
+* `preamble`, a `Preamble` message with the ID, name, and alias of this
   GenericTable.
 
-* `generic_match_fields`, a repeated field of type `GenericMatchField` representing
-  the data to be used to construct the lookup key matched in this table. For
-  information check the generic_match_fields info in the [Generic Table section]
-  (#sec-generic-table-entry)
+* `generic_match_fields`, a repeated field of type `GenericMatchField`
+  representing the data to be used to construct the lookup key matched in this
+  table. For information check the generic_match_fields info in the [Generic
+  Table section](#sec-generic-table-entry)
 
 * `union_refs`, a repeated `UnionRef` field representing the set of possible
   unions for this table. Functionally, it behaves same as that of ActionRefs.
@@ -6410,35 +6412,37 @@ conflict, like bool, then the P4 data type should be used.
   * generic_list : Used to define a list of same types. Only allows for a
     collection of the same type. It can also be a list of generic_structs.
     Members are ordered and duplicates are allowed.
-  * generic_unordered_set : Used to define a set of same types. It can also be a set
-    of generic_structs. Members are unordered and duplicates are not allowed.
+  * generic_unordered_set : Used to define a set of same types. It can also be
+    a set of generic_structs. Members are unordered and duplicates are not
+    allowed.
   * string : Used to define control plane strings. The max string length is
     defined by the size
   * enum : String representation with which safe enums are realized
   * enum_val : bytes value with which unsafe/serializable enums are defined
   * p4_type : This is the same type as P4DataTypeSpec. This helps in achieving
-    parity with P4 types if the GenericTable is being generated from a P4 extern.
-    There are a few overlaps like bool, enums, new_type, bitstring. If the
-    entity is from a P4 extern and a P4 data type exists, then the p4_type is
-    used. Otherwise, the GenericDataType is used
+    parity with P4 types if the GenericTable is being generated from a P4
+    extern.  There are a few overlaps like bool, enums, new_type, bitstring.
+    If the entity is from a P4 extern and a P4 data type exists, then the
+    p4_type is used. Otherwise, the GenericDataType is used
 
 ## `GenericTableEntry` { #sec-generic-table-entry}
 
-GenericTableEntry can be used to program non-PSA externs or non-P4 target-specific
-"fixed" features to their implementation in a generic way. This provides an alternative
-to `Extern` in a structured way and within p4runtime guidelines and semantics.
-The idea has been borrowed from TDI [Table Driven Interface](https://github.com/p4lang/tdi),
-that every state can be representated as a table or multiple tables. A table here is any
-data structure with one or more entries and each entry can be represented as a set of
-key fields and data fields.
-Actions in P4 tables behave like unions and that has been borrowed here in GenericTable.
-This can be potentially used targets to map to either TDI based targets, or even non-TDI
-based targets. If using TDI, then potentially, for every new feature to be added, only
-TDI target support and remote client code will be required to make use of that function.
-All other middle layers should theoretically remain unchanged.
+GenericTableEntry can be used to program non-PSA externs or non-P4
+target-specific "fixed" features to their implementation in a generic way. This
+provides an alternative to `Extern` in a structured way and within p4runtime
+guidelines and semantics.  The idea has been borrowed from TDI [Table Driven
+Interface](https://github.com/p4lang/tdi), that every state can be representated
+as a table or multiple tables. A table here is any data structure with one or
+more entries and each entry can be represented as a set of key fields and data
+fields.  Actions in P4 tables behave like unions and that has been borrowed here
+in GenericTable.  This can be potentially used targets to map to either TDI
+based targets, or even non-TDI based targets. If using TDI, then potentially,
+for every new feature to be added, only TDI target support and remote client
+code will be required to make use of that function.  All other middle layers
+should theoretically remain unchanged.
 
-P4Runtime supports inserting, modifying, deleting and reading GenericTable entries with
-the `GenericTableEntry` entity, which has the following fields:
+P4Runtime supports inserting, modifying, deleting and reading GenericTable
+entries with the `GenericTableEntry` entity, which has the following fields:
 
 * `table_id`, which identifies the table instance; the `table_id` is determined
   by the P4Info message.
@@ -6465,14 +6469,13 @@ the `GenericTableEntry` entity, which has the following fields:
 The `priority` field must be set to a non-zero value if the match key includes a
 ternary match (&ie; in the case of PSA if the P4Info entry for the table
 indicates that one or more of its match fields has an `OPTIONAL`, `TERNARY` or
-`RANGE` match
-type) or to zero otherwise. A higher priority number indicates that the entry
-must be given higher priority when performing a table lookup. Clients must allow
-multiple entries to be added with the same priority value.  If a packet can
-match multiple entries with the same priority, it is not deterministic in the
-data plane which entry a packet will match.  If a client wishes to make the
-matching behavior deterministic, it must use different priority values for any
-pair of table entries that the same packet matches.
+`RANGE` match type) or to zero otherwise. A higher priority number indicates
+that the entry must be given higher priority when performing a table lookup.
+Clients must allow multiple entries to be added with the same priority value.
+If a packet can match multiple entries with the same priority, it is not
+deterministic in the data plane which entry a packet will match.  If a client
+wishes to make the matching behavior deterministic, it must use different
+priority values for any pair of table entries that the same packet matches.
 
 The `match` and `priority` fields are used to uniquely identify an entry within
 a table. Therefore, these fields cannot be modified after the entry has been
@@ -6561,7 +6564,7 @@ build/generic-tables-insert-flow.[svg,png] \
       If `default_entry` is true, then the default entry is returned. Match
       fields should not be set in this case.
       Wildcard read does NOT return default entry.
-  
+
   * Read-only tables: Entries can only be read. Write RPC doesn't work and
     `NOT_SUPPORTED` is returned.
     * `READ` : The Read RPC. All entries can be read. If no entities are
@@ -6588,7 +6591,7 @@ build/generic-tables-insert-flow.[svg,png] \
       If `default_entry` is true, then the default entry is returned. Match
       fields should not be set in this case.
       Wildcard read does NOT return default entry.
-  
+
   * Calculation tables: Entries can only be read. However different from
     Read-only in the sense that there is no defined size of the table since
     the possible range of matchfields can be immense. For example, hash
@@ -6613,47 +6616,58 @@ Properties exist at 3 different levels - Table, entry and field (match or union)
 Table properties are at table level. A combination of these define a certain
 table category. By default, if absent, they are all always false
 
-* Read-only : No Add/Del/Mod work
-* Modify-only : Table entries can only be modifed
-* Reset-only : Table can only be reset. Either entire table or individual entries.
-* Indexed : The entries are ordered. Every entry has an index associated with
+* Read-only : No Add/Del/Mod work Modify-only : Table entries can only be
+* modifed Reset-only : Table can only be reset. Either entire table or
+* individual entries.  Indexed : The entries are ordered. Every entry has an
+* index associated with
   it. Indexed tables can be either of modify-only, read-only, reset-only or
   regular tables. If regular tables, then the target is expected to fill up gaps
   when deleting and then adding entries again. Duplicate entries can exist or
   not depending upon the table restrictions. Duplicate entries cannot be present
   in regular tables because there is no way to differentiate between the added
   entries.
-* Keyless : Only one entry, i.e., default entry exists.
-* Calculation : No defined range of key values. For example, hash calculation table
-    for a set of field values.
+* Keyless : Only one entry, &i.e; default entry exists.  Calculation : No
+* defined range of key values. For example, hash calculation
+  table for a set of field values.
 * Volatile : Data plane can Add/Del/Mod entries. Example, Add-on-miss in PNA
 
 #### Combinations that are possible
 
-|Table Cat name | Read-only | Modify-only | Reset-only | Indexed | Keyless | Calculation | Volatile | Example |
-| ----          | ----      | ----        | ----       | ----    | ----    | ----        | ----     | ----    |
-| Regular       | False     | False       | False      | False   | False   | False       | T/F      | MatchActionTable                 |
-| Regular-In    | False     | False       | False      | True    | False   | False       | T/F      | MatchActionTable with indexes    |
+|Table Cat name | Read-only | Modify-only | Reset-only | Indexed | Keyless |
+Calculation | Volatile | Example | | ----          | ----      | ----        |
+----       | ----    | ----    | ----        | ----     | ----    | | Regular
+| False     | False       | False      | False   | False   | False       | T/F
+| MatchActionTable                 | | Regular-In    | False     | False       |
+False      | True    | False   | False       | T/F      | MatchActionTable with
+indexes    |
 
-| Read-Only     | True      | False       | False      | False   | False   | False       | T/F      | Port ID to name map              |
-| Read-Only-Kl  | True      | False       | False      | False   | True    | False       | T/F      | Target Efuse information table   |
-| Read-Only-In  | True      | False       | False      | True    | False   | False       | T/F      | Virtual port ID to name map      |
-| Read-Only-Cal | True      | False       | False      | False   | False   | True        | T/F      | Hash calc table for field values |
+| Read-Only     | True      | False       | False      | False   | False   |
+False       | T/F      | Port ID to name map              | | Read-Only-Kl  |
+True      | False       | False      | False   | True    | False       | T/F
+| Target Efuse information table   | | Read-Only-In  | True      | False       |
+False      | True    | False   | False       | T/F      | Virtual port ID to
+name map      | | Read-Only-Cal | True      | False       | False      | False
+| False   | True        | T/F      | Hash calc table for field values |
 
-| Modify-Only   | False     | True        | False      | False   | False   | False       | T/F      |                                  |
-| Modify-Only-Kl| False     | True        | False      | False   | True    | False       | T/F      | Target configuration table       |
-| Modify-Only-In| False     | True        | False      | True    | False   | False       | T/F      | Counter table                    |
- 
-| Reset-Only    | False     | False       | True       | False   | False   | False       | T/F      | Port stats                       |
-| Reset-Only-Kl | False     | False       | True       | False   | True    | False       | T/F      | Target stats                     |
-| Reset-Only-In | False     | False       | True       | True    | False   | False       | T/F      | Virtual port stats               |
+| Modify-Only   | False     | True        | False      | False   | False   |
+False       | T/F      |                                  | | Modify-Only-Kl|
+False     | True        | False      | False   | True    | False       | T/F
+| Target configuration table       | | Modify-Only-In| False     | True        |
+False      | True    | False   | False       | T/F      | Counter table
+| | Reset-Only    | False     | False       | True       | False   | False   |
+False       | T/F      | Port stats                       | | Reset-Only-Kl |
+False     | False       | True       | False   | True    | False       | T/F
+| Target stats                     | | Reset-Only-In | False     | False       |
+True       | True    | False   | False       | T/F      | Virtual port stats
+|
 
 Where,
 Kl  - Keyless
 In  - Indexed
 Cal - Calculation
 
-In the above examples, Virtual ports have been considered to be an example where they are indexed but ports aren't.
+In the above examples, Virtual ports have been considered to be an example
+where they are indexed but ports aren't.
 
 ### Entry properties
 
