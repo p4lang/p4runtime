@@ -569,6 +569,335 @@ func (x *P4HeaderUnionStack) GetEntries() []*P4HeaderUnion {
 	return nil
 }
 
+// //// Begin : GenericTables messages
+type GenericData struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Data:
+	//
+	//	*GenericData_Bitstring
+	//	*GenericData_Varbitstring
+	//	*GenericData_Float
+	//	*GenericData_Bool
+	//	*GenericData_GenericStruct
+	//	*GenericData_GenericList
+	//	*GenericData_String_
+	//	*GenericData_Enum
+	//	*GenericData_EnumValue
+	Data isGenericData_Data `protobuf_oneof:"data"`
+}
+
+func (x *GenericData) Reset() {
+	*x = GenericData{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_v1_p4data_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericData) ProtoMessage() {}
+
+func (x *GenericData) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_v1_p4data_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericData.ProtoReflect.Descriptor instead.
+func (*GenericData) Descriptor() ([]byte, []int) {
+	return file_p4_v1_p4data_proto_rawDescGZIP(), []int{7}
+}
+
+func (m *GenericData) GetData() isGenericData_Data {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+func (x *GenericData) GetBitstring() []byte {
+	if x, ok := x.GetData().(*GenericData_Bitstring); ok {
+		return x.Bitstring
+	}
+	return nil
+}
+
+func (x *GenericData) GetVarbitstring() *GenericVarbit {
+	if x, ok := x.GetData().(*GenericData_Varbitstring); ok {
+		return x.Varbitstring
+	}
+	return nil
+}
+
+func (x *GenericData) GetFloat() float32 {
+	if x, ok := x.GetData().(*GenericData_Float); ok {
+		return x.Float
+	}
+	return 0
+}
+
+func (x *GenericData) GetBool() bool {
+	if x, ok := x.GetData().(*GenericData_Bool); ok {
+		return x.Bool
+	}
+	return false
+}
+
+func (x *GenericData) GetGenericStruct() *GenericStructLike {
+	if x, ok := x.GetData().(*GenericData_GenericStruct); ok {
+		return x.GenericStruct
+	}
+	return nil
+}
+
+func (x *GenericData) GetGenericList() *GenericList {
+	if x, ok := x.GetData().(*GenericData_GenericList); ok {
+		return x.GenericList
+	}
+	return nil
+}
+
+func (x *GenericData) GetString_() string {
+	if x, ok := x.GetData().(*GenericData_String_); ok {
+		return x.String_
+	}
+	return ""
+}
+
+func (x *GenericData) GetEnum() string {
+	if x, ok := x.GetData().(*GenericData_Enum); ok {
+		return x.Enum
+	}
+	return ""
+}
+
+func (x *GenericData) GetEnumValue() []byte {
+	if x, ok := x.GetData().(*GenericData_EnumValue); ok {
+		return x.EnumValue
+	}
+	return nil
+}
+
+type isGenericData_Data interface {
+	isGenericData_Data()
+}
+
+type GenericData_Bitstring struct {
+	Bitstring []byte `protobuf:"bytes,1,opt,name=bitstring,proto3,oneof"`
+}
+
+type GenericData_Varbitstring struct {
+	Varbitstring *GenericVarbit `protobuf:"bytes,2,opt,name=varbitstring,proto3,oneof"`
+}
+
+type GenericData_Float struct {
+	Float float32 `protobuf:"fixed32,3,opt,name=float,proto3,oneof"`
+}
+
+type GenericData_Bool struct {
+	Bool bool `protobuf:"varint,4,opt,name=bool,proto3,oneof"`
+}
+
+type GenericData_GenericStruct struct {
+	GenericStruct *GenericStructLike `protobuf:"bytes,5,opt,name=generic_struct,json=genericStruct,proto3,oneof"` // one struct
+}
+
+type GenericData_GenericList struct {
+	GenericList *GenericList `protobuf:"bytes,6,opt,name=generic_list,json=genericList,proto3,oneof"` // list of bytes/floats/bool/structs/strings/enums/enum_values.
+}
+
+type GenericData_String_ struct {
+	String_ string `protobuf:"bytes,7,opt,name=string,proto3,oneof"` // control plane arbitrary length string
+}
+
+type GenericData_Enum struct {
+	Enum string `protobuf:"bytes,8,opt,name=enum,proto3,oneof"` // safe (non-serializable) enums only
+}
+
+type GenericData_EnumValue struct {
+	EnumValue []byte `protobuf:"bytes,9,opt,name=enum_value,json=enumValue,proto3,oneof"` // serializable enums only
+}
+
+func (*GenericData_Bitstring) isGenericData_Data() {}
+
+func (*GenericData_Varbitstring) isGenericData_Data() {}
+
+func (*GenericData_Float) isGenericData_Data() {}
+
+func (*GenericData_Bool) isGenericData_Data() {}
+
+func (*GenericData_GenericStruct) isGenericData_Data() {}
+
+func (*GenericData_GenericList) isGenericData_Data() {}
+
+func (*GenericData_String_) isGenericData_Data() {}
+
+func (*GenericData_Enum) isGenericData_Data() {}
+
+func (*GenericData_EnumValue) isGenericData_Data() {}
+
+type GenericStructLike struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Members []*GenericData `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
+}
+
+func (x *GenericStructLike) Reset() {
+	*x = GenericStructLike{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_v1_p4data_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericStructLike) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericStructLike) ProtoMessage() {}
+
+func (x *GenericStructLike) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_v1_p4data_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericStructLike.ProtoReflect.Descriptor instead.
+func (*GenericStructLike) Descriptor() ([]byte, []int) {
+	return file_p4_v1_p4data_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GenericStructLike) GetMembers() []*GenericData {
+	if x != nil {
+		return x.Members
+	}
+	return nil
+}
+
+type GenericList struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Members []*GenericData `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
+}
+
+func (x *GenericList) Reset() {
+	*x = GenericList{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_v1_p4data_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericList) ProtoMessage() {}
+
+func (x *GenericList) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_v1_p4data_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericList.ProtoReflect.Descriptor instead.
+func (*GenericList) Descriptor() ([]byte, []int) {
+	return file_p4_v1_p4data_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GenericList) GetMembers() []*GenericData {
+	if x != nil {
+		return x.Members
+	}
+	return nil
+}
+
+type GenericVarbit struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Bitstring []byte `protobuf:"bytes,1,opt,name=bitstring,proto3" json:"bitstring,omitempty"`
+	Bitwidth  int32  `protobuf:"varint,2,opt,name=bitwidth,proto3" json:"bitwidth,omitempty"` // dynamic bitwidth of the field
+}
+
+func (x *GenericVarbit) Reset() {
+	*x = GenericVarbit{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_v1_p4data_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericVarbit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericVarbit) ProtoMessage() {}
+
+func (x *GenericVarbit) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_v1_p4data_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericVarbit.ProtoReflect.Descriptor instead.
+func (*GenericVarbit) Descriptor() ([]byte, []int) {
+	return file_p4_v1_p4data_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GenericVarbit) GetBitstring() []byte {
+	if x != nil {
+		return x.Bitstring
+	}
+	return nil
+}
+
+func (x *GenericVarbit) GetBitwidth() int32 {
+	if x != nil {
+		return x.Bitwidth
+	}
+	return 0
+}
+
 var File_p4_v1_p4data_proto protoreflect.FileDescriptor
 
 var file_p4_v1_p4data_proto_rawDesc = []byte{
@@ -633,10 +962,46 @@ var file_p4_v1_p4data_proto_rawDesc = []byte{
 	0x65, 0x61, 0x64, 0x65, 0x72, 0x55, 0x6e, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x61, 0x63, 0x6b, 0x12,
 	0x2e, 0x0a, 0x07, 0x65, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
 	0x32, 0x14, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x34, 0x48, 0x65, 0x61, 0x64, 0x65,
-	0x72, 0x55, 0x6e, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x65, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x42,
-	0x26, 0x5a, 0x24, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x70, 0x34,
-	0x6c, 0x61, 0x6e, 0x67, 0x2f, 0x70, 0x34, 0x72, 0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65, 0x2f, 0x67,
-	0x6f, 0x2f, 0x70, 0x34, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x55, 0x6e, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x65, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x22,
+	0xec, 0x02, 0x0a, 0x0b, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x44, 0x61, 0x74, 0x61, 0x12,
+	0x1e, 0x0a, 0x09, 0x62, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0c, 0x48, 0x00, 0x52, 0x09, 0x62, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x12,
+	0x3a, 0x0a, 0x0c, 0x76, 0x61, 0x72, 0x62, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65,
+	0x6e, 0x65, 0x72, 0x69, 0x63, 0x56, 0x61, 0x72, 0x62, 0x69, 0x74, 0x48, 0x00, 0x52, 0x0c, 0x76,
+	0x61, 0x72, 0x62, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x12, 0x16, 0x0a, 0x05, 0x66,
+	0x6c, 0x6f, 0x61, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x02, 0x48, 0x00, 0x52, 0x05, 0x66, 0x6c,
+	0x6f, 0x61, 0x74, 0x12, 0x14, 0x0a, 0x04, 0x62, 0x6f, 0x6f, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28,
+	0x08, 0x48, 0x00, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6c, 0x12, 0x41, 0x0a, 0x0e, 0x67, 0x65, 0x6e,
+	0x65, 0x72, 0x69, 0x63, 0x5f, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x18, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69,
+	0x63, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x4c, 0x69, 0x6b, 0x65, 0x48, 0x00, 0x52, 0x0d, 0x67,
+	0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x12, 0x37, 0x0a, 0x0c,
+	0x67, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x06, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x12, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72,
+	0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x48, 0x00, 0x52, 0x0b, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x69,
+	0x63, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x06, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x18,
+	0x07, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x06, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x12,
+	0x14, 0x0a, 0x04, 0x65, 0x6e, 0x75, 0x6d, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52,
+	0x04, 0x65, 0x6e, 0x75, 0x6d, 0x12, 0x1f, 0x0a, 0x0a, 0x65, 0x6e, 0x75, 0x6d, 0x5f, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0c, 0x48, 0x00, 0x52, 0x09, 0x65, 0x6e, 0x75,
+	0x6d, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x42, 0x06, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x22, 0x41,
+	0x0a, 0x11, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x4c,
+	0x69, 0x6b, 0x65, 0x12, 0x2c, 0x0a, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e,
+	0x65, 0x72, 0x69, 0x63, 0x44, 0x61, 0x74, 0x61, 0x52, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72,
+	0x73, 0x22, 0x3b, 0x0a, 0x0b, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74,
+	0x12, 0x2c, 0x0a, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x12, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69,
+	0x63, 0x44, 0x61, 0x74, 0x61, 0x52, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x22, 0x49,
+	0x0a, 0x0d, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x56, 0x61, 0x72, 0x62, 0x69, 0x74, 0x12,
+	0x1c, 0x0a, 0x09, 0x62, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0c, 0x52, 0x09, 0x62, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x12, 0x1a, 0x0a,
+	0x08, 0x62, 0x69, 0x74, 0x77, 0x69, 0x64, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x08, 0x62, 0x69, 0x74, 0x77, 0x69, 0x64, 0x74, 0x68, 0x42, 0x26, 0x5a, 0x24, 0x67, 0x69, 0x74,
+	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x70, 0x34, 0x6c, 0x61, 0x6e, 0x67, 0x2f, 0x70,
+	0x34, 0x72, 0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65, 0x2f, 0x67, 0x6f, 0x2f, 0x70, 0x34, 0x2f, 0x76,
+	0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -651,7 +1016,7 @@ func file_p4_v1_p4data_proto_rawDescGZIP() []byte {
 	return file_p4_v1_p4data_proto_rawDescData
 }
 
-var file_p4_v1_p4data_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_p4_v1_p4data_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_p4_v1_p4data_proto_goTypes = []interface{}{
 	(*P4Data)(nil),             // 0: p4.v1.P4Data
 	(*P4Varbit)(nil),           // 1: p4.v1.P4Varbit
@@ -660,6 +1025,10 @@ var file_p4_v1_p4data_proto_goTypes = []interface{}{
 	(*P4HeaderUnion)(nil),      // 4: p4.v1.P4HeaderUnion
 	(*P4HeaderStack)(nil),      // 5: p4.v1.P4HeaderStack
 	(*P4HeaderUnionStack)(nil), // 6: p4.v1.P4HeaderUnionStack
+	(*GenericData)(nil),        // 7: p4.v1.GenericData
+	(*GenericStructLike)(nil),  // 8: p4.v1.GenericStructLike
+	(*GenericList)(nil),        // 9: p4.v1.GenericList
+	(*GenericVarbit)(nil),      // 10: p4.v1.GenericVarbit
 }
 var file_p4_v1_p4data_proto_depIdxs = []int32{
 	1,  // 0: p4.v1.P4Data.varbit:type_name -> p4.v1.P4Varbit
@@ -673,11 +1042,16 @@ var file_p4_v1_p4data_proto_depIdxs = []int32{
 	3,  // 8: p4.v1.P4HeaderUnion.valid_header:type_name -> p4.v1.P4Header
 	3,  // 9: p4.v1.P4HeaderStack.entries:type_name -> p4.v1.P4Header
 	4,  // 10: p4.v1.P4HeaderUnionStack.entries:type_name -> p4.v1.P4HeaderUnion
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	10, // 11: p4.v1.GenericData.varbitstring:type_name -> p4.v1.GenericVarbit
+	8,  // 12: p4.v1.GenericData.generic_struct:type_name -> p4.v1.GenericStructLike
+	9,  // 13: p4.v1.GenericData.generic_list:type_name -> p4.v1.GenericList
+	7,  // 14: p4.v1.GenericStructLike.members:type_name -> p4.v1.GenericData
+	7,  // 15: p4.v1.GenericList.members:type_name -> p4.v1.GenericData
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_p4_v1_p4data_proto_init() }
@@ -770,6 +1144,54 @@ func file_p4_v1_p4data_proto_init() {
 				return nil
 			}
 		}
+		file_p4_v1_p4data_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_v1_p4data_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericStructLike); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_v1_p4data_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericList); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_v1_p4data_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericVarbit); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_p4_v1_p4data_proto_msgTypes[0].OneofWrappers = []interface{}{
 		(*P4Data_Bitstring)(nil),
@@ -785,13 +1207,24 @@ func file_p4_v1_p4data_proto_init() {
 		(*P4Data_Error)(nil),
 		(*P4Data_EnumValue)(nil),
 	}
+	file_p4_v1_p4data_proto_msgTypes[7].OneofWrappers = []interface{}{
+		(*GenericData_Bitstring)(nil),
+		(*GenericData_Varbitstring)(nil),
+		(*GenericData_Float)(nil),
+		(*GenericData_Bool)(nil),
+		(*GenericData_GenericStruct)(nil),
+		(*GenericData_GenericList)(nil),
+		(*GenericData_String_)(nil),
+		(*GenericData_Enum)(nil),
+		(*GenericData_EnumValue)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_p4_v1_p4data_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

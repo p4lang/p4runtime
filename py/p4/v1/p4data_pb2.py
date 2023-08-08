@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z$github.com/p4lang/p4runtime/go/p4/v1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x12p4/v1/p4data.proto\x12\x05p4.v1\"\x94\x03\n\x06P4Data\x12\x13\n\tbitstring\x18\x01 \x01(\x0cH\x00\x12!\n\x06varbit\x18\x02 \x01(\x0b\x32\x0f.p4.v1.P4VarbitH\x00\x12\x0e\n\x04\x62ool\x18\x03 \x01(\x08H\x00\x12$\n\x05tuple\x18\x04 \x01(\x0b\x32\x13.p4.v1.P4StructLikeH\x00\x12%\n\x06struct\x18\x05 \x01(\x0b\x32\x13.p4.v1.P4StructLikeH\x00\x12!\n\x06header\x18\x06 \x01(\x0b\x32\x0f.p4.v1.P4HeaderH\x00\x12,\n\x0cheader_union\x18\x07 \x01(\x0b\x32\x14.p4.v1.P4HeaderUnionH\x00\x12,\n\x0cheader_stack\x18\x08 \x01(\x0b\x32\x14.p4.v1.P4HeaderStackH\x00\x12\x37\n\x12header_union_stack\x18\t \x01(\x0b\x32\x19.p4.v1.P4HeaderUnionStackH\x00\x12\x0e\n\x04\x65num\x18\n \x01(\tH\x00\x12\x0f\n\x05\x65rror\x18\x0b \x01(\tH\x00\x12\x14\n\nenum_value\x18\x0c \x01(\x0cH\x00\x42\x06\n\x04\x64\x61ta\"/\n\x08P4Varbit\x12\x11\n\tbitstring\x18\x01 \x01(\x0c\x12\x10\n\x08\x62itwidth\x18\x02 \x01(\x05\".\n\x0cP4StructLike\x12\x1e\n\x07members\x18\x01 \x03(\x0b\x32\r.p4.v1.P4Data\"0\n\x08P4Header\x12\x10\n\x08is_valid\x18\x01 \x01(\x08\x12\x12\n\nbitstrings\x18\x02 \x03(\x0c\"Q\n\rP4HeaderUnion\x12\x19\n\x11valid_header_name\x18\x01 \x01(\t\x12%\n\x0cvalid_header\x18\x02 \x01(\x0b\x32\x0f.p4.v1.P4Header\"1\n\rP4HeaderStack\x12 \n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x0f.p4.v1.P4Header\";\n\x12P4HeaderUnionStack\x12%\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x14.p4.v1.P4HeaderUnionB&Z$github.com/p4lang/p4runtime/go/p4/v1b\x06proto3'
+  serialized_pb=b'\n\x12p4/v1/p4data.proto\x12\x05p4.v1\"\x94\x03\n\x06P4Data\x12\x13\n\tbitstring\x18\x01 \x01(\x0cH\x00\x12!\n\x06varbit\x18\x02 \x01(\x0b\x32\x0f.p4.v1.P4VarbitH\x00\x12\x0e\n\x04\x62ool\x18\x03 \x01(\x08H\x00\x12$\n\x05tuple\x18\x04 \x01(\x0b\x32\x13.p4.v1.P4StructLikeH\x00\x12%\n\x06struct\x18\x05 \x01(\x0b\x32\x13.p4.v1.P4StructLikeH\x00\x12!\n\x06header\x18\x06 \x01(\x0b\x32\x0f.p4.v1.P4HeaderH\x00\x12,\n\x0cheader_union\x18\x07 \x01(\x0b\x32\x14.p4.v1.P4HeaderUnionH\x00\x12,\n\x0cheader_stack\x18\x08 \x01(\x0b\x32\x14.p4.v1.P4HeaderStackH\x00\x12\x37\n\x12header_union_stack\x18\t \x01(\x0b\x32\x19.p4.v1.P4HeaderUnionStackH\x00\x12\x0e\n\x04\x65num\x18\n \x01(\tH\x00\x12\x0f\n\x05\x65rror\x18\x0b \x01(\tH\x00\x12\x14\n\nenum_value\x18\x0c \x01(\x0cH\x00\x42\x06\n\x04\x64\x61ta\"/\n\x08P4Varbit\x12\x11\n\tbitstring\x18\x01 \x01(\x0c\x12\x10\n\x08\x62itwidth\x18\x02 \x01(\x05\".\n\x0cP4StructLike\x12\x1e\n\x07members\x18\x01 \x03(\x0b\x32\r.p4.v1.P4Data\"0\n\x08P4Header\x12\x10\n\x08is_valid\x18\x01 \x01(\x08\x12\x12\n\nbitstrings\x18\x02 \x03(\x0c\"Q\n\rP4HeaderUnion\x12\x19\n\x11valid_header_name\x18\x01 \x01(\t\x12%\n\x0cvalid_header\x18\x02 \x01(\x0b\x32\x0f.p4.v1.P4Header\"1\n\rP4HeaderStack\x12 \n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x0f.p4.v1.P4Header\";\n\x12P4HeaderUnionStack\x12%\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x14.p4.v1.P4HeaderUnion\"\x91\x02\n\x0bGenericData\x12\x13\n\tbitstring\x18\x01 \x01(\x0cH\x00\x12,\n\x0cvarbitstring\x18\x02 \x01(\x0b\x32\x14.p4.v1.GenericVarbitH\x00\x12\x0f\n\x05\x66loat\x18\x03 \x01(\x02H\x00\x12\x0e\n\x04\x62ool\x18\x04 \x01(\x08H\x00\x12\x32\n\x0egeneric_struct\x18\x05 \x01(\x0b\x32\x18.p4.v1.GenericStructLikeH\x00\x12*\n\x0cgeneric_list\x18\x06 \x01(\x0b\x32\x12.p4.v1.GenericListH\x00\x12\x10\n\x06string\x18\x07 \x01(\tH\x00\x12\x0e\n\x04\x65num\x18\x08 \x01(\tH\x00\x12\x14\n\nenum_value\x18\t \x01(\x0cH\x00\x42\x06\n\x04\x64\x61ta\"8\n\x11GenericStructLike\x12#\n\x07members\x18\x01 \x03(\x0b\x32\x12.p4.v1.GenericData\"2\n\x0bGenericList\x12#\n\x07members\x18\x01 \x03(\x0b\x32\x12.p4.v1.GenericData\"4\n\rGenericVarbit\x12\x11\n\tbitstring\x18\x01 \x01(\x0c\x12\x10\n\x08\x62itwidth\x18\x02 \x01(\x05\x42&Z$github.com/p4lang/p4runtime/go/p4/v1b\x06proto3'
 )
 
 
@@ -351,6 +351,202 @@ _P4HEADERUNIONSTACK = _descriptor.Descriptor(
   serialized_end=776,
 )
 
+
+_GENERICDATA = _descriptor.Descriptor(
+  name='GenericData',
+  full_name='p4.v1.GenericData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='bitstring', full_name='p4.v1.GenericData.bitstring', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='varbitstring', full_name='p4.v1.GenericData.varbitstring', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='float', full_name='p4.v1.GenericData.float', index=2,
+      number=3, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='bool', full_name='p4.v1.GenericData.bool', index=3,
+      number=4, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='generic_struct', full_name='p4.v1.GenericData.generic_struct', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='generic_list', full_name='p4.v1.GenericData.generic_list', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='string', full_name='p4.v1.GenericData.string', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='enum', full_name='p4.v1.GenericData.enum', index=7,
+      number=8, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='enum_value', full_name='p4.v1.GenericData.enum_value', index=8,
+      number=9, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='data', full_name='p4.v1.GenericData.data',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+  ],
+  serialized_start=779,
+  serialized_end=1052,
+)
+
+
+_GENERICSTRUCTLIKE = _descriptor.Descriptor(
+  name='GenericStructLike',
+  full_name='p4.v1.GenericStructLike',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='members', full_name='p4.v1.GenericStructLike.members', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1054,
+  serialized_end=1110,
+)
+
+
+_GENERICLIST = _descriptor.Descriptor(
+  name='GenericList',
+  full_name='p4.v1.GenericList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='members', full_name='p4.v1.GenericList.members', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1112,
+  serialized_end=1162,
+)
+
+
+_GENERICVARBIT = _descriptor.Descriptor(
+  name='GenericVarbit',
+  full_name='p4.v1.GenericVarbit',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='bitstring', full_name='p4.v1.GenericVarbit.bitstring', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='bitwidth', full_name='p4.v1.GenericVarbit.bitwidth', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1164,
+  serialized_end=1216,
+)
+
 _P4DATA.fields_by_name['varbit'].message_type = _P4VARBIT
 _P4DATA.fields_by_name['tuple'].message_type = _P4STRUCTLIKE
 _P4DATA.fields_by_name['struct'].message_type = _P4STRUCTLIKE
@@ -398,6 +594,38 @@ _P4STRUCTLIKE.fields_by_name['members'].message_type = _P4DATA
 _P4HEADERUNION.fields_by_name['valid_header'].message_type = _P4HEADER
 _P4HEADERSTACK.fields_by_name['entries'].message_type = _P4HEADER
 _P4HEADERUNIONSTACK.fields_by_name['entries'].message_type = _P4HEADERUNION
+_GENERICDATA.fields_by_name['varbitstring'].message_type = _GENERICVARBIT
+_GENERICDATA.fields_by_name['generic_struct'].message_type = _GENERICSTRUCTLIKE
+_GENERICDATA.fields_by_name['generic_list'].message_type = _GENERICLIST
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['bitstring'])
+_GENERICDATA.fields_by_name['bitstring'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['varbitstring'])
+_GENERICDATA.fields_by_name['varbitstring'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['float'])
+_GENERICDATA.fields_by_name['float'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['bool'])
+_GENERICDATA.fields_by_name['bool'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['generic_struct'])
+_GENERICDATA.fields_by_name['generic_struct'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['generic_list'])
+_GENERICDATA.fields_by_name['generic_list'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['string'])
+_GENERICDATA.fields_by_name['string'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['enum'])
+_GENERICDATA.fields_by_name['enum'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICDATA.oneofs_by_name['data'].fields.append(
+  _GENERICDATA.fields_by_name['enum_value'])
+_GENERICDATA.fields_by_name['enum_value'].containing_oneof = _GENERICDATA.oneofs_by_name['data']
+_GENERICSTRUCTLIKE.fields_by_name['members'].message_type = _GENERICDATA
+_GENERICLIST.fields_by_name['members'].message_type = _GENERICDATA
 DESCRIPTOR.message_types_by_name['P4Data'] = _P4DATA
 DESCRIPTOR.message_types_by_name['P4Varbit'] = _P4VARBIT
 DESCRIPTOR.message_types_by_name['P4StructLike'] = _P4STRUCTLIKE
@@ -405,6 +633,10 @@ DESCRIPTOR.message_types_by_name['P4Header'] = _P4HEADER
 DESCRIPTOR.message_types_by_name['P4HeaderUnion'] = _P4HEADERUNION
 DESCRIPTOR.message_types_by_name['P4HeaderStack'] = _P4HEADERSTACK
 DESCRIPTOR.message_types_by_name['P4HeaderUnionStack'] = _P4HEADERUNIONSTACK
+DESCRIPTOR.message_types_by_name['GenericData'] = _GENERICDATA
+DESCRIPTOR.message_types_by_name['GenericStructLike'] = _GENERICSTRUCTLIKE
+DESCRIPTOR.message_types_by_name['GenericList'] = _GENERICLIST
+DESCRIPTOR.message_types_by_name['GenericVarbit'] = _GENERICVARBIT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 P4Data = _reflection.GeneratedProtocolMessageType('P4Data', (_message.Message,), {
@@ -455,6 +687,34 @@ P4HeaderUnionStack = _reflection.GeneratedProtocolMessageType('P4HeaderUnionStac
   # @@protoc_insertion_point(class_scope:p4.v1.P4HeaderUnionStack)
   })
 _sym_db.RegisterMessage(P4HeaderUnionStack)
+
+GenericData = _reflection.GeneratedProtocolMessageType('GenericData', (_message.Message,), {
+  'DESCRIPTOR' : _GENERICDATA,
+  '__module__' : 'p4.v1.p4data_pb2'
+  # @@protoc_insertion_point(class_scope:p4.v1.GenericData)
+  })
+_sym_db.RegisterMessage(GenericData)
+
+GenericStructLike = _reflection.GeneratedProtocolMessageType('GenericStructLike', (_message.Message,), {
+  'DESCRIPTOR' : _GENERICSTRUCTLIKE,
+  '__module__' : 'p4.v1.p4data_pb2'
+  # @@protoc_insertion_point(class_scope:p4.v1.GenericStructLike)
+  })
+_sym_db.RegisterMessage(GenericStructLike)
+
+GenericList = _reflection.GeneratedProtocolMessageType('GenericList', (_message.Message,), {
+  'DESCRIPTOR' : _GENERICLIST,
+  '__module__' : 'p4.v1.p4data_pb2'
+  # @@protoc_insertion_point(class_scope:p4.v1.GenericList)
+  })
+_sym_db.RegisterMessage(GenericList)
+
+GenericVarbit = _reflection.GeneratedProtocolMessageType('GenericVarbit', (_message.Message,), {
+  'DESCRIPTOR' : _GENERICVARBIT,
+  '__module__' : 'p4.v1.p4data_pb2'
+  # @@protoc_insertion_point(class_scope:p4.v1.GenericVarbit)
+  })
+_sym_db.RegisterMessage(GenericVarbit)
 
 
 DESCRIPTOR._options = None

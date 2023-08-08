@@ -1948,6 +1948,1424 @@ func (*P4NewTypeSpec_OriginalType) isP4NewTypeSpec_Representation() {}
 
 func (*P4NewTypeSpec_TranslatedType) isP4NewTypeSpec_Representation() {}
 
+// Instead of duplicating the type spec for these
+// every time the type is used, we include the type spec once in this
+// GenericTypeInfo message and refer to the types by name in the
+// GenericDataTypeSpec message. We also
+// support annotations for these type specs which can be useful, e.g. to
+// identify well-known headers (such as ipv4).
+type GenericTypeInfo struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Structs           map[string]*GenericStructTypeSpec           `protobuf:"bytes,1,rep,name=structs,proto3" json:"structs,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Lists             map[string]*GenericListTypeSpec             `protobuf:"bytes,2,rep,name=lists,proto3" json:"lists,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Enums             map[string]*GenericEnumTypeSpec             `protobuf:"bytes,3,rep,name=enums,proto3" json:"enums,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	SerializableEnums map[string]*GenericSerializableEnumTypeSpec `protobuf:"bytes,4,rep,name=serializable_enums,json=serializableEnums,proto3" json:"serializable_enums,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	NewTypes          map[string]*GenericNewTypeSpec              `protobuf:"bytes,5,rep,name=new_types,json=newTypes,proto3" json:"new_types,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *GenericTypeInfo) Reset() {
+	*x = GenericTypeInfo{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericTypeInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericTypeInfo) ProtoMessage() {}
+
+func (x *GenericTypeInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericTypeInfo.ProtoReflect.Descriptor instead.
+func (*GenericTypeInfo) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *GenericTypeInfo) GetStructs() map[string]*GenericStructTypeSpec {
+	if x != nil {
+		return x.Structs
+	}
+	return nil
+}
+
+func (x *GenericTypeInfo) GetLists() map[string]*GenericListTypeSpec {
+	if x != nil {
+		return x.Lists
+	}
+	return nil
+}
+
+func (x *GenericTypeInfo) GetEnums() map[string]*GenericEnumTypeSpec {
+	if x != nil {
+		return x.Enums
+	}
+	return nil
+}
+
+func (x *GenericTypeInfo) GetSerializableEnums() map[string]*GenericSerializableEnumTypeSpec {
+	if x != nil {
+		return x.SerializableEnums
+	}
+	return nil
+}
+
+func (x *GenericTypeInfo) GetNewTypes() map[string]*GenericNewTypeSpec {
+	if x != nil {
+		return x.NewTypes
+	}
+	return nil
+}
+
+// Describes Generic Data types.
+type GenericDataTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to TypeSpec:
+	//
+	//	*GenericDataTypeSpec_Bitstring
+	//	*GenericDataTypeSpec_Float
+	//	*GenericDataTypeSpec_Bool
+	//	*GenericDataTypeSpec_Struct
+	//	*GenericDataTypeSpec_List
+	//	*GenericDataTypeSpec_UnorderedSet
+	//	*GenericDataTypeSpec_String_
+	//	*GenericDataTypeSpec_Enum
+	//	*GenericDataTypeSpec_SerializableEnum
+	//	*GenericDataTypeSpec_NewType
+	//	*GenericDataTypeSpec_P4Type
+	TypeSpec isGenericDataTypeSpec_TypeSpec `protobuf_oneof:"type_spec"`
+}
+
+func (x *GenericDataTypeSpec) Reset() {
+	*x = GenericDataTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericDataTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericDataTypeSpec) ProtoMessage() {}
+
+func (x *GenericDataTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericDataTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericDataTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{27}
+}
+
+func (m *GenericDataTypeSpec) GetTypeSpec() isGenericDataTypeSpec_TypeSpec {
+	if m != nil {
+		return m.TypeSpec
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetBitstring() *GenericBitstringLikeTypeSpec {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_Bitstring); ok {
+		return x.Bitstring
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetFloat() *GenericFloatType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_Float); ok {
+		return x.Float
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetBool() *GenericBoolType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_Bool); ok {
+		return x.Bool
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetStruct() *GenericNamedType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_Struct); ok {
+		return x.Struct
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetList() *GenericNamedType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_List); ok {
+		return x.List
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetUnorderedSet() *GenericNamedType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_UnorderedSet); ok {
+		return x.UnorderedSet
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetString_() *GenericNamedType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_String_); ok {
+		return x.String_
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetEnum() *GenericNamedType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_Enum); ok {
+		return x.Enum
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetSerializableEnum() *GenericNamedType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_SerializableEnum); ok {
+		return x.SerializableEnum
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetNewType() *GenericNamedType {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_NewType); ok {
+		return x.NewType
+	}
+	return nil
+}
+
+func (x *GenericDataTypeSpec) GetP4Type() *P4DataTypeSpec {
+	if x, ok := x.GetTypeSpec().(*GenericDataTypeSpec_P4Type); ok {
+		return x.P4Type
+	}
+	return nil
+}
+
+type isGenericDataTypeSpec_TypeSpec interface {
+	isGenericDataTypeSpec_TypeSpec()
+}
+
+type GenericDataTypeSpec_Bitstring struct {
+	Bitstring *GenericBitstringLikeTypeSpec `protobuf:"bytes,1,opt,name=bitstring,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_Float struct {
+	Float *GenericFloatType `protobuf:"bytes,2,opt,name=float,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_Bool struct {
+	Bool *GenericBoolType `protobuf:"bytes,3,opt,name=bool,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_Struct struct {
+	Struct *GenericNamedType `protobuf:"bytes,4,opt,name=struct,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_List struct {
+	List *GenericNamedType `protobuf:"bytes,5,opt,name=list,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_UnorderedSet struct {
+	UnorderedSet *GenericNamedType `protobuf:"bytes,6,opt,name=unordered_set,json=unorderedSet,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_String_ struct {
+	String_ *GenericNamedType `protobuf:"bytes,7,opt,name=string,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_Enum struct {
+	Enum *GenericNamedType `protobuf:"bytes,8,opt,name=enum,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_SerializableEnum struct {
+	SerializableEnum *GenericNamedType `protobuf:"bytes,9,opt,name=serializable_enum,json=serializableEnum,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_NewType struct {
+	NewType *GenericNamedType `protobuf:"bytes,10,opt,name=new_type,json=newType,proto3,oneof"`
+}
+
+type GenericDataTypeSpec_P4Type struct {
+	// P4 data type spec can help achieve parity with types being used
+	// in P4 externs. For example, if Register is using a type in P4
+	// Data type spec, then it will make it easier to map here when using
+	// GenericTables
+	P4Type *P4DataTypeSpec `protobuf:"bytes,11,opt,name=p4_type,json=p4Type,proto3,oneof"`
+}
+
+func (*GenericDataTypeSpec_Bitstring) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_Float) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_Bool) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_Struct) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_List) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_UnorderedSet) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_String_) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_Enum) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_SerializableEnum) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_NewType) isGenericDataTypeSpec_TypeSpec() {}
+
+func (*GenericDataTypeSpec_P4Type) isGenericDataTypeSpec_TypeSpec() {}
+
+type GenericNamedType struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *GenericNamedType) Reset() {
+	*x = GenericNamedType{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericNamedType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericNamedType) ProtoMessage() {}
+
+func (x *GenericNamedType) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericNamedType.ProtoReflect.Descriptor instead.
+func (*GenericNamedType) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *GenericNamedType) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+// Empty message as no type information needed, just used as a placeholder in
+// the oneof to identify boolean types.
+type GenericBoolType struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GenericBoolType) Reset() {
+	*x = GenericBoolType{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[29]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericBoolType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericBoolType) ProtoMessage() {}
+
+func (x *GenericBoolType) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[29]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericBoolType.ProtoReflect.Descriptor instead.
+func (*GenericBoolType) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{29}
+}
+
+type GenericFloatType struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GenericFloatType) Reset() {
+	*x = GenericFloatType{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[30]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericFloatType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericFloatType) ProtoMessage() {}
+
+func (x *GenericFloatType) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[30]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericFloatType.ProtoReflect.Descriptor instead.
+func (*GenericFloatType) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{30}
+}
+
+type GenericBitstringLikeTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to TypeSpec:
+	//
+	//	*GenericBitstringLikeTypeSpec_Bit
+	//	*GenericBitstringLikeTypeSpec_Int
+	//	*GenericBitstringLikeTypeSpec_Varbit
+	TypeSpec isGenericBitstringLikeTypeSpec_TypeSpec `protobuf_oneof:"type_spec"`
+	// Useful to identify well-known types, such as IP address or Ethernet MAC
+	// address.
+	Annotations []string `protobuf:"bytes,4,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,5,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,6,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericBitstringLikeTypeSpec) Reset() {
+	*x = GenericBitstringLikeTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[31]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericBitstringLikeTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericBitstringLikeTypeSpec) ProtoMessage() {}
+
+func (x *GenericBitstringLikeTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[31]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericBitstringLikeTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericBitstringLikeTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{31}
+}
+
+func (m *GenericBitstringLikeTypeSpec) GetTypeSpec() isGenericBitstringLikeTypeSpec_TypeSpec {
+	if m != nil {
+		return m.TypeSpec
+	}
+	return nil
+}
+
+func (x *GenericBitstringLikeTypeSpec) GetBit() *GenericBitTypeSpec {
+	if x, ok := x.GetTypeSpec().(*GenericBitstringLikeTypeSpec_Bit); ok {
+		return x.Bit
+	}
+	return nil
+}
+
+func (x *GenericBitstringLikeTypeSpec) GetInt() *GenericIntTypeSpec {
+	if x, ok := x.GetTypeSpec().(*GenericBitstringLikeTypeSpec_Int); ok {
+		return x.Int
+	}
+	return nil
+}
+
+func (x *GenericBitstringLikeTypeSpec) GetVarbit() *GenericVarbitTypeSpec {
+	if x, ok := x.GetTypeSpec().(*GenericBitstringLikeTypeSpec_Varbit); ok {
+		return x.Varbit
+	}
+	return nil
+}
+
+func (x *GenericBitstringLikeTypeSpec) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericBitstringLikeTypeSpec) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericBitstringLikeTypeSpec) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+type isGenericBitstringLikeTypeSpec_TypeSpec interface {
+	isGenericBitstringLikeTypeSpec_TypeSpec()
+}
+
+type GenericBitstringLikeTypeSpec_Bit struct {
+	Bit *GenericBitTypeSpec `protobuf:"bytes,1,opt,name=bit,proto3,oneof"` // bit<W>
+}
+
+type GenericBitstringLikeTypeSpec_Int struct {
+	Int *GenericIntTypeSpec `protobuf:"bytes,2,opt,name=int,proto3,oneof"` // int<W>
+}
+
+type GenericBitstringLikeTypeSpec_Varbit struct {
+	Varbit *GenericVarbitTypeSpec `protobuf:"bytes,3,opt,name=varbit,proto3,oneof"` // varbit<W>
+}
+
+func (*GenericBitstringLikeTypeSpec_Bit) isGenericBitstringLikeTypeSpec_TypeSpec() {}
+
+func (*GenericBitstringLikeTypeSpec_Int) isGenericBitstringLikeTypeSpec_TypeSpec() {}
+
+func (*GenericBitstringLikeTypeSpec_Varbit) isGenericBitstringLikeTypeSpec_TypeSpec() {}
+
+type GenericBitTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Bitwidth     int32 `protobuf:"varint,1,opt,name=bitwidth,proto3" json:"bitwidth,omitempty"`
+	DefaultValue int32 `protobuf:"varint,2,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
+}
+
+func (x *GenericBitTypeSpec) Reset() {
+	*x = GenericBitTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[32]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericBitTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericBitTypeSpec) ProtoMessage() {}
+
+func (x *GenericBitTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[32]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericBitTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericBitTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *GenericBitTypeSpec) GetBitwidth() int32 {
+	if x != nil {
+		return x.Bitwidth
+	}
+	return 0
+}
+
+func (x *GenericBitTypeSpec) GetDefaultValue() int32 {
+	if x != nil {
+		return x.DefaultValue
+	}
+	return 0
+}
+
+type GenericIntTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Bitwidth     int32 `protobuf:"varint,1,opt,name=bitwidth,proto3" json:"bitwidth,omitempty"`
+	DefaultValue int32 `protobuf:"varint,2,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
+}
+
+func (x *GenericIntTypeSpec) Reset() {
+	*x = GenericIntTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[33]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericIntTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericIntTypeSpec) ProtoMessage() {}
+
+func (x *GenericIntTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[33]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericIntTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericIntTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *GenericIntTypeSpec) GetBitwidth() int32 {
+	if x != nil {
+		return x.Bitwidth
+	}
+	return 0
+}
+
+func (x *GenericIntTypeSpec) GetDefaultValue() int32 {
+	if x != nil {
+		return x.DefaultValue
+	}
+	return 0
+}
+
+type GenericVarbitTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MaxBitwidth  int32 `protobuf:"varint,1,opt,name=max_bitwidth,json=maxBitwidth,proto3" json:"max_bitwidth,omitempty"`
+	DefaultValue int32 `protobuf:"varint,2,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
+}
+
+func (x *GenericVarbitTypeSpec) Reset() {
+	*x = GenericVarbitTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[34]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericVarbitTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericVarbitTypeSpec) ProtoMessage() {}
+
+func (x *GenericVarbitTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[34]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericVarbitTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericVarbitTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *GenericVarbitTypeSpec) GetMaxBitwidth() int32 {
+	if x != nil {
+		return x.MaxBitwidth
+	}
+	return 0
+}
+
+func (x *GenericVarbitTypeSpec) GetDefaultValue() int32 {
+	if x != nil {
+		return x.DefaultValue
+	}
+	return 0
+}
+
+type GenericStructTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Members     []*GenericStructTypeSpec_Member `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
+	Annotations []string                        `protobuf:"bytes,2,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,5,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,6,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericStructTypeSpec) Reset() {
+	*x = GenericStructTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[35]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericStructTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericStructTypeSpec) ProtoMessage() {}
+
+func (x *GenericStructTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[35]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericStructTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericStructTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *GenericStructTypeSpec) GetMembers() []*GenericStructTypeSpec_Member {
+	if x != nil {
+		return x.Members
+	}
+	return nil
+}
+
+func (x *GenericStructTypeSpec) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericStructTypeSpec) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericStructTypeSpec) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+// If a field is of type list, then container_type is in p4info
+// and value == "list"
+// ordered and duplicates allowed.
+// If max_size and min_size are equal, then fixed size.
+type GenericListTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TypeSpec    *GenericDataTypeSpec `protobuf:"bytes,1,opt,name=type_spec,json=typeSpec,proto3" json:"type_spec,omitempty"` // The element_type
+	Annotations []string             `protobuf:"bytes,2,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	MinSize               int32                   `protobuf:"varint,4,opt,name=min_size,json=minSize,proto3" json:"min_size,omitempty"` // 0 if not present
+	MaxSize               int32                   `protobuf:"varint,5,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"` // no max size defined if not present
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,6,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,7,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericListTypeSpec) Reset() {
+	*x = GenericListTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[36]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericListTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericListTypeSpec) ProtoMessage() {}
+
+func (x *GenericListTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[36]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericListTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericListTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *GenericListTypeSpec) GetTypeSpec() *GenericDataTypeSpec {
+	if x != nil {
+		return x.TypeSpec
+	}
+	return nil
+}
+
+func (x *GenericListTypeSpec) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericListTypeSpec) GetMinSize() int32 {
+	if x != nil {
+		return x.MinSize
+	}
+	return 0
+}
+
+func (x *GenericListTypeSpec) GetMaxSize() int32 {
+	if x != nil {
+		return x.MaxSize
+	}
+	return 0
+}
+
+func (x *GenericListTypeSpec) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericListTypeSpec) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+// If a field is of type "unordered_set", then container_type is in p4info
+// value == "unordered_set"
+// Unordered and duplicates not allowed
+type GenericUnorderedSetTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TypeSpec    *GenericDataTypeSpec `protobuf:"bytes,1,opt,name=type_spec,json=typeSpec,proto3" json:"type_spec,omitempty"` // The element_type
+	Annotations []string             `protobuf:"bytes,2,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	MinSize               int32                   `protobuf:"varint,4,opt,name=min_size,json=minSize,proto3" json:"min_size,omitempty"` // 0 if not present
+	MaxSize               int32                   `protobuf:"varint,5,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"` // no max size defined if not present
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,6,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,7,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericUnorderedSetTypeSpec) Reset() {
+	*x = GenericUnorderedSetTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[37]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericUnorderedSetTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericUnorderedSetTypeSpec) ProtoMessage() {}
+
+func (x *GenericUnorderedSetTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[37]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericUnorderedSetTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericUnorderedSetTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *GenericUnorderedSetTypeSpec) GetTypeSpec() *GenericDataTypeSpec {
+	if x != nil {
+		return x.TypeSpec
+	}
+	return nil
+}
+
+func (x *GenericUnorderedSetTypeSpec) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericUnorderedSetTypeSpec) GetMinSize() int32 {
+	if x != nil {
+		return x.MinSize
+	}
+	return 0
+}
+
+func (x *GenericUnorderedSetTypeSpec) GetMaxSize() int32 {
+	if x != nil {
+		return x.MaxSize
+	}
+	return 0
+}
+
+func (x *GenericUnorderedSetTypeSpec) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericUnorderedSetTypeSpec) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+type GenericStringSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name        string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	MinSize     int32    `protobuf:"varint,2,opt,name=min_size,json=minSize,proto3" json:"min_size,omitempty"` // 0 if not present
+	MaxSize     int32    `protobuf:"varint,3,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"` // no max size defined if not present
+	Annotations []string `protobuf:"bytes,4,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,5,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,6,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericStringSpec) Reset() {
+	*x = GenericStringSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[38]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericStringSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericStringSpec) ProtoMessage() {}
+
+func (x *GenericStringSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[38]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericStringSpec.ProtoReflect.Descriptor instead.
+func (*GenericStringSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *GenericStringSpec) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *GenericStringSpec) GetMinSize() int32 {
+	if x != nil {
+		return x.MinSize
+	}
+	return 0
+}
+
+func (x *GenericStringSpec) GetMaxSize() int32 {
+	if x != nil {
+		return x.MaxSize
+	}
+	return 0
+}
+
+func (x *GenericStringSpec) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericStringSpec) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericStringSpec) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+type GenericEnumTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Members     []*GenericEnumTypeSpec_Member `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
+	Annotations []string                      `protobuf:"bytes,2,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,3,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,4,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericEnumTypeSpec) Reset() {
+	*x = GenericEnumTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[39]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericEnumTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericEnumTypeSpec) ProtoMessage() {}
+
+func (x *GenericEnumTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[39]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericEnumTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericEnumTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *GenericEnumTypeSpec) GetMembers() []*GenericEnumTypeSpec_Member {
+	if x != nil {
+		return x.Members
+	}
+	return nil
+}
+
+func (x *GenericEnumTypeSpec) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericEnumTypeSpec) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericEnumTypeSpec) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+type GenericSerializableEnumTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UnderlyingType *GenericBitTypeSpec                       `protobuf:"bytes,1,opt,name=underlying_type,json=underlyingType,proto3" json:"underlying_type,omitempty"`
+	Members        []*GenericSerializableEnumTypeSpec_Member `protobuf:"bytes,2,rep,name=members,proto3" json:"members,omitempty"`
+	Annotations    []string                                  `protobuf:"bytes,3,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,4,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,5,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericSerializableEnumTypeSpec) Reset() {
+	*x = GenericSerializableEnumTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[40]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericSerializableEnumTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericSerializableEnumTypeSpec) ProtoMessage() {}
+
+func (x *GenericSerializableEnumTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[40]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericSerializableEnumTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericSerializableEnumTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *GenericSerializableEnumTypeSpec) GetUnderlyingType() *GenericBitTypeSpec {
+	if x != nil {
+		return x.UnderlyingType
+	}
+	return nil
+}
+
+func (x *GenericSerializableEnumTypeSpec) GetMembers() []*GenericSerializableEnumTypeSpec_Member {
+	if x != nil {
+		return x.Members
+	}
+	return nil
+}
+
+func (x *GenericSerializableEnumTypeSpec) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericSerializableEnumTypeSpec) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericSerializableEnumTypeSpec) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+// User defined types
+type GenericNewTypeTranslation struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// the URI uniquely identifies the translation in order to enable the
+	// P4Runtime agent to perform value-mapping appropriately when required. It is
+	// recommended that the URI includes at least the P4 architecture name and the
+	// type name. In case of target specific types, target_name should be included
+	Uri string `protobuf:"bytes,1,opt,name=uri,proto3" json:"uri,omitempty"`
+	// The object is either represented as an unsigned integer with a bitwidth of
+	// `sdn_bitwidth`, or as a string.
+	//
+	// Types that are assignable to SdnType:
+	//
+	//	*GenericNewTypeTranslation_SdnBitwidth
+	//	*GenericNewTypeTranslation_SdnString_
+	SdnType isGenericNewTypeTranslation_SdnType `protobuf_oneof:"sdn_type"`
+}
+
+func (x *GenericNewTypeTranslation) Reset() {
+	*x = GenericNewTypeTranslation{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[41]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericNewTypeTranslation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericNewTypeTranslation) ProtoMessage() {}
+
+func (x *GenericNewTypeTranslation) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[41]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericNewTypeTranslation.ProtoReflect.Descriptor instead.
+func (*GenericNewTypeTranslation) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *GenericNewTypeTranslation) GetUri() string {
+	if x != nil {
+		return x.Uri
+	}
+	return ""
+}
+
+func (m *GenericNewTypeTranslation) GetSdnType() isGenericNewTypeTranslation_SdnType {
+	if m != nil {
+		return m.SdnType
+	}
+	return nil
+}
+
+func (x *GenericNewTypeTranslation) GetSdnBitwidth() int32 {
+	if x, ok := x.GetSdnType().(*GenericNewTypeTranslation_SdnBitwidth); ok {
+		return x.SdnBitwidth
+	}
+	return 0
+}
+
+func (x *GenericNewTypeTranslation) GetSdnString() *GenericNewTypeTranslation_SdnString {
+	if x, ok := x.GetSdnType().(*GenericNewTypeTranslation_SdnString_); ok {
+		return x.SdnString
+	}
+	return nil
+}
+
+type isGenericNewTypeTranslation_SdnType interface {
+	isGenericNewTypeTranslation_SdnType()
+}
+
+type GenericNewTypeTranslation_SdnBitwidth struct {
+	SdnBitwidth int32 `protobuf:"varint,2,opt,name=sdn_bitwidth,json=sdnBitwidth,proto3,oneof"`
+}
+
+type GenericNewTypeTranslation_SdnString_ struct {
+	SdnString *GenericNewTypeTranslation_SdnString `protobuf:"bytes,3,opt,name=sdn_string,json=sdnString,proto3,oneof"`
+}
+
+func (*GenericNewTypeTranslation_SdnBitwidth) isGenericNewTypeTranslation_SdnType() {}
+
+func (*GenericNewTypeTranslation_SdnString_) isGenericNewTypeTranslation_SdnType() {}
+
+type GenericNewTypeSpec struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Representation:
+	//
+	//	*GenericNewTypeSpec_OriginalType
+	//	*GenericNewTypeSpec_TranslatedType
+	Representation isGenericNewTypeSpec_Representation `protobuf_oneof:"representation"`
+	// for other annotations (not @p4runtime_translation)
+	Annotations []string `protobuf:"bytes,3,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,5,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,4,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericNewTypeSpec) Reset() {
+	*x = GenericNewTypeSpec{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[42]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericNewTypeSpec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericNewTypeSpec) ProtoMessage() {}
+
+func (x *GenericNewTypeSpec) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[42]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericNewTypeSpec.ProtoReflect.Descriptor instead.
+func (*GenericNewTypeSpec) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{42}
+}
+
+func (m *GenericNewTypeSpec) GetRepresentation() isGenericNewTypeSpec_Representation {
+	if m != nil {
+		return m.Representation
+	}
+	return nil
+}
+
+func (x *GenericNewTypeSpec) GetOriginalType() *GenericDataTypeSpec {
+	if x, ok := x.GetRepresentation().(*GenericNewTypeSpec_OriginalType); ok {
+		return x.OriginalType
+	}
+	return nil
+}
+
+func (x *GenericNewTypeSpec) GetTranslatedType() *GenericNewTypeTranslation {
+	if x, ok := x.GetRepresentation().(*GenericNewTypeSpec_TranslatedType); ok {
+		return x.TranslatedType
+	}
+	return nil
+}
+
+func (x *GenericNewTypeSpec) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericNewTypeSpec) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericNewTypeSpec) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+type isGenericNewTypeSpec_Representation interface {
+	isGenericNewTypeSpec_Representation()
+}
+
+type GenericNewTypeSpec_OriginalType struct {
+	// if no @p4runtime_translation annotation present
+	OriginalType *GenericDataTypeSpec `protobuf:"bytes,1,opt,name=original_type,json=originalType,proto3,oneof"`
+}
+
+type GenericNewTypeSpec_TranslatedType struct {
+	// if @p4runtime_translation annotation present
+	TranslatedType *GenericNewTypeTranslation `protobuf:"bytes,2,opt,name=translated_type,json=translatedType,proto3,oneof"`
+}
+
+func (*GenericNewTypeSpec_OriginalType) isGenericNewTypeSpec_Representation() {}
+
+func (*GenericNewTypeSpec_TranslatedType) isGenericNewTypeSpec_Representation() {}
+
 type P4StructTypeSpec_Member struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1960,7 +3378,7 @@ type P4StructTypeSpec_Member struct {
 func (x *P4StructTypeSpec_Member) Reset() {
 	*x = P4StructTypeSpec_Member{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_p4_config_v1_p4types_proto_msgTypes[32]
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[49]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1973,7 +3391,7 @@ func (x *P4StructTypeSpec_Member) String() string {
 func (*P4StructTypeSpec_Member) ProtoMessage() {}
 
 func (x *P4StructTypeSpec_Member) ProtoReflect() protoreflect.Message {
-	mi := &file_p4_config_v1_p4types_proto_msgTypes[32]
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[49]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2015,7 +3433,7 @@ type P4HeaderTypeSpec_Member struct {
 func (x *P4HeaderTypeSpec_Member) Reset() {
 	*x = P4HeaderTypeSpec_Member{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_p4_config_v1_p4types_proto_msgTypes[33]
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[50]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2028,7 +3446,7 @@ func (x *P4HeaderTypeSpec_Member) String() string {
 func (*P4HeaderTypeSpec_Member) ProtoMessage() {}
 
 func (x *P4HeaderTypeSpec_Member) ProtoReflect() protoreflect.Message {
-	mi := &file_p4_config_v1_p4types_proto_msgTypes[33]
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[50]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2070,7 +3488,7 @@ type P4HeaderUnionTypeSpec_Member struct {
 func (x *P4HeaderUnionTypeSpec_Member) Reset() {
 	*x = P4HeaderUnionTypeSpec_Member{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_p4_config_v1_p4types_proto_msgTypes[34]
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[51]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2083,7 +3501,7 @@ func (x *P4HeaderUnionTypeSpec_Member) String() string {
 func (*P4HeaderUnionTypeSpec_Member) ProtoMessage() {}
 
 func (x *P4HeaderUnionTypeSpec_Member) ProtoReflect() protoreflect.Message {
-	mi := &file_p4_config_v1_p4types_proto_msgTypes[34]
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[51]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2129,7 +3547,7 @@ type P4EnumTypeSpec_Member struct {
 func (x *P4EnumTypeSpec_Member) Reset() {
 	*x = P4EnumTypeSpec_Member{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_p4_config_v1_p4types_proto_msgTypes[35]
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[52]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2142,7 +3560,7 @@ func (x *P4EnumTypeSpec_Member) String() string {
 func (*P4EnumTypeSpec_Member) ProtoMessage() {}
 
 func (x *P4EnumTypeSpec_Member) ProtoReflect() protoreflect.Message {
-	mi := &file_p4_config_v1_p4types_proto_msgTypes[35]
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[52]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2203,7 +3621,7 @@ type P4SerializableEnumTypeSpec_Member struct {
 func (x *P4SerializableEnumTypeSpec_Member) Reset() {
 	*x = P4SerializableEnumTypeSpec_Member{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_p4_config_v1_p4types_proto_msgTypes[36]
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[53]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2216,7 +3634,7 @@ func (x *P4SerializableEnumTypeSpec_Member) String() string {
 func (*P4SerializableEnumTypeSpec_Member) ProtoMessage() {}
 
 func (x *P4SerializableEnumTypeSpec_Member) ProtoReflect() protoreflect.Message {
-	mi := &file_p4_config_v1_p4types_proto_msgTypes[36]
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[53]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2276,7 +3694,7 @@ type P4NewTypeTranslation_SdnString struct {
 func (x *P4NewTypeTranslation_SdnString) Reset() {
 	*x = P4NewTypeTranslation_SdnString{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_p4_config_v1_p4types_proto_msgTypes[37]
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[54]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2289,7 +3707,7 @@ func (x *P4NewTypeTranslation_SdnString) String() string {
 func (*P4NewTypeTranslation_SdnString) ProtoMessage() {}
 
 func (x *P4NewTypeTranslation_SdnString) ProtoReflect() protoreflect.Message {
-	mi := &file_p4_config_v1_p4types_proto_msgTypes[37]
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[54]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2303,6 +3721,269 @@ func (x *P4NewTypeTranslation_SdnString) ProtoReflect() protoreflect.Message {
 // Deprecated: Use P4NewTypeTranslation_SdnString.ProtoReflect.Descriptor instead.
 func (*P4NewTypeTranslation_SdnString) Descriptor() ([]byte, []int) {
 	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{24, 0}
+}
+
+type GenericStructTypeSpec_Member struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name     string               `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	TypeSpec *GenericDataTypeSpec `protobuf:"bytes,2,opt,name=type_spec,json=typeSpec,proto3" json:"type_spec,omitempty"`
+}
+
+func (x *GenericStructTypeSpec_Member) Reset() {
+	*x = GenericStructTypeSpec_Member{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[60]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericStructTypeSpec_Member) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericStructTypeSpec_Member) ProtoMessage() {}
+
+func (x *GenericStructTypeSpec_Member) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[60]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericStructTypeSpec_Member.ProtoReflect.Descriptor instead.
+func (*GenericStructTypeSpec_Member) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{35, 0}
+}
+
+func (x *GenericStructTypeSpec_Member) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *GenericStructTypeSpec_Member) GetTypeSpec() *GenericDataTypeSpec {
+	if x != nil {
+		return x.TypeSpec
+	}
+	return nil
+}
+
+type GenericEnumTypeSpec_Member struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name         string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	DefaultValue int32    `protobuf:"varint,2,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
+	Annotations  []string `protobuf:"bytes,3,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,4,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,5,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericEnumTypeSpec_Member) Reset() {
+	*x = GenericEnumTypeSpec_Member{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[61]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericEnumTypeSpec_Member) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericEnumTypeSpec_Member) ProtoMessage() {}
+
+func (x *GenericEnumTypeSpec_Member) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[61]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericEnumTypeSpec_Member.ProtoReflect.Descriptor instead.
+func (*GenericEnumTypeSpec_Member) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{39, 0}
+}
+
+func (x *GenericEnumTypeSpec_Member) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *GenericEnumTypeSpec_Member) GetDefaultValue() int32 {
+	if x != nil {
+		return x.DefaultValue
+	}
+	return 0
+}
+
+func (x *GenericEnumTypeSpec_Member) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericEnumTypeSpec_Member) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericEnumTypeSpec_Member) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+type GenericSerializableEnumTypeSpec_Member struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name         string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Value        []byte   `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	DefaultValue int32    `protobuf:"varint,3,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
+	Annotations  []string `protobuf:"bytes,4,rep,name=annotations,proto3" json:"annotations,omitempty"`
+	// Optional. If present, the location of `annotations[i]` is given by
+	// `annotation_locations[i]`.
+	AnnotationLocations   []*SourceLocation       `protobuf:"bytes,5,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
+	StructuredAnnotations []*StructuredAnnotation `protobuf:"bytes,6,rep,name=structured_annotations,json=structuredAnnotations,proto3" json:"structured_annotations,omitempty"`
+}
+
+func (x *GenericSerializableEnumTypeSpec_Member) Reset() {
+	*x = GenericSerializableEnumTypeSpec_Member{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[62]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericSerializableEnumTypeSpec_Member) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericSerializableEnumTypeSpec_Member) ProtoMessage() {}
+
+func (x *GenericSerializableEnumTypeSpec_Member) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[62]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericSerializableEnumTypeSpec_Member.ProtoReflect.Descriptor instead.
+func (*GenericSerializableEnumTypeSpec_Member) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{40, 0}
+}
+
+func (x *GenericSerializableEnumTypeSpec_Member) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *GenericSerializableEnumTypeSpec_Member) GetValue() []byte {
+	if x != nil {
+		return x.Value
+	}
+	return nil
+}
+
+func (x *GenericSerializableEnumTypeSpec_Member) GetDefaultValue() int32 {
+	if x != nil {
+		return x.DefaultValue
+	}
+	return 0
+}
+
+func (x *GenericSerializableEnumTypeSpec_Member) GetAnnotations() []string {
+	if x != nil {
+		return x.Annotations
+	}
+	return nil
+}
+
+func (x *GenericSerializableEnumTypeSpec_Member) GetAnnotationLocations() []*SourceLocation {
+	if x != nil {
+		return x.AnnotationLocations
+	}
+	return nil
+}
+
+func (x *GenericSerializableEnumTypeSpec_Member) GetStructuredAnnotations() []*StructuredAnnotation {
+	if x != nil {
+		return x.StructuredAnnotations
+	}
+	return nil
+}
+
+type GenericNewTypeTranslation_SdnString struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GenericNewTypeTranslation_SdnString) Reset() {
+	*x = GenericNewTypeTranslation_SdnString{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_p4_config_v1_p4types_proto_msgTypes[63]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GenericNewTypeTranslation_SdnString) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenericNewTypeTranslation_SdnString) ProtoMessage() {}
+
+func (x *GenericNewTypeTranslation_SdnString) ProtoReflect() protoreflect.Message {
+	mi := &file_p4_config_v1_p4types_proto_msgTypes[63]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenericNewTypeTranslation_SdnString.ProtoReflect.Descriptor instead.
+func (*GenericNewTypeTranslation_SdnString) Descriptor() ([]byte, []int) {
+	return file_p4_config_v1_p4types_proto_rawDescGZIP(), []int{41, 0}
 }
 
 var File_p4_config_v1_p4types_proto protoreflect.FileDescriptor
@@ -2710,10 +4391,363 @@ var file_p4_config_v1_p4types_proto_rawDesc = []byte{
 	0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x15, 0x73, 0x74, 0x72, 0x75,
 	0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
 	0x73, 0x42, 0x10, 0x0a, 0x0e, 0x72, 0x65, 0x70, 0x72, 0x65, 0x73, 0x65, 0x6e, 0x74, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x42, 0x2d, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
-	0x6d, 0x2f, 0x70, 0x34, 0x6c, 0x61, 0x6e, 0x67, 0x2f, 0x70, 0x34, 0x72, 0x75, 0x6e, 0x74, 0x69,
-	0x6d, 0x65, 0x2f, 0x67, 0x6f, 0x2f, 0x70, 0x34, 0x2f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2f,
-	0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x69, 0x6f, 0x6e, 0x22, 0xf5, 0x06, 0x0a, 0x0f, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x54,
+	0x79, 0x70, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x44, 0x0a, 0x07, 0x73, 0x74, 0x72, 0x75, 0x63,
+	0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f,
+	0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x54,
+	0x79, 0x70, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x73, 0x45,
+	0x6e, 0x74, 0x72, 0x79, 0x52, 0x07, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x73, 0x12, 0x3e, 0x0a,
+	0x05, 0x6c, 0x69, 0x73, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70,
+	0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65,
+	0x72, 0x69, 0x63, 0x54, 0x79, 0x70, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x4c, 0x69, 0x73, 0x74,
+	0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x05, 0x6c, 0x69, 0x73, 0x74, 0x73, 0x12, 0x3e, 0x0a,
+	0x05, 0x65, 0x6e, 0x75, 0x6d, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70,
+	0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65,
+	0x72, 0x69, 0x63, 0x54, 0x79, 0x70, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x45, 0x6e, 0x75, 0x6d,
+	0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x05, 0x65, 0x6e, 0x75, 0x6d, 0x73, 0x12, 0x63, 0x0a,
+	0x12, 0x73, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x62, 0x6c, 0x65, 0x5f, 0x65, 0x6e,
+	0x75, 0x6d, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x70, 0x34, 0x2e, 0x63,
+	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63,
+	0x54, 0x79, 0x70, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x69,
+	0x7a, 0x61, 0x62, 0x6c, 0x65, 0x45, 0x6e, 0x75, 0x6d, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52,
+	0x11, 0x73, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x62, 0x6c, 0x65, 0x45, 0x6e, 0x75,
+	0x6d, 0x73, 0x12, 0x48, 0x0a, 0x09, 0x6e, 0x65, 0x77, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x18,
+	0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x54, 0x79, 0x70, 0x65,
+	0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x4e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x73, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x52, 0x08, 0x6e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x73, 0x1a, 0x5f, 0x0a, 0x0c,
+	0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03,
+	0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x39,
+	0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e,
+	0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e,
+	0x65, 0x72, 0x69, 0x63, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70,
+	0x65, 0x63, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0x5b, 0x0a,
+	0x0a, 0x4c, 0x69, 0x73, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b,
+	0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x37, 0x0a,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x70,
+	0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65,
+	0x72, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x52,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0x5b, 0x0a, 0x0a, 0x45, 0x6e,
+	0x75, 0x6d, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x37, 0x0a, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x70, 0x34, 0x2e, 0x63,
+	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63,
+	0x45, 0x6e, 0x75, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x52, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0x73, 0x0a, 0x16, 0x53, 0x65, 0x72, 0x69, 0x61,
+	0x6c, 0x69, 0x7a, 0x61, 0x62, 0x6c, 0x65, 0x45, 0x6e, 0x75, 0x6d, 0x73, 0x45, 0x6e, 0x74, 0x72,
+	0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03,
+	0x6b, 0x65, 0x79, 0x12, 0x43, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76,
+	0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x69,
+	0x7a, 0x61, 0x62, 0x6c, 0x65, 0x45, 0x6e, 0x75, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65,
+	0x63, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0x5d, 0x0a, 0x0d,
+	0x4e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a,
+	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
+	0x36, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20,
+	0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65,
+	0x6e, 0x65, 0x72, 0x69, 0x63, 0x4e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63,
+	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xc7, 0x05, 0x0a, 0x13,
+	0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x44, 0x61, 0x74, 0x61, 0x54, 0x79, 0x70, 0x65, 0x53,
+	0x70, 0x65, 0x63, 0x12, 0x4a, 0x0a, 0x09, 0x62, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x42, 0x69, 0x74,
+	0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x4c, 0x69, 0x6b, 0x65, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70,
+	0x65, 0x63, 0x48, 0x00, 0x52, 0x09, 0x62, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x12,
+	0x36, 0x0a, 0x05, 0x66, 0x6c, 0x6f, 0x61, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e,
+	0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65,
+	0x6e, 0x65, 0x72, 0x69, 0x63, 0x46, 0x6c, 0x6f, 0x61, 0x74, 0x54, 0x79, 0x70, 0x65, 0x48, 0x00,
+	0x52, 0x05, 0x66, 0x6c, 0x6f, 0x61, 0x74, 0x12, 0x33, 0x0a, 0x04, 0x62, 0x6f, 0x6f, 0x6c, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x42, 0x6f, 0x6f, 0x6c,
+	0x54, 0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6c, 0x12, 0x38, 0x0a, 0x06,
+	0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70,
+	0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65,
+	0x72, 0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x64, 0x54, 0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x06,
+	0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x12, 0x34, 0x0a, 0x04, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x64,
+	0x54, 0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x04, 0x6c, 0x69, 0x73, 0x74, 0x12, 0x45, 0x0a, 0x0d,
+	0x75, 0x6e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x65, 0x64, 0x5f, 0x73, 0x65, 0x74, 0x18, 0x06, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e,
+	0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x64, 0x54,
+	0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x0c, 0x75, 0x6e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x65, 0x64,
+	0x53, 0x65, 0x74, 0x12, 0x38, 0x0a, 0x06, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x18, 0x07, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e,
+	0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x64, 0x54,
+	0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x06, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x12, 0x34, 0x0a,
+	0x04, 0x65, 0x6e, 0x75, 0x6d, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x34,
+	0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72,
+	0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x64, 0x54, 0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x04, 0x65,
+	0x6e, 0x75, 0x6d, 0x12, 0x4d, 0x0a, 0x11, 0x73, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x61,
+	0x62, 0x6c, 0x65, 0x5f, 0x65, 0x6e, 0x75, 0x6d, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e,
+	0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65,
+	0x6e, 0x65, 0x72, 0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x64, 0x54, 0x79, 0x70, 0x65, 0x48, 0x00,
+	0x52, 0x10, 0x73, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x62, 0x6c, 0x65, 0x45, 0x6e,
+	0x75, 0x6d, 0x12, 0x3b, 0x0a, 0x08, 0x6e, 0x65, 0x77, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x0a,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x64,
+	0x54, 0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x07, 0x6e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x12,
+	0x37, 0x0a, 0x07, 0x70, 0x34, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e,
+	0x50, 0x34, 0x44, 0x61, 0x74, 0x61, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x48, 0x00,
+	0x52, 0x06, 0x70, 0x34, 0x54, 0x79, 0x70, 0x65, 0x42, 0x0b, 0x0a, 0x09, 0x74, 0x79, 0x70, 0x65,
+	0x5f, 0x73, 0x70, 0x65, 0x63, 0x22, 0x26, 0x0a, 0x10, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63,
+	0x4e, 0x61, 0x6d, 0x65, 0x64, 0x54, 0x79, 0x70, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x11, 0x0a,
+	0x0f, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x42, 0x6f, 0x6f, 0x6c, 0x54, 0x79, 0x70, 0x65,
+	0x22, 0x12, 0x0a, 0x10, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x46, 0x6c, 0x6f, 0x61, 0x74,
+	0x54, 0x79, 0x70, 0x65, 0x22, 0xa4, 0x03, 0x0a, 0x1c, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63,
+	0x42, 0x69, 0x74, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x4c, 0x69, 0x6b, 0x65, 0x54, 0x79, 0x70,
+	0x65, 0x53, 0x70, 0x65, 0x63, 0x12, 0x34, 0x0a, 0x03, 0x62, 0x69, 0x74, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x20, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76,
+	0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x42, 0x69, 0x74, 0x54, 0x79, 0x70, 0x65,
+	0x53, 0x70, 0x65, 0x63, 0x48, 0x00, 0x52, 0x03, 0x62, 0x69, 0x74, 0x12, 0x34, 0x0a, 0x03, 0x69,
+	0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f,
+	0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x49,
+	0x6e, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x48, 0x00, 0x52, 0x03, 0x69, 0x6e,
+	0x74, 0x12, 0x3d, 0x0a, 0x06, 0x76, 0x61, 0x72, 0x62, 0x69, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x23, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31,
+	0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x56, 0x61, 0x72, 0x62, 0x69, 0x74, 0x54, 0x79,
+	0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x48, 0x00, 0x52, 0x06, 0x76, 0x61, 0x72, 0x62, 0x69, 0x74,
+	0x12, 0x20, 0x0a, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18,
+	0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x12, 0x4f, 0x0a, 0x14, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e,
+	0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x13,
+	0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x12, 0x59, 0x0a, 0x16, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65,
+	0x64, 0x5f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x06, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e,
+	0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e,
+	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x15, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75,
+	0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x42, 0x0b,
+	0x0a, 0x09, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x73, 0x70, 0x65, 0x63, 0x22, 0x55, 0x0a, 0x12, 0x47,
+	0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x42, 0x69, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65,
+	0x63, 0x12, 0x1a, 0x0a, 0x08, 0x62, 0x69, 0x74, 0x77, 0x69, 0x64, 0x74, 0x68, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x08, 0x62, 0x69, 0x74, 0x77, 0x69, 0x64, 0x74, 0x68, 0x12, 0x23, 0x0a,
+	0x0d, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x05, 0x52, 0x0c, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x56, 0x61, 0x6c,
+	0x75, 0x65, 0x22, 0x55, 0x0a, 0x12, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x49, 0x6e, 0x74,
+	0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x12, 0x1a, 0x0a, 0x08, 0x62, 0x69, 0x74, 0x77,
+	0x69, 0x64, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x62, 0x69, 0x74, 0x77,
+	0x69, 0x64, 0x74, 0x68, 0x12, 0x23, 0x0a, 0x0d, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x5f,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0c, 0x64, 0x65, 0x66,
+	0x61, 0x75, 0x6c, 0x74, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x5f, 0x0a, 0x15, 0x47, 0x65, 0x6e,
+	0x65, 0x72, 0x69, 0x63, 0x56, 0x61, 0x72, 0x62, 0x69, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70,
+	0x65, 0x63, 0x12, 0x21, 0x0a, 0x0c, 0x6d, 0x61, 0x78, 0x5f, 0x62, 0x69, 0x74, 0x77, 0x69, 0x64,
+	0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0b, 0x6d, 0x61, 0x78, 0x42, 0x69, 0x74,
+	0x77, 0x69, 0x64, 0x74, 0x68, 0x12, 0x23, 0x0a, 0x0d, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74,
+	0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0c, 0x64, 0x65,
+	0x66, 0x61, 0x75, 0x6c, 0x74, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x89, 0x03, 0x0a, 0x15, 0x47,
+	0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65,
+	0x53, 0x70, 0x65, 0x63, 0x12, 0x44, 0x0a, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x18,
+	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x53, 0x74, 0x72, 0x75,
+	0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x2e, 0x4d, 0x65, 0x6d, 0x62, 0x65,
+	0x72, 0x52, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x12, 0x20, 0x0a, 0x0b, 0x61, 0x6e,
+	0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x52,
+	0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x4f, 0x0a, 0x14,
+	0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e,
+	0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x13, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x59, 0x0a,
+	0x16, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x5f, 0x61, 0x6e, 0x6e, 0x6f,
+	0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e,
+	0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x72,
+	0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x52, 0x15, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e,
+	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x1a, 0x5c, 0x0a, 0x06, 0x4d, 0x65, 0x6d, 0x62,
+	0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x3e, 0x0a, 0x09, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x73,
+	0x70, 0x65, 0x63, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x70, 0x34, 0x2e, 0x63,
+	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63,
+	0x44, 0x61, 0x74, 0x61, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x52, 0x08, 0x74, 0x79,
+	0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x22, 0xd9, 0x02, 0x0a, 0x13, 0x47, 0x65, 0x6e, 0x65, 0x72,
+	0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x12, 0x3e,
+	0x0a, 0x09, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x73, 0x70, 0x65, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x21, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31,
+	0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x44, 0x61, 0x74, 0x61, 0x54, 0x79, 0x70, 0x65,
+	0x53, 0x70, 0x65, 0x63, 0x52, 0x08, 0x74, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x12, 0x20,
+	0x0a, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20,
+	0x03, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x12, 0x19, 0x0a, 0x08, 0x6d, 0x69, 0x6e, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x05, 0x52, 0x07, 0x6d, 0x69, 0x6e, 0x53, 0x69, 0x7a, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x6d,
+	0x61, 0x78, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x6d,
+	0x61, 0x78, 0x53, 0x69, 0x7a, 0x65, 0x12, 0x4f, 0x0a, 0x14, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x06,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x2e, 0x76, 0x31, 0x2e, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x52, 0x13, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x6f,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x59, 0x0a, 0x16, 0x73, 0x74, 0x72, 0x75, 0x63,
+	0x74, 0x75, 0x72, 0x65, 0x64, 0x5f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e,
+	0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65,
+	0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x15, 0x73, 0x74, 0x72,
+	0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x22, 0xe1, 0x02, 0x0a, 0x1b, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x55, 0x6e,
+	0x6f, 0x72, 0x64, 0x65, 0x72, 0x65, 0x64, 0x53, 0x65, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70,
+	0x65, 0x63, 0x12, 0x3e, 0x0a, 0x09, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x73, 0x70, 0x65, 0x63, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x44, 0x61, 0x74, 0x61,
+	0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x52, 0x08, 0x74, 0x79, 0x70, 0x65, 0x53, 0x70,
+	0x65, 0x63, 0x12, 0x20, 0x0a, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x12, 0x19, 0x0a, 0x08, 0x6d, 0x69, 0x6e, 0x5f, 0x73, 0x69, 0x7a, 0x65,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x6d, 0x69, 0x6e, 0x53, 0x69, 0x7a, 0x65, 0x12,
+	0x19, 0x0a, 0x08, 0x6d, 0x61, 0x78, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28,
+	0x05, 0x52, 0x07, 0x6d, 0x61, 0x78, 0x53, 0x69, 0x7a, 0x65, 0x12, 0x4f, 0x0a, 0x14, 0x61, 0x6e,
+	0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f,
+	0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x13, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x59, 0x0a, 0x16, 0x73,
+	0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x5f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x34,
+	0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63,
+	0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52,
+	0x15, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0xab, 0x02, 0x0a, 0x11, 0x47, 0x65, 0x6e, 0x65, 0x72,
+	0x69, 0x63, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x53, 0x70, 0x65, 0x63, 0x12, 0x12, 0x0a, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x12, 0x19, 0x0a, 0x08, 0x6d, 0x69, 0x6e, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x05, 0x52, 0x07, 0x6d, 0x69, 0x6e, 0x53, 0x69, 0x7a, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x6d,
+	0x61, 0x78, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x6d,
+	0x61, 0x78, 0x53, 0x69, 0x7a, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6e, 0x6e,
+	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x4f, 0x0a, 0x14, 0x61, 0x6e, 0x6e, 0x6f,
+	0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x52, 0x13, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x59, 0x0a, 0x16, 0x73, 0x74, 0x72,
+	0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x5f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x34, 0x2e, 0x63,
+	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75,
+	0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x15, 0x73,
+	0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x22, 0xb9, 0x04, 0x0a, 0x13, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63,
+	0x45, 0x6e, 0x75, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x12, 0x42, 0x0a, 0x07,
+	0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x28, 0x2e,
+	0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e,
+	0x65, 0x72, 0x69, 0x63, 0x45, 0x6e, 0x75, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63,
+	0x2e, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x52, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73,
+	0x12, 0x20, 0x0a, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18,
+	0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x12, 0x4f, 0x0a, 0x14, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e,
+	0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x13,
+	0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x12, 0x59, 0x0a, 0x16, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65,
+	0x64, 0x5f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e,
+	0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e,
+	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x15, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75,
+	0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x1a, 0x8f,
+	0x02, 0x0a, 0x06, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x23, 0x0a,
+	0x0d, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x05, 0x52, 0x0c, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x56, 0x61, 0x6c,
+	0x75, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x12, 0x4f, 0x0a, 0x14, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76,
+	0x31, 0x2e, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x52, 0x13, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x6f, 0x63, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x59, 0x0a, 0x16, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75,
+	0x72, 0x65, 0x64, 0x5f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18,
+	0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41,
+	0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x15, 0x73, 0x74, 0x72, 0x75, 0x63,
+	0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x22, 0xb2, 0x05, 0x0a, 0x1f, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x53, 0x65, 0x72, 0x69,
+	0x61, 0x6c, 0x69, 0x7a, 0x61, 0x62, 0x6c, 0x65, 0x45, 0x6e, 0x75, 0x6d, 0x54, 0x79, 0x70, 0x65,
+	0x53, 0x70, 0x65, 0x63, 0x12, 0x49, 0x0a, 0x0f, 0x75, 0x6e, 0x64, 0x65, 0x72, 0x6c, 0x79, 0x69,
+	0x6e, 0x67, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e,
+	0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e,
+	0x65, 0x72, 0x69, 0x63, 0x42, 0x69, 0x74, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x52,
+	0x0e, 0x75, 0x6e, 0x64, 0x65, 0x72, 0x6c, 0x79, 0x69, 0x6e, 0x67, 0x54, 0x79, 0x70, 0x65, 0x12,
+	0x4e, 0x0a, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x34, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e,
+	0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x61,
+	0x62, 0x6c, 0x65, 0x45, 0x6e, 0x75, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x2e,
+	0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x52, 0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x12,
+	0x20, 0x0a, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x03,
+	0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x12, 0x4f, 0x0a, 0x14, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f,
+	0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53,
+	0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x13, 0x61,
+	0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x12, 0x59, 0x0a, 0x16, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64,
+	0x5f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x05, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76,
+	0x31, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f,
+	0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x15, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72,
+	0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x1a, 0xa5, 0x02,
+	0x0a, 0x06, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x12, 0x23, 0x0a, 0x0d, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x5f, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0c, 0x64, 0x65, 0x66, 0x61, 0x75,
+	0x6c, 0x74, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6e,
+	0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x4f, 0x0a, 0x14, 0x61, 0x6e, 0x6e,
+	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e,
+	0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x13, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x59, 0x0a, 0x16, 0x73, 0x74,
+	0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x5f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x70, 0x34, 0x2e,
+	0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x75, 0x63, 0x74,
+	0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x15,
+	0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0xbf, 0x01, 0x0a, 0x19, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69,
+	0x63, 0x4e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x6c, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x72, 0x69, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x03, 0x75, 0x72, 0x69, 0x12, 0x23, 0x0a, 0x0c, 0x73, 0x64, 0x6e, 0x5f, 0x62, 0x69, 0x74,
+	0x77, 0x69, 0x64, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x48, 0x00, 0x52, 0x0b, 0x73,
+	0x64, 0x6e, 0x42, 0x69, 0x74, 0x77, 0x69, 0x64, 0x74, 0x68, 0x12, 0x52, 0x0a, 0x0a, 0x73, 0x64,
+	0x6e, 0x5f, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x31,
+	0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65,
+	0x6e, 0x65, 0x72, 0x69, 0x63, 0x4e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x54, 0x72, 0x61, 0x6e,
+	0x73, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x64, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e,
+	0x67, 0x48, 0x00, 0x52, 0x09, 0x73, 0x64, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x1a, 0x0b,
+	0x0a, 0x09, 0x53, 0x64, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x42, 0x0a, 0x0a, 0x08, 0x73,
+	0x64, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x22, 0x92, 0x03, 0x0a, 0x12, 0x47, 0x65, 0x6e, 0x65,
+	0x72, 0x69, 0x63, 0x4e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x12, 0x48,
+	0x0a, 0x0d, 0x6f, 0x72, 0x69, 0x67, 0x69, 0x6e, 0x61, 0x6c, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x44, 0x61, 0x74, 0x61,
+	0x54, 0x79, 0x70, 0x65, 0x53, 0x70, 0x65, 0x63, 0x48, 0x00, 0x52, 0x0c, 0x6f, 0x72, 0x69, 0x67,
+	0x69, 0x6e, 0x61, 0x6c, 0x54, 0x79, 0x70, 0x65, 0x12, 0x52, 0x0a, 0x0f, 0x74, 0x72, 0x61, 0x6e,
+	0x73, 0x6c, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x27, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31,
+	0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x69, 0x63, 0x4e, 0x65, 0x77, 0x54, 0x79, 0x70, 0x65, 0x54,
+	0x72, 0x61, 0x6e, 0x73, 0x6c, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x0e, 0x74, 0x72,
+	0x61, 0x6e, 0x73, 0x6c, 0x61, 0x74, 0x65, 0x64, 0x54, 0x79, 0x70, 0x65, 0x12, 0x20, 0x0a, 0x0b,
+	0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28,
+	0x09, 0x52, 0x0b, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x4f,
+	0x0a, 0x14, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6c, 0x6f, 0x63,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70,
+	0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x6f, 0x75, 0x72,
+	0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x13, 0x61, 0x6e, 0x6e, 0x6f,
+	0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12,
+	0x59, 0x0a, 0x16, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x5f, 0x61, 0x6e,
+	0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x22, 0x2e, 0x70, 0x34, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x2e, 0x53,
+	0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x52, 0x15, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x75, 0x72, 0x65, 0x64, 0x41,
+	0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x42, 0x10, 0x0a, 0x0e, 0x72, 0x65,
+	0x70, 0x72, 0x65, 0x73, 0x65, 0x6e, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x2d, 0x5a, 0x2b,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x70, 0x34, 0x6c, 0x61, 0x6e,
+	0x67, 0x2f, 0x70, 0x34, 0x72, 0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65, 0x2f, 0x67, 0x6f, 0x2f, 0x70,
+	0x34, 0x2f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2728,7 +4762,7 @@ func file_p4_config_v1_p4types_proto_rawDescGZIP() []byte {
 	return file_p4_config_v1_p4types_proto_rawDescData
 }
 
-var file_p4_config_v1_p4types_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_p4_config_v1_p4types_proto_msgTypes = make([]protoimpl.MessageInfo, 64)
 var file_p4_config_v1_p4types_proto_goTypes = []interface{}{
 	(*P4TypeInfo)(nil),                        // 0: p4.config.v1.P4TypeInfo
 	(*P4DataTypeSpec)(nil),                    // 1: p4.config.v1.P4DataTypeSpec
@@ -2756,92 +4790,172 @@ var file_p4_config_v1_p4types_proto_goTypes = []interface{}{
 	(*P4ErrorTypeSpec)(nil),                   // 23: p4.config.v1.P4ErrorTypeSpec
 	(*P4NewTypeTranslation)(nil),              // 24: p4.config.v1.P4NewTypeTranslation
 	(*P4NewTypeSpec)(nil),                     // 25: p4.config.v1.P4NewTypeSpec
-	nil,                                       // 26: p4.config.v1.P4TypeInfo.StructsEntry
-	nil,                                       // 27: p4.config.v1.P4TypeInfo.HeadersEntry
-	nil,                                       // 28: p4.config.v1.P4TypeInfo.HeaderUnionsEntry
-	nil,                                       // 29: p4.config.v1.P4TypeInfo.EnumsEntry
-	nil,                                       // 30: p4.config.v1.P4TypeInfo.SerializableEnumsEntry
-	nil,                                       // 31: p4.config.v1.P4TypeInfo.NewTypesEntry
-	(*P4StructTypeSpec_Member)(nil),           // 32: p4.config.v1.P4StructTypeSpec.Member
-	(*P4HeaderTypeSpec_Member)(nil),           // 33: p4.config.v1.P4HeaderTypeSpec.Member
-	(*P4HeaderUnionTypeSpec_Member)(nil),      // 34: p4.config.v1.P4HeaderUnionTypeSpec.Member
-	(*P4EnumTypeSpec_Member)(nil),             // 35: p4.config.v1.P4EnumTypeSpec.Member
-	(*P4SerializableEnumTypeSpec_Member)(nil), // 36: p4.config.v1.P4SerializableEnumTypeSpec.Member
-	(*P4NewTypeTranslation_SdnString)(nil),    // 37: p4.config.v1.P4NewTypeTranslation.SdnString
+	(*GenericTypeInfo)(nil),                   // 26: p4.config.v1.GenericTypeInfo
+	(*GenericDataTypeSpec)(nil),               // 27: p4.config.v1.GenericDataTypeSpec
+	(*GenericNamedType)(nil),                  // 28: p4.config.v1.GenericNamedType
+	(*GenericBoolType)(nil),                   // 29: p4.config.v1.GenericBoolType
+	(*GenericFloatType)(nil),                  // 30: p4.config.v1.GenericFloatType
+	(*GenericBitstringLikeTypeSpec)(nil),      // 31: p4.config.v1.GenericBitstringLikeTypeSpec
+	(*GenericBitTypeSpec)(nil),                // 32: p4.config.v1.GenericBitTypeSpec
+	(*GenericIntTypeSpec)(nil),                // 33: p4.config.v1.GenericIntTypeSpec
+	(*GenericVarbitTypeSpec)(nil),             // 34: p4.config.v1.GenericVarbitTypeSpec
+	(*GenericStructTypeSpec)(nil),             // 35: p4.config.v1.GenericStructTypeSpec
+	(*GenericListTypeSpec)(nil),               // 36: p4.config.v1.GenericListTypeSpec
+	(*GenericUnorderedSetTypeSpec)(nil),       // 37: p4.config.v1.GenericUnorderedSetTypeSpec
+	(*GenericStringSpec)(nil),                 // 38: p4.config.v1.GenericStringSpec
+	(*GenericEnumTypeSpec)(nil),               // 39: p4.config.v1.GenericEnumTypeSpec
+	(*GenericSerializableEnumTypeSpec)(nil),   // 40: p4.config.v1.GenericSerializableEnumTypeSpec
+	(*GenericNewTypeTranslation)(nil),         // 41: p4.config.v1.GenericNewTypeTranslation
+	(*GenericNewTypeSpec)(nil),                // 42: p4.config.v1.GenericNewTypeSpec
+	nil,                                       // 43: p4.config.v1.P4TypeInfo.StructsEntry
+	nil,                                       // 44: p4.config.v1.P4TypeInfo.HeadersEntry
+	nil,                                       // 45: p4.config.v1.P4TypeInfo.HeaderUnionsEntry
+	nil,                                       // 46: p4.config.v1.P4TypeInfo.EnumsEntry
+	nil,                                       // 47: p4.config.v1.P4TypeInfo.SerializableEnumsEntry
+	nil,                                       // 48: p4.config.v1.P4TypeInfo.NewTypesEntry
+	(*P4StructTypeSpec_Member)(nil),           // 49: p4.config.v1.P4StructTypeSpec.Member
+	(*P4HeaderTypeSpec_Member)(nil),           // 50: p4.config.v1.P4HeaderTypeSpec.Member
+	(*P4HeaderUnionTypeSpec_Member)(nil),      // 51: p4.config.v1.P4HeaderUnionTypeSpec.Member
+	(*P4EnumTypeSpec_Member)(nil),             // 52: p4.config.v1.P4EnumTypeSpec.Member
+	(*P4SerializableEnumTypeSpec_Member)(nil), // 53: p4.config.v1.P4SerializableEnumTypeSpec.Member
+	(*P4NewTypeTranslation_SdnString)(nil),    // 54: p4.config.v1.P4NewTypeTranslation.SdnString
+	nil,                                       // 55: p4.config.v1.GenericTypeInfo.StructsEntry
+	nil,                                       // 56: p4.config.v1.GenericTypeInfo.ListsEntry
+	nil,                                       // 57: p4.config.v1.GenericTypeInfo.EnumsEntry
+	nil,                                       // 58: p4.config.v1.GenericTypeInfo.SerializableEnumsEntry
+	nil,                                       // 59: p4.config.v1.GenericTypeInfo.NewTypesEntry
+	(*GenericStructTypeSpec_Member)(nil),      // 60: p4.config.v1.GenericStructTypeSpec.Member
+	(*GenericEnumTypeSpec_Member)(nil),        // 61: p4.config.v1.GenericEnumTypeSpec.Member
+	(*GenericSerializableEnumTypeSpec_Member)(nil), // 62: p4.config.v1.GenericSerializableEnumTypeSpec.Member
+	(*GenericNewTypeTranslation_SdnString)(nil),    // 63: p4.config.v1.GenericNewTypeTranslation.SdnString
 }
 var file_p4_config_v1_p4types_proto_depIdxs = []int32{
-	26, // 0: p4.config.v1.P4TypeInfo.structs:type_name -> p4.config.v1.P4TypeInfo.StructsEntry
-	27, // 1: p4.config.v1.P4TypeInfo.headers:type_name -> p4.config.v1.P4TypeInfo.HeadersEntry
-	28, // 2: p4.config.v1.P4TypeInfo.header_unions:type_name -> p4.config.v1.P4TypeInfo.HeaderUnionsEntry
-	29, // 3: p4.config.v1.P4TypeInfo.enums:type_name -> p4.config.v1.P4TypeInfo.EnumsEntry
-	23, // 4: p4.config.v1.P4TypeInfo.error:type_name -> p4.config.v1.P4ErrorTypeSpec
-	30, // 5: p4.config.v1.P4TypeInfo.serializable_enums:type_name -> p4.config.v1.P4TypeInfo.SerializableEnumsEntry
-	31, // 6: p4.config.v1.P4TypeInfo.new_types:type_name -> p4.config.v1.P4TypeInfo.NewTypesEntry
-	5,  // 7: p4.config.v1.P4DataTypeSpec.bitstring:type_name -> p4.config.v1.P4BitstringLikeTypeSpec
-	3,  // 8: p4.config.v1.P4DataTypeSpec.bool:type_name -> p4.config.v1.P4BoolType
-	9,  // 9: p4.config.v1.P4DataTypeSpec.tuple:type_name -> p4.config.v1.P4TupleTypeSpec
-	2,  // 10: p4.config.v1.P4DataTypeSpec.struct:type_name -> p4.config.v1.P4NamedType
-	2,  // 11: p4.config.v1.P4DataTypeSpec.header:type_name -> p4.config.v1.P4NamedType
-	2,  // 12: p4.config.v1.P4DataTypeSpec.header_union:type_name -> p4.config.v1.P4NamedType
-	13, // 13: p4.config.v1.P4DataTypeSpec.header_stack:type_name -> p4.config.v1.P4HeaderStackTypeSpec
-	14, // 14: p4.config.v1.P4DataTypeSpec.header_union_stack:type_name -> p4.config.v1.P4HeaderUnionStackTypeSpec
-	2,  // 15: p4.config.v1.P4DataTypeSpec.enum:type_name -> p4.config.v1.P4NamedType
-	4,  // 16: p4.config.v1.P4DataTypeSpec.error:type_name -> p4.config.v1.P4ErrorType
-	2,  // 17: p4.config.v1.P4DataTypeSpec.serializable_enum:type_name -> p4.config.v1.P4NamedType
-	2,  // 18: p4.config.v1.P4DataTypeSpec.new_type:type_name -> p4.config.v1.P4NamedType
-	6,  // 19: p4.config.v1.P4BitstringLikeTypeSpec.bit:type_name -> p4.config.v1.P4BitTypeSpec
-	7,  // 20: p4.config.v1.P4BitstringLikeTypeSpec.int:type_name -> p4.config.v1.P4IntTypeSpec
-	8,  // 21: p4.config.v1.P4BitstringLikeTypeSpec.varbit:type_name -> p4.config.v1.P4VarbitTypeSpec
-	20, // 22: p4.config.v1.P4BitstringLikeTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 23: p4.config.v1.P4BitstringLikeTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	1,  // 24: p4.config.v1.P4TupleTypeSpec.members:type_name -> p4.config.v1.P4DataTypeSpec
-	32, // 25: p4.config.v1.P4StructTypeSpec.members:type_name -> p4.config.v1.P4StructTypeSpec.Member
-	20, // 26: p4.config.v1.P4StructTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 27: p4.config.v1.P4StructTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	33, // 28: p4.config.v1.P4HeaderTypeSpec.members:type_name -> p4.config.v1.P4HeaderTypeSpec.Member
-	20, // 29: p4.config.v1.P4HeaderTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 30: p4.config.v1.P4HeaderTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	34, // 31: p4.config.v1.P4HeaderUnionTypeSpec.members:type_name -> p4.config.v1.P4HeaderUnionTypeSpec.Member
-	20, // 32: p4.config.v1.P4HeaderUnionTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 33: p4.config.v1.P4HeaderUnionTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	2,  // 34: p4.config.v1.P4HeaderStackTypeSpec.header:type_name -> p4.config.v1.P4NamedType
-	2,  // 35: p4.config.v1.P4HeaderUnionStackTypeSpec.header_union:type_name -> p4.config.v1.P4NamedType
-	17, // 36: p4.config.v1.KeyValuePair.value:type_name -> p4.config.v1.Expression
-	15, // 37: p4.config.v1.KeyValuePairList.kv_pairs:type_name -> p4.config.v1.KeyValuePair
-	17, // 38: p4.config.v1.ExpressionList.expressions:type_name -> p4.config.v1.Expression
-	18, // 39: p4.config.v1.StructuredAnnotation.expression_list:type_name -> p4.config.v1.ExpressionList
-	16, // 40: p4.config.v1.StructuredAnnotation.kv_pair_list:type_name -> p4.config.v1.KeyValuePairList
-	20, // 41: p4.config.v1.StructuredAnnotation.source_location:type_name -> p4.config.v1.SourceLocation
-	35, // 42: p4.config.v1.P4EnumTypeSpec.members:type_name -> p4.config.v1.P4EnumTypeSpec.Member
-	20, // 43: p4.config.v1.P4EnumTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 44: p4.config.v1.P4EnumTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	6,  // 45: p4.config.v1.P4SerializableEnumTypeSpec.underlying_type:type_name -> p4.config.v1.P4BitTypeSpec
-	36, // 46: p4.config.v1.P4SerializableEnumTypeSpec.members:type_name -> p4.config.v1.P4SerializableEnumTypeSpec.Member
-	20, // 47: p4.config.v1.P4SerializableEnumTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 48: p4.config.v1.P4SerializableEnumTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	37, // 49: p4.config.v1.P4NewTypeTranslation.sdn_string:type_name -> p4.config.v1.P4NewTypeTranslation.SdnString
-	1,  // 50: p4.config.v1.P4NewTypeSpec.original_type:type_name -> p4.config.v1.P4DataTypeSpec
-	24, // 51: p4.config.v1.P4NewTypeSpec.translated_type:type_name -> p4.config.v1.P4NewTypeTranslation
-	20, // 52: p4.config.v1.P4NewTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 53: p4.config.v1.P4NewTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	10, // 54: p4.config.v1.P4TypeInfo.StructsEntry.value:type_name -> p4.config.v1.P4StructTypeSpec
-	11, // 55: p4.config.v1.P4TypeInfo.HeadersEntry.value:type_name -> p4.config.v1.P4HeaderTypeSpec
-	12, // 56: p4.config.v1.P4TypeInfo.HeaderUnionsEntry.value:type_name -> p4.config.v1.P4HeaderUnionTypeSpec
-	21, // 57: p4.config.v1.P4TypeInfo.EnumsEntry.value:type_name -> p4.config.v1.P4EnumTypeSpec
-	22, // 58: p4.config.v1.P4TypeInfo.SerializableEnumsEntry.value:type_name -> p4.config.v1.P4SerializableEnumTypeSpec
-	25, // 59: p4.config.v1.P4TypeInfo.NewTypesEntry.value:type_name -> p4.config.v1.P4NewTypeSpec
-	1,  // 60: p4.config.v1.P4StructTypeSpec.Member.type_spec:type_name -> p4.config.v1.P4DataTypeSpec
-	5,  // 61: p4.config.v1.P4HeaderTypeSpec.Member.type_spec:type_name -> p4.config.v1.P4BitstringLikeTypeSpec
-	2,  // 62: p4.config.v1.P4HeaderUnionTypeSpec.Member.header:type_name -> p4.config.v1.P4NamedType
-	20, // 63: p4.config.v1.P4EnumTypeSpec.Member.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 64: p4.config.v1.P4EnumTypeSpec.Member.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	20, // 65: p4.config.v1.P4SerializableEnumTypeSpec.Member.annotation_locations:type_name -> p4.config.v1.SourceLocation
-	19, // 66: p4.config.v1.P4SerializableEnumTypeSpec.Member.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
-	67, // [67:67] is the sub-list for method output_type
-	67, // [67:67] is the sub-list for method input_type
-	67, // [67:67] is the sub-list for extension type_name
-	67, // [67:67] is the sub-list for extension extendee
-	0,  // [0:67] is the sub-list for field type_name
+	43,  // 0: p4.config.v1.P4TypeInfo.structs:type_name -> p4.config.v1.P4TypeInfo.StructsEntry
+	44,  // 1: p4.config.v1.P4TypeInfo.headers:type_name -> p4.config.v1.P4TypeInfo.HeadersEntry
+	45,  // 2: p4.config.v1.P4TypeInfo.header_unions:type_name -> p4.config.v1.P4TypeInfo.HeaderUnionsEntry
+	46,  // 3: p4.config.v1.P4TypeInfo.enums:type_name -> p4.config.v1.P4TypeInfo.EnumsEntry
+	23,  // 4: p4.config.v1.P4TypeInfo.error:type_name -> p4.config.v1.P4ErrorTypeSpec
+	47,  // 5: p4.config.v1.P4TypeInfo.serializable_enums:type_name -> p4.config.v1.P4TypeInfo.SerializableEnumsEntry
+	48,  // 6: p4.config.v1.P4TypeInfo.new_types:type_name -> p4.config.v1.P4TypeInfo.NewTypesEntry
+	5,   // 7: p4.config.v1.P4DataTypeSpec.bitstring:type_name -> p4.config.v1.P4BitstringLikeTypeSpec
+	3,   // 8: p4.config.v1.P4DataTypeSpec.bool:type_name -> p4.config.v1.P4BoolType
+	9,   // 9: p4.config.v1.P4DataTypeSpec.tuple:type_name -> p4.config.v1.P4TupleTypeSpec
+	2,   // 10: p4.config.v1.P4DataTypeSpec.struct:type_name -> p4.config.v1.P4NamedType
+	2,   // 11: p4.config.v1.P4DataTypeSpec.header:type_name -> p4.config.v1.P4NamedType
+	2,   // 12: p4.config.v1.P4DataTypeSpec.header_union:type_name -> p4.config.v1.P4NamedType
+	13,  // 13: p4.config.v1.P4DataTypeSpec.header_stack:type_name -> p4.config.v1.P4HeaderStackTypeSpec
+	14,  // 14: p4.config.v1.P4DataTypeSpec.header_union_stack:type_name -> p4.config.v1.P4HeaderUnionStackTypeSpec
+	2,   // 15: p4.config.v1.P4DataTypeSpec.enum:type_name -> p4.config.v1.P4NamedType
+	4,   // 16: p4.config.v1.P4DataTypeSpec.error:type_name -> p4.config.v1.P4ErrorType
+	2,   // 17: p4.config.v1.P4DataTypeSpec.serializable_enum:type_name -> p4.config.v1.P4NamedType
+	2,   // 18: p4.config.v1.P4DataTypeSpec.new_type:type_name -> p4.config.v1.P4NamedType
+	6,   // 19: p4.config.v1.P4BitstringLikeTypeSpec.bit:type_name -> p4.config.v1.P4BitTypeSpec
+	7,   // 20: p4.config.v1.P4BitstringLikeTypeSpec.int:type_name -> p4.config.v1.P4IntTypeSpec
+	8,   // 21: p4.config.v1.P4BitstringLikeTypeSpec.varbit:type_name -> p4.config.v1.P4VarbitTypeSpec
+	20,  // 22: p4.config.v1.P4BitstringLikeTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 23: p4.config.v1.P4BitstringLikeTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	1,   // 24: p4.config.v1.P4TupleTypeSpec.members:type_name -> p4.config.v1.P4DataTypeSpec
+	49,  // 25: p4.config.v1.P4StructTypeSpec.members:type_name -> p4.config.v1.P4StructTypeSpec.Member
+	20,  // 26: p4.config.v1.P4StructTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 27: p4.config.v1.P4StructTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	50,  // 28: p4.config.v1.P4HeaderTypeSpec.members:type_name -> p4.config.v1.P4HeaderTypeSpec.Member
+	20,  // 29: p4.config.v1.P4HeaderTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 30: p4.config.v1.P4HeaderTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	51,  // 31: p4.config.v1.P4HeaderUnionTypeSpec.members:type_name -> p4.config.v1.P4HeaderUnionTypeSpec.Member
+	20,  // 32: p4.config.v1.P4HeaderUnionTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 33: p4.config.v1.P4HeaderUnionTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	2,   // 34: p4.config.v1.P4HeaderStackTypeSpec.header:type_name -> p4.config.v1.P4NamedType
+	2,   // 35: p4.config.v1.P4HeaderUnionStackTypeSpec.header_union:type_name -> p4.config.v1.P4NamedType
+	17,  // 36: p4.config.v1.KeyValuePair.value:type_name -> p4.config.v1.Expression
+	15,  // 37: p4.config.v1.KeyValuePairList.kv_pairs:type_name -> p4.config.v1.KeyValuePair
+	17,  // 38: p4.config.v1.ExpressionList.expressions:type_name -> p4.config.v1.Expression
+	18,  // 39: p4.config.v1.StructuredAnnotation.expression_list:type_name -> p4.config.v1.ExpressionList
+	16,  // 40: p4.config.v1.StructuredAnnotation.kv_pair_list:type_name -> p4.config.v1.KeyValuePairList
+	20,  // 41: p4.config.v1.StructuredAnnotation.source_location:type_name -> p4.config.v1.SourceLocation
+	52,  // 42: p4.config.v1.P4EnumTypeSpec.members:type_name -> p4.config.v1.P4EnumTypeSpec.Member
+	20,  // 43: p4.config.v1.P4EnumTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 44: p4.config.v1.P4EnumTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	6,   // 45: p4.config.v1.P4SerializableEnumTypeSpec.underlying_type:type_name -> p4.config.v1.P4BitTypeSpec
+	53,  // 46: p4.config.v1.P4SerializableEnumTypeSpec.members:type_name -> p4.config.v1.P4SerializableEnumTypeSpec.Member
+	20,  // 47: p4.config.v1.P4SerializableEnumTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 48: p4.config.v1.P4SerializableEnumTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	54,  // 49: p4.config.v1.P4NewTypeTranslation.sdn_string:type_name -> p4.config.v1.P4NewTypeTranslation.SdnString
+	1,   // 50: p4.config.v1.P4NewTypeSpec.original_type:type_name -> p4.config.v1.P4DataTypeSpec
+	24,  // 51: p4.config.v1.P4NewTypeSpec.translated_type:type_name -> p4.config.v1.P4NewTypeTranslation
+	20,  // 52: p4.config.v1.P4NewTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 53: p4.config.v1.P4NewTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	55,  // 54: p4.config.v1.GenericTypeInfo.structs:type_name -> p4.config.v1.GenericTypeInfo.StructsEntry
+	56,  // 55: p4.config.v1.GenericTypeInfo.lists:type_name -> p4.config.v1.GenericTypeInfo.ListsEntry
+	57,  // 56: p4.config.v1.GenericTypeInfo.enums:type_name -> p4.config.v1.GenericTypeInfo.EnumsEntry
+	58,  // 57: p4.config.v1.GenericTypeInfo.serializable_enums:type_name -> p4.config.v1.GenericTypeInfo.SerializableEnumsEntry
+	59,  // 58: p4.config.v1.GenericTypeInfo.new_types:type_name -> p4.config.v1.GenericTypeInfo.NewTypesEntry
+	31,  // 59: p4.config.v1.GenericDataTypeSpec.bitstring:type_name -> p4.config.v1.GenericBitstringLikeTypeSpec
+	30,  // 60: p4.config.v1.GenericDataTypeSpec.float:type_name -> p4.config.v1.GenericFloatType
+	29,  // 61: p4.config.v1.GenericDataTypeSpec.bool:type_name -> p4.config.v1.GenericBoolType
+	28,  // 62: p4.config.v1.GenericDataTypeSpec.struct:type_name -> p4.config.v1.GenericNamedType
+	28,  // 63: p4.config.v1.GenericDataTypeSpec.list:type_name -> p4.config.v1.GenericNamedType
+	28,  // 64: p4.config.v1.GenericDataTypeSpec.unordered_set:type_name -> p4.config.v1.GenericNamedType
+	28,  // 65: p4.config.v1.GenericDataTypeSpec.string:type_name -> p4.config.v1.GenericNamedType
+	28,  // 66: p4.config.v1.GenericDataTypeSpec.enum:type_name -> p4.config.v1.GenericNamedType
+	28,  // 67: p4.config.v1.GenericDataTypeSpec.serializable_enum:type_name -> p4.config.v1.GenericNamedType
+	28,  // 68: p4.config.v1.GenericDataTypeSpec.new_type:type_name -> p4.config.v1.GenericNamedType
+	1,   // 69: p4.config.v1.GenericDataTypeSpec.p4_type:type_name -> p4.config.v1.P4DataTypeSpec
+	32,  // 70: p4.config.v1.GenericBitstringLikeTypeSpec.bit:type_name -> p4.config.v1.GenericBitTypeSpec
+	33,  // 71: p4.config.v1.GenericBitstringLikeTypeSpec.int:type_name -> p4.config.v1.GenericIntTypeSpec
+	34,  // 72: p4.config.v1.GenericBitstringLikeTypeSpec.varbit:type_name -> p4.config.v1.GenericVarbitTypeSpec
+	20,  // 73: p4.config.v1.GenericBitstringLikeTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 74: p4.config.v1.GenericBitstringLikeTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	60,  // 75: p4.config.v1.GenericStructTypeSpec.members:type_name -> p4.config.v1.GenericStructTypeSpec.Member
+	20,  // 76: p4.config.v1.GenericStructTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 77: p4.config.v1.GenericStructTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	27,  // 78: p4.config.v1.GenericListTypeSpec.type_spec:type_name -> p4.config.v1.GenericDataTypeSpec
+	20,  // 79: p4.config.v1.GenericListTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 80: p4.config.v1.GenericListTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	27,  // 81: p4.config.v1.GenericUnorderedSetTypeSpec.type_spec:type_name -> p4.config.v1.GenericDataTypeSpec
+	20,  // 82: p4.config.v1.GenericUnorderedSetTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 83: p4.config.v1.GenericUnorderedSetTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	20,  // 84: p4.config.v1.GenericStringSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 85: p4.config.v1.GenericStringSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	61,  // 86: p4.config.v1.GenericEnumTypeSpec.members:type_name -> p4.config.v1.GenericEnumTypeSpec.Member
+	20,  // 87: p4.config.v1.GenericEnumTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 88: p4.config.v1.GenericEnumTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	32,  // 89: p4.config.v1.GenericSerializableEnumTypeSpec.underlying_type:type_name -> p4.config.v1.GenericBitTypeSpec
+	62,  // 90: p4.config.v1.GenericSerializableEnumTypeSpec.members:type_name -> p4.config.v1.GenericSerializableEnumTypeSpec.Member
+	20,  // 91: p4.config.v1.GenericSerializableEnumTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 92: p4.config.v1.GenericSerializableEnumTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	63,  // 93: p4.config.v1.GenericNewTypeTranslation.sdn_string:type_name -> p4.config.v1.GenericNewTypeTranslation.SdnString
+	27,  // 94: p4.config.v1.GenericNewTypeSpec.original_type:type_name -> p4.config.v1.GenericDataTypeSpec
+	41,  // 95: p4.config.v1.GenericNewTypeSpec.translated_type:type_name -> p4.config.v1.GenericNewTypeTranslation
+	20,  // 96: p4.config.v1.GenericNewTypeSpec.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 97: p4.config.v1.GenericNewTypeSpec.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	10,  // 98: p4.config.v1.P4TypeInfo.StructsEntry.value:type_name -> p4.config.v1.P4StructTypeSpec
+	11,  // 99: p4.config.v1.P4TypeInfo.HeadersEntry.value:type_name -> p4.config.v1.P4HeaderTypeSpec
+	12,  // 100: p4.config.v1.P4TypeInfo.HeaderUnionsEntry.value:type_name -> p4.config.v1.P4HeaderUnionTypeSpec
+	21,  // 101: p4.config.v1.P4TypeInfo.EnumsEntry.value:type_name -> p4.config.v1.P4EnumTypeSpec
+	22,  // 102: p4.config.v1.P4TypeInfo.SerializableEnumsEntry.value:type_name -> p4.config.v1.P4SerializableEnumTypeSpec
+	25,  // 103: p4.config.v1.P4TypeInfo.NewTypesEntry.value:type_name -> p4.config.v1.P4NewTypeSpec
+	1,   // 104: p4.config.v1.P4StructTypeSpec.Member.type_spec:type_name -> p4.config.v1.P4DataTypeSpec
+	5,   // 105: p4.config.v1.P4HeaderTypeSpec.Member.type_spec:type_name -> p4.config.v1.P4BitstringLikeTypeSpec
+	2,   // 106: p4.config.v1.P4HeaderUnionTypeSpec.Member.header:type_name -> p4.config.v1.P4NamedType
+	20,  // 107: p4.config.v1.P4EnumTypeSpec.Member.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 108: p4.config.v1.P4EnumTypeSpec.Member.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	20,  // 109: p4.config.v1.P4SerializableEnumTypeSpec.Member.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 110: p4.config.v1.P4SerializableEnumTypeSpec.Member.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	35,  // 111: p4.config.v1.GenericTypeInfo.StructsEntry.value:type_name -> p4.config.v1.GenericStructTypeSpec
+	36,  // 112: p4.config.v1.GenericTypeInfo.ListsEntry.value:type_name -> p4.config.v1.GenericListTypeSpec
+	39,  // 113: p4.config.v1.GenericTypeInfo.EnumsEntry.value:type_name -> p4.config.v1.GenericEnumTypeSpec
+	40,  // 114: p4.config.v1.GenericTypeInfo.SerializableEnumsEntry.value:type_name -> p4.config.v1.GenericSerializableEnumTypeSpec
+	42,  // 115: p4.config.v1.GenericTypeInfo.NewTypesEntry.value:type_name -> p4.config.v1.GenericNewTypeSpec
+	27,  // 116: p4.config.v1.GenericStructTypeSpec.Member.type_spec:type_name -> p4.config.v1.GenericDataTypeSpec
+	20,  // 117: p4.config.v1.GenericEnumTypeSpec.Member.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 118: p4.config.v1.GenericEnumTypeSpec.Member.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	20,  // 119: p4.config.v1.GenericSerializableEnumTypeSpec.Member.annotation_locations:type_name -> p4.config.v1.SourceLocation
+	19,  // 120: p4.config.v1.GenericSerializableEnumTypeSpec.Member.structured_annotations:type_name -> p4.config.v1.StructuredAnnotation
+	121, // [121:121] is the sub-list for method output_type
+	121, // [121:121] is the sub-list for method input_type
+	121, // [121:121] is the sub-list for extension type_name
+	121, // [121:121] is the sub-list for extension extendee
+	0,   // [0:121] is the sub-list for field type_name
 }
 
 func init() { file_p4_config_v1_p4types_proto_init() }
@@ -3162,8 +5276,80 @@ func file_p4_config_v1_p4types_proto_init() {
 				return nil
 			}
 		}
+		file_p4_config_v1_p4types_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericTypeInfo); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericDataTypeSpec); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericNamedType); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericBoolType); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericFloatType); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericBitstringLikeTypeSpec); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 		file_p4_config_v1_p4types_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*P4StructTypeSpec_Member); i {
+			switch v := v.(*GenericBitTypeSpec); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3175,7 +5361,7 @@ func file_p4_config_v1_p4types_proto_init() {
 			}
 		}
 		file_p4_config_v1_p4types_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*P4HeaderTypeSpec_Member); i {
+			switch v := v.(*GenericIntTypeSpec); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3187,7 +5373,7 @@ func file_p4_config_v1_p4types_proto_init() {
 			}
 		}
 		file_p4_config_v1_p4types_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*P4HeaderUnionTypeSpec_Member); i {
+			switch v := v.(*GenericVarbitTypeSpec); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3199,7 +5385,7 @@ func file_p4_config_v1_p4types_proto_init() {
 			}
 		}
 		file_p4_config_v1_p4types_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*P4EnumTypeSpec_Member); i {
+			switch v := v.(*GenericStructTypeSpec); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3211,7 +5397,7 @@ func file_p4_config_v1_p4types_proto_init() {
 			}
 		}
 		file_p4_config_v1_p4types_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*P4SerializableEnumTypeSpec_Member); i {
+			switch v := v.(*GenericListTypeSpec); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3223,7 +5409,187 @@ func file_p4_config_v1_p4types_proto_init() {
 			}
 		}
 		file_p4_config_v1_p4types_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericUnorderedSetTypeSpec); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericStringSpec); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericEnumTypeSpec); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericSerializableEnumTypeSpec); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericNewTypeTranslation); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericNewTypeSpec); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*P4StructTypeSpec_Member); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*P4HeaderTypeSpec_Member); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[51].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*P4HeaderUnionTypeSpec_Member); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[52].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*P4EnumTypeSpec_Member); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[53].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*P4SerializableEnumTypeSpec_Member); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[54].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*P4NewTypeTranslation_SdnString); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[60].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericStructTypeSpec_Member); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[61].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericEnumTypeSpec_Member); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[62].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericSerializableEnumTypeSpec_Member); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_p4_config_v1_p4types_proto_msgTypes[63].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GenericNewTypeTranslation_SdnString); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3271,13 +5637,39 @@ func file_p4_config_v1_p4types_proto_init() {
 		(*P4NewTypeSpec_OriginalType)(nil),
 		(*P4NewTypeSpec_TranslatedType)(nil),
 	}
+	file_p4_config_v1_p4types_proto_msgTypes[27].OneofWrappers = []interface{}{
+		(*GenericDataTypeSpec_Bitstring)(nil),
+		(*GenericDataTypeSpec_Float)(nil),
+		(*GenericDataTypeSpec_Bool)(nil),
+		(*GenericDataTypeSpec_Struct)(nil),
+		(*GenericDataTypeSpec_List)(nil),
+		(*GenericDataTypeSpec_UnorderedSet)(nil),
+		(*GenericDataTypeSpec_String_)(nil),
+		(*GenericDataTypeSpec_Enum)(nil),
+		(*GenericDataTypeSpec_SerializableEnum)(nil),
+		(*GenericDataTypeSpec_NewType)(nil),
+		(*GenericDataTypeSpec_P4Type)(nil),
+	}
+	file_p4_config_v1_p4types_proto_msgTypes[31].OneofWrappers = []interface{}{
+		(*GenericBitstringLikeTypeSpec_Bit)(nil),
+		(*GenericBitstringLikeTypeSpec_Int)(nil),
+		(*GenericBitstringLikeTypeSpec_Varbit)(nil),
+	}
+	file_p4_config_v1_p4types_proto_msgTypes[41].OneofWrappers = []interface{}{
+		(*GenericNewTypeTranslation_SdnBitwidth)(nil),
+		(*GenericNewTypeTranslation_SdnString_)(nil),
+	}
+	file_p4_config_v1_p4types_proto_msgTypes[42].OneofWrappers = []interface{}{
+		(*GenericNewTypeSpec_OriginalType)(nil),
+		(*GenericNewTypeSpec_TranslatedType)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_p4_config_v1_p4types_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   38,
+			NumMessages:   64,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
