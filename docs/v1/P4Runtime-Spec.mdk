@@ -2085,13 +2085,35 @@ When writing the config via a `SetForwardingPipelineConfig` RPC, the cookie
 field is optional. For this reason, the actual value is wrapped in its own
 message to clearly identify cases where a cookie is not present.
 
-# General Principles for Message Formatting
+# General Principles for Message Formatting {#sec-message-formatting-principles}
 
-## Set / Unset Protobuf Field
+## Default-valued Fields {#sec-default-valued-fields}
+
+There is a subtle distinction between the treatment of default-valued scalar
+fields vs default-valued message fields in P4Runtime.
+
+### Set / Unset Scalar Fields
+
+In Protobuf version 3 (*proto3*), the default value of scalar fields is `0` for
+numeric types such as `int32`, and the empty string `""` for string types
+(`string` and `bytes`). An application, such as the P4Runtime client or
+server, is **unable to distinguish** between an unset scalar field and a scalar
+field set to its default value. Therefore, we usually reserve the default
+values 0 and "" of scalar fields to mean "unset".
+
+In particular, 0 is not a valid P4 object ID and it
+is an error to specify 0 for any P4 object ID in a non-read request towards the
+server, such as in a `WriteRequest` or a `SetForwardingPipelineConfigRequest`.
+
+In contrast to scalar fields, note that for message fields, we often do make
+a distinction between an unset message field vs a message field set to its
+default value, see the next section.
+
+### Set / Unset Message Fields
 
 In Protobuf version 3 (*proto3*), the default value for a message field is
 "unset" [@ProtoDefaults]. An application, such as the P4Runtime client or
-server, is able to distinguish between an unset message field and a message
+server, is **able to distinguish** between an unset message field and a message
 field set to its default value. We often use this distinction in P4Runtime
 and the meaning of a message can vary based on which of its message fields are
 set. For example, when reading values from an indirect PSA counter using the
@@ -2298,14 +2320,6 @@ corresponding register entry is updated in the data plane.
 Not data plane volatile in any architectures defined by P4.org
 specifications.
 
-## Zero as Reserved Value
-
-p4runtime.proto uses proto3 syntax, and so it does not allow not specifying a
-scalar data type, such as a `uint32`. Therefore, we usually reserve value 0 for
-those fields to mean unset. In particular, 0 is not a valid P4 object ID and it
-is an error to specify 0 for any P4 object ID in a non-read request towards the
-switch, such as in a `WriteRequest` or a `SetForwardingPipelineConfigRequest`.
-
 ## Bytestrings { #sec-bytestrings}
 
 P4Runtime integer values may be too large to fit in Protobuf primitive data
@@ -2383,7 +2397,7 @@ complement representation, this is called "sign extension", and leaves the
 numeric value represented unchanged.
 
 Upon receiving a binary string, the P4Runtime receiver (whether the server or
-the client) does not impose any restrictions on the length of the string
+the client) does not impose any restrictions on the maximum length of the string
 itself. Instead, the receiver verifies that the value encoded by the string fits
 within the expected type (signed or unsigned) and P4Info-specified bitwidth for
 the P4 object value.
@@ -4871,7 +4885,7 @@ details in the PSA specification [@PSAAtomicityOfControlPlaneOps].
 The P4~16~ language introduces an `@atomic` annotation [@P4Concurrency], to
 guarantee atomic data plane execution of entire blocks of P4 code. P4Runtime
 implementations are required to honor the `@atomic` annotation for `Write`
-operations, as well as [non-wildcard `Read` operations](#wildcard-reads),
+operations, as well as [non-wildcard `Read` operations](#sec-wildcard-reads),
 relative to data plane execution. Consider the following P4 example written for
 PSA:
 
@@ -5561,15 +5575,27 @@ message PacketMetadata {
 * `payload` is used to carry the full packet content, including the headers.
 
 * `metadata` is a repeated field of `PacketMetadata` messages used to carry the
-  arbitrary controller metadata. The size and value of each metadata entry need
+  arbitrary controller metadata. When a P4Runtime client (or server)
+  generates a `PacketOut` (or `PacketIn`) message, it must populate precisely
+  one `metadata` field for each `metadata` field in the
+  `ControllerPacketMetadata` for packet-out (or packet-in) in the P4Info, such
+  that the two `metadata.id` fields match.
+  The size and value of each `PacketIn`/`PacketOut` metadata entry needs
   to be consistent with what is specified in the corresponding P4Info
-  `ControllerPacketMetadata`. Indeed, when a P4Runtime client (or server)
-  generates a `PacketOut` (or `PacketIn`) message, it needs to populate the
-  `metadata` field with as many values as in `ControllerPacketMetadata.metadata`
-  for the packet-out (or packet-in) case. Each `PacketMetadata.value` is a
-  binary string and must conform to the [Bytestrings](#sec-bytestrings)
-  requirements based on the corresponding P4Info
-  `ControllerPacketMetadata.metadata` specification. If the `metadata` field
+  `ControllerPacketMetadata.Metadata` message with the same `id`, in the
+  following sense:
+  + If `ControllerPacketMetadata.Metadata.bitwidth` is set, or if
+    `ControllerPacketMetadata.Metadata.type_name` is set and
+    `P4NewTypeSpec.translated_type.sdn_bitwidth` is set in the `P4NewTypeSpec`
+    for the type name, then `PacketMetadata.value` must be a binary string of
+    the specified bit width conforming to the [Bytestrings](#sec-bytestrings)
+    requirements.
+  + If `ControllerPacketMetadata.Metadata.type_name` is set and
+    `P4NewTypeSpec.translated_type.sdn_string` is set in the
+    `P4NewTypeSpec` message for the specified type name, then
+    `PacketMetadata.value` can be an arbitrary SDN string subject to the
+    `@p4runtime_translation`.
+  If a `metadata` field
   does not match the P4Info specification, the server must drop the `PacketOut`
   message and may generate a `StreamMessageResponse` message with the `error`
   field set to report the error to the client which issued the `PacketOut`. See
@@ -5647,12 +5673,21 @@ it populates the `MasterArbitrationUpdate` message using the `device_id`,
 also populates the `status` field in the `MasterArbitrationUpdate` according to
 the rules in an [earlier section](#sec-arbitration-updates).
 
-The sender need not specify an `election_id`. If the `election_id` is not
-specified, the sender's `election_id` is considered lower than any
+### Unset Election ID
+
+The sender need not specify an `election_id`. If the `election_id` is
+unset, the sender's `election_id` is considered lower than any
 `election_id`, and the sender will thus never become primary. This way, a
-controller can choose to be a backup controller, in order to avoid
-"flapping" (if a backup controller connects to the switch shortly before the
+controller can choose to be a standby controller, in order to avoid primary
+"flapping" (if a standby controller connects to the switch shortly before the
 actual primary controller, therefore becoming primary temporarily).
+
+Note that
+```
+election_id : { high: 0 low: 0 }
+```
+is different from an unset `election_id`, see
+[the section on default-valued fields](#sec-default-valued-fields).
 
 
 ## Digest Messages
