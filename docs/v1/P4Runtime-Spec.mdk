@@ -1524,6 +1524,12 @@ control plane. This message contains the following fields:
 * `is_const_table`, a boolean flag indicating that the table is filled with
   static entries and cannot be modified by the control plane at runtime.
 
+* `has_initial_entries`, a boolean flag indicating that the table has
+  entries populated into it when the P4 program is loaded, which is
+  true for tables in the P4 source code with either the `entries` or
+  `const entries` properties, and there is at least one entry in the
+  list.
+
 * `other_properties`, an `Any` Protobuf message [@ProtoAny] to embed
   architecture-specific table properties [@P4TableProperties] which are not part
   of the core P4 language or of the PSA architecture.
@@ -3010,6 +3016,9 @@ the `TableEntry` entity, which has the following fields:
   implement idle-timeout support for the table, if applicable. See
   [Idle-timeout](#sec-idle-timeout) section for more information.
 
+* `is_const`, a boolean value that is `true` if and only if the entry
+  cannot be modified or deleted by the client.
+
 The `priority` field must be set to a non-zero value if the match key includes a
 ternary match (&ie; in the case of PSA if the P4Info entry for the table
 indicates that one or more of its match fields has an `OPTIONAL`, `TERNARY` or
@@ -3042,6 +3051,10 @@ more entries than requested. The P4Runtime server must return
 limitation. It is recommended that, for the sake of portability, P4Runtime
 clients do not try to insert additional entries once the size indicated in
 P4Info has been reached.
+
+The `is_const` field must be `false` in any `INSERT`, `MODIFY`, or
+`DELETE` write request of a table entry.  If it is true, the server
+must reject the operation and return an `INVALID_ARGUMENT` error.
 
 ### Match Format { #sec-match-format}
 
@@ -3270,10 +3283,16 @@ indirect tables --- tables with an ActionProfile or ActionSelector
 `implementation` property --- to a constant `NoAction` action entry, with the
 hope that it would simplify the implementation of the P4Runtime service.
 
-### Constant Tables
+### Constant Tables { #sec-constant-tables }
 
-Constant tables are defined as tables whose match entries are immutable. They
-are identified by the `is_const_table` flag in P4Info.
+Constant tables are defined as tables whose match entries are
+immutable. They are identified by the table property `const entries`
+in the P4~16~ source code.  In the P4Info, such tables have
+`is_const_table` equal to true, and if the list of entries in the
+source code has at least one entry in it, they also have
+`has_initial_entries` flag equal to true.  For tables declared with
+the `entries` property, without `const` before `entries` see Section
+[#sec-preinitialized-tables].
 
 The only write updates which are allowed for constant tables are `MODIFY`
 operations on direct resources, and the default action (assuming the default
@@ -3293,10 +3312,73 @@ direct resources that are being queried.  Idle timeouts are not supported for
 static entries. If the table requires a priority value for entries, the server
 must populate the `priority` field appropriately, starting at 1 for the lowest
 priority entry and incrementing the value by 1 for each successive entry. Note
-that P4~16~ does not support assigning explicit priorities to static
-entries. When a priority value is required (&eg; for tables including `RANGE`,
-`TERNARY` or `OPTIONAL` matches), it is inferred based on the order in which
-entries appear in the table declaration.
+that P4~16~ does not support assigning explicit priorities to entries
+declared with `const entries`[^ConstEntriesPriorities].  When a
+priority value is required (&eg; for tables including `RANGE`,
+`TERNARY` or `OPTIONAL` matches), it is inferred based on the order in
+which entries appear in the table declaration.
+
+[^ConstEntriesPriorities]: This is not yet explicit in the P4~16~
+    language specification, but will become so if this or a similar
+    clarification is added to it:
+    <https://github.com/p4lang/p4-spec/pull/1259>
+
+### Preinitialized tables { #sec-preinitialized-tables }
+
+Preinitialized tables are those defined with an `entries` table
+property in the P4~16~ source code, with no `const` qualifier before
+`entries`, and at least one entry in that list.  In the P4Info, such
+tables have `has_initial_entries` flag equal to true, but
+`is_const_table` is false.  For tables declared with `const entries`,
+see Section [#sec-constant-tables].
+
+Every P4 table falls into one of three categories:
+
+* *Normal table*: Neither `entries` nor `const entries` are declared
+  in the source code, and thus `is_const_table` and
+  `has_initial_entries` will both be false.  A corner case is that if
+  it has `entries = { }` with no `const` before `entries`, &ie; an
+  empty list of entries, that is also a normal table.
+* *Constant table*: The table has `const entries` declared, and thus a
+  separate `entries` property is not permitted by the language.  Such
+  a table will have `is_const_table` true.  Such a table will have
+  `has_initial_entries` true if there is at least one entry in the
+  source code, or false if the list is empty.
+* *Preinitialized table*: The table has `entries` declared, and thus a
+  separate `const entries` property is not permitted by the language.
+  It also has at least one entry in the list.  Such a table will have
+  `is_const_table` false and `has_initial_entries` true.
+
+A preinitialized table is allowed to have a mix of some entries marked
+`const`, and other entries not marked `const`.
+
+Entries not marked `const` may be modified or deleted, just as a
+client may do for any entry in a normal table.
+
+Entries marked `const` behave like entries in a constant table,
+&ie; only `MODIFY` operations on direct resources are allowed.
+
+Unlike a table with `is_const_table = true`, a client may insert
+entries into a table with `has_initial_entries = true` and
+`is_const_table = false`, subject to capacity constraints on the
+number of entries supported by the target for the table.
+
+The contents of preinitialized tables can be queried by the client
+through a `ReadRequest`.  The server fills in the same fields in the
+response as it does for constant tables, as described in Section
+[#sec-constant-tables], and with the same restrictions on table
+features supported.
+
+If the table requires a priority value for entries, the priorities of
+the initial entries are determined according to the P4~16~ language
+specification.  After the P4 program is initially loaded, the entries
+not marked `const` can be modified at run time just as table entries
+in a normal table can.
+
+The contents of all table entries within the `entries` table
+properties in a P4 program can be written to a separate output file by
+the open source `p4c` compiler.  See Section [#sec-entries-files] for
+details.
 
 ### Wildcard Reads { #sec-table-wildcard-reads}
 
@@ -6597,5 +6679,52 @@ the server did not deem necessary to increase the default value ---, unless the
 clients are aware that the server is using a larger maximum receive message
 size. The gRPC server running the P4Runtime service must not set the maximum
 receive message size to a value smaller than the default (4MB).
+
+## P4Runtime Entries files { #sec-entries-files }
+
+The open source P4 compiler `p4c` [@p4c] implements an option to
+generate an "entries file", &ie; a file that contains all table
+entries declared via the `entries` table property within the program.
+
+An example P4~16~ program that can be used to demonstrate this
+capability is `table-entries-ternary-bmv2.p4` [@p4cTestProgramForConstEntries]:
+
+    git clone https://github.com/p4lang/p4c
+    cd p4c/testdata/p4_16_samples
+    mkdir tmp
+    p4test --arch v1model \
+        --p4runtime-files tmp/p4info.txt \
+        --p4runtime-entries-files tmp/entries.txt \
+        table-entries-ternary-bmv2.p4
+
+You can replace the `.txt` suffix of the file name `tmp/entries.txt`
+in the example command above with `.json` or `.bin`.  The `.bin`
+format is a binary P4Runtime API protobuf message format.  The `.txt`
+format is the text encoding of the same Protobuf messages.
+
+Target devices are *not* required to use this file.  For example, if a
+target has a P4 compiler back end that encodes all of the necessary
+details from the P4 source program, including the `entries` of tables,
+in a target-specific binary format, then that target might have no
+reason to generate these entries files.
+
+Some target devices might choose to generate entries files, and also
+to require doing so in order to have a correct implementation.  For
+example, a target runtime implementation might take a target-specific
+binary format for the compiled P4 program that does *not* contain any
+data describing the `entries` of tables, plus the entries file
+generated by `p4c`, and use the entries file to load the initial
+entries of tables into the device.
+
+The format of the entries file is a single `WriteRequest` message
+containing one `Update` sub-message per entry in the P4 source program
+defined via an `entries` table property.  All `Update` sub-messages
+have `type` equal to `INSERT`, and `entity` is a `TableEntry` message
+containing the data for one table entry.
+
+Note that if a P4Runtime client attempted to send a `WriteRequest` to
+a P4Runtime server with the contents of the entries file, the server
+must return an error for each entry that has `is_const` true, as
+described in Section [#sec-table-entry].
 
 [BIB]
