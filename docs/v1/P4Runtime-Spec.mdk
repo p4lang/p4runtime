@@ -4450,12 +4450,12 @@ semantics.
   stored, but it must be returned by the server along with the rest of the entry
   when the client performs a read on the entry.
 * `MODIFY`: Modify the set of replicas and metadata for a given multicast group
-  entry, indexed by the given `multicast_group_id`. Same restrictions as 
+  entry, indexed by the given `multicast_group_id`. Same restrictions as
   `INSERT` apply here.
 * `DELETE`: Delete the multicast group indexed by the given
   `multicast_group_id`. The `replicas` and `metadata` fields need not be
   provided for this operation. Any packets with their `multicast_group`
-  metadata in the data plane set to the deleted `multicast_group_id` will be 
+  metadata in the data plane set to the deleted `multicast_group_id` will be
   dropped.
 
 When reading a multicast group, only `multicast_group_id` is considered. All
