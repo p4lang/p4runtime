@@ -451,6 +451,8 @@ message Replica {
 message MulticastGroupEntry {
   uint32 multicast_group_id = 1;
   repeated Replica replicas = 2;
+  // Arbitrary metadata from the controller that is opaque to the target.
+  bytes metadata = 3;
 }
 
 // A packet may be cloned by setting the clone_session_id field of PSA
