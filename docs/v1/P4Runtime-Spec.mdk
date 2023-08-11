@@ -3018,6 +3018,14 @@ the `TableEntry` entity, which has the following fields:
   implement idle-timeout support for the table, if applicable. See
   [Idle-timeout](#sec-idle-timeout) section for more information.
 
+* `resources`, a `repeated GenericTableEntry` to contain a list of
+  target-specific direct resources. For example, if a target supports special
+  direct resources like x-meter and y-counter, then the p4info will contain
+  GenericTable representations of the same and the list here can contain one
+  member for each of the direct resources. If the generic match fields are set
+  in these entries, it is an error. The IDs will be mentioned in the
+  `direct_resource_ids` in the p4info.
+
 The `priority` field must be set to a non-zero value if the match key includes a
 ternary match (&ie; in the case of PSA if the P4Info entry for the table
 indicates that one or more of its match fields has an `OPTIONAL`, `TERNARY` or
