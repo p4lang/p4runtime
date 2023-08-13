@@ -230,8 +230,17 @@ format and available at
 P4Runtime is designed to be implemented in conjunction with the P4~16~ language
 version or later. P4~14~ programs should be translated into P4~16~ to be made
 compatible with P4Runtime. This version of P4Runtime utilizes features which are
-not in P4~16~ 1.0, but were introduced in P4~16~ 1.1.0 [@P4Revisions110]. For
-this version of P4Runtime, we recommend using P4~16~ 1.2.1 [@P4Spec].
+not in P4~16~ 1.0, but were introduced in P4~16~ 1.2.4 [@P4Revisions124]. For
+this version of P4Runtime, we recommend using P4~16~ 1.2.4 [@P4Revisions124].
+
+This version of the P4Runtime specification does not yet explicitly
+address compatibility with the following P4~16~ language features
+introduced in version 1.2.2 of the language specification [@P4Revisions122]:
+
+* Added support for generic structures.
+* Added support for additional enumeration types.
+* Added support for 0-width bitstrings and varbits.
+
 
 ## In Scope
 
