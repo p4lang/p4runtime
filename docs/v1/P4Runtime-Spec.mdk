@@ -3314,12 +3314,12 @@ static entries.
 When a priority value is required (&eg; for tables including `RANGE`,
 `TERNARY` or `OPTIONAL` matches), it is inferred based on the order in
 which entries appear in the table declaration.  As of August 2023, the
-open source `p4c` compiler always assigns entry priority values in
-constant tables starting at 1 for the first entry and incrementing the
-value by 1 for each successive entry.  The P4~16~ language
-specification does not preclude the P4 developer from explicitly
-specifying priorities for entries in constant tables, but `p4c` does
-not yet support this.
+open source `p4c` compiler always assigns entry priority values in a
+constant table with `N` entries starting at `N` for the first entry
+and decrementing the value by 1 for each successive entry.  The P4~16~
+language specification does not preclude the P4 developer from
+explicitly specifying priorities for entries in constant tables, but
+`p4c` does not yet support this.
 
 ### Preinitialized tables { #sec-preinitialized-tables }
 
