@@ -3309,19 +3309,17 @@ The contents of const tables can be queried by the client through a
 the following fields must be set by the server: `table_id`, `match`, `action`,
 `is_default_action`, and `priority` (if required). This is in addition to any
 direct resources that are being queried.  Idle timeouts are not supported for
-static entries. If the table requires a priority value for entries, the server
-must populate the `priority` field appropriately, starting at 1 for the lowest
-priority entry and incrementing the value by 1 for each successive entry. Note
-that P4~16~ does not support assigning explicit priorities to entries
-declared with `const entries`[^ConstEntriesPriorities].  When a
-priority value is required (&eg; for tables including `RANGE`,
-`TERNARY` or `OPTIONAL` matches), it is inferred based on the order in
-which entries appear in the table declaration.
+static entries.
 
-[^ConstEntriesPriorities]: This is not yet explicit in the P4~16~
-    language specification, but will become so if this or a similar
-    clarification is added to it:
-    <https://github.com/p4lang/p4-spec/pull/1259>
+When a priority value is required (&eg; for tables including `RANGE`,
+`TERNARY` or `OPTIONAL` matches), it is inferred based on the order in
+which entries appear in the table declaration.  As of August 2023, the
+open source `p4c` compiler always assigns entry priority values in
+constant tables starting at 1 for the first entry and incrementing the
+value by 1 for each successive entry.  The P4~16~ language
+specification does not preclude the P4 developer from explicitly
+specifying priorities for entries in constant tables, but `p4c` does
+not yet support this.
 
 ### Preinitialized tables { #sec-preinitialized-tables }
 
