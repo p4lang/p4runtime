@@ -6399,8 +6399,8 @@ A `GenericTable` message defines the following fields:
   P4 entities, sometimes the instance name and type name are the same
 
 * `repeated string properties`, please check generic-table
-  properties under section [GenericTable 
-  categories](#sec-generic-table-categories) for more details.
+  properties under section [GenericTable
+   categories](#sec-generic-table-categories) for more details.
 
 * `repeated GenericTableInstance`, contains the info for one instance of
   a generic-table-type. All tables of one type are grouped under this.
