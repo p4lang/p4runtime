@@ -31,6 +31,7 @@ generic_tables {
     }
     union_refs {
       id: 23557840
+      scope: TABLE_AND_DEFAULT
     }
     size: 1024
   }

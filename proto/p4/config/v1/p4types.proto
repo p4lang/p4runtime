@@ -349,17 +349,17 @@ message GenericBitstringLikeTypeSpec {
 
 message GenericBitTypeSpec {
   int32 bitwidth = 1;
-  int32 default_value = 2;
+  bytes default_value = 2;
 }
 
 message GenericIntTypeSpec {
   int32 bitwidth = 1;
-  int32 default_value = 2;
+  bytes default_value = 2;
 }
 
 message GenericVarbitTypeSpec {
   int32 max_bitwidth = 1;
-  int32 default_value = 2;
+  bytes default_value = 2;
 }
 message GenericStructTypeSpec {
   message Member {

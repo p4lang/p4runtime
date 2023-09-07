@@ -6442,7 +6442,8 @@ Some of them have default values. These default values are only applicable
 when in a Union field and not for Match fields. Match fields do not have
 default values because if a match field is not present, then it is considered
 to be a wildcard match. But if a union member is not present, then the default
-value is used.
+value is used. Numeric Default values have been kept as `bytes` so that
+lengths > 64 can be easily accommodated.
 
   * bitstring : Bytes type used for simple unsigned integers or bytes. Default
     value applicable. If not present, it is 0.
