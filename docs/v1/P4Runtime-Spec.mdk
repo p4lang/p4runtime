@@ -6381,14 +6381,16 @@ message and a single architecture.
 
 ## GenericTable P4info { #sec-p4info-generic-table}
 
-`GenericTable` message in P4info defines a Generic Table. It contains several
-instances in `GenericTableInstance` rather than duplicating it every time for a
-new instance just like in `Extern`.
-It defines the following fields
+A GenericTable message in P4info defines one type of generic table, but not a
+specific instance of a generic table. Each instance of a generic table is
+defined by a GenericTableInstance message. This separation allows field values
+that are common for all instances with the same generic table type to be
+defined in one place, the GenericTable message.
+A `GenericTable` message defines the following fields:
 
 * `type_id`, an 8-bit unsigned integer which uniquely identifies
-  the generic_table_type in the context of the architecture. More details
-  in the [Generic Table ID space](#sec-generic-table-id-space) section
+  the generic_table_type in the context of the architecture. See section
+  [Generic Table ID space](#sec-generic-table-id-space) for more details.
 
 * `type_name`, which specifies the "type" of the `GenericTable`. For example,
   if the target has a meter called `SpecialMeter`, then this would contain
@@ -6397,8 +6399,8 @@ It defines the following fields
   P4 entities, sometimes the instance name and type name are the same
 
 * `repeated string properties`, please check generic-table
-  properties under section [GenericTable categories]
-  (#sec-generic-table-categories) for more details.
+  properties under section [GenericTable 
+  categories](#sec-generic-table-categories) for more details.
 
 * `repeated GenericTableInstance`, contains the info for one instance of
   a generic-table-type. All tables of one type are grouped under this.
