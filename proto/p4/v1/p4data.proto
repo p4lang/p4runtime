@@ -73,10 +73,10 @@ message GenericData {
   oneof data {
     bytes bitstring = 1;
     GenericVarbit varbitstring = 2;
-    float float = 3;
-    bool bool = 4;
-    GenericStructLike generic_struct = 5; // one struct
-    GenericList generic_list = 6; // list of bytes/floats/bool/structs/strings/enums/enum_values.
+    bool bool = 3;
+    GenericStructLike generic_struct = 4; // one struct
+    GenericList generic_list = 5; // list of bytes/bool/structs/strings/enums/enum_values.
+    GenericUnorderedSet generic_unordered_set = 6; // unordered_set of bytes/bool/structs/strings/enums/enum_values.
     string string = 7;  // control plane arbitrary length string
     string enum = 8;  // safe (non-serializable) enums only
     bytes enum_value = 9;  // serializable enums only
@@ -86,6 +86,9 @@ message GenericStructLike {
   repeated GenericData members = 1;
 }
 message GenericList {
+  repeated GenericData members = 1;
+}
+message GenericUnorderedSet {
   repeated GenericData members = 1;
 }
 

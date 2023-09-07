@@ -312,20 +312,19 @@ message GenericTypeInfo {
 message GenericDataTypeSpec {
   oneof type_spec {
     GenericBitstringLikeTypeSpec bitstring = 1;
-    GenericFloatType float = 2;
-    GenericBoolType  bool = 3;
-    GenericNamedType struct = 4;
-    GenericNamedType list = 5;
-    GenericNamedType unordered_set = 6;
-    GenericNamedType string = 7;
-    GenericNamedType enum = 8;
-    GenericNamedType serializable_enum = 9;
-    GenericNamedType new_type = 10;
+    GenericBoolType  bool = 2;
+    GenericNamedType struct = 3;
+    GenericNamedType list = 4;
+    GenericNamedType unordered_set = 5;
+    GenericNamedType string = 6;
+    GenericNamedType enum = 7;
+    GenericNamedType serializable_enum = 8;
+    GenericNamedType new_type = 9;
     // P4 data type spec can help achieve parity with types being used
     // in P4 externs. For example, if Register is using a type in P4
     // Data type spec, then it will make it easier to map here when using
     // GenericTables
-    P4DataTypeSpec p4_type = 11;
+    P4DataTypeSpec p4_type = 10;
   }
 }
 
