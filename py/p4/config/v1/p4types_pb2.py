@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z+github.com/p4lang/p4runtime/go/p4/config/v1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x1ap4/config/v1/p4types.proto\x12\x0cp4.config.v1\"\xa1\x07\n\nP4TypeInfo\x12\x36\n\x07structs\x18\x01 \x03(\x0b\x32%.p4.config.v1.P4TypeInfo.StructsEntry\x12\x36\n\x07headers\x18\x02 \x03(\x0b\x32%.p4.config.v1.P4TypeInfo.HeadersEntry\x12\x41\n\rheader_unions\x18\x03 \x03(\x0b\x32*.p4.config.v1.P4TypeInfo.HeaderUnionsEntry\x12\x32\n\x05\x65nums\x18\x04 \x03(\x0b\x32#.p4.config.v1.P4TypeInfo.EnumsEntry\x12,\n\x05\x65rror\x18\x05 \x01(\x0b\x32\x1d.p4.config.v1.P4ErrorTypeSpec\x12K\n\x12serializable_enums\x18\x06 \x03(\x0b\x32/.p4.config.v1.P4TypeInfo.SerializableEnumsEntry\x12\x39\n\tnew_types\x18\x07 \x03(\x0b\x32&.p4.config.v1.P4TypeInfo.NewTypesEntry\x1aN\n\x0cStructsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12-\n\x05value\x18\x02 \x01(\x0b\x32\x1e.p4.config.v1.P4StructTypeSpec:\x02\x38\x01\x1aN\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12-\n\x05value\x18\x02 \x01(\x0b\x32\x1e.p4.config.v1.P4HeaderTypeSpec:\x02\x38\x01\x1aX\n\x11HeaderUnionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.p4.config.v1.P4HeaderUnionTypeSpec:\x02\x38\x01\x1aJ\n\nEnumsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12+\n\x05value\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4EnumTypeSpec:\x02\x38\x01\x1a\x62\n\x16SerializableEnumsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.p4.config.v1.P4SerializableEnumTypeSpec:\x02\x38\x01\x1aL\n\rNewTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.p4.config.v1.P4NewTypeSpec:\x02\x38\x01\"\x83\x05\n\x0eP4DataTypeSpec\x12:\n\tbitstring\x18\x01 \x01(\x0b\x32%.p4.config.v1.P4BitstringLikeTypeSpecH\x00\x12(\n\x04\x62ool\x18\x02 \x01(\x0b\x32\x18.p4.config.v1.P4BoolTypeH\x00\x12.\n\x05tuple\x18\x03 \x01(\x0b\x32\x1d.p4.config.v1.P4TupleTypeSpecH\x00\x12+\n\x06struct\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12+\n\x06header\x18\x05 \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12\x31\n\x0cheader_union\x18\x06 \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12;\n\x0cheader_stack\x18\x07 \x01(\x0b\x32#.p4.config.v1.P4HeaderStackTypeSpecH\x00\x12\x46\n\x12header_union_stack\x18\x08 \x01(\x0b\x32(.p4.config.v1.P4HeaderUnionStackTypeSpecH\x00\x12)\n\x04\x65num\x18\t \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12*\n\x05\x65rror\x18\n \x01(\x0b\x32\x19.p4.config.v1.P4ErrorTypeH\x00\x12\x36\n\x11serializable_enum\x18\x0b \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12-\n\x08new_type\x18\x0c \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x42\x0b\n\ttype_spec\"\x1b\n\x0bP4NamedType\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x0c\n\nP4BoolType\"\r\n\x0bP4ErrorType\"\xc5\x02\n\x17P4BitstringLikeTypeSpec\x12*\n\x03\x62it\x18\x01 \x01(\x0b\x32\x1b.p4.config.v1.P4BitTypeSpecH\x00\x12*\n\x03int\x18\x02 \x01(\x0b\x32\x1b.p4.config.v1.P4IntTypeSpecH\x00\x12\x30\n\x06varbit\x18\x03 \x01(\x0b\x32\x1e.p4.config.v1.P4VarbitTypeSpecH\x00\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotationB\x0b\n\ttype_spec\"!\n\rP4BitTypeSpec\x12\x10\n\x08\x62itwidth\x18\x01 \x01(\x05\"!\n\rP4IntTypeSpec\x12\x10\n\x08\x62itwidth\x18\x01 \x01(\x05\"(\n\x10P4VarbitTypeSpec\x12\x14\n\x0cmax_bitwidth\x18\x01 \x01(\x05\"@\n\x0fP4TupleTypeSpec\x12-\n\x07members\x18\x01 \x03(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\"\xa8\x02\n\x10P4StructTypeSpec\x12\x36\n\x07members\x18\x01 \x03(\x0b\x32%.p4.config.v1.P4StructTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1aG\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\"\xb1\x02\n\x10P4HeaderTypeSpec\x12\x36\n\x07members\x18\x01 \x03(\x0b\x32%.p4.config.v1.P4HeaderTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1aP\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x38\n\ttype_spec\x18\x02 \x01(\x0b\x32%.p4.config.v1.P4BitstringLikeTypeSpec\"\xac\x02\n\x15P4HeaderUnionTypeSpec\x12;\n\x07members\x18\x01 \x03(\x0b\x32*.p4.config.v1.P4HeaderUnionTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\x41\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12)\n\x06header\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"P\n\x15P4HeaderStackTypeSpec\x12)\n\x06header\x18\x01 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x0c\n\x04size\x18\x02 \x01(\x05\"[\n\x1aP4HeaderUnionStackTypeSpec\x12/\n\x0cheader_union\x18\x01 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x0c\n\x04size\x18\x02 \x01(\x05\"D\n\x0cKeyValuePair\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\'\n\x05value\x18\x02 \x01(\x0b\x32\x18.p4.config.v1.Expression\"@\n\x10KeyValuePairList\x12,\n\x08kv_pairs\x18\x01 \x03(\x0b\x32\x1a.p4.config.v1.KeyValuePair\"Z\n\nExpression\x12\x16\n\x0cstring_value\x18\x01 \x01(\tH\x00\x12\x15\n\x0bint64_value\x18\x02 \x01(\x03H\x00\x12\x14\n\nbool_value\x18\x03 \x01(\x08H\x00\x42\x07\n\x05value\"?\n\x0e\x45xpressionList\x12-\n\x0b\x65xpressions\x18\x01 \x03(\x0b\x32\x18.p4.config.v1.Expression\"\xd4\x01\n\x14StructuredAnnotation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x37\n\x0f\x65xpression_list\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.ExpressionListH\x00\x12\x36\n\x0ckv_pair_list\x18\x03 \x01(\x0b\x32\x1e.p4.config.v1.KeyValuePairListH\x00\x12\x35\n\x0fsource_location\x18\x04 \x01(\x0b\x32\x1c.p4.config.v1.SourceLocationB\x06\n\x04\x62ody\"<\n\x0eSourceLocation\x12\x0c\n\x04\x66ile\x18\x01 \x01(\t\x12\x0c\n\x04line\x18\x02 \x01(\x05\x12\x0e\n\x06\x63olumn\x18\x03 \x01(\x05\"\x89\x03\n\x0eP4EnumTypeSpec\x12\x34\n\x07members\x18\x01 \x03(\x0b\x32#.p4.config.v1.P4EnumTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x04 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x03 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\xab\x01\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x04 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x03 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\xe6\x03\n\x1aP4SerializableEnumTypeSpec\x12\x34\n\x0funderlying_type\x18\x01 \x01(\x0b\x32\x1b.p4.config.v1.P4BitTypeSpec\x12@\n\x07members\x18\x02 \x03(\x0b\x32/.p4.config.v1.P4SerializableEnumTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\xba\x01\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\"\n\x0fP4ErrorTypeSpec\x12\x0f\n\x07members\x18\x01 \x03(\t\"\x98\x01\n\x14P4NewTypeTranslation\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x16\n\x0csdn_bitwidth\x18\x02 \x01(\x05H\x00\x12\x42\n\nsdn_string\x18\x03 \x01(\x0b\x32,.p4.config.v1.P4NewTypeTranslation.SdnStringH\x00\x1a\x0b\n\tSdnStringB\n\n\x08sdn_type\"\xac\x02\n\rP4NewTypeSpec\x12\x35\n\roriginal_type\x18\x01 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpecH\x00\x12=\n\x0ftranslated_type\x18\x02 \x01(\x0b\x32\".p4.config.v1.P4NewTypeTranslationH\x00\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotationB\x10\n\x0erepresentation\"\x85\x06\n\x0fGenericTypeInfo\x12;\n\x07structs\x18\x01 \x03(\x0b\x32*.p4.config.v1.GenericTypeInfo.StructsEntry\x12\x37\n\x05lists\x18\x02 \x03(\x0b\x32(.p4.config.v1.GenericTypeInfo.ListsEntry\x12\x37\n\x05\x65nums\x18\x03 \x03(\x0b\x32(.p4.config.v1.GenericTypeInfo.EnumsEntry\x12P\n\x12serializable_enums\x18\x04 \x03(\x0b\x32\x34.p4.config.v1.GenericTypeInfo.SerializableEnumsEntry\x12>\n\tnew_types\x18\x05 \x03(\x0b\x32+.p4.config.v1.GenericTypeInfo.NewTypesEntry\x1aS\n\x0cStructsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.p4.config.v1.GenericStructTypeSpec:\x02\x38\x01\x1aO\n\nListsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x30\n\x05value\x18\x02 \x01(\x0b\x32!.p4.config.v1.GenericListTypeSpec:\x02\x38\x01\x1aO\n\nEnumsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x30\n\x05value\x18\x02 \x01(\x0b\x32!.p4.config.v1.GenericEnumTypeSpec:\x02\x38\x01\x1ag\n\x16SerializableEnumsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0b\x32-.p4.config.v1.GenericSerializableEnumTypeSpec:\x02\x38\x01\x1aQ\n\rNewTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .p4.config.v1.GenericNewTypeSpec:\x02\x38\x01\"\xe2\x04\n\x13GenericDataTypeSpec\x12?\n\tbitstring\x18\x01 \x01(\x0b\x32*.p4.config.v1.GenericBitstringLikeTypeSpecH\x00\x12/\n\x05\x66loat\x18\x02 \x01(\x0b\x32\x1e.p4.config.v1.GenericFloatTypeH\x00\x12-\n\x04\x62ool\x18\x03 \x01(\x0b\x32\x1d.p4.config.v1.GenericBoolTypeH\x00\x12\x30\n\x06struct\x18\x04 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12.\n\x04list\x18\x05 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12\x37\n\runordered_set\x18\x06 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12\x30\n\x06string\x18\x07 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12.\n\x04\x65num\x18\x08 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12;\n\x11serializable_enum\x18\t \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12\x32\n\x08new_type\x18\n \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12/\n\x07p4_type\x18\x0b \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpecH\x00\x42\x0b\n\ttype_spec\" \n\x10GenericNamedType\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x11\n\x0fGenericBoolType\"\x12\n\x10GenericFloatType\"\xd9\x02\n\x1cGenericBitstringLikeTypeSpec\x12/\n\x03\x62it\x18\x01 \x01(\x0b\x32 .p4.config.v1.GenericBitTypeSpecH\x00\x12/\n\x03int\x18\x02 \x01(\x0b\x32 .p4.config.v1.GenericIntTypeSpecH\x00\x12\x35\n\x06varbit\x18\x03 \x01(\x0b\x32#.p4.config.v1.GenericVarbitTypeSpecH\x00\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotationB\x0b\n\ttype_spec\"=\n\x12GenericBitTypeSpec\x12\x10\n\x08\x62itwidth\x18\x01 \x01(\x05\x12\x15\n\rdefault_value\x18\x02 \x01(\x05\"=\n\x12GenericIntTypeSpec\x12\x10\n\x08\x62itwidth\x18\x01 \x01(\x05\x12\x15\n\rdefault_value\x18\x02 \x01(\x05\"D\n\x15GenericVarbitTypeSpec\x12\x14\n\x0cmax_bitwidth\x18\x01 \x01(\x05\x12\x15\n\rdefault_value\x18\x02 \x01(\x05\"\xb7\x02\n\x15GenericStructTypeSpec\x12;\n\x07members\x18\x01 \x03(\x0b\x32*.p4.config.v1.GenericStructTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1aL\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\ttype_spec\x18\x02 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpec\"\x84\x02\n\x13GenericListTypeSpec\x12\x34\n\ttype_spec\x18\x01 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpec\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12\x10\n\x08min_size\x18\x04 \x01(\x05\x12\x10\n\x08max_size\x18\x05 \x01(\x05\x12:\n\x14\x61nnotation_locations\x18\x06 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x07 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x8c\x02\n\x1bGenericUnorderedSetTypeSpec\x12\x34\n\ttype_spec\x18\x01 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpec\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12\x10\n\x08min_size\x18\x04 \x01(\x05\x12\x10\n\x08max_size\x18\x05 \x01(\x05\x12:\n\x14\x61nnotation_locations\x18\x06 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x07 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\xda\x01\n\x11GenericStringSpec\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08min_size\x18\x02 \x01(\x05\x12\x10\n\x08max_size\x18\x03 \x01(\x05\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\xaa\x03\n\x13GenericEnumTypeSpec\x12\x39\n\x07members\x18\x01 \x03(\x0b\x32(.p4.config.v1.GenericEnumTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\xc2\x01\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\rdefault_value\x18\x02 \x01(\x05\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x04 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x05 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x8c\x04\n\x1fGenericSerializableEnumTypeSpec\x12\x39\n\x0funderlying_type\x18\x01 \x01(\x0b\x32 .p4.config.v1.GenericBitTypeSpec\x12\x45\n\x07members\x18\x02 \x03(\x0b\x32\x34.p4.config.v1.GenericSerializableEnumTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x04 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x05 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\xd1\x01\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x15\n\rdefault_value\x18\x03 \x01(\x05\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\xa2\x01\n\x19GenericNewTypeTranslation\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x16\n\x0csdn_bitwidth\x18\x02 \x01(\x05H\x00\x12G\n\nsdn_string\x18\x03 \x01(\x0b\x32\x31.p4.config.v1.GenericNewTypeTranslation.SdnStringH\x00\x1a\x0b\n\tSdnStringB\n\n\x08sdn_type\"\xbb\x02\n\x12GenericNewTypeSpec\x12:\n\roriginal_type\x18\x01 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpecH\x00\x12\x42\n\x0ftranslated_type\x18\x02 \x01(\x0b\x32\'.p4.config.v1.GenericNewTypeTranslationH\x00\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotationB\x10\n\x0erepresentationB-Z+github.com/p4lang/p4runtime/go/p4/config/v1b\x06proto3'
+  serialized_pb=b'\n\x1ap4/config/v1/p4types.proto\x12\x0cp4.config.v1\"\xa1\x07\n\nP4TypeInfo\x12\x36\n\x07structs\x18\x01 \x03(\x0b\x32%.p4.config.v1.P4TypeInfo.StructsEntry\x12\x36\n\x07headers\x18\x02 \x03(\x0b\x32%.p4.config.v1.P4TypeInfo.HeadersEntry\x12\x41\n\rheader_unions\x18\x03 \x03(\x0b\x32*.p4.config.v1.P4TypeInfo.HeaderUnionsEntry\x12\x32\n\x05\x65nums\x18\x04 \x03(\x0b\x32#.p4.config.v1.P4TypeInfo.EnumsEntry\x12,\n\x05\x65rror\x18\x05 \x01(\x0b\x32\x1d.p4.config.v1.P4ErrorTypeSpec\x12K\n\x12serializable_enums\x18\x06 \x03(\x0b\x32/.p4.config.v1.P4TypeInfo.SerializableEnumsEntry\x12\x39\n\tnew_types\x18\x07 \x03(\x0b\x32&.p4.config.v1.P4TypeInfo.NewTypesEntry\x1aN\n\x0cStructsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12-\n\x05value\x18\x02 \x01(\x0b\x32\x1e.p4.config.v1.P4StructTypeSpec:\x02\x38\x01\x1aN\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12-\n\x05value\x18\x02 \x01(\x0b\x32\x1e.p4.config.v1.P4HeaderTypeSpec:\x02\x38\x01\x1aX\n\x11HeaderUnionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.p4.config.v1.P4HeaderUnionTypeSpec:\x02\x38\x01\x1aJ\n\nEnumsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12+\n\x05value\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4EnumTypeSpec:\x02\x38\x01\x1a\x62\n\x16SerializableEnumsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.p4.config.v1.P4SerializableEnumTypeSpec:\x02\x38\x01\x1aL\n\rNewTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.p4.config.v1.P4NewTypeSpec:\x02\x38\x01\"\x83\x05\n\x0eP4DataTypeSpec\x12:\n\tbitstring\x18\x01 \x01(\x0b\x32%.p4.config.v1.P4BitstringLikeTypeSpecH\x00\x12(\n\x04\x62ool\x18\x02 \x01(\x0b\x32\x18.p4.config.v1.P4BoolTypeH\x00\x12.\n\x05tuple\x18\x03 \x01(\x0b\x32\x1d.p4.config.v1.P4TupleTypeSpecH\x00\x12+\n\x06struct\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12+\n\x06header\x18\x05 \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12\x31\n\x0cheader_union\x18\x06 \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12;\n\x0cheader_stack\x18\x07 \x01(\x0b\x32#.p4.config.v1.P4HeaderStackTypeSpecH\x00\x12\x46\n\x12header_union_stack\x18\x08 \x01(\x0b\x32(.p4.config.v1.P4HeaderUnionStackTypeSpecH\x00\x12)\n\x04\x65num\x18\t \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12*\n\x05\x65rror\x18\n \x01(\x0b\x32\x19.p4.config.v1.P4ErrorTypeH\x00\x12\x36\n\x11serializable_enum\x18\x0b \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x12-\n\x08new_type\x18\x0c \x01(\x0b\x32\x19.p4.config.v1.P4NamedTypeH\x00\x42\x0b\n\ttype_spec\"\x1b\n\x0bP4NamedType\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x0c\n\nP4BoolType\"\r\n\x0bP4ErrorType\"\xc5\x02\n\x17P4BitstringLikeTypeSpec\x12*\n\x03\x62it\x18\x01 \x01(\x0b\x32\x1b.p4.config.v1.P4BitTypeSpecH\x00\x12*\n\x03int\x18\x02 \x01(\x0b\x32\x1b.p4.config.v1.P4IntTypeSpecH\x00\x12\x30\n\x06varbit\x18\x03 \x01(\x0b\x32\x1e.p4.config.v1.P4VarbitTypeSpecH\x00\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotationB\x0b\n\ttype_spec\"!\n\rP4BitTypeSpec\x12\x10\n\x08\x62itwidth\x18\x01 \x01(\x05\"!\n\rP4IntTypeSpec\x12\x10\n\x08\x62itwidth\x18\x01 \x01(\x05\"(\n\x10P4VarbitTypeSpec\x12\x14\n\x0cmax_bitwidth\x18\x01 \x01(\x05\"@\n\x0fP4TupleTypeSpec\x12-\n\x07members\x18\x01 \x03(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\"\xa8\x02\n\x10P4StructTypeSpec\x12\x36\n\x07members\x18\x01 \x03(\x0b\x32%.p4.config.v1.P4StructTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1aG\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\"\xb1\x02\n\x10P4HeaderTypeSpec\x12\x36\n\x07members\x18\x01 \x03(\x0b\x32%.p4.config.v1.P4HeaderTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1aP\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x38\n\ttype_spec\x18\x02 \x01(\x0b\x32%.p4.config.v1.P4BitstringLikeTypeSpec\"\xac\x02\n\x15P4HeaderUnionTypeSpec\x12;\n\x07members\x18\x01 \x03(\x0b\x32*.p4.config.v1.P4HeaderUnionTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\x41\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12)\n\x06header\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"P\n\x15P4HeaderStackTypeSpec\x12)\n\x06header\x18\x01 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x0c\n\x04size\x18\x02 \x01(\x05\"[\n\x1aP4HeaderUnionStackTypeSpec\x12/\n\x0cheader_union\x18\x01 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x0c\n\x04size\x18\x02 \x01(\x05\"D\n\x0cKeyValuePair\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\'\n\x05value\x18\x02 \x01(\x0b\x32\x18.p4.config.v1.Expression\"@\n\x10KeyValuePairList\x12,\n\x08kv_pairs\x18\x01 \x03(\x0b\x32\x1a.p4.config.v1.KeyValuePair\"Z\n\nExpression\x12\x16\n\x0cstring_value\x18\x01 \x01(\tH\x00\x12\x15\n\x0bint64_value\x18\x02 \x01(\x03H\x00\x12\x14\n\nbool_value\x18\x03 \x01(\x08H\x00\x42\x07\n\x05value\"?\n\x0e\x45xpressionList\x12-\n\x0b\x65xpressions\x18\x01 \x03(\x0b\x32\x18.p4.config.v1.Expression\"\xd4\x01\n\x14StructuredAnnotation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x37\n\x0f\x65xpression_list\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.ExpressionListH\x00\x12\x36\n\x0ckv_pair_list\x18\x03 \x01(\x0b\x32\x1e.p4.config.v1.KeyValuePairListH\x00\x12\x35\n\x0fsource_location\x18\x04 \x01(\x0b\x32\x1c.p4.config.v1.SourceLocationB\x06\n\x04\x62ody\"<\n\x0eSourceLocation\x12\x0c\n\x04\x66ile\x18\x01 \x01(\t\x12\x0c\n\x04line\x18\x02 \x01(\x05\x12\x0e\n\x06\x63olumn\x18\x03 \x01(\x05\"\x89\x03\n\x0eP4EnumTypeSpec\x12\x34\n\x07members\x18\x01 \x03(\x0b\x32#.p4.config.v1.P4EnumTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x04 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x03 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\xab\x01\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x04 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x03 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\xe6\x03\n\x1aP4SerializableEnumTypeSpec\x12\x34\n\x0funderlying_type\x18\x01 \x01(\x0b\x32\x1b.p4.config.v1.P4BitTypeSpec\x12@\n\x07members\x18\x02 \x03(\x0b\x32/.p4.config.v1.P4SerializableEnumTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\xba\x01\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\"\n\x0fP4ErrorTypeSpec\x12\x0f\n\x07members\x18\x01 \x03(\t\"\x98\x01\n\x14P4NewTypeTranslation\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x16\n\x0csdn_bitwidth\x18\x02 \x01(\x05H\x00\x12\x42\n\nsdn_string\x18\x03 \x01(\x0b\x32,.p4.config.v1.P4NewTypeTranslation.SdnStringH\x00\x1a\x0b\n\tSdnStringB\n\n\x08sdn_type\"\xac\x02\n\rP4NewTypeSpec\x12\x35\n\roriginal_type\x18\x01 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpecH\x00\x12=\n\x0ftranslated_type\x18\x02 \x01(\x0b\x32\".p4.config.v1.P4NewTypeTranslationH\x00\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotationB\x10\n\x0erepresentation\"\xb0\x07\n\x0fGenericTypeInfo\x12;\n\x07structs\x18\x01 \x03(\x0b\x32*.p4.config.v1.GenericTypeInfo.StructsEntry\x12\x37\n\x05lists\x18\x02 \x03(\x0b\x32(.p4.config.v1.GenericTypeInfo.ListsEntry\x12H\n\x0eunordered_sets\x18\x03 \x03(\x0b\x32\x30.p4.config.v1.GenericTypeInfo.UnorderedSetsEntry\x12\x37\n\x05\x65nums\x18\x04 \x03(\x0b\x32(.p4.config.v1.GenericTypeInfo.EnumsEntry\x12P\n\x12serializable_enums\x18\x05 \x03(\x0b\x32\x34.p4.config.v1.GenericTypeInfo.SerializableEnumsEntry\x12>\n\tnew_types\x18\x06 \x03(\x0b\x32+.p4.config.v1.GenericTypeInfo.NewTypesEntry\x1aS\n\x0cStructsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.p4.config.v1.GenericStructTypeSpec:\x02\x38\x01\x1aO\n\nListsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x30\n\x05value\x18\x02 \x01(\x0b\x32!.p4.config.v1.GenericListTypeSpec:\x02\x38\x01\x1a_\n\x12UnorderedSetsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x38\n\x05value\x18\x02 \x01(\x0b\x32).p4.config.v1.GenericUnorderedSetTypeSpec:\x02\x38\x01\x1aO\n\nEnumsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x30\n\x05value\x18\x02 \x01(\x0b\x32!.p4.config.v1.GenericEnumTypeSpec:\x02\x38\x01\x1ag\n\x16SerializableEnumsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0b\x32-.p4.config.v1.GenericSerializableEnumTypeSpec:\x02\x38\x01\x1aQ\n\rNewTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .p4.config.v1.GenericNewTypeSpec:\x02\x38\x01\"\x80\x04\n\x13GenericDataTypeSpec\x12?\n\tbitstring\x18\x01 \x01(\x0b\x32*.p4.config.v1.GenericBitstringLikeTypeSpecH\x00\x12-\n\x04\x62ool\x18\x02 \x01(\x0b\x32\x1d.p4.config.v1.GenericBoolTypeH\x00\x12\x30\n\x06struct\x18\x03 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12.\n\x04list\x18\x04 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12\x37\n\runordered_set\x18\x05 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12\x30\n\x06string\x18\x06 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12.\n\x04\x65num\x18\x07 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12;\n\x11serializable_enum\x18\x08 \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x12\x32\n\x08new_type\x18\t \x01(\x0b\x32\x1e.p4.config.v1.GenericNamedTypeH\x00\x42\x0b\n\ttype_spec\" \n\x10GenericNamedType\x12\x0c\n\x04name\x18\x01 \x01(\t\"(\n\x0fGenericBoolType\x12\x15\n\rdefault_value\x18\x01 \x01(\x05\"\xd9\x02\n\x1cGenericBitstringLikeTypeSpec\x12/\n\x03\x62it\x18\x01 \x01(\x0b\x32 .p4.config.v1.GenericBitTypeSpecH\x00\x12/\n\x03int\x18\x02 \x01(\x0b\x32 .p4.config.v1.GenericIntTypeSpecH\x00\x12\x35\n\x06varbit\x18\x03 \x01(\x0b\x32#.p4.config.v1.GenericVarbitTypeSpecH\x00\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotationB\x0b\n\ttype_spec\"=\n\x12GenericBitTypeSpec\x12\x10\n\x08\x62itwidth\x18\x01 \x01(\x05\x12\x15\n\rdefault_value\x18\x02 \x01(\x05\"=\n\x12GenericIntTypeSpec\x12\x10\n\x08\x62itwidth\x18\x01 \x01(\x05\x12\x15\n\rdefault_value\x18\x02 \x01(\x05\"D\n\x15GenericVarbitTypeSpec\x12\x14\n\x0cmax_bitwidth\x18\x01 \x01(\x05\x12\x15\n\rdefault_value\x18\x02 \x01(\x05\"\xc3\x02\n\x15GenericStructTypeSpec\x12;\n\x07members\x18\x01 \x03(\x0b\x32*.p4.config.v1.GenericStructTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1aX\n\x06Member\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x34\n\ttype_spec\x18\x03 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpec\"\x8c\x02\n\x13GenericListTypeSpec\x12<\n\x11\x65lement_type_spec\x18\x01 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpec\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12\x10\n\x08min_size\x18\x04 \x01(\x05\x12\x10\n\x08max_size\x18\x05 \x01(\x05\x12:\n\x14\x61nnotation_locations\x18\x06 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x07 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x94\x02\n\x1bGenericUnorderedSetTypeSpec\x12<\n\x11\x65lement_type_spec\x18\x01 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpec\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12\x10\n\x08min_size\x18\x04 \x01(\x05\x12\x10\n\x08max_size\x18\x05 \x01(\x05\x12:\n\x14\x61nnotation_locations\x18\x06 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x07 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\xda\x01\n\x11GenericStringSpec\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08min_size\x18\x02 \x01(\x05\x12\x10\n\x08max_size\x18\x03 \x01(\x05\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\xaa\x03\n\x13GenericEnumTypeSpec\x12\x39\n\x07members\x18\x01 \x03(\x0b\x32(.p4.config.v1.GenericEnumTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\xc2\x01\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\rdefault_value\x18\x02 \x01(\x05\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x04 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x05 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x8c\x04\n\x1fGenericSerializableEnumTypeSpec\x12\x39\n\x0funderlying_type\x18\x01 \x01(\x0b\x32 .p4.config.v1.GenericBitTypeSpec\x12\x45\n\x07members\x18\x02 \x03(\x0b\x32\x34.p4.config.v1.GenericSerializableEnumTypeSpec.Member\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x04 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x05 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x1a\xd1\x01\n\x06Member\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x15\n\rdefault_value\x18\x03 \x01(\x05\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\xa2\x01\n\x19GenericNewTypeTranslation\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x16\n\x0csdn_bitwidth\x18\x02 \x01(\x05H\x00\x12G\n\nsdn_string\x18\x03 \x01(\x0b\x32\x31.p4.config.v1.GenericNewTypeTranslation.SdnStringH\x00\x1a\x0b\n\tSdnStringB\n\n\x08sdn_type\"\xbb\x02\n\x12GenericNewTypeSpec\x12:\n\roriginal_type\x18\x01 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpecH\x00\x12\x42\n\x0ftranslated_type\x18\x02 \x01(\x0b\x32\'.p4.config.v1.GenericNewTypeTranslationH\x00\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotationB\x10\n\x0erepresentationB-Z+github.com/p4lang/p4runtime/go/p4/config/v1b\x06proto3'
 )
 
 
@@ -1762,8 +1762,8 @@ _GENERICTYPEINFO_STRUCTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5561,
-  serialized_end=5644,
+  serialized_start=5635,
+  serialized_end=5718,
 )
 
 _GENERICTYPEINFO_LISTSENTRY = _descriptor.Descriptor(
@@ -1800,8 +1800,46 @@ _GENERICTYPEINFO_LISTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5646,
-  serialized_end=5725,
+  serialized_start=5720,
+  serialized_end=5799,
+)
+
+_GENERICTYPEINFO_UNORDEREDSETSENTRY = _descriptor.Descriptor(
+  name='UnorderedSetsEntry',
+  full_name='p4.config.v1.GenericTypeInfo.UnorderedSetsEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='p4.config.v1.GenericTypeInfo.UnorderedSetsEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='p4.config.v1.GenericTypeInfo.UnorderedSetsEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5801,
+  serialized_end=5896,
 )
 
 _GENERICTYPEINFO_ENUMSENTRY = _descriptor.Descriptor(
@@ -1838,8 +1876,8 @@ _GENERICTYPEINFO_ENUMSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5727,
-  serialized_end=5806,
+  serialized_start=5898,
+  serialized_end=5977,
 )
 
 _GENERICTYPEINFO_SERIALIZABLEENUMSENTRY = _descriptor.Descriptor(
@@ -1876,8 +1914,8 @@ _GENERICTYPEINFO_SERIALIZABLEENUMSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5808,
-  serialized_end=5911,
+  serialized_start=5979,
+  serialized_end=6082,
 )
 
 _GENERICTYPEINFO_NEWTYPESENTRY = _descriptor.Descriptor(
@@ -1914,8 +1952,8 @@ _GENERICTYPEINFO_NEWTYPESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5913,
-  serialized_end=5994,
+  serialized_start=6084,
+  serialized_end=6165,
 )
 
 _GENERICTYPEINFO = _descriptor.Descriptor(
@@ -1941,22 +1979,29 @@ _GENERICTYPEINFO = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='enums', full_name='p4.config.v1.GenericTypeInfo.enums', index=2,
+      name='unordered_sets', full_name='p4.config.v1.GenericTypeInfo.unordered_sets', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='serializable_enums', full_name='p4.config.v1.GenericTypeInfo.serializable_enums', index=3,
+      name='enums', full_name='p4.config.v1.GenericTypeInfo.enums', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='new_types', full_name='p4.config.v1.GenericTypeInfo.new_types', index=4,
+      name='serializable_enums', full_name='p4.config.v1.GenericTypeInfo.serializable_enums', index=4,
       number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='new_types', full_name='p4.config.v1.GenericTypeInfo.new_types', index=5,
+      number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1964,7 +2009,7 @@ _GENERICTYPEINFO = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_GENERICTYPEINFO_STRUCTSENTRY, _GENERICTYPEINFO_LISTSENTRY, _GENERICTYPEINFO_ENUMSENTRY, _GENERICTYPEINFO_SERIALIZABLEENUMSENTRY, _GENERICTYPEINFO_NEWTYPESENTRY, ],
+  nested_types=[_GENERICTYPEINFO_STRUCTSENTRY, _GENERICTYPEINFO_LISTSENTRY, _GENERICTYPEINFO_UNORDEREDSETSENTRY, _GENERICTYPEINFO_ENUMSENTRY, _GENERICTYPEINFO_SERIALIZABLEENUMSENTRY, _GENERICTYPEINFO_NEWTYPESENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -1974,7 +2019,7 @@ _GENERICTYPEINFO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=5221,
-  serialized_end=5994,
+  serialized_end=6165,
 )
 
 
@@ -1994,71 +2039,57 @@ _GENERICDATATYPESPEC = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='float', full_name='p4.config.v1.GenericDataTypeSpec.float', index=1,
+      name='bool', full_name='p4.config.v1.GenericDataTypeSpec.bool', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='bool', full_name='p4.config.v1.GenericDataTypeSpec.bool', index=2,
+      name='struct', full_name='p4.config.v1.GenericDataTypeSpec.struct', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='struct', full_name='p4.config.v1.GenericDataTypeSpec.struct', index=3,
+      name='list', full_name='p4.config.v1.GenericDataTypeSpec.list', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='list', full_name='p4.config.v1.GenericDataTypeSpec.list', index=4,
+      name='unordered_set', full_name='p4.config.v1.GenericDataTypeSpec.unordered_set', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='unordered_set', full_name='p4.config.v1.GenericDataTypeSpec.unordered_set', index=5,
+      name='string', full_name='p4.config.v1.GenericDataTypeSpec.string', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='string', full_name='p4.config.v1.GenericDataTypeSpec.string', index=6,
+      name='enum', full_name='p4.config.v1.GenericDataTypeSpec.enum', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='enum', full_name='p4.config.v1.GenericDataTypeSpec.enum', index=7,
+      name='serializable_enum', full_name='p4.config.v1.GenericDataTypeSpec.serializable_enum', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='serializable_enum', full_name='p4.config.v1.GenericDataTypeSpec.serializable_enum', index=8,
+      name='new_type', full_name='p4.config.v1.GenericDataTypeSpec.new_type', index=8,
       number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='new_type', full_name='p4.config.v1.GenericDataTypeSpec.new_type', index=9,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='p4_type', full_name='p4.config.v1.GenericDataTypeSpec.p4_type', index=10,
-      number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -2080,8 +2111,8 @@ _GENERICDATATYPESPEC = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=5997,
-  serialized_end=6607,
+  serialized_start=6168,
+  serialized_end=6680,
 )
 
 
@@ -2112,8 +2143,8 @@ _GENERICNAMEDTYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6609,
-  serialized_end=6641,
+  serialized_start=6682,
+  serialized_end=6714,
 )
 
 
@@ -2125,6 +2156,13 @@ _GENERICBOOLTYPE = _descriptor.Descriptor(
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='default_value', full_name='p4.config.v1.GenericBoolType.default_value', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2137,33 +2175,8 @@ _GENERICBOOLTYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6643,
-  serialized_end=6660,
-)
-
-
-_GENERICFLOATTYPE = _descriptor.Descriptor(
-  name='GenericFloatType',
-  full_name='p4.config.v1.GenericFloatType',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6662,
-  serialized_end=6680,
+  serialized_start=6716,
+  serialized_end=6756,
 )
 
 
@@ -2234,8 +2247,8 @@ _GENERICBITSTRINGLIKETYPESPEC = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=6683,
-  serialized_end=7028,
+  serialized_start=6759,
+  serialized_end=7104,
 )
 
 
@@ -2273,8 +2286,8 @@ _GENERICBITTYPESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7030,
-  serialized_end=7091,
+  serialized_start=7106,
+  serialized_end=7167,
 )
 
 
@@ -2312,8 +2325,8 @@ _GENERICINTTYPESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7093,
-  serialized_end=7154,
+  serialized_start=7169,
+  serialized_end=7230,
 )
 
 
@@ -2351,8 +2364,8 @@ _GENERICVARBITTYPESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7156,
-  serialized_end=7224,
+  serialized_start=7232,
+  serialized_end=7300,
 )
 
 
@@ -2365,15 +2378,22 @@ _GENERICSTRUCTTYPESPEC_MEMBER = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='p4.config.v1.GenericStructTypeSpec.Member.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='id', full_name='p4.config.v1.GenericStructTypeSpec.Member.id', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='p4.config.v1.GenericStructTypeSpec.Member.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='type_spec', full_name='p4.config.v1.GenericStructTypeSpec.Member.type_spec', index=1,
-      number=2, type=11, cpp_type=10, label=1,
+      name='type_spec', full_name='p4.config.v1.GenericStructTypeSpec.Member.type_spec', index=2,
+      number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -2390,8 +2410,8 @@ _GENERICSTRUCTTYPESPEC_MEMBER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7462,
-  serialized_end=7538,
+  serialized_start=7538,
+  serialized_end=7626,
 )
 
 _GENERICSTRUCTTYPESPEC = _descriptor.Descriptor(
@@ -2442,8 +2462,8 @@ _GENERICSTRUCTTYPESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7227,
-  serialized_end=7538,
+  serialized_start=7303,
+  serialized_end=7626,
 )
 
 
@@ -2456,7 +2476,7 @@ _GENERICLISTTYPESPEC = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='type_spec', full_name='p4.config.v1.GenericListTypeSpec.type_spec', index=0,
+      name='element_type_spec', full_name='p4.config.v1.GenericListTypeSpec.element_type_spec', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2509,8 +2529,8 @@ _GENERICLISTTYPESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7541,
-  serialized_end=7801,
+  serialized_start=7629,
+  serialized_end=7897,
 )
 
 
@@ -2523,7 +2543,7 @@ _GENERICUNORDEREDSETTYPESPEC = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='type_spec', full_name='p4.config.v1.GenericUnorderedSetTypeSpec.type_spec', index=0,
+      name='element_type_spec', full_name='p4.config.v1.GenericUnorderedSetTypeSpec.element_type_spec', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2576,8 +2596,8 @@ _GENERICUNORDEREDSETTYPESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7804,
-  serialized_end=8072,
+  serialized_start=7900,
+  serialized_end=8176,
 )
 
 
@@ -2643,8 +2663,8 @@ _GENERICSTRINGSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8075,
-  serialized_end=8293,
+  serialized_start=8179,
+  serialized_end=8397,
 )
 
 
@@ -2703,8 +2723,8 @@ _GENERICENUMTYPESPEC_MEMBER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8528,
-  serialized_end=8722,
+  serialized_start=8632,
+  serialized_end=8826,
 )
 
 _GENERICENUMTYPESPEC = _descriptor.Descriptor(
@@ -2755,8 +2775,8 @@ _GENERICENUMTYPESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8296,
-  serialized_end=8722,
+  serialized_start=8400,
+  serialized_end=8826,
 )
 
 
@@ -2822,8 +2842,8 @@ _GENERICSERIALIZABLEENUMTYPESPEC_MEMBER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9040,
-  serialized_end=9249,
+  serialized_start=9144,
+  serialized_end=9353,
 )
 
 _GENERICSERIALIZABLEENUMTYPESPEC = _descriptor.Descriptor(
@@ -2881,8 +2901,8 @@ _GENERICSERIALIZABLEENUMTYPESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8725,
-  serialized_end=9249,
+  serialized_start=8829,
+  serialized_end=9353,
 )
 
 
@@ -2956,8 +2976,8 @@ _GENERICNEWTYPETRANSLATION = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=9252,
-  serialized_end=9414,
+  serialized_start=9356,
+  serialized_end=9518,
 )
 
 
@@ -3021,8 +3041,8 @@ _GENERICNEWTYPESPEC = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=9417,
-  serialized_end=9732,
+  serialized_start=9521,
+  serialized_end=9836,
 )
 
 _P4TYPEINFO_STRUCTSENTRY.fields_by_name['value'].message_type = _P4STRUCTTYPESPEC
@@ -3180,6 +3200,8 @@ _GENERICTYPEINFO_STRUCTSENTRY.fields_by_name['value'].message_type = _GENERICSTR
 _GENERICTYPEINFO_STRUCTSENTRY.containing_type = _GENERICTYPEINFO
 _GENERICTYPEINFO_LISTSENTRY.fields_by_name['value'].message_type = _GENERICLISTTYPESPEC
 _GENERICTYPEINFO_LISTSENTRY.containing_type = _GENERICTYPEINFO
+_GENERICTYPEINFO_UNORDEREDSETSENTRY.fields_by_name['value'].message_type = _GENERICUNORDEREDSETTYPESPEC
+_GENERICTYPEINFO_UNORDEREDSETSENTRY.containing_type = _GENERICTYPEINFO
 _GENERICTYPEINFO_ENUMSENTRY.fields_by_name['value'].message_type = _GENERICENUMTYPESPEC
 _GENERICTYPEINFO_ENUMSENTRY.containing_type = _GENERICTYPEINFO
 _GENERICTYPEINFO_SERIALIZABLEENUMSENTRY.fields_by_name['value'].message_type = _GENERICSERIALIZABLEENUMTYPESPEC
@@ -3188,11 +3210,11 @@ _GENERICTYPEINFO_NEWTYPESENTRY.fields_by_name['value'].message_type = _GENERICNE
 _GENERICTYPEINFO_NEWTYPESENTRY.containing_type = _GENERICTYPEINFO
 _GENERICTYPEINFO.fields_by_name['structs'].message_type = _GENERICTYPEINFO_STRUCTSENTRY
 _GENERICTYPEINFO.fields_by_name['lists'].message_type = _GENERICTYPEINFO_LISTSENTRY
+_GENERICTYPEINFO.fields_by_name['unordered_sets'].message_type = _GENERICTYPEINFO_UNORDEREDSETSENTRY
 _GENERICTYPEINFO.fields_by_name['enums'].message_type = _GENERICTYPEINFO_ENUMSENTRY
 _GENERICTYPEINFO.fields_by_name['serializable_enums'].message_type = _GENERICTYPEINFO_SERIALIZABLEENUMSENTRY
 _GENERICTYPEINFO.fields_by_name['new_types'].message_type = _GENERICTYPEINFO_NEWTYPESENTRY
 _GENERICDATATYPESPEC.fields_by_name['bitstring'].message_type = _GENERICBITSTRINGLIKETYPESPEC
-_GENERICDATATYPESPEC.fields_by_name['float'].message_type = _GENERICFLOATTYPE
 _GENERICDATATYPESPEC.fields_by_name['bool'].message_type = _GENERICBOOLTYPE
 _GENERICDATATYPESPEC.fields_by_name['struct'].message_type = _GENERICNAMEDTYPE
 _GENERICDATATYPESPEC.fields_by_name['list'].message_type = _GENERICNAMEDTYPE
@@ -3201,13 +3223,9 @@ _GENERICDATATYPESPEC.fields_by_name['string'].message_type = _GENERICNAMEDTYPE
 _GENERICDATATYPESPEC.fields_by_name['enum'].message_type = _GENERICNAMEDTYPE
 _GENERICDATATYPESPEC.fields_by_name['serializable_enum'].message_type = _GENERICNAMEDTYPE
 _GENERICDATATYPESPEC.fields_by_name['new_type'].message_type = _GENERICNAMEDTYPE
-_GENERICDATATYPESPEC.fields_by_name['p4_type'].message_type = _P4DATATYPESPEC
 _GENERICDATATYPESPEC.oneofs_by_name['type_spec'].fields.append(
   _GENERICDATATYPESPEC.fields_by_name['bitstring'])
 _GENERICDATATYPESPEC.fields_by_name['bitstring'].containing_oneof = _GENERICDATATYPESPEC.oneofs_by_name['type_spec']
-_GENERICDATATYPESPEC.oneofs_by_name['type_spec'].fields.append(
-  _GENERICDATATYPESPEC.fields_by_name['float'])
-_GENERICDATATYPESPEC.fields_by_name['float'].containing_oneof = _GENERICDATATYPESPEC.oneofs_by_name['type_spec']
 _GENERICDATATYPESPEC.oneofs_by_name['type_spec'].fields.append(
   _GENERICDATATYPESPEC.fields_by_name['bool'])
 _GENERICDATATYPESPEC.fields_by_name['bool'].containing_oneof = _GENERICDATATYPESPEC.oneofs_by_name['type_spec']
@@ -3232,9 +3250,6 @@ _GENERICDATATYPESPEC.fields_by_name['serializable_enum'].containing_oneof = _GEN
 _GENERICDATATYPESPEC.oneofs_by_name['type_spec'].fields.append(
   _GENERICDATATYPESPEC.fields_by_name['new_type'])
 _GENERICDATATYPESPEC.fields_by_name['new_type'].containing_oneof = _GENERICDATATYPESPEC.oneofs_by_name['type_spec']
-_GENERICDATATYPESPEC.oneofs_by_name['type_spec'].fields.append(
-  _GENERICDATATYPESPEC.fields_by_name['p4_type'])
-_GENERICDATATYPESPEC.fields_by_name['p4_type'].containing_oneof = _GENERICDATATYPESPEC.oneofs_by_name['type_spec']
 _GENERICBITSTRINGLIKETYPESPEC.fields_by_name['bit'].message_type = _GENERICBITTYPESPEC
 _GENERICBITSTRINGLIKETYPESPEC.fields_by_name['int'].message_type = _GENERICINTTYPESPEC
 _GENERICBITSTRINGLIKETYPESPEC.fields_by_name['varbit'].message_type = _GENERICVARBITTYPESPEC
@@ -3254,10 +3269,10 @@ _GENERICSTRUCTTYPESPEC_MEMBER.containing_type = _GENERICSTRUCTTYPESPEC
 _GENERICSTRUCTTYPESPEC.fields_by_name['members'].message_type = _GENERICSTRUCTTYPESPEC_MEMBER
 _GENERICSTRUCTTYPESPEC.fields_by_name['annotation_locations'].message_type = _SOURCELOCATION
 _GENERICSTRUCTTYPESPEC.fields_by_name['structured_annotations'].message_type = _STRUCTUREDANNOTATION
-_GENERICLISTTYPESPEC.fields_by_name['type_spec'].message_type = _GENERICDATATYPESPEC
+_GENERICLISTTYPESPEC.fields_by_name['element_type_spec'].message_type = _GENERICDATATYPESPEC
 _GENERICLISTTYPESPEC.fields_by_name['annotation_locations'].message_type = _SOURCELOCATION
 _GENERICLISTTYPESPEC.fields_by_name['structured_annotations'].message_type = _STRUCTUREDANNOTATION
-_GENERICUNORDEREDSETTYPESPEC.fields_by_name['type_spec'].message_type = _GENERICDATATYPESPEC
+_GENERICUNORDEREDSETTYPESPEC.fields_by_name['element_type_spec'].message_type = _GENERICDATATYPESPEC
 _GENERICUNORDEREDSETTYPESPEC.fields_by_name['annotation_locations'].message_type = _SOURCELOCATION
 _GENERICUNORDEREDSETTYPESPEC.fields_by_name['structured_annotations'].message_type = _STRUCTUREDANNOTATION
 _GENERICSTRINGSPEC.fields_by_name['annotation_locations'].message_type = _SOURCELOCATION
@@ -3323,7 +3338,6 @@ DESCRIPTOR.message_types_by_name['GenericTypeInfo'] = _GENERICTYPEINFO
 DESCRIPTOR.message_types_by_name['GenericDataTypeSpec'] = _GENERICDATATYPESPEC
 DESCRIPTOR.message_types_by_name['GenericNamedType'] = _GENERICNAMEDTYPE
 DESCRIPTOR.message_types_by_name['GenericBoolType'] = _GENERICBOOLTYPE
-DESCRIPTOR.message_types_by_name['GenericFloatType'] = _GENERICFLOATTYPE
 DESCRIPTOR.message_types_by_name['GenericBitstringLikeTypeSpec'] = _GENERICBITSTRINGLIKETYPESPEC
 DESCRIPTOR.message_types_by_name['GenericBitTypeSpec'] = _GENERICBITTYPESPEC
 DESCRIPTOR.message_types_by_name['GenericIntTypeSpec'] = _GENERICINTTYPESPEC
@@ -3632,6 +3646,13 @@ GenericTypeInfo = _reflection.GeneratedProtocolMessageType('GenericTypeInfo', (_
     })
   ,
 
+  'UnorderedSetsEntry' : _reflection.GeneratedProtocolMessageType('UnorderedSetsEntry', (_message.Message,), {
+    'DESCRIPTOR' : _GENERICTYPEINFO_UNORDEREDSETSENTRY,
+    '__module__' : 'p4.config.v1.p4types_pb2'
+    # @@protoc_insertion_point(class_scope:p4.config.v1.GenericTypeInfo.UnorderedSetsEntry)
+    })
+  ,
+
   'EnumsEntry' : _reflection.GeneratedProtocolMessageType('EnumsEntry', (_message.Message,), {
     'DESCRIPTOR' : _GENERICTYPEINFO_ENUMSENTRY,
     '__module__' : 'p4.config.v1.p4types_pb2'
@@ -3659,6 +3680,7 @@ GenericTypeInfo = _reflection.GeneratedProtocolMessageType('GenericTypeInfo', (_
 _sym_db.RegisterMessage(GenericTypeInfo)
 _sym_db.RegisterMessage(GenericTypeInfo.StructsEntry)
 _sym_db.RegisterMessage(GenericTypeInfo.ListsEntry)
+_sym_db.RegisterMessage(GenericTypeInfo.UnorderedSetsEntry)
 _sym_db.RegisterMessage(GenericTypeInfo.EnumsEntry)
 _sym_db.RegisterMessage(GenericTypeInfo.SerializableEnumsEntry)
 _sym_db.RegisterMessage(GenericTypeInfo.NewTypesEntry)
@@ -3683,13 +3705,6 @@ GenericBoolType = _reflection.GeneratedProtocolMessageType('GenericBoolType', (_
   # @@protoc_insertion_point(class_scope:p4.config.v1.GenericBoolType)
   })
 _sym_db.RegisterMessage(GenericBoolType)
-
-GenericFloatType = _reflection.GeneratedProtocolMessageType('GenericFloatType', (_message.Message,), {
-  'DESCRIPTOR' : _GENERICFLOATTYPE,
-  '__module__' : 'p4.config.v1.p4types_pb2'
-  # @@protoc_insertion_point(class_scope:p4.config.v1.GenericFloatType)
-  })
-_sym_db.RegisterMessage(GenericFloatType)
 
 GenericBitstringLikeTypeSpec = _reflection.GeneratedProtocolMessageType('GenericBitstringLikeTypeSpec', (_message.Message,), {
   'DESCRIPTOR' : _GENERICBITSTRINGLIKETYPESPEC,
@@ -3817,6 +3832,7 @@ _P4TYPEINFO_SERIALIZABLEENUMSENTRY._options = None
 _P4TYPEINFO_NEWTYPESENTRY._options = None
 _GENERICTYPEINFO_STRUCTSENTRY._options = None
 _GENERICTYPEINFO_LISTSENTRY._options = None
+_GENERICTYPEINFO_UNORDEREDSETSENTRY._options = None
 _GENERICTYPEINFO_ENUMSENTRY._options = None
 _GENERICTYPEINFO_SERIALIZABLEENUMSENTRY._options = None
 _GENERICTYPEINFO_NEWTYPESENTRY._options = None

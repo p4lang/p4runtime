@@ -6436,9 +6436,7 @@ GenericTableInstance
 
 `GenericData` is an addition to p4data.proto- which adds support for
 data types which are not covered by P4Data. This incorporates all the data types
-used as primitive data types like bytes, strings. It contains p4type as
-well. P4type is to be used for any data type present in P4. If there is a
-conflict, like bool, then the P4 data type should be used.
+used as primitive data types like bytes, strings.
 Some of them have default values. These default values are only applicable
 when in a Union field and not for Match fields. Match fields do not have
 default values because if a match field is not present, then it is considered
