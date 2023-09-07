@@ -403,13 +403,14 @@ message GenericUnorderedSetTypeSpec {
 
 message GenericStringSpec {
   string name = 1;
-  int32 min_size = 2; // 0 if not present
-  int32 max_size = 3; // no max size defined if not present
-  repeated string annotations = 4;
+  string default_value = 2;
+  int32 min_size = 3; // 0 if not present
+  int32 max_size = 4; // no max size defined if not present
+  repeated string annotations = 5;
   // Optional. If present, the location of `annotations[i]` is given by
  // `annotation_locations[i]`.
-  repeated SourceLocation annotation_locations = 5;
-  repeated StructuredAnnotation structured_annotations = 6;
+  repeated SourceLocation annotation_locations = 6;
+  repeated StructuredAnnotation structured_annotations = 7;
 }
 message GenericEnumTypeSpec {
   message Member {
