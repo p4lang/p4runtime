@@ -303,9 +303,10 @@ message P4NewTypeSpec {
 message GenericTypeInfo {
   map<string, GenericStructTypeSpec> structs = 1;
   map<string, GenericListTypeSpec> lists = 2;
-  map<string, GenericEnumTypeSpec> enums = 3;
-  map<string, GenericSerializableEnumTypeSpec> serializable_enums = 4;
-  map<string, GenericNewTypeSpec> new_types = 5;
+  map<string, GenericUnorderedSetTypeSpec> unordered_sets = 3;
+  map<string, GenericEnumTypeSpec> enums = 4;
+  map<string, GenericSerializableEnumTypeSpec> serializable_enums = 5;
+  map<string, GenericNewTypeSpec> new_types = 6;
 }
 
 // Describes Generic Data types.
@@ -320,11 +321,6 @@ message GenericDataTypeSpec {
     GenericNamedType enum = 7;
     GenericNamedType serializable_enum = 8;
     GenericNamedType new_type = 9;
-    // P4 data type spec can help achieve parity with types being used
-    // in P4 externs. For example, if Register is using a type in P4
-    // Data type spec, then it will make it easier to map here when using
-    // GenericTables
-    P4DataTypeSpec p4_type = 10;
   }
 }
 
@@ -332,10 +328,9 @@ message GenericNamedType {
   string name = 1;
 }
 
-// Empty message as no type information needed, just used as a placeholder in
-// the oneof to identify boolean types.
-message GenericBoolType { }
-message GenericFloatType { }
+message GenericBoolType { 
+  int32 default_value = 1;
+}
 
 message GenericBitstringLikeTypeSpec {
   oneof type_spec {

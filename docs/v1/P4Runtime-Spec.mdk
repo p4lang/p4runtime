@@ -2601,6 +2601,10 @@ is guaranteed to be the same as the order of the members in the corresponding
 P4~16~ declaration. The same goes for the order of members of an `enum`
 (serializable or not) or members of `error`.
 
+If adding any new data type to `P4DataTypeSpec`, please consider adding a
+counterpart to `GenericDataTypeSpec` for `GenericTable` as present in section
+[GenericData](#sec-p4data-generic-data)
+
 ### `P4Data` in p4runtime.proto { #sec-p4data-in-p4runtime-proto }
 
 P4Runtime uses the `P4Data` message to represent values of arbitrary types. The
@@ -6377,8 +6381,10 @@ message and a single architecture.
 
 ## GenericTable P4info { #sec-p4info-generic-table}
 
-
-`GenericTable` message in P4info defines the following fields
+`GenericTable` message in P4info defines a Generic Table. It contains several
+instances in `GenericTableInstance` rather than duplicating it every time for a
+new instance just like in `Extern`.
+It defines the following fields
 
 * `generic_table_type_id`, an 8-bit unsigned integer which uniquely identifies
   the generic_table_type in the context of the architecture. More details
@@ -6459,11 +6465,6 @@ value is used.
     value applicable. If not present, it is empty string: "".
   * enum_val : bytes value with which unsafe/serializable enums are defined.
     Default value applicable. If not present, it is 0.
-  * p4_type : This is the same type as P4DataTypeSpec. This helps in achieving
-    parity with P4 types if the `GenericTable` is being generated from a P4
-    extern.  There are a few overlaps like bool, enums, new_type, bitstring.
-    If the entity is from a P4 extern and a P4 data type exists, then the
-    p4_type is used. Otherwise, the GenericDataType is used.
 
 ## `GenericTableEntry` { #sec-generic-table-entry}
 
