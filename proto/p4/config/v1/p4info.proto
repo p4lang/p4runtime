@@ -422,8 +422,7 @@ message Digest {
 message GenericMatchField {
   uint32 id = 1;
   string name = 2;
-  bool repeated = 3;
-  GenericDataTypeSpec type_spec = 4;
+  GenericDataTypeSpec type_spec = 3;
   enum MatchType {
     UNSPECIFIED = 0;
     EXACT = 2;
@@ -433,18 +432,18 @@ message GenericMatchField {
     OPTIONAL = 6;
   }
   oneof match {
-    MatchType match_type = 5;
+    MatchType match_type = 4;
     // used for architecture-specific match types which are not part of the core
     // P4 language or of the PSA architecture.
-    string other_match_type = 6;
+    string other_match_type = 5;
   }
   // Documentation of the match field
-  Documentation doc = 7;
-  repeated string annotations = 8;
+  Documentation doc = 6;
+  repeated string annotations = 7;
   // Optional. If present, the location of `annotations[i]` is given by
   // `annotation_locations[i]`.
-  repeated StructuredAnnotation structured_annotations = 9;
-  repeated SourceLocation annotation_locations = 10;
+  repeated StructuredAnnotation structured_annotations = 8;
+  repeated SourceLocation annotation_locations = 9;
 }
 
 // used to list all possible unions in a Table
@@ -468,15 +467,14 @@ message Union {
   message Param {
     uint32 id = 1;
     string name = 2;
-    bool repeated = 3;
-    repeated string annotations = 4;
-    GenericDataTypeSpec type_spec = 5;
+    repeated string annotations = 3;
+    GenericDataTypeSpec type_spec = 4;
     // Documentation of the Param
-    Documentation doc = 6;
-    repeated StructuredAnnotation structured_annotations = 7;
+    Documentation doc = 5;
+    repeated StructuredAnnotation structured_annotations = 6;
     // Optional. If present, the location of `annotations[i]` is given by
     // `annotation_locations[i]`.
-    repeated SourceLocation annotation_locations = 8;
+    repeated SourceLocation annotation_locations = 7;
   }
   repeated Param params = 2;
 }

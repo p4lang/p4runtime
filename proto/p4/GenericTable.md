@@ -9,39 +9,31 @@ generic_tables {
   generic_table_type_id : 145
   generic_table_type_name : "MulticastGroup"
   generic_table_properties : {
-    read-only : False
+    "indexed"
   }
-  generic_table_properties : {
-    modify-only : False
-  }
-  generic_table_properties : {
-    reset-only : False
-  }
-  generic_table_properties : {
-    volatile : False
-  }
-  generic_table_properties : {
-    indexed : True
-  }
-
-  preamble {
-    id: 45332650
-    name: "MulticastGroup"
-    alias: "multicast_group"
-  }
-  generic_match_fields {
-    id: 1
-    name: "multicast_group_id"
-    match_type: EXACT
-    type {
-      type : "bytes"
-      width : 32
+  instances {
+    preamble {
+      id: 45332650
+      name: "MulticastGroup"
+      alias: "multicast_group"
     }
+    generic_match_fields {
+      id: 1
+      name: "multicast_group_id"
+      match_type: EXACT
+      type_spec {
+        bitstring {
+          bit {
+            bitwidth : 32
+          }
+        }
+      }
+    }
+    union_refs {
+      id: 23557840
+    }
+    size: 1024
   }
-  union_refs {
-    id: 23557840
-  }
-  size: 1024
 }
 ```
 
@@ -50,8 +42,8 @@ repeated fields. So the check on `len(instance_array) == len(port_array)`
 needs to be a runtime check. This however keeps implementation simpler
 and faster since we avoid further recursive nesting.
 
-`port` is a varbytes of max size 64 bits each. The field has a `repeated_type`
-as well, so it is defined as list of varbits through p4info.
+`port` is a varbytes of max size 64 bits each. The field is a list so
+it is defined as list of varbits through p4info.
 
 ```
 unions {
@@ -63,21 +55,33 @@ unions {
   params {
     id: 1
     name: "instance"
-    type {
-      container_type : "list"
-      container_max_size : 10
-      type : "bytes"
-      width : 32
+    type_spec {
+      list {
+        element_type_spec {
+          bitstring {
+            bit {
+              bitwidth : 32
+            }
+          }
+        }
+        max_size : 10
+      }
     }
   }
   params {
     id: 2
     name: "port"
-    type {
-      container_type : "list"
-      container_max_size : 10
-      type : "varbytes"
-      max_bit_width : 64
+    type_spec {
+      list {
+        type_spec {
+          bitstring {
+            varbit {
+              max_bitwidth : 64
+            }
+          }
+        }
+        max_size : 10
+      }
     }
   }
 }
@@ -97,26 +101,35 @@ unions {
   params {
     id: 1
     name: "replica"
-    type {
-      container_type : "list"
-      type : "struct"
-    }
-    params {
-      param {
-        id: 1
-        name: "instance"
-        type {
-          type : "bytes"
-          width : 32
+    type_spec {
+      list {
+        element_type_spec {
+          struct {
+            members {
+              id : 1
+              name : "instance"
+              type_spec {
+                bitstring {
+                  bit {
+                    bitwidth : 32
+                  }
+                }
+              }
+            }
+            members {
+              id : 2
+              name : "port"
+              type_spec {
+                bitstring {
+                  varbit {
+                    max_bitwidth : 64
+                  }
+                }
+              }
+            }
+          }
         }
-      }
-      param : {
-        id: 2
-        name: "port"
-        type {
-          type : "varbytes"
-          max_bit_width : 64
-        }
+        max_size : 10
       }
     }
   }

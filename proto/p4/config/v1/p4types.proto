@@ -313,7 +313,7 @@ message GenericDataTypeSpec {
   oneof type_spec {
     GenericBitstringLikeTypeSpec bitstring = 1;
     GenericFloatType float = 2;
-    GenericBoolType bool = 3;
+    GenericBoolType  bool = 3;
     GenericNamedType struct = 4;
     GenericNamedType list = 5;
     GenericNamedType unordered_set = 6;
@@ -369,8 +369,9 @@ message GenericVarbitTypeSpec {
 }
 message GenericStructTypeSpec {
   message Member {
-    string name = 1;
-    GenericDataTypeSpec type_spec = 2;
+    uint32 id = 1;
+    string name = 2;
+    GenericDataTypeSpec type_spec = 3;
   }
   repeated Member members = 1;
   repeated string annotations = 2;
@@ -380,12 +381,11 @@ message GenericStructTypeSpec {
   repeated StructuredAnnotation structured_annotations = 6;
 }
 
-// If a field is of type list, then container_type is in p4info
-// and value == "list"
+// If a field is of type list
 // ordered and duplicates allowed.
 // If max_size and min_size are equal, then fixed size.
 message GenericListTypeSpec {
-  GenericDataTypeSpec type_spec = 1;// The element_type
+  GenericDataTypeSpec element_type_spec = 1;// The element_type
   repeated string annotations = 2;
   // Optional. If present, the location of `annotations[i]` is given by
   // `annotation_locations[i]`.
@@ -394,11 +394,10 @@ message GenericListTypeSpec {
   repeated SourceLocation annotation_locations = 6;
   repeated StructuredAnnotation structured_annotations = 7;
 }
-// If a field is of type "unordered_set", then container_type is in p4info
-// value == "unordered_set"
+// If a field is of type "unordered_set"
 // Unordered and duplicates not allowed
 message GenericUnorderedSetTypeSpec {
-  GenericDataTypeSpec type_spec = 1;// The element_type
+  GenericDataTypeSpec element_type_spec = 1;// The element_type
   repeated string annotations = 2;
   // Optional. If present, the location of `annotations[i]` is given by
   // `annotation_locations[i]`.
