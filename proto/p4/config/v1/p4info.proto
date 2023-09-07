@@ -481,9 +481,9 @@ message Union {
 
 // All Tables of one type will be grouped in one message.
 message GenericTable {
-  uint32 generic_table_type_id = 1;
-  string generic_table_type_name = 2;
-  repeated string generic_table_properties = 3;
+  uint32 type_id = 1;
+  string type_name = 2;
+  repeated string properties = 3;
   repeated GenericTableInstance instances = 4;
 }
 

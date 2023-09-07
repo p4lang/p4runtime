@@ -6386,16 +6386,17 @@ instances in `GenericTableInstance` rather than duplicating it every time for a
 new instance just like in `Extern`.
 It defines the following fields
 
-* `generic_table_type_id`, an 8-bit unsigned integer which uniquely identifies
+* `type_id`, an 8-bit unsigned integer which uniquely identifies
   the generic_table_type in the context of the architecture. More details
   in the [Generic Table ID space](#sec-generic-table-id-space) section
 
-* `generic_table_type_name`, which specifies the fully-qualified P4 name of the
-  generic_table in case of P4 entities. In cases of non-P4 entities, it is a
-  name which uniquely identifies this entity in the entire space including P4
-  objects.
+* `type_name`, which specifies the "type" of the `GenericTable`. For example,
+  if the target has a meter called `SpecialMeter`, then this would contain
+  "SpecialMeter". In cases of non-P4 entities, it is a "type" which helps
+  identify this entity with a feature for example "MulticastGroup". For non-
+  P4 entities, sometimes the instance name and type name are the same
 
-* `repeated string generic_table_properties`, please check generic-table
+* `repeated string properties`, please check generic-table
   properties under section [GenericTable categories]
   (#sec-generic-table-categories) for more details.
 
@@ -6404,7 +6405,7 @@ It defines the following fields
 
 GenericTableInstance
 * `preamble`, a `Preamble` message with the ID, name, and alias of this
-  `GenericTable`.
+  `GenericTable` instance.
 
 * `generic_match_fields`, a repeated field of type `GenericMatchField`
   representing the data to be used to construct the lookup key matched in this
