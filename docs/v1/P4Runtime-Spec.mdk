@@ -230,8 +230,29 @@ format and available at
 P4Runtime is designed to be implemented in conjunction with the P4~16~ language
 version or later. P4~14~ programs should be translated into P4~16~ to be made
 compatible with P4Runtime. This version of P4Runtime utilizes features which are
-not in P4~16~ 1.0, but were introduced in P4~16~ 1.1.0 [@P4Revisions110]. For
-this version of P4Runtime, we recommend using P4~16~ 1.2.1 [@P4Spec].
+not in P4~16~ 1.0, but were introduced in P4~16~ 1.2.4 [@P4Revisions124]. For
+this version of P4Runtime, we recommend using P4~16~ 1.2.4 [@P4Revisions124].
+
+This version of the P4Runtime specification does not yet explicitly
+address compatibility with the following P4~16~ language features
+introduced in versions 1.2.2 or 1.2.4 of the language specification:
+
+* Added support for generic structures [@P4Revisions122].
+* Added support for additional enumeration types [@P4Revisions122].
+* Added support for 0-width bitstrings and varbits [@P4Revisions122].
+* Clarified restrictions for parameters with default values
+  [@P4Revisions124].
+* Specified that algorithm for generating control-plane names for keys
+  is optional [@P4Revisions124].
+* Allow ranges to be specified by serializable enums
+  [@P4Revisions124].
+* compiler-inserted `default_action` is not `const` [@P4Revisions124].
+* Clarified the restrictions on run time for tables with
+  `const entries` [@P4Revisions124].
+* Added `list` type [@P4Revisions124].
+* Clarified behavior of table with no `key` property, or if its list
+  of keys is empty [@P4Revisions124].
+
 
 ## In Scope
 
