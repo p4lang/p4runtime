@@ -245,6 +245,8 @@ introduced in versions 1.2.2 or 1.2.4 of the language specification:
 * Allow ranges to be specified by serializable enums
   [@P4Revisions124].
 * Added `list` type [@P4Revisions124].
+* Clarified behavior of table with no `key` property, or if its list
+  of keys is empty [@P4Revisions124].
 
 
 ## In Scope
