@@ -6454,19 +6454,33 @@ lengths > 64 can be easily accommodated.
   * generic_struct : Used to define a structure that can contain
     one or more of the other members as named fields. One structure can contain
     different members of different types in GenericData.
-  * generic_list : Used to define a list of values with the same type. It can
-    also be a list of generic_structs or generic_list.
+  * generic_list : Used to define a list of values with the same type.
     Members are ordered and duplicates are allowed.
-  * generic_unordered_set : Used to define a set of same types. It can also be
-    a set of generic_structs. Members are unordered and duplicates are not
-    allowed.
+  * generic_unordered_set : Used to define a set of same types. Members are
+    unordered and duplicates are not allowed.
   * string : Used to define control plane strings. The max string length is
     defined by the size. Default value applicable. If not present, it is empty
     string: "".
-  * enum : String representation with which safe enums are realized. Default
-    value applicable. If not present, it is empty string: "".
-  * enum_val : bytes value with which unsafe/serializable enums are defined.
+  * enum : String representation with which unserializable enums are realized.
+    Default value applicable. It should always be present. Enums have a list
+    of choices.
+  * enum_val : bytes value with which serializable enums are defined.
     Default value applicable. If not present, it is 0.
+
+### Equality of data types { #sec-equality-of-data-types }
+
+  * bitstring : 2 bitstrings are equal if value and size are both equal.
+    So `00` and `00 00` are not equal.
+  * bool : If both values have same `True` or `False` value.
+  * generic_struct : 2 structs are equal if each member is equal.
+  * generic_list : 2 lists are equal if each member is equal. The size and
+    order of the lists need to be the same as well.
+  * generic_unordered_set : 2 sets are equal if each member is equal. The
+    size should be equal as well. Order doesn't matter.
+  * string : 2 strings are equal if they match each other. Case sensitive.
+  * enum : 2 enums are equal if they are the same value.
+  * enum_val : 2 enum_vals are equal if the byte values are the same. Size
+    matching isn't needed.
 
 ## `GenericTableEntry` { #sec-generic-table-entry}
 
@@ -6478,14 +6492,13 @@ Interface](https://github.com/p4lang/tdi), that every state can be representated
 as a table or multiple tables. A table here is any data structure with one or
 more entries and each entry can be represented as a set of key fields and data
 fields.  Actions in P4 tables behave like unions and that has been borrowed here
-in `GenericTable`.  This can be potentially used targets to map to either TDI
-based targets, or even non-TDI based targets. If using TDI, then potentially,
-for every new feature to be added, only TDI target support and remote client
-code will be required to make use of that function.  All other middle layers
-should theoretically remain unchanged.
+in `GenericTable`. Note that because of the close similarities between
+GenericTable and the TDI API, it is intended that relatively simple software
+could implement translation of GenericTable configuration messages into local
+TDI API calls. Details of this are left for other future documents to specify.
 
 P4Runtime supports inserting, modifying, deleting and reading `GenericTable`
-entries with the `GenericTa bleEntry` entity, which has the following fields:
+entries with the `GenericTableEntry` message, which has the following fields:
 
 * `table_id`, which identifies the table instance; the `table_id` is determined
   by the P4Info message.
@@ -6494,8 +6507,8 @@ entries with the `GenericTa bleEntry` entity, which has the following fields:
   repeated field is used to provide a value for the corresponding element in the
   P4info.
 
-* `union`, which indicates which of the table's unions to execute in case of
-  match and with which argument values.
+* `union`, which indicates which of the table's unions are present in the data
+  of the entry and with which field values.
 
 * `priority`, a 32-bit integer used to order entries when the table's match key
   includes an optional, ternary or range match.
@@ -6525,7 +6538,7 @@ a table. Therefore, these fields cannot be modified after the entry has been
 inserted and must be provided for `MODIFY` and `DELETE` updates. When deleting
 an entry, these key fields (along with `is_default_action`) are the only fields
 considered by the server. All other fields must be ignored, even if they have
-nonsensical values (such as an invalid action field). In the case of a *keyless*
+nonsensical values (such as an invalid union field). In the case of a *keyless*
 table (the table has an empty match key), the server must reject all attempts to
 `INSERT` a match entry and return an `INVALID_ARGUMENT` error.
 
@@ -6549,9 +6562,10 @@ applicable on the table and the APIs.
   * Regular tables: Read, INSERT, MODIFY, DELETE work as intended. Entries in
     a table can be inserted, modified and deleted.
     * `INSERT` : If another entry with same match key exists, then
-      `ALREADY_EXISTS` is returned. If no union has been defined, then the
-      union from the default entry of the table is used. Some tables might
-      not have a default entry, then the union is required to be set.
+      `ALREADY_EXISTS` is returned. If no union is present in
+      `GenericTableEntry` message, then the union from the default
+      entry of the table is used. Some tables might not have a default entry,
+      then the union is required to be set.
       If `default_entry` is true, then it is treated as a MODIFY. Const
       default union rules apply. Match fields and priority should not be set.
 
@@ -6565,14 +6579,14 @@ build/generic-tables-insert-flow.[svg,png] \
 
     * `MODIFY` : Union field must be set since all data fields are under a
       union. Modifies the union spec to new union or new field values if
-      same union.
+      same union. `NOT_FOUND` error if entry isn't found.
       If `default_entry` is true, then the default entry is modified. Match
       fields and priority should not be set. Const default union rules apply.
     * `DELETE` : Only Match fields must be set. `NOT_FOUND` is returned if
       the entry isn't found. If no Match fields are given, then all entries
       are deleted (wildcard delete). If the table contained init entries, they
       are restored to initial state with their original union and union field
-      values.
+      values for wildcard deletes.
       If `default_entry` is true, then the default entry is reset to initial
       values. Const union rules apply.
       Wildcard doesn't apply to default_entry.
@@ -6588,7 +6602,7 @@ build/generic-tables-insert-flow.[svg,png] \
     * `INSERT` : Not supported. Returns `NOT_SUPPORTED` error.
     * `MODIFY` : Union field must be set since all data fields are under a
       union. Modifies the union spec to new union or new field values if
-      same union.
+      same union. `NOT_FOUND` error if entry isn't found.
       If `default_entry` is true, then the default entry is modified. Match
       fields and priority should not be set. Const default union rules apply.
     * `DELETE` : Instead of deleting, this operation resets the entry with
@@ -6598,7 +6612,7 @@ build/generic-tables-insert-flow.[svg,png] \
       the entry isn't found. If no Match fields are given, then all entries
       are reset (wildcard reset). If the table contained init entries, they
       are restored to initial state with their original union and union field
-      values.
+      values for wildcard deletes.
       If `default_entry` is true, then the default entry is reset to initial
       values. Const union rules apply.
       Wildcard doesn't apply to default_entry.
@@ -6625,7 +6639,7 @@ build/generic-tables-insert-flow.[svg,png] \
       the entry isn't found. If no Match fields are given, then all entries
       are reset (wildcard reset). If the table contained init entries, they
       are restored to initial state with their original union and union field
-      values.
+      values for wildcard deletes.
       If `default_entry` is true, then the default entry is reset to initial
       values. Const union rules apply.
       Wildcard doesn't apply to default_entry.
