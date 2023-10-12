@@ -1,13 +1,13 @@
-package(
-    default_visibility = ["//visibility:public"],
-    licenses = ["notice"],  # Apache 2.0
-)
-
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 load("@com_github_grpc_grpc//bazel:python_rules.bzl", "py_grpc_library", "py_proto_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
+package(
+    default_visibility = ["//visibility:public"],
+    # copybara:uncomment default_applicable_licenses = ["//third_party/p4lang_p4runtime:license"],
+)
 
 proto_library(
     name = "p4types_proto",
