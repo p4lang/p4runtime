@@ -452,6 +452,7 @@ message MulticastGroupEntry {
   uint32 multicast_group_id = 1;
   repeated Replica replicas = 2;
   // Arbitrary metadata from the controller that is opaque to the target.
+  // Added in 1.4.0.
   bytes metadata = 3;
 }
 
