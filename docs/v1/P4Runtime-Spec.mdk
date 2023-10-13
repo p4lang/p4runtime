@@ -4459,14 +4459,18 @@ semantics.
   server must return an `INVALID_ARGUMENT` error. The egress port (`port` field)
   must be an SDN port and must refer to a singleton port. No two replicas may
   have identical values of *both* `port` and `instance`, or the server must
-  return `INVALID_ARGUMENT`.
-* `MODIFY`: Modify the set of replicas for a given multicast group entry,
-  indexed by the given `multicast_group_id`. Same restrictions as `INSERT` apply
-  here.
+  return `INVALID_ARGUMENT`. The `metadata` field is an arbitrary `bytes` value
+  which is opaque to the target. There is no requirement of where this is
+  stored, but it must be returned by the server along with the rest of the entry
+  when the client performs a read on the entry.
+* `MODIFY`: Modify the set of replicas and metadata for a given multicast group
+  entry, indexed by the given `multicast_group_id`. Same restrictions as
+  `INSERT` apply here.
 * `DELETE`: Delete the multicast group indexed by the given
-  `multicast_group_id`. The replicas need not be provided for this
-  operation. Any packets with their `multicast_group` metadata in the data plane
-  set to the deleted `multicast_group_id` will be dropped.
+  `multicast_group_id`. The `replicas` and `metadata` fields need not be
+  provided for this operation. Any packets with their `multicast_group`
+  metadata in the data plane set to the deleted `multicast_group_id` will be
+  dropped.
 
 When reading a multicast group, only `multicast_group_id` is considered. All
 other fields in `MulticastGroupEntry` are ignored. To perform a *wildcard*
@@ -6439,6 +6443,7 @@ properties, but we may include on in future versions of the API.
 
 ### Changes in v1.4.0
 
+* Add a `metadata` field to the `MulticastGroupEntry` message.
 * Clarify that the limitation on supported types for `FieldMatch`, action
   `Param`, and Packet IO metadata fields (no support for signed integers, with
   type `int<W>`) apply to all minor revisions of P4Runtime v1, not just to
