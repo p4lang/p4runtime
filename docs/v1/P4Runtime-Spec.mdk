@@ -6674,17 +6674,18 @@ Table properties are at table level. A combination of these define a certain
 table category. By default, if absent, they are all always false
 
 * Read-only : No Add/Del/Mod work Modify-only : Table entries can only be
-* modifed Reset-only : Table can only be reset. Either entire table or
-* individual entries.  Indexed : The entries are ordered. Every entry has an
-* index associated with
+  modifed
+* Reset-only : Table can only be reset. Either entire table or individual
+  entries.
+* Indexed : The entries are ordered. Every entry has an index associated with
   it. Indexed tables can be either of modify-only, read-only, reset-only or
   regular tables. If regular tables, then the target is expected to fill up gaps
   when deleting and then adding entries again. Duplicate entries can exist or
   not depending upon the table restrictions. Duplicate entries cannot be present
   in regular tables because there is no way to differentiate between the added
   entries.
-* Keyless : Only one entry, &i.e; default entry exists.  Calculation : No
-* defined range of key values. For example, hash calculation
+* Keyless : Only one entry, &i.e; default entry exists.
+* Calculation : No defined range of key values. For example, hash calculation
   table for a set of field values.
 * Volatile : Data plane can Add/Del/Mod entries. Example, Add-on-miss in PNA
 
