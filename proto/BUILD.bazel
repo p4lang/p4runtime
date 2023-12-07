@@ -1,12 +1,23 @@
-package(
-    default_visibility = ["//visibility:public"],
-    licenses = ["notice"],  # Apache 2.0
-)
 
-load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 load("@com_github_grpc_grpc//bazel:python_rules.bzl", "py_grpc_library", "py_proto_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@rules_license//rules:license.bzl", "license")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+package(
+    default_visibility = ["//visibility:public"],
+    default_applicable_licenses = [":license"],
+)
+
+license(
+    name = "license",
+    license_kinds = ["@rules_license//licenses/spdx:Apache-2.0"],
+    license_text = "LICENSE",
+)
+
+exports_files(["LICENSE"])
 
 proto_library(
     name = "p4types_proto",
@@ -125,4 +136,16 @@ py_grpc_library(
     name = "p4runtime_py_grpc",
     srcs = [":p4runtime_proto"],
     deps = [":p4runtime_py_proto"],
+)
+
+build_test(
+    name = "proto_build_test",
+    targets = [
+        ":p4data_proto",
+        ":p4info_proto",
+        ":p4runtime_cc_grpc",
+        ":p4runtime_proto",
+        ":p4runtime_py_grpc",
+        ":p4types_proto",
+    ],
 )

@@ -39,3 +39,6 @@ pip_parse(
 
 load("@grpc_python_dependencies//:requirements.bzl", "install_deps")
 install_deps()
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+bazel_skylib_workspace()
