@@ -1724,12 +1724,15 @@ Both `Meter` and `DirectMeter` messages share the following fields:
     * `TWO_RATE_THREE_COLOR`: This is the *Two Rate Three Color Marker* (trTCM)
       defined in RFC 2698 [@RFC2698]. This is the standard P4Runtime meter type
       and allows meters to use two rates to split packets into three potential
-      colors: GREEN, YELLOW, or RED.
+      colors: GREEN, YELLOW, or RED. This mode is the default, but can also be
+      set explicitly in a P4 program by adding the `@two_rate_three_color`
+      annotation to the meter definition.
     * `SINGLE_RATE_TWO_COLOR`: This is a simplified version of RFC 2697
       [@RFC2697], which restricts meters to use only a single rate to mark
       packets GREEN or RED. RFC 2697 allows three colors by additionally
       providing an Excess Burst Size (EBS) that P4Runtime does not make
-      available.
+      available. In a P4 program, this mode can be set by adding the
+      `@single_rate_two_color` annotation to the meter definition.
 
 For indexed meters, the `Meter` message contains also a `size` field, an `int64`
 representing the maximum number of independent cells that can be held by this
@@ -6574,6 +6577,8 @@ the purpose of adding features for the P4Runtime API.
 | `@max_group_size`          | See sections [#sec-p4info-action-profile], [#sec-action-profile-group-programming] |
 | `@selector_size_semantics` | See section [#sec-p4info-action-profile] |
 | `@max_member_weight`       | See section [#sec-p4info-action-profile] |
+| `@two_rate_three_color`    | See section [#sec-meter-directmeter] |
+| `@single_rate_two_color`   | See section [#sec-meter-directmeter] |
 | `@pkginfo`                 | See section [#sec-annotating-p4-code-with-pkginfo] |
 | `@p4runtime_translation`   | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +----------------------------+---------------------------------------+
