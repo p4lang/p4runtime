@@ -6473,6 +6473,8 @@ properties, but we may include on in future versions of the API.
 
 ### Changes in v1.4.0
 
+* Add a `Type` field to the `MeterSpec` message allowing users to restrict the
+  type of meters that can be used for a table.
 * Add a `metadata` field to the `MulticastGroupEntry` message.
 * Clarify that the limitation on supported types for `FieldMatch`, action
   `Param`, and Packet IO metadata fields (no support for signed integers, with
