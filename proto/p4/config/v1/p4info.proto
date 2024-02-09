@@ -340,7 +340,8 @@ message MeterSpec {
     BYTES = 1;
     PACKETS = 2;
   }
-  // Used to distinguish
+  // Used to restrict the MeterConfigs that can be used to instantiate the
+  // meter.
   enum Type {
     // As described in RFC 2698, allows meters to use two rates to split packets
     // into three potential colors.
