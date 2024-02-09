@@ -1279,6 +1279,9 @@ message PkgInfo {
   Documentation doc = 3;
   // Miscellaneous metadata, free-form; a way to extend PkgInfo
   repeated string annotations = 4;
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 10;
   // the target architecture, e.g. "psa"
   string arch = 5;
   // organization which produced the configuration, e.g. "p4.org"
@@ -1289,12 +1292,32 @@ message PkgInfo {
   string url = 8;
   // Miscellaneous metadata, structured; a way to extend PkgInfo
   repeated StructuredAnnotation structured_annotations = 9;
+  // If set, specifies the properties that the underlying platform should have.
+  // If the platform does conform to these properties, the server should reject
+  // the P4Info when used with a SetForwardingPipelineConfigRequest.
+  PlatformProperties platform_properties = 11;
+}
+~ End Proto
+
+where the `PlatformProperties` message looks as follows:
+~ Begin Proto
+// Used to describe the required properties of the underlying platform.
+message PlatformProperties {
+  // The maximum number of multicast entries (i.e. multicast groups) that the
+  // platform is expected to support. If 0, there are no requirements.
+  int64 multicast_table_size = 1;
+  // The maximum number of replicas that the platform is expected to support
+  // across all  groups. If 0, there are no requirements.
+  int64 multicast_table_total_replicas = 2;
+  // The largest number of replicas that the platform is expected to support per
+  // group/entry. If 0, `multicast_table_total_replicas` should be used.
+  int64 multicast_table_max_replicas_per_entry = 3;
 }
 ~ End Proto
 
 ### Annotating P4 code with PkgInfo { #sec-annotating-p4-code-with-pkginfo}
 
-A P4 progam's `PkgInfo` may be declared using one or more of the following
+A P4 program's `PkgInfo` may be declared using one or more of the following
 annotations, attached to the `main` block only:
 
 ~ Begin p4example
@@ -1305,6 +1328,8 @@ annotations, attached to the `main` block only:
 description")
 @custom_annotation(...)
 @another_custom_annotation(...)
+@platform_property(key=value)
+@platform_property(key=value[,key=value,...])
 ~ End p4example
 
 Above we see several different types of annotations:
@@ -1326,6 +1351,17 @@ Above we see several different types of annotations:
 
 * `@description` - This will populate the `PkgInfo.doc.description` message
   field
+
+* `@platform_property` - This is used to populate a specific field within the
+  `PlatformProperty` message in `PkgInfo.platform_property`. Multiple
+  `@platform_property` annotations are allowed. For compactness,
+  multiple key-value pairs can appear in a single `@platform_property`
+  annotation, separated by commas. Each key must only appear once and the
+  compiler must reject the program if one appears multiple times. The `key`s
+  must be from among the message fields inside `PlatformProperty`, for example,
+  `multicast_table_size` or `multicast_table_total_replicas`. Each key-value
+  pair assigns a value to the corresponding field inside the single
+  `PlatformProperty` message inside the program's P4Info.
 
 * `@<anything else>` - This will create a `PkgInfo.annotation` entry
 
@@ -6548,6 +6584,7 @@ the purpose of adding features for the P4Runtime API.
 | `@selector_size_semantics` | See section [#sec-p4info-action-profile] |
 | `@max_member_weight`       | See section [#sec-p4info-action-profile] |
 | `@pkginfo`                 | See section [#sec-annotating-p4-code-with-pkginfo] |
+| `@platform_property`       | See section [#sec-annotating-p4-code-with-pkginfo] |
 | `@p4runtime_translation`   | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |
 +----------------------------+---------------------------------------+
 ~
