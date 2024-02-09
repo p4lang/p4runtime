@@ -1782,7 +1782,6 @@ Both `Meter` and `DirectMeter` messages share the following fields:
       (CBS) to mark packets GREEN or RED. In a P4 program, this mode can be set
       by adding the `@single_rate_two_color` annotation to the meter definition.
 
-
 For indexed meters, the `Meter` message contains also a `size` field, an `int64`
 representing the maximum number of independent cells that can be held by this
 meter. Conversely, the `DirectMeter` message contains a `direct_table_id` field
