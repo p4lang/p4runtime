@@ -1712,25 +1712,24 @@ Both `Meter` and `DirectMeter` messages share the following fields:
   extern instance.
 
 * `spec`, a message of type `MeterSpec` used to describe the capabilities of
-  this meter extern instance. The `MeterSpec` message is used to describe the 
-  meter unit and the meter type. The meter unit can be any of the 
+  this meter extern instance. The `MeterSpec` message is used to describe the
+  meter unit and the meter type. The meter unit can be any of the
   `MeterSpec.Unit` enum values:
     * `UNSPECIFIED`: reserved value.
     * `BYTES`, which signifies that this meter can be configured with rates
       expressed in bytes/second.
     * `PACKETS`, for rates expressed in packets/second.
-  
+
   The meter type can be any of the `MeterSpec.Type` enum values:
-    * `TWO_RATE_THREE_COLOR`: This is the *Two Rate Three Color Marker* (trTCM) 
+    * `TWO_RATE_THREE_COLOR`: This is the *Two Rate Three Color Marker* (trTCM)
       defined in RFC 2698 [@RFC2698]. This is the standard P4Runtime meter type
       and allows meters to use two rates to split packets into three potential
       colors: GREEN, YELLOW, or RED.
-    * `SINGLE_RATE_TWO_COLOR`: This is a simplified version of RFC 2697 
-      [@RFC2697], which restricts meters to use only a single rate to mark 
+    * `SINGLE_RATE_TWO_COLOR`: This is a simplified version of RFC 2697
+      [@RFC2697], which restricts meters to use only a single rate to mark
       packets GREEN or RED. RFC 2697 allows three colors by additionally
       providing an Excess Burst Size (EBS) that P4Runtime does not make
       available.
-
 
 For indexed meters, the `Meter` message contains also a `size` field, an `int64`
 representing the maximum number of independent cells that can be held by this
@@ -4246,16 +4245,16 @@ traffic. The PSA metering function is based on the *Two Rate Three Color Marker*
 (trTCM) defined in RFC 2698 [@RFC2698]. P4Runtime clients may additionally
 restrict meter usage on a table to a simplified version of RFC 2697 [@RFC2697]
 that we call *Single Rate Two Color Marker*. The type of a table's meter is set
-by the `MeterSpec.Type` as described in the 
+by the `MeterSpec.Type` as described in the
 [Meter & DirectMeter section](#sec-meter-directmeter).
 
-The trTCM meters an arbitrary packet stream using two configured rates --- 
-the Peak Information Rate (PIR) and Committed Information Rate (CIR), and their 
+The trTCM meters an arbitrary packet stream using two configured rates ---
+the Peak Information Rate (PIR) and Committed Information Rate (CIR), and their
 associated burst sizes --- and "marks" its packets as GREEN, YELLOW or RED based
 on the observed rate.
 
-The *Single Rate Two Color Marker* meters an arbitary packet stream using a 
-single configured rate --- the Committed Information Rate (CIR) and its 
+The *Single Rate Two Color Marker* meters an arbitary packet stream using a
+single configured rate --- the Committed Information Rate (CIR) and its
 associated burst size --- and "marks" its packets as GREEN or RED based on the
 observed rate.
 
