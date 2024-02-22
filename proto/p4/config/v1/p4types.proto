@@ -292,4 +292,193 @@ message P4NewTypeSpec {
   repeated StructuredAnnotation structured_annotations = 4;
 }
 
-// End of P4 type specs --------------------------------------------------------
+////// Begin : GenericTables messages
+
+// Instead of duplicating the type spec for these
+// every time the type is used, we include the type spec once in this
+// GenericTypeInfo message and refer to the types by name in the
+// GenericDataTypeSpec message. We also
+// support annotations for these type specs which can be useful, e.g. to
+// identify well-known headers (such as ipv4).
+message GenericTypeInfo {
+  map<string, GenericStructTypeSpec> structs = 1;
+  map<string, GenericListTypeSpec> lists = 2;
+  map<string, GenericUnorderedSetTypeSpec> unordered_sets = 3;
+  map<string, GenericEnumTypeSpec> enums = 4;
+  map<string, GenericSerializableEnumTypeSpec> serializable_enums = 5;
+  map<string, GenericNewTypeSpec> new_types = 6;
+}
+
+// Describes Generic Data types.
+message GenericDataTypeSpec {
+  oneof type_spec {
+    GenericBitstringLikeTypeSpec bitstring = 1;
+    GenericBoolType  bool = 2;
+    GenericNamedType struct = 3;
+    GenericNamedType list = 4;
+    GenericNamedType unordered_set = 5;
+    GenericNamedType string = 6;
+    GenericNamedType enum = 7;
+    GenericNamedType serializable_enum = 8;
+    GenericNamedType new_type = 9;
+  }
+}
+
+message GenericNamedType {
+  string name = 1;
+}
+
+message GenericBoolType { 
+  int32 default_value = 1;
+}
+
+message GenericBitstringLikeTypeSpec {
+  oneof type_spec {
+    GenericBitTypeSpec bit = 1;  // bit<W>
+    GenericIntTypeSpec int = 2;  // int<W>
+    GenericVarbitTypeSpec varbit = 3;  // varbit<W>
+  }
+  // Useful to identify well-known types, such as IP address or Ethernet MAC
+  // address.
+  repeated string annotations = 4;
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
+  repeated StructuredAnnotation structured_annotations = 6;
+}
+
+message GenericBitTypeSpec {
+  int32 bitwidth = 1;
+  bytes default_value = 2;
+}
+
+message GenericIntTypeSpec {
+  int32 bitwidth = 1;
+  bytes default_value = 2;
+}
+
+message GenericVarbitTypeSpec {
+  int32 max_bitwidth = 1;
+  bytes default_value = 2;
+}
+message GenericStructTypeSpec {
+  message Member {
+    uint32 id = 1;
+    string name = 2;
+    GenericDataTypeSpec type_spec = 3;
+  }
+  repeated Member members = 1;
+  repeated string annotations = 2;
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
+  repeated StructuredAnnotation structured_annotations = 6;
+}
+
+// If a field is of type list
+// ordered and duplicates allowed.
+// If max_size and min_size are equal, then fixed size.
+message GenericListTypeSpec {
+  GenericDataTypeSpec element_type_spec = 1;// The element_type
+  repeated string annotations = 2;
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
+  int32 min_size = 4; // 0 if not present
+  int32 max_size = 5; // no max size defined if not present
+  repeated SourceLocation annotation_locations = 6;
+  repeated StructuredAnnotation structured_annotations = 7;
+}
+// If a field is of type "unordered_set"
+// Unordered and duplicates not allowed
+message GenericUnorderedSetTypeSpec {
+  GenericDataTypeSpec element_type_spec = 1;// The element_type
+  repeated string annotations = 2;
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
+  int32 min_size = 4; // 0 if not present
+  int32 max_size = 5; // no max size defined if not present
+  repeated SourceLocation annotation_locations = 6;
+  repeated StructuredAnnotation structured_annotations = 7;
+}
+
+message GenericStringSpec {
+  string name = 1;
+  string default_value = 2;
+  int32 min_size = 3; // 0 if not present
+  int32 max_size = 4; // no max size defined if not present
+  repeated string annotations = 5;
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 6;
+  repeated StructuredAnnotation structured_annotations = 7;
+}
+message GenericEnumTypeSpec {
+  message Member {
+    string name = 1;
+    int32 default_value = 2;
+    repeated string annotations = 3;
+    // Optional. If present, the location of `annotations[i]` is given by
+   // `annotation_locations[i]`.
+    repeated SourceLocation annotation_locations = 4;
+    repeated StructuredAnnotation structured_annotations = 5;
+  }
+  repeated Member members = 1;
+  repeated string annotations = 2;
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 3;
+  repeated StructuredAnnotation structured_annotations = 4;
+}
+message GenericSerializableEnumTypeSpec {
+  message Member {
+    string name = 1;
+    bytes value = 2;
+    int32 default_value = 3;
+    repeated string annotations = 4;
+    // Optional. If present, the location of `annotations[i]` is given by
+   // `annotation_locations[i]`.
+    repeated SourceLocation annotation_locations = 5;
+    repeated StructuredAnnotation structured_annotations = 6;
+  }
+  GenericBitTypeSpec underlying_type = 1;
+  repeated Member members = 2;
+  repeated string annotations = 3;
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 4;
+  repeated StructuredAnnotation structured_annotations = 5;
+}
+
+// User defined types
+message GenericNewTypeTranslation {
+  message SdnString {}
+
+  // the URI uniquely identifies the translation in order to enable the
+  // P4Runtime agent to perform value-mapping appropriately when required. It is
+  // recommended that the URI includes at least the P4 architecture name and the
+  // type name. In case of target specific types, target_name should be included
+  string uri = 1;
+
+  // The object is either represented as an unsigned integer with a bitwidth of
+  // `sdn_bitwidth`, or as a string.
+  oneof sdn_type {
+    int32 sdn_bitwidth = 2;
+    SdnString sdn_string = 3;
+  }
+}
+message GenericNewTypeSpec {
+  oneof representation {
+    // if no @p4runtime_translation annotation present
+    GenericDataTypeSpec original_type = 1;
+    // if @p4runtime_translation annotation present
+    GenericNewTypeTranslation translated_type = 2;
+  }
+  // for other annotations (not @p4runtime_translation)
+  repeated string annotations = 3;
+  // Optional. If present, the location of `annotations[i]` is given by
+ // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
+  repeated StructuredAnnotation structured_annotations = 4;
+}
+
+////// End: GenericTables

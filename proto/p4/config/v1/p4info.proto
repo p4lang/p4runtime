@@ -36,6 +36,8 @@ message P4Info {
   repeated ValueSet value_sets = 10;
   repeated Register registers = 11;
   repeated Digest digests = 12;
+  repeated GenericTable generic_tables = 13;
+  repeated Union unions = 14;
   repeated Extern externs = 100;
   P4TypeInfo type_info = 200;
 }
@@ -103,9 +105,26 @@ message P4Ids {
     DIRECT_METER = 0x15;
     REGISTER = 0x16;
     DIGEST = 0x17;
+    GENERIC_TABLE = 0x18;
 
     // externs for other architectures (vendor extensions)
     OTHER_EXTERNS_START = 0x80;
+
+    // max value for an unsigned 8-bit byte
+    MAX = 0xff;
+    // requires protoc >= 3.5.0
+    // reserved 0x100 to max;
+  }
+}
+
+// A subtype of P4IDs for GenericTables
+message GenericTableType {
+  // The ID space is for Generic tables. In the Preamble ID, the MSB will be
+  // 0x18 but the next MSB is reserved for this enum. This shortens the ID
+  // space for tables in each type but it is still 64k (16 bits) for each table
+  enum Prefix {
+
+    GENERIC_TABLES_START = 0x00;
 
     // max value for an unsigned 8-bit byte
     MAX = 0xff;
@@ -407,3 +426,87 @@ message Digest {
   Preamble preamble = 1;
   P4DataTypeSpec type_spec = 2;
 }
+
+////// Begin : GenericTables messages
+
+message GenericMatchField {
+  uint32 id = 1;
+  string name = 2;
+  GenericDataTypeSpec type_spec = 3;
+  enum MatchType {
+    UNSPECIFIED = 0;
+    EXACT = 2;
+    LPM = 3;
+    TERNARY = 4;
+    RANGE = 5;
+    OPTIONAL = 6;
+  }
+  oneof match {
+    MatchType match_type = 4;
+    // used for architecture-specific match types which are not part of the core
+    // P4 language or of the PSA architecture.
+    string other_match_type = 5;
+  }
+  // Documentation of the match field
+  Documentation doc = 6;
+  repeated string annotations = 7;
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
+  repeated StructuredAnnotation structured_annotations = 8;
+  repeated SourceLocation annotation_locations = 9;
+}
+
+// used to list all possible unions in a Table
+message UnionRef {
+  uint32 id = 1;
+  enum Scope {
+    TABLE_AND_DEFAULT = 0;
+    TABLE_ONLY = 1;
+    DEFAULT_ONLY = 2;
+  }
+  Scope scope = 3;
+  repeated string annotations = 2;
+  // Optional. If present, the location of `annotations[i]` is given by
+  // `annotation_locations[i]`.
+  repeated SourceLocation annotation_locations = 5;
+  repeated StructuredAnnotation structured_annotations = 4;
+}
+
+message Union {
+  Preamble preamble = 1;
+  message Param {
+    uint32 id = 1;
+    string name = 2;
+    repeated string annotations = 3;
+    GenericDataTypeSpec type_spec = 4;
+    // Documentation of the Param
+    Documentation doc = 5;
+    repeated StructuredAnnotation structured_annotations = 6;
+    // Optional. If present, the location of `annotations[i]` is given by
+    // `annotation_locations[i]`.
+    repeated SourceLocation annotation_locations = 7;
+  }
+  repeated Param params = 2;
+}
+
+// All Tables of one type will be grouped in one message.
+message GenericTable {
+  uint32 type_id = 1;
+  string type_name = 2;
+  repeated string properties = 3;
+  repeated GenericTableInstance instances = 4;
+}
+
+message GenericTableInstance {
+  Preamble preamble = 1;
+  repeated GenericMatchField generic_match_fields = 2;
+  repeated UnionRef union_refs = 3;
+  // 0 (default value) means that the table does not have a const default action
+  uint32 const_default_union_id= 4;
+  int64 size = 5;  // max number of entries in table
+  // architecture-specific table properties which are not part of the core P4
+  // language or of the PSA architecture.
+  google.protobuf.Any other_properties = 100;
+}
+
+////// End: GenericTables
