@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z+github.com/p4lang/p4runtime/go/p4/config/v1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x19p4/config/v1/p4info.proto\x12\x0cp4.config.v1\x1a\x19google/protobuf/any.proto\x1a\x1ap4/config/v1/p4types.proto\"\xe1\x05\n\x06P4Info\x12\'\n\x08pkg_info\x18\x01 \x01(\x0b\x32\x15.p4.config.v1.PkgInfo\x12#\n\x06tables\x18\x02 \x03(\x0b\x32\x13.p4.config.v1.Table\x12%\n\x07\x61\x63tions\x18\x03 \x03(\x0b\x32\x14.p4.config.v1.Action\x12\x34\n\x0f\x61\x63tion_profiles\x18\x04 \x03(\x0b\x32\x1b.p4.config.v1.ActionProfile\x12\'\n\x08\x63ounters\x18\x05 \x03(\x0b\x32\x15.p4.config.v1.Counter\x12\x34\n\x0f\x64irect_counters\x18\x06 \x03(\x0b\x32\x1b.p4.config.v1.DirectCounter\x12#\n\x06meters\x18\x07 \x03(\x0b\x32\x13.p4.config.v1.Meter\x12\x30\n\rdirect_meters\x18\x08 \x03(\x0b\x32\x19.p4.config.v1.DirectMeter\x12J\n\x1a\x63ontroller_packet_metadata\x18\t \x03(\x0b\x32&.p4.config.v1.ControllerPacketMetadata\x12*\n\nvalue_sets\x18\n \x03(\x0b\x32\x16.p4.config.v1.ValueSet\x12)\n\tregisters\x18\x0b \x03(\x0b\x32\x16.p4.config.v1.Register\x12%\n\x07\x64igests\x18\x0c \x03(\x0b\x32\x14.p4.config.v1.Digest\x12\x32\n\x0egeneric_tables\x18\r \x03(\x0b\x32\x1a.p4.config.v1.GenericTable\x12#\n\x06unions\x18\x0e \x03(\x0b\x32\x13.p4.config.v1.Union\x12%\n\x07\x65xterns\x18\x64 \x03(\x0b\x32\x14.p4.config.v1.Extern\x12,\n\ttype_info\x18\xc8\x01 \x01(\x0b\x32\x18.p4.config.v1.P4TypeInfo\"3\n\rDocumentation\x12\r\n\x05\x62rief\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"\xa9\x02\n\x07PkgInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12(\n\x03\x64oc\x18\x03 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\n \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x0c\n\x04\x61rch\x18\x05 \x01(\t\x12\x14\n\x0corganization\x18\x06 \x01(\t\x12\x0f\n\x07\x63ontact\x18\x07 \x01(\t\x12\x0b\n\x03url\x18\x08 \x01(\t\x12\x42\n\x16structured_annotations\x18\t \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x9a\x02\n\x05P4Ids\"\x90\x02\n\x06Prefix\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TION\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\r\n\tVALUE_SET\x10\x03\x12\x15\n\x11\x43ONTROLLER_HEADER\x10\x04\x12\x15\n\x11PSA_EXTERNS_START\x10\x10\x12\x12\n\x0e\x41\x43TION_PROFILE\x10\x11\x12\x0b\n\x07\x43OUNTER\x10\x12\x12\x12\n\x0e\x44IRECT_COUNTER\x10\x13\x12\t\n\x05METER\x10\x14\x12\x10\n\x0c\x44IRECT_METER\x10\x15\x12\x0c\n\x08REGISTER\x10\x16\x12\n\n\x06\x44IGEST\x10\x17\x12\x11\n\rGENERIC_TABLE\x10\x18\x12\x18\n\x13OTHER_EXTERNS_START\x10\x80\x01\x12\x08\n\x03MAX\x10\xff\x01\"@\n\x10GenericTableType\",\n\x06Prefix\x12\x18\n\x14GENERIC_TABLES_START\x10\x00\x12\x08\n\x03MAX\x10\xff\x01\"\xf2\x01\n\x08Preamble\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x61lias\x18\x03 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"k\n\x06\x45xtern\x12\x16\n\x0e\x65xtern_type_id\x18\x01 \x01(\r\x12\x18\n\x10\x65xtern_type_name\x18\x02 \x01(\t\x12/\n\tinstances\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.ExternInstance\"^\n\x0e\x45xternInstance\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\"\n\x04info\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"\xdc\x03\n\nMatchField\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\n \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12\x38\n\nmatch_type\x18\x05 \x01(\x0e\x32\".p4.config.v1.MatchField.MatchTypeH\x00\x12\x1a\n\x10other_match_type\x18\x07 \x01(\tH\x00\x12(\n\x03\x64oc\x18\x06 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12,\n\ttype_name\x18\x08 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\t \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"V\n\tMatchType\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x45XACT\x10\x02\x12\x07\n\x03LPM\x10\x03\x12\x0b\n\x07TERNARY\x10\x04\x12\t\n\x05RANGE\x10\x05\x12\x0c\n\x08OPTIONAL\x10\x06\x42\x07\n\x05match\"\xc1\x03\n\x05Table\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12.\n\x0cmatch_fields\x18\x02 \x03(\x0b\x32\x18.p4.config.v1.MatchField\x12,\n\x0b\x61\x63tion_refs\x18\x03 \x03(\x0b\x32\x17.p4.config.v1.ActionRef\x12\x1f\n\x17\x63onst_default_action_id\x18\x04 \x01(\r\x12\x19\n\x11implementation_id\x18\x06 \x01(\r\x12\x1b\n\x13\x64irect_resource_ids\x18\x07 \x03(\r\x12\x0c\n\x04size\x18\x08 \x01(\x03\x12\x46\n\x15idle_timeout_behavior\x18\t \x01(\x0e\x32\'.p4.config.v1.Table.IdleTimeoutBehavior\x12\x16\n\x0eis_const_table\x18\n \x01(\x08\x12.\n\x10other_properties\x18\x64 \x01(\x0b\x32\x14.google.protobuf.Any\"9\n\x13IdleTimeoutBehavior\x12\x0e\n\nNO_TIMEOUT\x10\x00\x12\x12\n\x0eNOTIFY_CONTROL\x10\x01\"\x9c\x02\n\tActionRef\x12\n\n\x02id\x18\x01 \x01(\r\x12,\n\x05scope\x18\x03 \x01(\x0e\x32\x1d.p4.config.v1.ActionRef.Scope\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"@\n\x05Scope\x12\x15\n\x11TABLE_AND_DEFAULT\x10\x00\x12\x0e\n\nTABLE_ONLY\x10\x01\x12\x10\n\x0c\x44\x45\x46\x41ULT_ONLY\x10\x02\"\x81\x03\n\x06\x41\x63tion\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.p4.config.v1.Action.Param\x1a\xa0\x02\n\x05Param\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x08 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12,\n\ttype_name\x18\x06 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\x07 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x82\x03\n\rActionProfile\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\x11\n\ttable_ids\x18\x02 \x03(\r\x12\x15\n\rwith_selector\x18\x03 \x01(\x08\x12\x0c\n\x04size\x18\x04 \x01(\x03\x12\x16\n\x0emax_group_size\x18\x05 \x01(\x05\x12\x42\n\x0esum_of_weights\x18\x06 \x01(\x0b\x32(.p4.config.v1.ActionProfile.SumOfWeightsH\x00\x12\x42\n\x0esum_of_members\x18\x07 \x01(\x0b\x32(.p4.config.v1.ActionProfile.SumOfMembersH\x00\x1a\x0e\n\x0cSumOfWeights\x1a\x44\n\x0cSumOfMembers\x12\x1e\n\x11max_member_weight\x18\x01 \x01(\x05H\x00\x88\x01\x01\x42\x14\n\x12_max_member_weightB\x19\n\x17selector_size_semantics\"v\n\x0b\x43ounterSpec\x12,\n\x04unit\x18\x01 \x01(\x0e\x32\x1e.p4.config.v1.CounterSpec.Unit\"9\n\x04Unit\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x42YTES\x10\x01\x12\x0b\n\x07PACKETS\x10\x02\x12\x08\n\x04\x42OTH\x10\x03\"\x9e\x01\n\x07\x43ounter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x04spec\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.CounterSpec\x12\x0c\n\x04size\x18\x03 \x01(\x03\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"{\n\rDirectCounter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x04spec\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.CounterSpec\x12\x17\n\x0f\x64irect_table_id\x18\x03 \x01(\r\"h\n\tMeterSpec\x12*\n\x04unit\x18\x01 \x01(\x0e\x32\x1c.p4.config.v1.MeterSpec.Unit\"/\n\x04Unit\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x42YTES\x10\x01\x12\x0b\n\x07PACKETS\x10\x02\"\x9a\x01\n\x05Meter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12%\n\x04spec\x18\x02 \x01(\x0b\x32\x17.p4.config.v1.MeterSpec\x12\x0c\n\x04size\x18\x03 \x01(\x03\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"w\n\x0b\x44irectMeter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12%\n\x04spec\x18\x02 \x01(\x0b\x32\x17.p4.config.v1.MeterSpec\x12\x17\n\x0f\x64irect_table_id\x18\x03 \x01(\r\"\x83\x03\n\x18\x43ontrollerPacketMetadata\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\x41\n\x08metadata\x18\x02 \x03(\x0b\x32/.p4.config.v1.ControllerPacketMetadata.Metadata\x1a\xf9\x01\n\x08Metadata\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12,\n\ttype_name\x18\x05 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"k\n\x08ValueSet\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x05match\x18\x02 \x03(\x0b\x32\x18.p4.config.v1.MatchField\x12\x0c\n\x04size\x18\x03 \x01(\x05\"\xa7\x01\n\x08Register\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\x12\x0c\n\x04size\x18\x03 \x01(\x05\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"c\n\x06\x44igest\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\"\xe0\x03\n\x11GenericMatchField\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x34\n\ttype_spec\x18\x03 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpec\x12?\n\nmatch_type\x18\x04 \x01(\x0e\x32).p4.config.v1.GenericMatchField.MatchTypeH\x00\x12\x1a\n\x10other_match_type\x18\x05 \x01(\tH\x00\x12(\n\x03\x64oc\x18\x06 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x13\n\x0b\x61nnotations\x18\x07 \x03(\t\x12\x42\n\x16structured_annotations\x18\x08 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x12:\n\x14\x61nnotation_locations\x18\t \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\"V\n\tMatchType\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x45XACT\x10\x02\x12\x07\n\x03LPM\x10\x03\x12\x0b\n\x07TERNARY\x10\x04\x12\t\n\x05RANGE\x10\x05\x12\x0c\n\x08OPTIONAL\x10\x06\x42\x07\n\x05match\"\x9a\x02\n\x08UnionRef\x12\n\n\x02id\x18\x01 \x01(\r\x12+\n\x05scope\x18\x03 \x01(\x0e\x32\x1c.p4.config.v1.UnionRef.Scope\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"@\n\x05Scope\x12\x15\n\x11TABLE_AND_DEFAULT\x10\x00\x12\x0e\n\nTABLE_ONLY\x10\x01\x12\x10\n\x0c\x44\x45\x46\x41ULT_ONLY\x10\x02\"\xf5\x02\n\x05Union\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12)\n\x06params\x18\x02 \x03(\x0b\x32\x19.p4.config.v1.Union.Param\x1a\x96\x02\n\x05Param\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12\x34\n\ttype_spec\x18\x04 \x01(\x0b\x32!.p4.config.v1.GenericDataTypeSpec\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\"}\n\x0cGenericTable\x12\x0f\n\x07type_id\x18\x01 \x01(\r\x12\x11\n\ttype_name\x18\x02 \x01(\t\x12\x12\n\nproperties\x18\x03 \x03(\t\x12\x35\n\tinstances\x18\x04 \x03(\x0b\x32\".p4.config.v1.GenericTableInstance\"\x89\x02\n\x14GenericTableInstance\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12=\n\x14generic_match_fields\x18\x02 \x03(\x0b\x32\x1f.p4.config.v1.GenericMatchField\x12*\n\nunion_refs\x18\x03 \x03(\x0b\x32\x16.p4.config.v1.UnionRef\x12\x1e\n\x16\x63onst_default_union_id\x18\x04 \x01(\r\x12\x0c\n\x04size\x18\x05 \x01(\x03\x12.\n\x10other_properties\x18\x64 \x01(\x0b\x32\x14.google.protobuf.AnyB-Z+github.com/p4lang/p4runtime/go/p4/config/v1b\x06proto3'
+  serialized_pb=b'\n\x19p4/config/v1/p4info.proto\x12\x0cp4.config.v1\x1a\x19google/protobuf/any.proto\x1a\x1ap4/config/v1/p4types.proto\"\x88\x05\n\x06P4Info\x12\'\n\x08pkg_info\x18\x01 \x01(\x0b\x32\x15.p4.config.v1.PkgInfo\x12#\n\x06tables\x18\x02 \x03(\x0b\x32\x13.p4.config.v1.Table\x12%\n\x07\x61\x63tions\x18\x03 \x03(\x0b\x32\x14.p4.config.v1.Action\x12\x34\n\x0f\x61\x63tion_profiles\x18\x04 \x03(\x0b\x32\x1b.p4.config.v1.ActionProfile\x12\'\n\x08\x63ounters\x18\x05 \x03(\x0b\x32\x15.p4.config.v1.Counter\x12\x34\n\x0f\x64irect_counters\x18\x06 \x03(\x0b\x32\x1b.p4.config.v1.DirectCounter\x12#\n\x06meters\x18\x07 \x03(\x0b\x32\x13.p4.config.v1.Meter\x12\x30\n\rdirect_meters\x18\x08 \x03(\x0b\x32\x19.p4.config.v1.DirectMeter\x12J\n\x1a\x63ontroller_packet_metadata\x18\t \x03(\x0b\x32&.p4.config.v1.ControllerPacketMetadata\x12*\n\nvalue_sets\x18\n \x03(\x0b\x32\x16.p4.config.v1.ValueSet\x12)\n\tregisters\x18\x0b \x03(\x0b\x32\x16.p4.config.v1.Register\x12%\n\x07\x64igests\x18\x0c \x03(\x0b\x32\x14.p4.config.v1.Digest\x12%\n\x07\x65xterns\x18\x64 \x03(\x0b\x32\x14.p4.config.v1.Extern\x12,\n\ttype_info\x18\xc8\x01 \x01(\x0b\x32\x18.p4.config.v1.P4TypeInfo\"3\n\rDocumentation\x12\r\n\x05\x62rief\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"\xa9\x02\n\x07PkgInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12(\n\x03\x64oc\x18\x03 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\n \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x0c\n\x04\x61rch\x18\x05 \x01(\t\x12\x14\n\x0corganization\x18\x06 \x01(\t\x12\x0f\n\x07\x63ontact\x18\x07 \x01(\t\x12\x0b\n\x03url\x18\x08 \x01(\t\x12\x42\n\x16structured_annotations\x18\t \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x87\x02\n\x05P4Ids\"\xfd\x01\n\x06Prefix\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TION\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\r\n\tVALUE_SET\x10\x03\x12\x15\n\x11\x43ONTROLLER_HEADER\x10\x04\x12\x15\n\x11PSA_EXTERNS_START\x10\x10\x12\x12\n\x0e\x41\x43TION_PROFILE\x10\x11\x12\x0b\n\x07\x43OUNTER\x10\x12\x12\x12\n\x0e\x44IRECT_COUNTER\x10\x13\x12\t\n\x05METER\x10\x14\x12\x10\n\x0c\x44IRECT_METER\x10\x15\x12\x0c\n\x08REGISTER\x10\x16\x12\n\n\x06\x44IGEST\x10\x17\x12\x18\n\x13OTHER_EXTERNS_START\x10\x80\x01\x12\x08\n\x03MAX\x10\xff\x01\"\xf2\x01\n\x08Preamble\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x61lias\x18\x03 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"k\n\x06\x45xtern\x12\x16\n\x0e\x65xtern_type_id\x18\x01 \x01(\r\x12\x18\n\x10\x65xtern_type_name\x18\x02 \x01(\t\x12/\n\tinstances\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.ExternInstance\"^\n\x0e\x45xternInstance\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\"\n\x04info\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"\xdc\x03\n\nMatchField\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\n \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12\x38\n\nmatch_type\x18\x05 \x01(\x0e\x32\".p4.config.v1.MatchField.MatchTypeH\x00\x12\x1a\n\x10other_match_type\x18\x07 \x01(\tH\x00\x12(\n\x03\x64oc\x18\x06 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12,\n\ttype_name\x18\x08 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\t \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"V\n\tMatchType\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x45XACT\x10\x02\x12\x07\n\x03LPM\x10\x03\x12\x0b\n\x07TERNARY\x10\x04\x12\t\n\x05RANGE\x10\x05\x12\x0c\n\x08OPTIONAL\x10\x06\x42\x07\n\x05match\"\xde\x03\n\x05Table\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12.\n\x0cmatch_fields\x18\x02 \x03(\x0b\x32\x18.p4.config.v1.MatchField\x12,\n\x0b\x61\x63tion_refs\x18\x03 \x03(\x0b\x32\x17.p4.config.v1.ActionRef\x12\x1f\n\x17\x63onst_default_action_id\x18\x04 \x01(\r\x12\x19\n\x11implementation_id\x18\x06 \x01(\r\x12\x1b\n\x13\x64irect_resource_ids\x18\x07 \x03(\r\x12\x0c\n\x04size\x18\x08 \x01(\x03\x12\x46\n\x15idle_timeout_behavior\x18\t \x01(\x0e\x32\'.p4.config.v1.Table.IdleTimeoutBehavior\x12\x16\n\x0eis_const_table\x18\n \x01(\x08\x12\x1b\n\x13has_initial_entries\x18\x0b \x01(\x08\x12.\n\x10other_properties\x18\x64 \x01(\x0b\x32\x14.google.protobuf.Any\"9\n\x13IdleTimeoutBehavior\x12\x0e\n\nNO_TIMEOUT\x10\x00\x12\x12\n\x0eNOTIFY_CONTROL\x10\x01\"\x9c\x02\n\tActionRef\x12\n\n\x02id\x18\x01 \x01(\r\x12,\n\x05scope\x18\x03 \x01(\x0e\x32\x1d.p4.config.v1.ActionRef.Scope\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"@\n\x05Scope\x12\x15\n\x11TABLE_AND_DEFAULT\x10\x00\x12\x0e\n\nTABLE_ONLY\x10\x01\x12\x10\n\x0c\x44\x45\x46\x41ULT_ONLY\x10\x02\"\x81\x03\n\x06\x41\x63tion\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.p4.config.v1.Action.Param\x1a\xa0\x02\n\x05Param\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x08 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12,\n\ttype_name\x18\x06 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\x07 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x82\x03\n\rActionProfile\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\x11\n\ttable_ids\x18\x02 \x03(\r\x12\x15\n\rwith_selector\x18\x03 \x01(\x08\x12\x0c\n\x04size\x18\x04 \x01(\x03\x12\x16\n\x0emax_group_size\x18\x05 \x01(\x05\x12\x42\n\x0esum_of_weights\x18\x06 \x01(\x0b\x32(.p4.config.v1.ActionProfile.SumOfWeightsH\x00\x12\x42\n\x0esum_of_members\x18\x07 \x01(\x0b\x32(.p4.config.v1.ActionProfile.SumOfMembersH\x00\x1a\x0e\n\x0cSumOfWeights\x1a\x44\n\x0cSumOfMembers\x12\x1e\n\x11max_member_weight\x18\x01 \x01(\x05H\x00\x88\x01\x01\x42\x14\n\x12_max_member_weightB\x19\n\x17selector_size_semantics\"v\n\x0b\x43ounterSpec\x12,\n\x04unit\x18\x01 \x01(\x0e\x32\x1e.p4.config.v1.CounterSpec.Unit\"9\n\x04Unit\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x42YTES\x10\x01\x12\x0b\n\x07PACKETS\x10\x02\x12\x08\n\x04\x42OTH\x10\x03\"\x9e\x01\n\x07\x43ounter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x04spec\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.CounterSpec\x12\x0c\n\x04size\x18\x03 \x01(\x03\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"{\n\rDirectCounter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x04spec\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.CounterSpec\x12\x17\n\x0f\x64irect_table_id\x18\x03 \x01(\r\"h\n\tMeterSpec\x12*\n\x04unit\x18\x01 \x01(\x0e\x32\x1c.p4.config.v1.MeterSpec.Unit\"/\n\x04Unit\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x42YTES\x10\x01\x12\x0b\n\x07PACKETS\x10\x02\"\x9a\x01\n\x05Meter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12%\n\x04spec\x18\x02 \x01(\x0b\x32\x17.p4.config.v1.MeterSpec\x12\x0c\n\x04size\x18\x03 \x01(\x03\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"w\n\x0b\x44irectMeter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12%\n\x04spec\x18\x02 \x01(\x0b\x32\x17.p4.config.v1.MeterSpec\x12\x17\n\x0f\x64irect_table_id\x18\x03 \x01(\r\"\x83\x03\n\x18\x43ontrollerPacketMetadata\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\x41\n\x08metadata\x18\x02 \x03(\x0b\x32/.p4.config.v1.ControllerPacketMetadata.Metadata\x1a\xf9\x01\n\x08Metadata\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12,\n\ttype_name\x18\x05 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"k\n\x08ValueSet\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x05match\x18\x02 \x03(\x0b\x32\x18.p4.config.v1.MatchField\x12\x0c\n\x04size\x18\x03 \x01(\x05\"\xa7\x01\n\x08Register\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\x12\x0c\n\x04size\x18\x03 \x01(\x05\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"c\n\x06\x44igest\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpecB-Z+github.com/p4lang/p4runtime/go/p4/config/v1b\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,p4_dot_config_dot_v1_dot_p4types__pb2.DESCRIPTOR,])
 
@@ -100,52 +100,22 @@ _P4IDS_PREFIX = _descriptor.EnumDescriptor(
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='GENERIC_TABLE', index=13, number=24,
+      name='OTHER_EXTERNS_START', index=13, number=128,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='OTHER_EXTERNS_START', index=14, number=128,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='MAX', index=15, number=255,
+      name='MAX', index=14, number=255,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1202,
-  serialized_end=1474,
+  serialized_start=1113,
+  serialized_end=1366,
 )
 _sym_db.RegisterEnumDescriptor(_P4IDS_PREFIX)
-
-_GENERICTABLETYPE_PREFIX = _descriptor.EnumDescriptor(
-  name='Prefix',
-  full_name='p4.config.v1.GenericTableType.Prefix',
-  filename=None,
-  file=DESCRIPTOR,
-  create_key=_descriptor._internal_create_key,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='GENERIC_TABLES_START', index=0, number=0,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='MAX', index=1, number=255,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=1496,
-  serialized_end=1540,
-)
-_sym_db.RegisterEnumDescriptor(_GENERICTABLETYPE_PREFIX)
 
 _MATCHFIELD_MATCHTYPE = _descriptor.EnumDescriptor(
   name='MatchType',
@@ -187,8 +157,8 @@ _MATCHFIELD_MATCHTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2374,
-  serialized_end=2460,
+  serialized_start=2200,
+  serialized_end=2286,
 )
 _sym_db.RegisterEnumDescriptor(_MATCHFIELD_MATCHTYPE)
 
@@ -212,8 +182,8 @@ _TABLE_IDLETIMEOUTBEHAVIOR = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2864,
-  serialized_end=2921,
+  serialized_start=2719,
+  serialized_end=2776,
 )
 _sym_db.RegisterEnumDescriptor(_TABLE_IDLETIMEOUTBEHAVIOR)
 
@@ -242,8 +212,8 @@ _ACTIONREF_SCOPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3144,
-  serialized_end=3208,
+  serialized_start=2999,
+  serialized_end=3063,
 )
 _sym_db.RegisterEnumDescriptor(_ACTIONREF_SCOPE)
 
@@ -277,8 +247,8 @@ _COUNTERSPEC_UNIT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=4048,
-  serialized_end=4105,
+  serialized_start=3903,
+  serialized_end=3960,
 )
 _sym_db.RegisterEnumDescriptor(_COUNTERSPEC_UNIT)
 
@@ -307,85 +277,10 @@ _METERSPEC_UNIT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=4048,
-  serialized_end=4095,
+  serialized_start=3903,
+  serialized_end=3950,
 )
 _sym_db.RegisterEnumDescriptor(_METERSPEC_UNIT)
-
-_GENERICMATCHFIELD_MATCHTYPE = _descriptor.EnumDescriptor(
-  name='MatchType',
-  full_name='p4.config.v1.GenericMatchField.MatchType',
-  filename=None,
-  file=DESCRIPTOR,
-  create_key=_descriptor._internal_create_key,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='EXACT', index=1, number=2,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='LPM', index=2, number=3,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='TERNARY', index=3, number=4,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='RANGE', index=4, number=5,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='OPTIONAL', index=5, number=6,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=2374,
-  serialized_end=2460,
-)
-_sym_db.RegisterEnumDescriptor(_GENERICMATCHFIELD_MATCHTYPE)
-
-_UNIONREF_SCOPE = _descriptor.EnumDescriptor(
-  name='Scope',
-  full_name='p4.config.v1.UnionRef.Scope',
-  filename=None,
-  file=DESCRIPTOR,
-  create_key=_descriptor._internal_create_key,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='TABLE_AND_DEFAULT', index=0, number=0,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='TABLE_ONLY', index=1, number=1,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='DEFAULT_ONLY', index=2, number=2,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=3144,
-  serialized_end=3208,
-)
-_sym_db.RegisterEnumDescriptor(_UNIONREF_SCOPE)
 
 
 _P4INFO = _descriptor.Descriptor(
@@ -481,28 +376,14 @@ _P4INFO = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='generic_tables', full_name='p4.config.v1.P4Info.generic_tables', index=12,
-      number=13, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='unions', full_name='p4.config.v1.P4Info.unions', index=13,
-      number=14, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='externs', full_name='p4.config.v1.P4Info.externs', index=14,
+      name='externs', full_name='p4.config.v1.P4Info.externs', index=12,
       number=100, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='type_info', full_name='p4.config.v1.P4Info.type_info', index=15,
+      name='type_info', full_name='p4.config.v1.P4Info.type_info', index=13,
       number=200, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -521,7 +402,7 @@ _P4INFO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=99,
-  serialized_end=836,
+  serialized_end=747,
 )
 
 
@@ -559,8 +440,8 @@ _DOCUMENTATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=838,
-  serialized_end=889,
+  serialized_start=749,
+  serialized_end=800,
 )
 
 
@@ -654,8 +535,8 @@ _PKGINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=892,
-  serialized_end=1189,
+  serialized_start=803,
+  serialized_end=1100,
 )
 
 
@@ -680,34 +561,8 @@ _P4IDS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1192,
-  serialized_end=1474,
-)
-
-
-_GENERICTABLETYPE = _descriptor.Descriptor(
-  name='GenericTableType',
-  full_name='p4.config.v1.GenericTableType',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _GENERICTABLETYPE_PREFIX,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1476,
-  serialized_end=1540,
+  serialized_start=1103,
+  serialized_end=1366,
 )
 
 
@@ -780,8 +635,8 @@ _PREAMBLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1543,
-  serialized_end=1785,
+  serialized_start=1369,
+  serialized_end=1611,
 )
 
 
@@ -826,8 +681,8 @@ _EXTERN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1787,
-  serialized_end=1894,
+  serialized_start=1613,
+  serialized_end=1720,
 )
 
 
@@ -865,8 +720,8 @@ _EXTERNINSTANCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1896,
-  serialized_end=1990,
+  serialized_start=1722,
+  serialized_end=1816,
 )
 
 
@@ -966,8 +821,8 @@ _MATCHFIELD = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1993,
-  serialized_end=2469,
+  serialized_start=1819,
+  serialized_end=2295,
 )
 
 
@@ -1043,7 +898,14 @@ _TABLE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='other_properties', full_name='p4.config.v1.Table.other_properties', index=9,
+      name='has_initial_entries', full_name='p4.config.v1.Table.has_initial_entries', index=9,
+      number=11, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='other_properties', full_name='p4.config.v1.Table.other_properties', index=10,
       number=100, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1062,8 +924,8 @@ _TABLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2472,
-  serialized_end=2921,
+  serialized_start=2298,
+  serialized_end=2776,
 )
 
 
@@ -1123,8 +985,8 @@ _ACTIONREF = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2924,
-  serialized_end=3208,
+  serialized_start=2779,
+  serialized_end=3063,
 )
 
 
@@ -1204,8 +1066,8 @@ _ACTION_PARAM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3308,
-  serialized_end=3596,
+  serialized_start=3163,
+  serialized_end=3451,
 )
 
 _ACTION = _descriptor.Descriptor(
@@ -1242,8 +1104,8 @@ _ACTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3211,
-  serialized_end=3596,
+  serialized_start=3066,
+  serialized_end=3451,
 )
 
 
@@ -1267,8 +1129,8 @@ _ACTIONPROFILE_SUMOFWEIGHTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3874,
-  serialized_end=3888,
+  serialized_start=3729,
+  serialized_end=3743,
 )
 
 _ACTIONPROFILE_SUMOFMEMBERS = _descriptor.Descriptor(
@@ -1303,8 +1165,8 @@ _ACTIONPROFILE_SUMOFMEMBERS = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=3890,
-  serialized_end=3958,
+  serialized_start=3745,
+  serialized_end=3813,
 )
 
 _ACTIONPROFILE = _descriptor.Descriptor(
@@ -1381,8 +1243,8 @@ _ACTIONPROFILE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=3599,
-  serialized_end=3985,
+  serialized_start=3454,
+  serialized_end=3840,
 )
 
 
@@ -1414,8 +1276,8 @@ _COUNTERSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3987,
-  serialized_end=4105,
+  serialized_start=3842,
+  serialized_end=3960,
 )
 
 
@@ -1467,8 +1329,8 @@ _COUNTER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4108,
-  serialized_end=4266,
+  serialized_start=3963,
+  serialized_end=4121,
 )
 
 
@@ -1513,8 +1375,8 @@ _DIRECTCOUNTER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4268,
-  serialized_end=4391,
+  serialized_start=4123,
+  serialized_end=4246,
 )
 
 
@@ -1546,8 +1408,8 @@ _METERSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4393,
-  serialized_end=4497,
+  serialized_start=4248,
+  serialized_end=4352,
 )
 
 
@@ -1599,8 +1461,8 @@ _METER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4500,
-  serialized_end=4654,
+  serialized_start=4355,
+  serialized_end=4509,
 )
 
 
@@ -1645,8 +1507,8 @@ _DIRECTMETER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4656,
-  serialized_end=4775,
+  serialized_start=4511,
+  serialized_end=4630,
 )
 
 
@@ -1719,8 +1581,8 @@ _CONTROLLERPACKETMETADATA_METADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4916,
-  serialized_end=5165,
+  serialized_start=4771,
+  serialized_end=5020,
 )
 
 _CONTROLLERPACKETMETADATA = _descriptor.Descriptor(
@@ -1757,8 +1619,8 @@ _CONTROLLERPACKETMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4778,
-  serialized_end=5165,
+  serialized_start=4633,
+  serialized_end=5020,
 )
 
 
@@ -1803,8 +1665,8 @@ _VALUESET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5167,
-  serialized_end=5274,
+  serialized_start=5022,
+  serialized_end=5129,
 )
 
 
@@ -1856,8 +1718,8 @@ _REGISTER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5277,
-  serialized_end=5444,
+  serialized_start=5132,
+  serialized_end=5299,
 )
 
 
@@ -1895,395 +1757,8 @@ _DIGEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5446,
-  serialized_end=5545,
-)
-
-
-_GENERICMATCHFIELD = _descriptor.Descriptor(
-  name='GenericMatchField',
-  full_name='p4.config.v1.GenericMatchField',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='p4.config.v1.GenericMatchField.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='p4.config.v1.GenericMatchField.name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='type_spec', full_name='p4.config.v1.GenericMatchField.type_spec', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='match_type', full_name='p4.config.v1.GenericMatchField.match_type', index=3,
-      number=4, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='other_match_type', full_name='p4.config.v1.GenericMatchField.other_match_type', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='doc', full_name='p4.config.v1.GenericMatchField.doc', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='annotations', full_name='p4.config.v1.GenericMatchField.annotations', index=6,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='structured_annotations', full_name='p4.config.v1.GenericMatchField.structured_annotations', index=7,
-      number=8, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='annotation_locations', full_name='p4.config.v1.GenericMatchField.annotation_locations', index=8,
-      number=9, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _GENERICMATCHFIELD_MATCHTYPE,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='match', full_name='p4.config.v1.GenericMatchField.match',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=5548,
-  serialized_end=6028,
-)
-
-
-_UNIONREF = _descriptor.Descriptor(
-  name='UnionRef',
-  full_name='p4.config.v1.UnionRef',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='p4.config.v1.UnionRef.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='scope', full_name='p4.config.v1.UnionRef.scope', index=1,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='annotations', full_name='p4.config.v1.UnionRef.annotations', index=2,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='annotation_locations', full_name='p4.config.v1.UnionRef.annotation_locations', index=3,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='structured_annotations', full_name='p4.config.v1.UnionRef.structured_annotations', index=4,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _UNIONREF_SCOPE,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6031,
-  serialized_end=6313,
-)
-
-
-_UNION_PARAM = _descriptor.Descriptor(
-  name='Param',
-  full_name='p4.config.v1.Union.Param',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='p4.config.v1.Union.Param.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='p4.config.v1.Union.Param.name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='annotations', full_name='p4.config.v1.Union.Param.annotations', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='type_spec', full_name='p4.config.v1.Union.Param.type_spec', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='doc', full_name='p4.config.v1.Union.Param.doc', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='structured_annotations', full_name='p4.config.v1.Union.Param.structured_annotations', index=5,
-      number=6, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='annotation_locations', full_name='p4.config.v1.Union.Param.annotation_locations', index=6,
-      number=7, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6411,
-  serialized_end=6689,
-)
-
-_UNION = _descriptor.Descriptor(
-  name='Union',
-  full_name='p4.config.v1.Union',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='preamble', full_name='p4.config.v1.Union.preamble', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='params', full_name='p4.config.v1.Union.params', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[_UNION_PARAM, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6316,
-  serialized_end=6689,
-)
-
-
-_GENERICTABLE = _descriptor.Descriptor(
-  name='GenericTable',
-  full_name='p4.config.v1.GenericTable',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='type_id', full_name='p4.config.v1.GenericTable.type_id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='type_name', full_name='p4.config.v1.GenericTable.type_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='properties', full_name='p4.config.v1.GenericTable.properties', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='instances', full_name='p4.config.v1.GenericTable.instances', index=3,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6691,
-  serialized_end=6816,
-)
-
-
-_GENERICTABLEINSTANCE = _descriptor.Descriptor(
-  name='GenericTableInstance',
-  full_name='p4.config.v1.GenericTableInstance',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='preamble', full_name='p4.config.v1.GenericTableInstance.preamble', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='generic_match_fields', full_name='p4.config.v1.GenericTableInstance.generic_match_fields', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='union_refs', full_name='p4.config.v1.GenericTableInstance.union_refs', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='const_default_union_id', full_name='p4.config.v1.GenericTableInstance.const_default_union_id', index=3,
-      number=4, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='size', full_name='p4.config.v1.GenericTableInstance.size', index=4,
-      number=5, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='other_properties', full_name='p4.config.v1.GenericTableInstance.other_properties', index=5,
-      number=100, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6819,
-  serialized_end=7084,
+  serialized_start=5301,
+  serialized_end=5400,
 )
 
 _P4INFO.fields_by_name['pkg_info'].message_type = _PKGINFO
@@ -2298,15 +1773,12 @@ _P4INFO.fields_by_name['controller_packet_metadata'].message_type = _CONTROLLERP
 _P4INFO.fields_by_name['value_sets'].message_type = _VALUESET
 _P4INFO.fields_by_name['registers'].message_type = _REGISTER
 _P4INFO.fields_by_name['digests'].message_type = _DIGEST
-_P4INFO.fields_by_name['generic_tables'].message_type = _GENERICTABLE
-_P4INFO.fields_by_name['unions'].message_type = _UNION
 _P4INFO.fields_by_name['externs'].message_type = _EXTERN
 _P4INFO.fields_by_name['type_info'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._P4TYPEINFO
 _PKGINFO.fields_by_name['doc'].message_type = _DOCUMENTATION
 _PKGINFO.fields_by_name['annotation_locations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._SOURCELOCATION
 _PKGINFO.fields_by_name['structured_annotations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._STRUCTUREDANNOTATION
 _P4IDS_PREFIX.containing_type = _P4IDS
-_GENERICTABLETYPE_PREFIX.containing_type = _GENERICTABLETYPE
 _PREAMBLE.fields_by_name['annotation_locations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._SOURCELOCATION
 _PREAMBLE.fields_by_name['doc'].message_type = _DOCUMENTATION
 _PREAMBLE.fields_by_name['structured_annotations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._STRUCTUREDANNOTATION
@@ -2383,39 +1855,10 @@ _REGISTER.fields_by_name['type_spec'].message_type = p4_dot_config_dot_v1_dot_p4
 _REGISTER.fields_by_name['index_type_name'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._P4NAMEDTYPE
 _DIGEST.fields_by_name['preamble'].message_type = _PREAMBLE
 _DIGEST.fields_by_name['type_spec'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._P4DATATYPESPEC
-_GENERICMATCHFIELD.fields_by_name['type_spec'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._GENERICDATATYPESPEC
-_GENERICMATCHFIELD.fields_by_name['match_type'].enum_type = _GENERICMATCHFIELD_MATCHTYPE
-_GENERICMATCHFIELD.fields_by_name['doc'].message_type = _DOCUMENTATION
-_GENERICMATCHFIELD.fields_by_name['structured_annotations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._STRUCTUREDANNOTATION
-_GENERICMATCHFIELD.fields_by_name['annotation_locations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._SOURCELOCATION
-_GENERICMATCHFIELD_MATCHTYPE.containing_type = _GENERICMATCHFIELD
-_GENERICMATCHFIELD.oneofs_by_name['match'].fields.append(
-  _GENERICMATCHFIELD.fields_by_name['match_type'])
-_GENERICMATCHFIELD.fields_by_name['match_type'].containing_oneof = _GENERICMATCHFIELD.oneofs_by_name['match']
-_GENERICMATCHFIELD.oneofs_by_name['match'].fields.append(
-  _GENERICMATCHFIELD.fields_by_name['other_match_type'])
-_GENERICMATCHFIELD.fields_by_name['other_match_type'].containing_oneof = _GENERICMATCHFIELD.oneofs_by_name['match']
-_UNIONREF.fields_by_name['scope'].enum_type = _UNIONREF_SCOPE
-_UNIONREF.fields_by_name['annotation_locations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._SOURCELOCATION
-_UNIONREF.fields_by_name['structured_annotations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._STRUCTUREDANNOTATION
-_UNIONREF_SCOPE.containing_type = _UNIONREF
-_UNION_PARAM.fields_by_name['type_spec'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._GENERICDATATYPESPEC
-_UNION_PARAM.fields_by_name['doc'].message_type = _DOCUMENTATION
-_UNION_PARAM.fields_by_name['structured_annotations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._STRUCTUREDANNOTATION
-_UNION_PARAM.fields_by_name['annotation_locations'].message_type = p4_dot_config_dot_v1_dot_p4types__pb2._SOURCELOCATION
-_UNION_PARAM.containing_type = _UNION
-_UNION.fields_by_name['preamble'].message_type = _PREAMBLE
-_UNION.fields_by_name['params'].message_type = _UNION_PARAM
-_GENERICTABLE.fields_by_name['instances'].message_type = _GENERICTABLEINSTANCE
-_GENERICTABLEINSTANCE.fields_by_name['preamble'].message_type = _PREAMBLE
-_GENERICTABLEINSTANCE.fields_by_name['generic_match_fields'].message_type = _GENERICMATCHFIELD
-_GENERICTABLEINSTANCE.fields_by_name['union_refs'].message_type = _UNIONREF
-_GENERICTABLEINSTANCE.fields_by_name['other_properties'].message_type = google_dot_protobuf_dot_any__pb2._ANY
 DESCRIPTOR.message_types_by_name['P4Info'] = _P4INFO
 DESCRIPTOR.message_types_by_name['Documentation'] = _DOCUMENTATION
 DESCRIPTOR.message_types_by_name['PkgInfo'] = _PKGINFO
 DESCRIPTOR.message_types_by_name['P4Ids'] = _P4IDS
-DESCRIPTOR.message_types_by_name['GenericTableType'] = _GENERICTABLETYPE
 DESCRIPTOR.message_types_by_name['Preamble'] = _PREAMBLE
 DESCRIPTOR.message_types_by_name['Extern'] = _EXTERN
 DESCRIPTOR.message_types_by_name['ExternInstance'] = _EXTERNINSTANCE
@@ -2434,11 +1877,6 @@ DESCRIPTOR.message_types_by_name['ControllerPacketMetadata'] = _CONTROLLERPACKET
 DESCRIPTOR.message_types_by_name['ValueSet'] = _VALUESET
 DESCRIPTOR.message_types_by_name['Register'] = _REGISTER
 DESCRIPTOR.message_types_by_name['Digest'] = _DIGEST
-DESCRIPTOR.message_types_by_name['GenericMatchField'] = _GENERICMATCHFIELD
-DESCRIPTOR.message_types_by_name['UnionRef'] = _UNIONREF
-DESCRIPTOR.message_types_by_name['Union'] = _UNION
-DESCRIPTOR.message_types_by_name['GenericTable'] = _GENERICTABLE
-DESCRIPTOR.message_types_by_name['GenericTableInstance'] = _GENERICTABLEINSTANCE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 P4Info = _reflection.GeneratedProtocolMessageType('P4Info', (_message.Message,), {
@@ -2468,13 +1906,6 @@ P4Ids = _reflection.GeneratedProtocolMessageType('P4Ids', (_message.Message,), {
   # @@protoc_insertion_point(class_scope:p4.config.v1.P4Ids)
   })
 _sym_db.RegisterMessage(P4Ids)
-
-GenericTableType = _reflection.GeneratedProtocolMessageType('GenericTableType', (_message.Message,), {
-  'DESCRIPTOR' : _GENERICTABLETYPE,
-  '__module__' : 'p4.config.v1.p4info_pb2'
-  # @@protoc_insertion_point(class_scope:p4.config.v1.GenericTableType)
-  })
-_sym_db.RegisterMessage(GenericTableType)
 
 Preamble = _reflection.GeneratedProtocolMessageType('Preamble', (_message.Message,), {
   'DESCRIPTOR' : _PREAMBLE,
@@ -2633,49 +2064,6 @@ Digest = _reflection.GeneratedProtocolMessageType('Digest', (_message.Message,),
   # @@protoc_insertion_point(class_scope:p4.config.v1.Digest)
   })
 _sym_db.RegisterMessage(Digest)
-
-GenericMatchField = _reflection.GeneratedProtocolMessageType('GenericMatchField', (_message.Message,), {
-  'DESCRIPTOR' : _GENERICMATCHFIELD,
-  '__module__' : 'p4.config.v1.p4info_pb2'
-  # @@protoc_insertion_point(class_scope:p4.config.v1.GenericMatchField)
-  })
-_sym_db.RegisterMessage(GenericMatchField)
-
-UnionRef = _reflection.GeneratedProtocolMessageType('UnionRef', (_message.Message,), {
-  'DESCRIPTOR' : _UNIONREF,
-  '__module__' : 'p4.config.v1.p4info_pb2'
-  # @@protoc_insertion_point(class_scope:p4.config.v1.UnionRef)
-  })
-_sym_db.RegisterMessage(UnionRef)
-
-Union = _reflection.GeneratedProtocolMessageType('Union', (_message.Message,), {
-
-  'Param' : _reflection.GeneratedProtocolMessageType('Param', (_message.Message,), {
-    'DESCRIPTOR' : _UNION_PARAM,
-    '__module__' : 'p4.config.v1.p4info_pb2'
-    # @@protoc_insertion_point(class_scope:p4.config.v1.Union.Param)
-    })
-  ,
-  'DESCRIPTOR' : _UNION,
-  '__module__' : 'p4.config.v1.p4info_pb2'
-  # @@protoc_insertion_point(class_scope:p4.config.v1.Union)
-  })
-_sym_db.RegisterMessage(Union)
-_sym_db.RegisterMessage(Union.Param)
-
-GenericTable = _reflection.GeneratedProtocolMessageType('GenericTable', (_message.Message,), {
-  'DESCRIPTOR' : _GENERICTABLE,
-  '__module__' : 'p4.config.v1.p4info_pb2'
-  # @@protoc_insertion_point(class_scope:p4.config.v1.GenericTable)
-  })
-_sym_db.RegisterMessage(GenericTable)
-
-GenericTableInstance = _reflection.GeneratedProtocolMessageType('GenericTableInstance', (_message.Message,), {
-  'DESCRIPTOR' : _GENERICTABLEINSTANCE,
-  '__module__' : 'p4.config.v1.p4info_pb2'
-  # @@protoc_insertion_point(class_scope:p4.config.v1.GenericTableInstance)
-  })
-_sym_db.RegisterMessage(GenericTableInstance)
 
 
 DESCRIPTOR._options = None
