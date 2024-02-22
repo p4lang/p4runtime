@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z$github.com/p4lang/p4runtime/go/p4/v1\370\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x15p4/v1/p4runtime.proto\x12\x05p4.v1\x1a\x19google/protobuf/any.proto\x1a\x17google/rpc/status.proto\x1a\x19p4/config/v1/p4info.proto\x1a\x12p4/v1/p4data.proto\"\x8c\x02\n\x0cWriteRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x13\n\x07role_id\x18\x02 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04role\x18\x06 \x01(\t\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12\x1e\n\x07updates\x18\x04 \x03(\x0b\x32\r.p4.v1.Update\x12\x30\n\tatomicity\x18\x05 \x01(\x0e\x32\x1d.p4.v1.WriteRequest.Atomicity\"O\n\tAtomicity\x12\x15\n\x11\x43ONTINUE_ON_ERROR\x10\x00\x12\x15\n\x11ROLLBACK_ON_ERROR\x10\x01\x12\x14\n\x10\x44\x41TAPLANE_ATOMIC\x10\x02\"\x0f\n\rWriteResponse\"O\n\x0bReadRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x0c\n\x04role\x18\x03 \x01(\t\x12\x1f\n\x08\x65ntities\x18\x02 \x03(\x0b\x32\r.p4.v1.Entity\"/\n\x0cReadResponse\x12\x1f\n\x08\x65ntities\x18\x01 \x03(\x0b\x32\r.p4.v1.Entity\"\x86\x01\n\x06Update\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.p4.v1.Update.Type\x12\x1d\n\x06\x65ntity\x18\x02 \x01(\x0b\x32\r.p4.v1.Entity\";\n\x04Type\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06INSERT\x10\x01\x12\n\n\x06MODIFY\x10\x02\x12\n\n\x06\x44\x45LETE\x10\x03\"\x87\x05\n\x06\x45ntity\x12*\n\x0c\x65xtern_entry\x18\x01 \x01(\x0b\x32\x12.p4.v1.ExternEntryH\x00\x12(\n\x0btable_entry\x18\x02 \x01(\x0b\x32\x11.p4.v1.TableEntryH\x00\x12;\n\x15\x61\x63tion_profile_member\x18\x03 \x01(\x0b\x32\x1a.p4.v1.ActionProfileMemberH\x00\x12\x39\n\x14\x61\x63tion_profile_group\x18\x04 \x01(\x0b\x32\x19.p4.v1.ActionProfileGroupH\x00\x12(\n\x0bmeter_entry\x18\x05 \x01(\x0b\x32\x11.p4.v1.MeterEntryH\x00\x12\x35\n\x12\x64irect_meter_entry\x18\x06 \x01(\x0b\x32\x17.p4.v1.DirectMeterEntryH\x00\x12,\n\rcounter_entry\x18\x07 \x01(\x0b\x32\x13.p4.v1.CounterEntryH\x00\x12\x39\n\x14\x64irect_counter_entry\x18\x08 \x01(\x0b\x32\x19.p4.v1.DirectCounterEntryH\x00\x12N\n\x1fpacket_replication_engine_entry\x18\t \x01(\x0b\x32#.p4.v1.PacketReplicationEngineEntryH\x00\x12/\n\x0fvalue_set_entry\x18\n \x01(\x0b\x32\x14.p4.v1.ValueSetEntryH\x00\x12.\n\x0eregister_entry\x18\x0b \x01(\x0b\x32\x14.p4.v1.RegisterEntryH\x00\x12*\n\x0c\x64igest_entry\x18\x0c \x01(\x0b\x32\x12.p4.v1.DigestEntryH\x00\x42\x08\n\x06\x65ntity\"]\n\x0b\x45xternEntry\x12\x16\n\x0e\x65xtern_type_id\x18\x01 \x01(\r\x12\x11\n\textern_id\x18\x02 \x01(\r\x12#\n\x05\x65ntry\x18\x03 \x01(\x0b\x32\x14.google.protobuf.Any\"\xd7\x03\n\nTableEntry\x12\x10\n\x08table_id\x18\x01 \x01(\r\x12 \n\x05match\x18\x02 \x03(\x0b\x32\x11.p4.v1.FieldMatch\x12\"\n\x06\x61\x63tion\x18\x03 \x01(\x0b\x32\x12.p4.v1.TableAction\x12\x10\n\x08priority\x18\x04 \x01(\x05\x12\x1f\n\x13\x63ontroller_metadata\x18\x05 \x01(\x04\x42\x02\x18\x01\x12(\n\x0cmeter_config\x18\x06 \x01(\x0b\x32\x12.p4.v1.MeterConfig\x12(\n\x0c\x63ounter_data\x18\x07 \x01(\x0b\x32\x12.p4.v1.CounterData\x12\x33\n\x12meter_counter_data\x18\x0c \x01(\x0b\x32\x17.p4.v1.MeterCounterData\x12\x19\n\x11is_default_action\x18\x08 \x01(\x08\x12\x17\n\x0fidle_timeout_ns\x18\t \x01(\x03\x12:\n\x13time_since_last_hit\x18\n \x01(\x0b\x32\x1d.p4.v1.TableEntry.IdleTimeout\x12\x10\n\x08metadata\x18\x0b \x01(\x0c\x12\x10\n\x08is_const\x18\r \x01(\x08\x1a!\n\x0bIdleTimeout\x12\x12\n\nelapsed_ns\x18\x01 \x01(\x03\"\xda\x03\n\nFieldMatch\x12\x10\n\x08\x66ield_id\x18\x01 \x01(\r\x12(\n\x05\x65xact\x18\x02 \x01(\x0b\x32\x17.p4.v1.FieldMatch.ExactH\x00\x12,\n\x07ternary\x18\x03 \x01(\x0b\x32\x19.p4.v1.FieldMatch.TernaryH\x00\x12$\n\x03lpm\x18\x04 \x01(\x0b\x32\x15.p4.v1.FieldMatch.LPMH\x00\x12(\n\x05range\x18\x06 \x01(\x0b\x32\x17.p4.v1.FieldMatch.RangeH\x00\x12.\n\x08optional\x18\x07 \x01(\x0b\x32\x1a.p4.v1.FieldMatch.OptionalH\x00\x12%\n\x05other\x18\x64 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x1a\x16\n\x05\x45xact\x12\r\n\x05value\x18\x01 \x01(\x0c\x1a&\n\x07Ternary\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x0c\n\x04mask\x18\x02 \x01(\x0c\x1a(\n\x03LPM\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x12\n\nprefix_len\x18\x02 \x01(\x05\x1a\"\n\x05Range\x12\x0b\n\x03low\x18\x01 \x01(\x0c\x12\x0c\n\x04high\x18\x02 \x01(\x0c\x1a\x19\n\x08Optional\x12\r\n\x05value\x18\x01 \x01(\x0c\x42\x12\n\x10\x66ield_match_type\"\xc1\x01\n\x0bTableAction\x12\x1f\n\x06\x61\x63tion\x18\x01 \x01(\x0b\x32\r.p4.v1.ActionH\x00\x12\"\n\x18\x61\x63tion_profile_member_id\x18\x02 \x01(\rH\x00\x12!\n\x17\x61\x63tion_profile_group_id\x18\x03 \x01(\rH\x00\x12\x42\n\x19\x61\x63tion_profile_action_set\x18\x04 \x01(\x0b\x32\x1d.p4.v1.ActionProfileActionSetH\x00\x42\x06\n\x04type\"j\n\x06\x41\x63tion\x12\x11\n\taction_id\x18\x01 \x01(\r\x12#\n\x06params\x18\x04 \x03(\x0b\x32\x13.p4.v1.Action.Param\x1a(\n\x05Param\x12\x10\n\x08param_id\x18\x02 \x01(\r\x12\r\n\x05value\x18\x03 \x01(\x0c\"T\n\x16\x41\x63tionProfileActionSet\x12:\n\x16\x61\x63tion_profile_actions\x18\x01 \x03(\x0b\x32\x1a.p4.v1.ActionProfileAction\"}\n\x13\x41\x63tionProfileAction\x12\x1d\n\x06\x61\x63tion\x18\x01 \x01(\x0b\x32\r.p4.v1.Action\x12\x0e\n\x06weight\x18\x02 \x01(\x05\x12\x13\n\x05watch\x18\x03 \x01(\x05\x42\x02\x18\x01H\x00\x12\x14\n\nwatch_port\x18\x04 \x01(\x0cH\x00\x42\x0c\n\nwatch_kind\"b\n\x13\x41\x63tionProfileMember\x12\x19\n\x11\x61\x63tion_profile_id\x18\x01 \x01(\r\x12\x11\n\tmember_id\x18\x02 \x01(\r\x12\x1d\n\x06\x61\x63tion\x18\x03 \x01(\x0b\x32\r.p4.v1.Action\"\xec\x01\n\x12\x41\x63tionProfileGroup\x12\x19\n\x11\x61\x63tion_profile_id\x18\x01 \x01(\r\x12\x10\n\x08group_id\x18\x02 \x01(\r\x12\x31\n\x07members\x18\x03 \x03(\x0b\x32 .p4.v1.ActionProfileGroup.Member\x12\x10\n\x08max_size\x18\x04 \x01(\x05\x1a\x64\n\x06Member\x12\x11\n\tmember_id\x18\x01 \x01(\r\x12\x0e\n\x06weight\x18\x02 \x01(\x05\x12\x13\n\x05watch\x18\x03 \x01(\x05\x42\x02\x18\x01H\x00\x12\x14\n\nwatch_port\x18\x04 \x01(\x0cH\x00\x42\x0c\n\nwatch_kind\"\x16\n\x05Index\x12\r\n\x05index\x18\x01 \x01(\x03\"\x8e\x01\n\nMeterEntry\x12\x10\n\x08meter_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12\"\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x12.p4.v1.MeterConfig\x12-\n\x0c\x63ounter_data\x18\x04 \x01(\x0b\x32\x17.p4.v1.MeterCounterData\"\x8d\x01\n\x10\x44irectMeterEntry\x12&\n\x0btable_entry\x18\x01 \x01(\x0b\x32\x11.p4.v1.TableEntry\x12\"\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x12.p4.v1.MeterConfig\x12-\n\x0c\x63ounter_data\x18\x03 \x01(\x0b\x32\x17.p4.v1.MeterCounterData\"G\n\x0bMeterConfig\x12\x0b\n\x03\x63ir\x18\x01 \x01(\x03\x12\x0e\n\x06\x63\x62urst\x18\x02 \x01(\x03\x12\x0b\n\x03pir\x18\x03 \x01(\x03\x12\x0e\n\x06pburst\x18\x04 \x01(\x03\"a\n\x0c\x43ounterEntry\x12\x12\n\ncounter_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12 \n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\x12.p4.v1.CounterData\"^\n\x12\x44irectCounterEntry\x12&\n\x0btable_entry\x18\x01 \x01(\x0b\x32\x11.p4.v1.TableEntry\x12 \n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x12.p4.v1.CounterData\"7\n\x0b\x43ounterData\x12\x12\n\nbyte_count\x18\x01 \x01(\x03\x12\x14\n\x0cpacket_count\x18\x02 \x01(\x03\"z\n\x10MeterCounterData\x12!\n\x05green\x18\x01 \x01(\x0b\x32\x12.p4.v1.CounterData\x12\"\n\x06yellow\x18\x02 \x01(\x0b\x32\x12.p4.v1.CounterData\x12\x1f\n\x03red\x18\x03 \x01(\x0b\x32\x12.p4.v1.CounterData\"\x9c\x01\n\x1cPacketReplicationEngineEntry\x12;\n\x15multicast_group_entry\x18\x01 \x01(\x0b\x32\x1a.p4.v1.MulticastGroupEntryH\x00\x12\x37\n\x13\x63lone_session_entry\x18\x02 \x01(\x0b\x32\x18.p4.v1.CloneSessionEntryH\x00\x42\x06\n\x04type\"S\n\x07Replica\x12\x19\n\x0b\x65gress_port\x18\x01 \x01(\rB\x02\x18\x01H\x00\x12\x0e\n\x04port\x18\x03 \x01(\x0cH\x00\x12\x10\n\x08instance\x18\x02 \x01(\rB\x0b\n\tport_kind\"e\n\x13MulticastGroupEntry\x12\x1a\n\x12multicast_group_id\x18\x01 \x01(\r\x12 \n\x08replicas\x18\x02 \x03(\x0b\x32\x0e.p4.v1.Replica\x12\x10\n\x08metadata\x18\x03 \x01(\x0c\"\x80\x01\n\x11\x43loneSessionEntry\x12\x12\n\nsession_id\x18\x01 \x01(\r\x12 \n\x08replicas\x18\x02 \x03(\x0b\x32\x0e.p4.v1.Replica\x12\x18\n\x10\x63lass_of_service\x18\x03 \x01(\r\x12\x1b\n\x13packet_length_bytes\x18\x04 \x01(\x05\"2\n\x0eValueSetMember\x12 \n\x05match\x18\x01 \x03(\x0b\x32\x11.p4.v1.FieldMatch\"M\n\rValueSetEntry\x12\x14\n\x0cvalue_set_id\x18\x01 \x01(\r\x12&\n\x07members\x18\x02 \x03(\x0b\x32\x15.p4.v1.ValueSetMember\"^\n\rRegisterEntry\x12\x13\n\x0bregister_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12\x1b\n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\r.p4.v1.P4Data\"\x9c\x01\n\x0b\x44igestEntry\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12)\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x19.p4.v1.DigestEntry.Config\x1aO\n\x06\x43onfig\x12\x16\n\x0emax_timeout_ns\x18\x01 \x01(\x03\x12\x15\n\rmax_list_size\x18\x02 \x01(\x05\x12\x16\n\x0e\x61\x63k_timeout_ns\x18\x03 \x01(\x03\"\xce\x01\n\x14StreamMessageRequest\x12\x35\n\x0b\x61rbitration\x18\x01 \x01(\x0b\x32\x1e.p4.v1.MasterArbitrationUpdateH\x00\x12\"\n\x06packet\x18\x02 \x01(\x0b\x32\x10.p4.v1.PacketOutH\x00\x12*\n\ndigest_ack\x18\x03 \x01(\x0b\x32\x14.p4.v1.DigestListAckH\x00\x12%\n\x05other\x18\x04 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x42\x08\n\x06update\"E\n\tPacketOut\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\'\n\x08metadata\x18\x02 \x03(\x0b\x32\x15.p4.v1.PacketMetadata\"3\n\rDigestListAck\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12\x0f\n\x07list_id\x18\x02 \x01(\x04\"\xb1\x02\n\x15StreamMessageResponse\x12\x35\n\x0b\x61rbitration\x18\x01 \x01(\x0b\x32\x1e.p4.v1.MasterArbitrationUpdateH\x00\x12!\n\x06packet\x18\x02 \x01(\x0b\x32\x0f.p4.v1.PacketInH\x00\x12#\n\x06\x64igest\x18\x03 \x01(\x0b\x32\x11.p4.v1.DigestListH\x00\x12\x43\n\x19idle_timeout_notification\x18\x04 \x01(\x0b\x32\x1e.p4.v1.IdleTimeoutNotificationH\x00\x12%\n\x05other\x18\x05 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x12#\n\x05\x65rror\x18\x06 \x01(\x0b\x32\x12.p4.v1.StreamErrorH\x00\x42\x08\n\x06update\"D\n\x08PacketIn\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\'\n\x08metadata\x18\x02 \x03(\x0b\x32\x15.p4.v1.PacketMetadata\"`\n\nDigestList\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12\x0f\n\x07list_id\x18\x02 \x01(\x04\x12\x1b\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\r.p4.v1.P4Data\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\"4\n\x0ePacketMetadata\x12\x13\n\x0bmetadata_id\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\x0c\"\x90\x01\n\x17MasterArbitrationUpdate\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x19\n\x04role\x18\x02 \x01(\x0b\x32\x0b.p4.v1.Role\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12\"\n\x06status\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status\"J\n\x04Role\x12\x0e\n\x02id\x18\x01 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04name\x18\x03 \x01(\t\x12$\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"T\n\x17IdleTimeoutNotification\x12&\n\x0btable_entry\x18\x01 \x03(\x0b\x32\x11.p4.v1.TableEntry\x12\x11\n\ttimestamp\x18\x02 \x01(\x03\"\xeb\x01\n\x0bStreamError\x12\x16\n\x0e\x63\x61nonical_code\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05space\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\x05\x12+\n\npacket_out\x18\x05 \x01(\x0b\x32\x15.p4.v1.PacketOutErrorH\x00\x12\x34\n\x0f\x64igest_list_ack\x18\x06 \x01(\x0b\x32\x19.p4.v1.DigestListAckErrorH\x00\x12(\n\x05other\x18\x07 \x01(\x0b\x32\x17.p4.v1.StreamOtherErrorH\x00\x42\t\n\x07\x64\x65tails\"6\n\x0ePacketOutError\x12$\n\npacket_out\x18\x01 \x01(\x0b\x32\x10.p4.v1.PacketOut\"C\n\x12\x44igestListAckError\x12-\n\x0f\x64igest_list_ack\x18\x01 \x01(\x0b\x32\x14.p4.v1.DigestListAck\"7\n\x10StreamOtherError\x12#\n\x05other\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"$\n\x07Uint128\x12\x0c\n\x04high\x18\x01 \x01(\x04\x12\x0b\n\x03low\x18\x02 \x01(\x04\"\xeb\x02\n\"SetForwardingPipelineConfigRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x13\n\x07role_id\x18\x02 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04role\x18\x06 \x01(\t\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12@\n\x06\x61\x63tion\x18\x04 \x01(\x0e\x32\x30.p4.v1.SetForwardingPipelineConfigRequest.Action\x12/\n\x06\x63onfig\x18\x05 \x01(\x0b\x32\x1f.p4.v1.ForwardingPipelineConfig\"w\n\x06\x41\x63tion\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06VERIFY\x10\x01\x12\x13\n\x0fVERIFY_AND_SAVE\x10\x02\x12\x15\n\x11VERIFY_AND_COMMIT\x10\x03\x12\n\n\x06\x43OMMIT\x10\x04\x12\x18\n\x14RECONCILE_AND_COMMIT\x10\x05\"%\n#SetForwardingPipelineConfigResponse\"\xac\x01\n\x18\x46orwardingPipelineConfig\x12$\n\x06p4info\x18\x01 \x01(\x0b\x32\x14.p4.config.v1.P4Info\x12\x18\n\x10p4_device_config\x18\x02 \x01(\x0c\x12\x36\n\x06\x63ookie\x18\x03 \x01(\x0b\x32&.p4.v1.ForwardingPipelineConfig.Cookie\x1a\x18\n\x06\x43ookie\x12\x0e\n\x06\x63ookie\x18\x01 \x01(\x04\"\xe5\x01\n\"GetForwardingPipelineConfigRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12M\n\rresponse_type\x18\x02 \x01(\x0e\x32\x36.p4.v1.GetForwardingPipelineConfigRequest.ResponseType\"]\n\x0cResponseType\x12\x07\n\x03\x41LL\x10\x00\x12\x0f\n\x0b\x43OOKIE_ONLY\x10\x01\x12\x15\n\x11P4INFO_AND_COOKIE\x10\x02\x12\x1c\n\x18\x44\x45VICE_CONFIG_AND_COOKIE\x10\x03\"V\n#GetForwardingPipelineConfigResponse\x12/\n\x06\x63onfig\x18\x01 \x01(\x0b\x32\x1f.p4.v1.ForwardingPipelineConfig\"t\n\x05\x45rror\x12\x16\n\x0e\x63\x61nonical_code\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05space\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\x05\x12%\n\x07\x64\x65tails\x18\x05 \x01(\x0b\x32\x14.google.protobuf.Any\"\x15\n\x13\x43\x61pabilitiesRequest\"5\n\x14\x43\x61pabilitiesResponse\x12\x1d\n\x15p4runtime_api_version\x18\x01 \x01(\t*\x8a\x01\n\x07SdnPort\x12\x14\n\x10SDN_PORT_UNKNOWN\x10\x00\x12\x10\n\x0cSDN_PORT_MIN\x10\x01\x12\x19\n\x0cSDN_PORT_MAX\x10\xff\xfd\xff\xff\xff\xff\xff\xff\xff\x01\x12!\n\x14SDN_PORT_RECIRCULATE\x10\xfa\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x19\n\x0cSDN_PORT_CPU\x10\xfd\xff\xff\xff\xff\xff\xff\xff\xff\x01\x32\x83\x04\n\tP4Runtime\x12\x34\n\x05Write\x12\x13.p4.v1.WriteRequest\x1a\x14.p4.v1.WriteResponse\"\x00\x12\x33\n\x04Read\x12\x12.p4.v1.ReadRequest\x1a\x13.p4.v1.ReadResponse\"\x00\x30\x01\x12v\n\x1bSetForwardingPipelineConfig\x12).p4.v1.SetForwardingPipelineConfigRequest\x1a*.p4.v1.SetForwardingPipelineConfigResponse\"\x00\x12v\n\x1bGetForwardingPipelineConfig\x12).p4.v1.GetForwardingPipelineConfigRequest\x1a*.p4.v1.GetForwardingPipelineConfigResponse\"\x00\x12P\n\rStreamChannel\x12\x1b.p4.v1.StreamMessageRequest\x1a\x1c.p4.v1.StreamMessageResponse\"\x00(\x01\x30\x01\x12I\n\x0c\x43\x61pabilities\x12\x1a.p4.v1.CapabilitiesRequest\x1a\x1b.p4.v1.CapabilitiesResponse\"\x00\x42)Z$github.com/p4lang/p4runtime/go/p4/v1\xf8\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x15p4/v1/p4runtime.proto\x12\x05p4.v1\x1a\x19google/protobuf/any.proto\x1a\x17google/rpc/status.proto\x1a\x19p4/config/v1/p4info.proto\x1a\x12p4/v1/p4data.proto\"\x8c\x02\n\x0cWriteRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x13\n\x07role_id\x18\x02 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04role\x18\x06 \x01(\t\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12\x1e\n\x07updates\x18\x04 \x03(\x0b\x32\r.p4.v1.Update\x12\x30\n\tatomicity\x18\x05 \x01(\x0e\x32\x1d.p4.v1.WriteRequest.Atomicity\"O\n\tAtomicity\x12\x15\n\x11\x43ONTINUE_ON_ERROR\x10\x00\x12\x15\n\x11ROLLBACK_ON_ERROR\x10\x01\x12\x14\n\x10\x44\x41TAPLANE_ATOMIC\x10\x02\"\x0f\n\rWriteResponse\"O\n\x0bReadRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x0c\n\x04role\x18\x03 \x01(\t\x12\x1f\n\x08\x65ntities\x18\x02 \x03(\x0b\x32\r.p4.v1.Entity\"/\n\x0cReadResponse\x12\x1f\n\x08\x65ntities\x18\x01 \x03(\x0b\x32\r.p4.v1.Entity\"\x86\x01\n\x06Update\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.p4.v1.Update.Type\x12\x1d\n\x06\x65ntity\x18\x02 \x01(\x0b\x32\r.p4.v1.Entity\";\n\x04Type\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06INSERT\x10\x01\x12\n\n\x06MODIFY\x10\x02\x12\n\n\x06\x44\x45LETE\x10\x03\"\xc0\x05\n\x06\x45ntity\x12*\n\x0c\x65xtern_entry\x18\x01 \x01(\x0b\x32\x12.p4.v1.ExternEntryH\x00\x12(\n\x0btable_entry\x18\x02 \x01(\x0b\x32\x11.p4.v1.TableEntryH\x00\x12;\n\x15\x61\x63tion_profile_member\x18\x03 \x01(\x0b\x32\x1a.p4.v1.ActionProfileMemberH\x00\x12\x39\n\x14\x61\x63tion_profile_group\x18\x04 \x01(\x0b\x32\x19.p4.v1.ActionProfileGroupH\x00\x12(\n\x0bmeter_entry\x18\x05 \x01(\x0b\x32\x11.p4.v1.MeterEntryH\x00\x12\x35\n\x12\x64irect_meter_entry\x18\x06 \x01(\x0b\x32\x17.p4.v1.DirectMeterEntryH\x00\x12,\n\rcounter_entry\x18\x07 \x01(\x0b\x32\x13.p4.v1.CounterEntryH\x00\x12\x39\n\x14\x64irect_counter_entry\x18\x08 \x01(\x0b\x32\x19.p4.v1.DirectCounterEntryH\x00\x12N\n\x1fpacket_replication_engine_entry\x18\t \x01(\x0b\x32#.p4.v1.PacketReplicationEngineEntryH\x00\x12/\n\x0fvalue_set_entry\x18\n \x01(\x0b\x32\x14.p4.v1.ValueSetEntryH\x00\x12.\n\x0eregister_entry\x18\x0b \x01(\x0b\x32\x14.p4.v1.RegisterEntryH\x00\x12*\n\x0c\x64igest_entry\x18\x0c \x01(\x0b\x32\x12.p4.v1.DigestEntryH\x00\x12\x37\n\x13generic_table_entry\x18\r \x01(\x0b\x32\x18.p4.v1.GenericTableEntryH\x00\x42\x08\n\x06\x65ntity\"]\n\x0b\x45xternEntry\x12\x16\n\x0e\x65xtern_type_id\x18\x01 \x01(\r\x12\x11\n\textern_id\x18\x02 \x01(\r\x12#\n\x05\x65ntry\x18\x03 \x01(\x0b\x32\x14.google.protobuf.Any\"\x84\x04\n\nTableEntry\x12\x10\n\x08table_id\x18\x01 \x01(\r\x12 \n\x05match\x18\x02 \x03(\x0b\x32\x11.p4.v1.FieldMatch\x12\"\n\x06\x61\x63tion\x18\x03 \x01(\x0b\x32\x12.p4.v1.TableAction\x12\x10\n\x08priority\x18\x04 \x01(\x05\x12\x1f\n\x13\x63ontroller_metadata\x18\x05 \x01(\x04\x42\x02\x18\x01\x12(\n\x0cmeter_config\x18\x06 \x01(\x0b\x32\x12.p4.v1.MeterConfig\x12(\n\x0c\x63ounter_data\x18\x07 \x01(\x0b\x32\x12.p4.v1.CounterData\x12\x33\n\x12meter_counter_data\x18\x0c \x01(\x0b\x32\x17.p4.v1.MeterCounterData\x12\x19\n\x11is_default_action\x18\x08 \x01(\x08\x12\x17\n\x0fidle_timeout_ns\x18\t \x01(\x03\x12:\n\x13time_since_last_hit\x18\n \x01(\x0b\x32\x1d.p4.v1.TableEntry.IdleTimeout\x12\x10\n\x08metadata\x18\x0b \x01(\x0c\x12\x10\n\x08is_const\x18\r \x01(\x08\x12+\n\tresources\x18\x0e \x03(\x0b\x32\x18.p4.v1.GenericTableEntry\x1a!\n\x0bIdleTimeout\x12\x12\n\nelapsed_ns\x18\x01 \x01(\x03\"\xda\x03\n\nFieldMatch\x12\x10\n\x08\x66ield_id\x18\x01 \x01(\r\x12(\n\x05\x65xact\x18\x02 \x01(\x0b\x32\x17.p4.v1.FieldMatch.ExactH\x00\x12,\n\x07ternary\x18\x03 \x01(\x0b\x32\x19.p4.v1.FieldMatch.TernaryH\x00\x12$\n\x03lpm\x18\x04 \x01(\x0b\x32\x15.p4.v1.FieldMatch.LPMH\x00\x12(\n\x05range\x18\x06 \x01(\x0b\x32\x17.p4.v1.FieldMatch.RangeH\x00\x12.\n\x08optional\x18\x07 \x01(\x0b\x32\x1a.p4.v1.FieldMatch.OptionalH\x00\x12%\n\x05other\x18\x64 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x1a\x16\n\x05\x45xact\x12\r\n\x05value\x18\x01 \x01(\x0c\x1a&\n\x07Ternary\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x0c\n\x04mask\x18\x02 \x01(\x0c\x1a(\n\x03LPM\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x12\n\nprefix_len\x18\x02 \x01(\x05\x1a\"\n\x05Range\x12\x0b\n\x03low\x18\x01 \x01(\x0c\x12\x0c\n\x04high\x18\x02 \x01(\x0c\x1a\x19\n\x08Optional\x12\r\n\x05value\x18\x01 \x01(\x0c\x42\x12\n\x10\x66ield_match_type\"\xc1\x01\n\x0bTableAction\x12\x1f\n\x06\x61\x63tion\x18\x01 \x01(\x0b\x32\r.p4.v1.ActionH\x00\x12\"\n\x18\x61\x63tion_profile_member_id\x18\x02 \x01(\rH\x00\x12!\n\x17\x61\x63tion_profile_group_id\x18\x03 \x01(\rH\x00\x12\x42\n\x19\x61\x63tion_profile_action_set\x18\x04 \x01(\x0b\x32\x1d.p4.v1.ActionProfileActionSetH\x00\x42\x06\n\x04type\"j\n\x06\x41\x63tion\x12\x11\n\taction_id\x18\x01 \x01(\r\x12#\n\x06params\x18\x04 \x03(\x0b\x32\x13.p4.v1.Action.Param\x1a(\n\x05Param\x12\x10\n\x08param_id\x18\x02 \x01(\r\x12\r\n\x05value\x18\x03 \x01(\x0c\"T\n\x16\x41\x63tionProfileActionSet\x12:\n\x16\x61\x63tion_profile_actions\x18\x01 \x03(\x0b\x32\x1a.p4.v1.ActionProfileAction\"}\n\x13\x41\x63tionProfileAction\x12\x1d\n\x06\x61\x63tion\x18\x01 \x01(\x0b\x32\r.p4.v1.Action\x12\x0e\n\x06weight\x18\x02 \x01(\x05\x12\x13\n\x05watch\x18\x03 \x01(\x05\x42\x02\x18\x01H\x00\x12\x14\n\nwatch_port\x18\x04 \x01(\x0cH\x00\x42\x0c\n\nwatch_kind\"b\n\x13\x41\x63tionProfileMember\x12\x19\n\x11\x61\x63tion_profile_id\x18\x01 \x01(\r\x12\x11\n\tmember_id\x18\x02 \x01(\r\x12\x1d\n\x06\x61\x63tion\x18\x03 \x01(\x0b\x32\r.p4.v1.Action\"\xec\x01\n\x12\x41\x63tionProfileGroup\x12\x19\n\x11\x61\x63tion_profile_id\x18\x01 \x01(\r\x12\x10\n\x08group_id\x18\x02 \x01(\r\x12\x31\n\x07members\x18\x03 \x03(\x0b\x32 .p4.v1.ActionProfileGroup.Member\x12\x10\n\x08max_size\x18\x04 \x01(\x05\x1a\x64\n\x06Member\x12\x11\n\tmember_id\x18\x01 \x01(\r\x12\x0e\n\x06weight\x18\x02 \x01(\x05\x12\x13\n\x05watch\x18\x03 \x01(\x05\x42\x02\x18\x01H\x00\x12\x14\n\nwatch_port\x18\x04 \x01(\x0cH\x00\x42\x0c\n\nwatch_kind\"\x16\n\x05Index\x12\r\n\x05index\x18\x01 \x01(\x03\"\x8e\x01\n\nMeterEntry\x12\x10\n\x08meter_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12\"\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x12.p4.v1.MeterConfig\x12-\n\x0c\x63ounter_data\x18\x04 \x01(\x0b\x32\x17.p4.v1.MeterCounterData\"\x8d\x01\n\x10\x44irectMeterEntry\x12&\n\x0btable_entry\x18\x01 \x01(\x0b\x32\x11.p4.v1.TableEntry\x12\"\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x12.p4.v1.MeterConfig\x12-\n\x0c\x63ounter_data\x18\x03 \x01(\x0b\x32\x17.p4.v1.MeterCounterData\"G\n\x0bMeterConfig\x12\x0b\n\x03\x63ir\x18\x01 \x01(\x03\x12\x0e\n\x06\x63\x62urst\x18\x02 \x01(\x03\x12\x0b\n\x03pir\x18\x03 \x01(\x03\x12\x0e\n\x06pburst\x18\x04 \x01(\x03\"a\n\x0c\x43ounterEntry\x12\x12\n\ncounter_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12 \n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\x12.p4.v1.CounterData\"^\n\x12\x44irectCounterEntry\x12&\n\x0btable_entry\x18\x01 \x01(\x0b\x32\x11.p4.v1.TableEntry\x12 \n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x12.p4.v1.CounterData\"7\n\x0b\x43ounterData\x12\x12\n\nbyte_count\x18\x01 \x01(\x03\x12\x14\n\x0cpacket_count\x18\x02 \x01(\x03\"z\n\x10MeterCounterData\x12!\n\x05green\x18\x01 \x01(\x0b\x32\x12.p4.v1.CounterData\x12\"\n\x06yellow\x18\x02 \x01(\x0b\x32\x12.p4.v1.CounterData\x12\x1f\n\x03red\x18\x03 \x01(\x0b\x32\x12.p4.v1.CounterData\"\x9c\x01\n\x1cPacketReplicationEngineEntry\x12;\n\x15multicast_group_entry\x18\x01 \x01(\x0b\x32\x1a.p4.v1.MulticastGroupEntryH\x00\x12\x37\n\x13\x63lone_session_entry\x18\x02 \x01(\x0b\x32\x18.p4.v1.CloneSessionEntryH\x00\x42\x06\n\x04type\"S\n\x07Replica\x12\x19\n\x0b\x65gress_port\x18\x01 \x01(\rB\x02\x18\x01H\x00\x12\x0e\n\x04port\x18\x03 \x01(\x0cH\x00\x12\x10\n\x08instance\x18\x02 \x01(\rB\x0b\n\tport_kind\"e\n\x13MulticastGroupEntry\x12\x1a\n\x12multicast_group_id\x18\x01 \x01(\r\x12 \n\x08replicas\x18\x02 \x03(\x0b\x32\x0e.p4.v1.Replica\x12\x10\n\x08metadata\x18\x03 \x01(\x0c\"\x80\x01\n\x11\x43loneSessionEntry\x12\x12\n\nsession_id\x18\x01 \x01(\r\x12 \n\x08replicas\x18\x02 \x03(\x0b\x32\x0e.p4.v1.Replica\x12\x18\n\x10\x63lass_of_service\x18\x03 \x01(\r\x12\x1b\n\x13packet_length_bytes\x18\x04 \x01(\x05\"2\n\x0eValueSetMember\x12 \n\x05match\x18\x01 \x03(\x0b\x32\x11.p4.v1.FieldMatch\"M\n\rValueSetEntry\x12\x14\n\x0cvalue_set_id\x18\x01 \x01(\r\x12&\n\x07members\x18\x02 \x03(\x0b\x32\x15.p4.v1.ValueSetMember\"^\n\rRegisterEntry\x12\x13\n\x0bregister_id\x18\x01 \x01(\r\x12\x1b\n\x05index\x18\x02 \x01(\x0b\x32\x0c.p4.v1.Index\x12\x1b\n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\r.p4.v1.P4Data\"\x9c\x01\n\x0b\x44igestEntry\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12)\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x19.p4.v1.DigestEntry.Config\x1aO\n\x06\x43onfig\x12\x16\n\x0emax_timeout_ns\x18\x01 \x01(\x03\x12\x15\n\rmax_list_size\x18\x02 \x01(\x05\x12\x16\n\x0e\x61\x63k_timeout_ns\x18\x03 \x01(\x03\"\xce\x01\n\x14StreamMessageRequest\x12\x35\n\x0b\x61rbitration\x18\x01 \x01(\x0b\x32\x1e.p4.v1.MasterArbitrationUpdateH\x00\x12\"\n\x06packet\x18\x02 \x01(\x0b\x32\x10.p4.v1.PacketOutH\x00\x12*\n\ndigest_ack\x18\x03 \x01(\x0b\x32\x14.p4.v1.DigestListAckH\x00\x12%\n\x05other\x18\x04 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x42\x08\n\x06update\"E\n\tPacketOut\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\'\n\x08metadata\x18\x02 \x03(\x0b\x32\x15.p4.v1.PacketMetadata\"3\n\rDigestListAck\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12\x0f\n\x07list_id\x18\x02 \x01(\x04\"\xb1\x02\n\x15StreamMessageResponse\x12\x35\n\x0b\x61rbitration\x18\x01 \x01(\x0b\x32\x1e.p4.v1.MasterArbitrationUpdateH\x00\x12!\n\x06packet\x18\x02 \x01(\x0b\x32\x0f.p4.v1.PacketInH\x00\x12#\n\x06\x64igest\x18\x03 \x01(\x0b\x32\x11.p4.v1.DigestListH\x00\x12\x43\n\x19idle_timeout_notification\x18\x04 \x01(\x0b\x32\x1e.p4.v1.IdleTimeoutNotificationH\x00\x12%\n\x05other\x18\x05 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x12#\n\x05\x65rror\x18\x06 \x01(\x0b\x32\x12.p4.v1.StreamErrorH\x00\x42\x08\n\x06update\"D\n\x08PacketIn\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\'\n\x08metadata\x18\x02 \x03(\x0b\x32\x15.p4.v1.PacketMetadata\"`\n\nDigestList\x12\x11\n\tdigest_id\x18\x01 \x01(\r\x12\x0f\n\x07list_id\x18\x02 \x01(\x04\x12\x1b\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\r.p4.v1.P4Data\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\"4\n\x0ePacketMetadata\x12\x13\n\x0bmetadata_id\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\x0c\"\x90\x01\n\x17MasterArbitrationUpdate\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x19\n\x04role\x18\x02 \x01(\x0b\x32\x0b.p4.v1.Role\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12\"\n\x06status\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status\"J\n\x04Role\x12\x0e\n\x02id\x18\x01 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04name\x18\x03 \x01(\t\x12$\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"T\n\x17IdleTimeoutNotification\x12&\n\x0btable_entry\x18\x01 \x03(\x0b\x32\x11.p4.v1.TableEntry\x12\x11\n\ttimestamp\x18\x02 \x01(\x03\"\xeb\x01\n\x0bStreamError\x12\x16\n\x0e\x63\x61nonical_code\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05space\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\x05\x12+\n\npacket_out\x18\x05 \x01(\x0b\x32\x15.p4.v1.PacketOutErrorH\x00\x12\x34\n\x0f\x64igest_list_ack\x18\x06 \x01(\x0b\x32\x19.p4.v1.DigestListAckErrorH\x00\x12(\n\x05other\x18\x07 \x01(\x0b\x32\x17.p4.v1.StreamOtherErrorH\x00\x42\t\n\x07\x64\x65tails\"6\n\x0ePacketOutError\x12$\n\npacket_out\x18\x01 \x01(\x0b\x32\x10.p4.v1.PacketOut\"C\n\x12\x44igestListAckError\x12-\n\x0f\x64igest_list_ack\x18\x01 \x01(\x0b\x32\x14.p4.v1.DigestListAck\"7\n\x10StreamOtherError\x12#\n\x05other\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"$\n\x07Uint128\x12\x0c\n\x04high\x18\x01 \x01(\x04\x12\x0b\n\x03low\x18\x02 \x01(\x04\"\xeb\x02\n\"SetForwardingPipelineConfigRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12\x13\n\x07role_id\x18\x02 \x01(\x04\x42\x02\x18\x01\x12\x0c\n\x04role\x18\x06 \x01(\t\x12#\n\x0b\x65lection_id\x18\x03 \x01(\x0b\x32\x0e.p4.v1.Uint128\x12@\n\x06\x61\x63tion\x18\x04 \x01(\x0e\x32\x30.p4.v1.SetForwardingPipelineConfigRequest.Action\x12/\n\x06\x63onfig\x18\x05 \x01(\x0b\x32\x1f.p4.v1.ForwardingPipelineConfig\"w\n\x06\x41\x63tion\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06VERIFY\x10\x01\x12\x13\n\x0fVERIFY_AND_SAVE\x10\x02\x12\x15\n\x11VERIFY_AND_COMMIT\x10\x03\x12\n\n\x06\x43OMMIT\x10\x04\x12\x18\n\x14RECONCILE_AND_COMMIT\x10\x05\"%\n#SetForwardingPipelineConfigResponse\"\xac\x01\n\x18\x46orwardingPipelineConfig\x12$\n\x06p4info\x18\x01 \x01(\x0b\x32\x14.p4.config.v1.P4Info\x12\x18\n\x10p4_device_config\x18\x02 \x01(\x0c\x12\x36\n\x06\x63ookie\x18\x03 \x01(\x0b\x32&.p4.v1.ForwardingPipelineConfig.Cookie\x1a\x18\n\x06\x43ookie\x12\x0e\n\x06\x63ookie\x18\x01 \x01(\x04\"\xe5\x01\n\"GetForwardingPipelineConfigRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\x04\x12M\n\rresponse_type\x18\x02 \x01(\x0e\x32\x36.p4.v1.GetForwardingPipelineConfigRequest.ResponseType\"]\n\x0cResponseType\x12\x07\n\x03\x41LL\x10\x00\x12\x0f\n\x0b\x43OOKIE_ONLY\x10\x01\x12\x15\n\x11P4INFO_AND_COOKIE\x10\x02\x12\x1c\n\x18\x44\x45VICE_CONFIG_AND_COOKIE\x10\x03\"V\n#GetForwardingPipelineConfigResponse\x12/\n\x06\x63onfig\x18\x01 \x01(\x0b\x32\x1f.p4.v1.ForwardingPipelineConfig\"t\n\x05\x45rror\x12\x16\n\x0e\x63\x61nonical_code\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05space\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\x05\x12%\n\x07\x64\x65tails\x18\x05 \x01(\x0b\x32\x14.google.protobuf.Any\"\x15\n\x13\x43\x61pabilitiesRequest\"5\n\x14\x43\x61pabilitiesResponse\x12\x1d\n\x15p4runtime_api_version\x18\x01 \x01(\t\"\xac\x04\n\x11GenericFieldMatch\x12\x10\n\x08\x66ield_id\x18\x01 \x01(\r\x12/\n\x05\x65xact\x18\x02 \x01(\x0b\x32\x1e.p4.v1.GenericFieldMatch.ExactH\x00\x12\x33\n\x07ternary\x18\x03 \x01(\x0b\x32 .p4.v1.GenericFieldMatch.TernaryH\x00\x12+\n\x03lpm\x18\x04 \x01(\x0b\x32\x1c.p4.v1.GenericFieldMatch.LPMH\x00\x12/\n\x05range\x18\x06 \x01(\x0b\x32\x1e.p4.v1.GenericFieldMatch.RangeH\x00\x12\x35\n\x08optional\x18\x07 \x01(\x0b\x32!.p4.v1.GenericFieldMatch.OptionalH\x00\x12%\n\x05other\x18\x64 \x01(\x0b\x32\x14.google.protobuf.AnyH\x00\x1a*\n\x05\x45xact\x12!\n\x05value\x18\x01 \x01(\x0b\x32\x12.p4.v1.GenericData\x1a&\n\x07Ternary\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x0c\n\x04mask\x18\x02 \x01(\x0c\x1a(\n\x03LPM\x12\r\n\x05value\x18\x01 \x01(\x0c\x12\x12\n\nprefix_len\x18\x02 \x01(\x05\x1a\"\n\x05Range\x12\x0b\n\x03low\x18\x01 \x01(\x0c\x12\x0c\n\x04high\x18\x02 \x01(\x0c\x1a-\n\x08Optional\x12!\n\x05value\x18\x01 \x01(\x0b\x32\x12.p4.v1.GenericDataB\x12\n\x10\x66ield_match_type\"\xbd\x01\n\x11GenericTableEntry\x12\x10\n\x08table_id\x18\x01 \x01(\r\x12\'\n\x05match\x18\x02 \x03(\x0b\x32\x18.p4.v1.GenericFieldMatch\x12/\n\x10table_data_union\x18\x03 \x01(\x0b\x32\x15.p4.v1.TableDataUnion\x12\x10\n\x08priority\x18\x04 \x01(\x05\x12\x18\n\x10is_default_entry\x18\x05 \x01(\x08\x12\x10\n\x08metadata\x18\x06 \x01(\x0c\"\x8d\x01\n\x0eTableDataUnion\x12\x10\n\x08union_id\x18\x01 \x01(\r\x12+\n\x06params\x18\x04 \x03(\x0b\x32\x1b.p4.v1.TableDataUnion.Param\x1a<\n\x05Param\x12\x10\n\x08param_id\x18\x02 \x01(\r\x12!\n\x05value\x18\x03 \x01(\x0b\x32\x12.p4.v1.GenericData*\x8a\x01\n\x07SdnPort\x12\x14\n\x10SDN_PORT_UNKNOWN\x10\x00\x12\x10\n\x0cSDN_PORT_MIN\x10\x01\x12\x19\n\x0cSDN_PORT_MAX\x10\xff\xfd\xff\xff\xff\xff\xff\xff\xff\x01\x12!\n\x14SDN_PORT_RECIRCULATE\x10\xfa\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x19\n\x0cSDN_PORT_CPU\x10\xfd\xff\xff\xff\xff\xff\xff\xff\xff\x01\x32\x83\x04\n\tP4Runtime\x12\x34\n\x05Write\x12\x13.p4.v1.WriteRequest\x1a\x14.p4.v1.WriteResponse\"\x00\x12\x33\n\x04Read\x12\x12.p4.v1.ReadRequest\x1a\x13.p4.v1.ReadResponse\"\x00\x30\x01\x12v\n\x1bSetForwardingPipelineConfig\x12).p4.v1.SetForwardingPipelineConfigRequest\x1a*.p4.v1.SetForwardingPipelineConfigResponse\"\x00\x12v\n\x1bGetForwardingPipelineConfig\x12).p4.v1.GetForwardingPipelineConfigRequest\x1a*.p4.v1.GetForwardingPipelineConfigResponse\"\x00\x12P\n\rStreamChannel\x12\x1b.p4.v1.StreamMessageRequest\x1a\x1c.p4.v1.StreamMessageResponse\"\x00(\x01\x30\x01\x12I\n\x0c\x43\x61pabilities\x12\x1a.p4.v1.CapabilitiesRequest\x1a\x1b.p4.v1.CapabilitiesResponse\"\x00\x42)Z$github.com/p4lang/p4runtime/go/p4/v1\xf8\x01\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,p4_dot_config_dot_v1_dot_p4info__pb2.DESCRIPTOR,p4_dot_v1_dot_p4data__pb2.DESCRIPTOR,])
 
@@ -63,8 +63,8 @@ _SDNPORT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=7591,
-  serialized_end=7729,
+  serialized_start=8588,
+  serialized_end=8726,
 )
 _sym_db.RegisterEnumDescriptor(_SDNPORT)
 
@@ -181,8 +181,8 @@ _SETFORWARDINGPIPELINECONFIGREQUEST_ACTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6739,
-  serialized_end=6858,
+  serialized_start=6841,
+  serialized_end=6960,
 )
 _sym_db.RegisterEnumDescriptor(_SETFORWARDINGPIPELINECONFIGREQUEST_ACTION)
 
@@ -216,8 +216,8 @@ _GETFORWARDINGPIPELINECONFIGREQUEST_RESPONSETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=7211,
-  serialized_end=7304,
+  serialized_start=7313,
+  serialized_end=7406,
 )
 _sym_db.RegisterEnumDescriptor(_GETFORWARDINGPIPELINECONFIGREQUEST_RESPONSETYPE)
 
@@ -525,6 +525,13 @@ _ENTITY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='generic_table_entry', full_name='p4.v1.Entity.generic_table_entry', index=12,
+      number=13, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -543,7 +550,7 @@ _ENTITY = _descriptor.Descriptor(
     fields=[]),
   ],
   serialized_start=687,
-  serialized_end=1334,
+  serialized_end=1391,
 )
 
 
@@ -588,8 +595,8 @@ _EXTERNENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1336,
-  serialized_end=1429,
+  serialized_start=1393,
+  serialized_end=1486,
 )
 
 
@@ -620,8 +627,8 @@ _TABLEENTRY_IDLETIMEOUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1870,
-  serialized_end=1903,
+  serialized_start=1972,
+  serialized_end=2005,
 )
 
 _TABLEENTRY = _descriptor.Descriptor(
@@ -723,6 +730,13 @@ _TABLEENTRY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='resources', full_name='p4.v1.TableEntry.resources', index=13,
+      number=14, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -735,8 +749,8 @@ _TABLEENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1432,
-  serialized_end=1903,
+  serialized_start=1489,
+  serialized_end=2005,
 )
 
 
@@ -767,8 +781,8 @@ _FIELDMATCH_EXACT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2193,
-  serialized_end=2215,
+  serialized_start=2295,
+  serialized_end=2317,
 )
 
 _FIELDMATCH_TERNARY = _descriptor.Descriptor(
@@ -805,8 +819,8 @@ _FIELDMATCH_TERNARY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2217,
-  serialized_end=2255,
+  serialized_start=2319,
+  serialized_end=2357,
 )
 
 _FIELDMATCH_LPM = _descriptor.Descriptor(
@@ -843,8 +857,8 @@ _FIELDMATCH_LPM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2257,
-  serialized_end=2297,
+  serialized_start=2359,
+  serialized_end=2399,
 )
 
 _FIELDMATCH_RANGE = _descriptor.Descriptor(
@@ -881,8 +895,8 @@ _FIELDMATCH_RANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2299,
-  serialized_end=2333,
+  serialized_start=2401,
+  serialized_end=2435,
 )
 
 _FIELDMATCH_OPTIONAL = _descriptor.Descriptor(
@@ -912,8 +926,8 @@ _FIELDMATCH_OPTIONAL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2335,
-  serialized_end=2360,
+  serialized_start=2437,
+  serialized_end=2462,
 )
 
 _FIELDMATCH = _descriptor.Descriptor(
@@ -990,8 +1004,8 @@ _FIELDMATCH = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1906,
-  serialized_end=2380,
+  serialized_start=2008,
+  serialized_end=2482,
 )
 
 
@@ -1048,8 +1062,8 @@ _TABLEACTION = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=2383,
-  serialized_end=2576,
+  serialized_start=2485,
+  serialized_end=2678,
 )
 
 
@@ -1087,8 +1101,8 @@ _ACTION_PARAM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2644,
-  serialized_end=2684,
+  serialized_start=2746,
+  serialized_end=2786,
 )
 
 _ACTION = _descriptor.Descriptor(
@@ -1125,8 +1139,8 @@ _ACTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2578,
-  serialized_end=2684,
+  serialized_start=2680,
+  serialized_end=2786,
 )
 
 
@@ -1157,8 +1171,8 @@ _ACTIONPROFILEACTIONSET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2686,
-  serialized_end=2770,
+  serialized_start=2788,
+  serialized_end=2872,
 )
 
 
@@ -1215,8 +1229,8 @@ _ACTIONPROFILEACTION = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=2772,
-  serialized_end=2897,
+  serialized_start=2874,
+  serialized_end=2999,
 )
 
 
@@ -1261,8 +1275,8 @@ _ACTIONPROFILEMEMBER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2899,
-  serialized_end=2997,
+  serialized_start=3001,
+  serialized_end=3099,
 )
 
 
@@ -1319,8 +1333,8 @@ _ACTIONPROFILEGROUP_MEMBER = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=3136,
-  serialized_end=3236,
+  serialized_start=3238,
+  serialized_end=3338,
 )
 
 _ACTIONPROFILEGROUP = _descriptor.Descriptor(
@@ -1371,8 +1385,8 @@ _ACTIONPROFILEGROUP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3000,
-  serialized_end=3236,
+  serialized_start=3102,
+  serialized_end=3338,
 )
 
 
@@ -1403,8 +1417,8 @@ _INDEX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3238,
-  serialized_end=3260,
+  serialized_start=3340,
+  serialized_end=3362,
 )
 
 
@@ -1456,8 +1470,8 @@ _METERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3263,
-  serialized_end=3405,
+  serialized_start=3365,
+  serialized_end=3507,
 )
 
 
@@ -1502,8 +1516,8 @@ _DIRECTMETERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3408,
-  serialized_end=3549,
+  serialized_start=3510,
+  serialized_end=3651,
 )
 
 
@@ -1555,8 +1569,8 @@ _METERCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3551,
-  serialized_end=3622,
+  serialized_start=3653,
+  serialized_end=3724,
 )
 
 
@@ -1601,8 +1615,8 @@ _COUNTERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3624,
-  serialized_end=3721,
+  serialized_start=3726,
+  serialized_end=3823,
 )
 
 
@@ -1640,8 +1654,8 @@ _DIRECTCOUNTERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3723,
-  serialized_end=3817,
+  serialized_start=3825,
+  serialized_end=3919,
 )
 
 
@@ -1679,8 +1693,8 @@ _COUNTERDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3819,
-  serialized_end=3874,
+  serialized_start=3921,
+  serialized_end=3976,
 )
 
 
@@ -1725,8 +1739,8 @@ _METERCOUNTERDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3876,
-  serialized_end=3998,
+  serialized_start=3978,
+  serialized_end=4100,
 )
 
 
@@ -1769,8 +1783,8 @@ _PACKETREPLICATIONENGINEENTRY = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=4001,
-  serialized_end=4157,
+  serialized_start=4103,
+  serialized_end=4259,
 )
 
 
@@ -1820,8 +1834,8 @@ _REPLICA = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=4159,
-  serialized_end=4242,
+  serialized_start=4261,
+  serialized_end=4344,
 )
 
 
@@ -1866,8 +1880,8 @@ _MULTICASTGROUPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4244,
-  serialized_end=4345,
+  serialized_start=4346,
+  serialized_end=4447,
 )
 
 
@@ -1919,8 +1933,8 @@ _CLONESESSIONENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4348,
-  serialized_end=4476,
+  serialized_start=4450,
+  serialized_end=4578,
 )
 
 
@@ -1951,8 +1965,8 @@ _VALUESETMEMBER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4478,
-  serialized_end=4528,
+  serialized_start=4580,
+  serialized_end=4630,
 )
 
 
@@ -1990,8 +2004,8 @@ _VALUESETENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4530,
-  serialized_end=4607,
+  serialized_start=4632,
+  serialized_end=4709,
 )
 
 
@@ -2036,8 +2050,8 @@ _REGISTERENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4609,
-  serialized_end=4703,
+  serialized_start=4711,
+  serialized_end=4805,
 )
 
 
@@ -2082,8 +2096,8 @@ _DIGESTENTRY_CONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4783,
-  serialized_end=4862,
+  serialized_start=4885,
+  serialized_end=4964,
 )
 
 _DIGESTENTRY = _descriptor.Descriptor(
@@ -2120,8 +2134,8 @@ _DIGESTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4706,
-  serialized_end=4862,
+  serialized_start=4808,
+  serialized_end=4964,
 )
 
 
@@ -2178,8 +2192,8 @@ _STREAMMESSAGEREQUEST = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=4865,
-  serialized_end=5071,
+  serialized_start=4967,
+  serialized_end=5173,
 )
 
 
@@ -2217,8 +2231,8 @@ _PACKETOUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5073,
-  serialized_end=5142,
+  serialized_start=5175,
+  serialized_end=5244,
 )
 
 
@@ -2256,8 +2270,8 @@ _DIGESTLISTACK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5144,
-  serialized_end=5195,
+  serialized_start=5246,
+  serialized_end=5297,
 )
 
 
@@ -2328,8 +2342,8 @@ _STREAMMESSAGERESPONSE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=5198,
-  serialized_end=5503,
+  serialized_start=5300,
+  serialized_end=5605,
 )
 
 
@@ -2367,8 +2381,8 @@ _PACKETIN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5505,
-  serialized_end=5573,
+  serialized_start=5607,
+  serialized_end=5675,
 )
 
 
@@ -2420,8 +2434,8 @@ _DIGESTLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5575,
-  serialized_end=5671,
+  serialized_start=5677,
+  serialized_end=5773,
 )
 
 
@@ -2459,8 +2473,8 @@ _PACKETMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5673,
-  serialized_end=5725,
+  serialized_start=5775,
+  serialized_end=5827,
 )
 
 
@@ -2512,8 +2526,8 @@ _MASTERARBITRATIONUPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5728,
-  serialized_end=5872,
+  serialized_start=5830,
+  serialized_end=5974,
 )
 
 
@@ -2558,8 +2572,8 @@ _ROLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5874,
-  serialized_end=5948,
+  serialized_start=5976,
+  serialized_end=6050,
 )
 
 
@@ -2597,8 +2611,8 @@ _IDLETIMEOUTNOTIFICATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5950,
-  serialized_end=6034,
+  serialized_start=6052,
+  serialized_end=6136,
 )
 
 
@@ -2676,8 +2690,8 @@ _STREAMERROR = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=6037,
-  serialized_end=6272,
+  serialized_start=6139,
+  serialized_end=6374,
 )
 
 
@@ -2708,8 +2722,8 @@ _PACKETOUTERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6274,
-  serialized_end=6328,
+  serialized_start=6376,
+  serialized_end=6430,
 )
 
 
@@ -2740,8 +2754,8 @@ _DIGESTLISTACKERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6330,
-  serialized_end=6397,
+  serialized_start=6432,
+  serialized_end=6499,
 )
 
 
@@ -2772,8 +2786,8 @@ _STREAMOTHERERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6399,
-  serialized_end=6454,
+  serialized_start=6501,
+  serialized_end=6556,
 )
 
 
@@ -2811,8 +2825,8 @@ _UINT128 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6456,
-  serialized_end=6492,
+  serialized_start=6558,
+  serialized_end=6594,
 )
 
 
@@ -2879,8 +2893,8 @@ _SETFORWARDINGPIPELINECONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6495,
-  serialized_end=6858,
+  serialized_start=6597,
+  serialized_end=6960,
 )
 
 
@@ -2904,8 +2918,8 @@ _SETFORWARDINGPIPELINECONFIGRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6860,
-  serialized_end=6897,
+  serialized_start=6962,
+  serialized_end=6999,
 )
 
 
@@ -2936,8 +2950,8 @@ _FORWARDINGPIPELINECONFIG_COOKIE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7048,
-  serialized_end=7072,
+  serialized_start=7150,
+  serialized_end=7174,
 )
 
 _FORWARDINGPIPELINECONFIG = _descriptor.Descriptor(
@@ -2981,8 +2995,8 @@ _FORWARDINGPIPELINECONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6900,
-  serialized_end=7072,
+  serialized_start=7002,
+  serialized_end=7174,
 )
 
 
@@ -3021,8 +3035,8 @@ _GETFORWARDINGPIPELINECONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7075,
-  serialized_end=7304,
+  serialized_start=7177,
+  serialized_end=7406,
 )
 
 
@@ -3053,8 +3067,8 @@ _GETFORWARDINGPIPELINECONFIGRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7306,
-  serialized_end=7392,
+  serialized_start=7408,
+  serialized_end=7494,
 )
 
 
@@ -3113,8 +3127,8 @@ _ERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7394,
-  serialized_end=7510,
+  serialized_start=7496,
+  serialized_end=7612,
 )
 
 
@@ -3138,8 +3152,8 @@ _CAPABILITIESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7512,
-  serialized_end=7533,
+  serialized_start=7614,
+  serialized_end=7635,
 )
 
 
@@ -3170,8 +3184,407 @@ _CAPABILITIESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7535,
-  serialized_end=7588,
+  serialized_start=7637,
+  serialized_end=7690,
+)
+
+
+_GENERICFIELDMATCH_EXACT = _descriptor.Descriptor(
+  name='Exact',
+  full_name='p4.v1.GenericFieldMatch.Exact',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='p4.v1.GenericFieldMatch.Exact.value', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=8022,
+  serialized_end=8064,
+)
+
+_GENERICFIELDMATCH_TERNARY = _descriptor.Descriptor(
+  name='Ternary',
+  full_name='p4.v1.GenericFieldMatch.Ternary',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='p4.v1.GenericFieldMatch.Ternary.value', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='mask', full_name='p4.v1.GenericFieldMatch.Ternary.mask', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2319,
+  serialized_end=2357,
+)
+
+_GENERICFIELDMATCH_LPM = _descriptor.Descriptor(
+  name='LPM',
+  full_name='p4.v1.GenericFieldMatch.LPM',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='p4.v1.GenericFieldMatch.LPM.value', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='prefix_len', full_name='p4.v1.GenericFieldMatch.LPM.prefix_len', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2359,
+  serialized_end=2399,
+)
+
+_GENERICFIELDMATCH_RANGE = _descriptor.Descriptor(
+  name='Range',
+  full_name='p4.v1.GenericFieldMatch.Range',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='low', full_name='p4.v1.GenericFieldMatch.Range.low', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='high', full_name='p4.v1.GenericFieldMatch.Range.high', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2401,
+  serialized_end=2435,
+)
+
+_GENERICFIELDMATCH_OPTIONAL = _descriptor.Descriptor(
+  name='Optional',
+  full_name='p4.v1.GenericFieldMatch.Optional',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='p4.v1.GenericFieldMatch.Optional.value', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=8184,
+  serialized_end=8229,
+)
+
+_GENERICFIELDMATCH = _descriptor.Descriptor(
+  name='GenericFieldMatch',
+  full_name='p4.v1.GenericFieldMatch',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='field_id', full_name='p4.v1.GenericFieldMatch.field_id', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='exact', full_name='p4.v1.GenericFieldMatch.exact', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='ternary', full_name='p4.v1.GenericFieldMatch.ternary', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='lpm', full_name='p4.v1.GenericFieldMatch.lpm', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='range', full_name='p4.v1.GenericFieldMatch.range', index=4,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='optional', full_name='p4.v1.GenericFieldMatch.optional', index=5,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='other', full_name='p4.v1.GenericFieldMatch.other', index=6,
+      number=100, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_GENERICFIELDMATCH_EXACT, _GENERICFIELDMATCH_TERNARY, _GENERICFIELDMATCH_LPM, _GENERICFIELDMATCH_RANGE, _GENERICFIELDMATCH_OPTIONAL, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='field_match_type', full_name='p4.v1.GenericFieldMatch.field_match_type',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+  ],
+  serialized_start=7693,
+  serialized_end=8249,
+)
+
+
+_GENERICTABLEENTRY = _descriptor.Descriptor(
+  name='GenericTableEntry',
+  full_name='p4.v1.GenericTableEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='table_id', full_name='p4.v1.GenericTableEntry.table_id', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='match', full_name='p4.v1.GenericTableEntry.match', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='table_data_union', full_name='p4.v1.GenericTableEntry.table_data_union', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='priority', full_name='p4.v1.GenericTableEntry.priority', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='is_default_entry', full_name='p4.v1.GenericTableEntry.is_default_entry', index=4,
+      number=5, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='metadata', full_name='p4.v1.GenericTableEntry.metadata', index=5,
+      number=6, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=8252,
+  serialized_end=8441,
+)
+
+
+_TABLEDATAUNION_PARAM = _descriptor.Descriptor(
+  name='Param',
+  full_name='p4.v1.TableDataUnion.Param',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='param_id', full_name='p4.v1.TableDataUnion.Param.param_id', index=0,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='p4.v1.TableDataUnion.Param.value', index=1,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=8525,
+  serialized_end=8585,
+)
+
+_TABLEDATAUNION = _descriptor.Descriptor(
+  name='TableDataUnion',
+  full_name='p4.v1.TableDataUnion',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='union_id', full_name='p4.v1.TableDataUnion.union_id', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='params', full_name='p4.v1.TableDataUnion.params', index=1,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_TABLEDATAUNION_PARAM, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=8444,
+  serialized_end=8585,
 )
 
 _WRITEREQUEST.fields_by_name['election_id'].message_type = _UINT128
@@ -3195,6 +3608,7 @@ _ENTITY.fields_by_name['packet_replication_engine_entry'].message_type = _PACKET
 _ENTITY.fields_by_name['value_set_entry'].message_type = _VALUESETENTRY
 _ENTITY.fields_by_name['register_entry'].message_type = _REGISTERENTRY
 _ENTITY.fields_by_name['digest_entry'].message_type = _DIGESTENTRY
+_ENTITY.fields_by_name['generic_table_entry'].message_type = _GENERICTABLEENTRY
 _ENTITY.oneofs_by_name['entity'].fields.append(
   _ENTITY.fields_by_name['extern_entry'])
 _ENTITY.fields_by_name['extern_entry'].containing_oneof = _ENTITY.oneofs_by_name['entity']
@@ -3231,6 +3645,9 @@ _ENTITY.fields_by_name['register_entry'].containing_oneof = _ENTITY.oneofs_by_na
 _ENTITY.oneofs_by_name['entity'].fields.append(
   _ENTITY.fields_by_name['digest_entry'])
 _ENTITY.fields_by_name['digest_entry'].containing_oneof = _ENTITY.oneofs_by_name['entity']
+_ENTITY.oneofs_by_name['entity'].fields.append(
+  _ENTITY.fields_by_name['generic_table_entry'])
+_ENTITY.fields_by_name['generic_table_entry'].containing_oneof = _ENTITY.oneofs_by_name['entity']
 _EXTERNENTRY.fields_by_name['entry'].message_type = google_dot_protobuf_dot_any__pb2._ANY
 _TABLEENTRY_IDLETIMEOUT.containing_type = _TABLEENTRY
 _TABLEENTRY.fields_by_name['match'].message_type = _FIELDMATCH
@@ -3239,6 +3656,7 @@ _TABLEENTRY.fields_by_name['meter_config'].message_type = _METERCONFIG
 _TABLEENTRY.fields_by_name['counter_data'].message_type = _COUNTERDATA
 _TABLEENTRY.fields_by_name['meter_counter_data'].message_type = _METERCOUNTERDATA
 _TABLEENTRY.fields_by_name['time_since_last_hit'].message_type = _TABLEENTRY_IDLETIMEOUT
+_TABLEENTRY.fields_by_name['resources'].message_type = _GENERICTABLEENTRY
 _FIELDMATCH_EXACT.containing_type = _FIELDMATCH
 _FIELDMATCH_TERNARY.containing_type = _FIELDMATCH
 _FIELDMATCH_LPM.containing_type = _FIELDMATCH
@@ -3410,6 +3828,42 @@ _GETFORWARDINGPIPELINECONFIGREQUEST.fields_by_name['response_type'].enum_type = 
 _GETFORWARDINGPIPELINECONFIGREQUEST_RESPONSETYPE.containing_type = _GETFORWARDINGPIPELINECONFIGREQUEST
 _GETFORWARDINGPIPELINECONFIGRESPONSE.fields_by_name['config'].message_type = _FORWARDINGPIPELINECONFIG
 _ERROR.fields_by_name['details'].message_type = google_dot_protobuf_dot_any__pb2._ANY
+_GENERICFIELDMATCH_EXACT.fields_by_name['value'].message_type = p4_dot_v1_dot_p4data__pb2._GENERICDATA
+_GENERICFIELDMATCH_EXACT.containing_type = _GENERICFIELDMATCH
+_GENERICFIELDMATCH_TERNARY.containing_type = _GENERICFIELDMATCH
+_GENERICFIELDMATCH_LPM.containing_type = _GENERICFIELDMATCH
+_GENERICFIELDMATCH_RANGE.containing_type = _GENERICFIELDMATCH
+_GENERICFIELDMATCH_OPTIONAL.fields_by_name['value'].message_type = p4_dot_v1_dot_p4data__pb2._GENERICDATA
+_GENERICFIELDMATCH_OPTIONAL.containing_type = _GENERICFIELDMATCH
+_GENERICFIELDMATCH.fields_by_name['exact'].message_type = _GENERICFIELDMATCH_EXACT
+_GENERICFIELDMATCH.fields_by_name['ternary'].message_type = _GENERICFIELDMATCH_TERNARY
+_GENERICFIELDMATCH.fields_by_name['lpm'].message_type = _GENERICFIELDMATCH_LPM
+_GENERICFIELDMATCH.fields_by_name['range'].message_type = _GENERICFIELDMATCH_RANGE
+_GENERICFIELDMATCH.fields_by_name['optional'].message_type = _GENERICFIELDMATCH_OPTIONAL
+_GENERICFIELDMATCH.fields_by_name['other'].message_type = google_dot_protobuf_dot_any__pb2._ANY
+_GENERICFIELDMATCH.oneofs_by_name['field_match_type'].fields.append(
+  _GENERICFIELDMATCH.fields_by_name['exact'])
+_GENERICFIELDMATCH.fields_by_name['exact'].containing_oneof = _GENERICFIELDMATCH.oneofs_by_name['field_match_type']
+_GENERICFIELDMATCH.oneofs_by_name['field_match_type'].fields.append(
+  _GENERICFIELDMATCH.fields_by_name['ternary'])
+_GENERICFIELDMATCH.fields_by_name['ternary'].containing_oneof = _GENERICFIELDMATCH.oneofs_by_name['field_match_type']
+_GENERICFIELDMATCH.oneofs_by_name['field_match_type'].fields.append(
+  _GENERICFIELDMATCH.fields_by_name['lpm'])
+_GENERICFIELDMATCH.fields_by_name['lpm'].containing_oneof = _GENERICFIELDMATCH.oneofs_by_name['field_match_type']
+_GENERICFIELDMATCH.oneofs_by_name['field_match_type'].fields.append(
+  _GENERICFIELDMATCH.fields_by_name['range'])
+_GENERICFIELDMATCH.fields_by_name['range'].containing_oneof = _GENERICFIELDMATCH.oneofs_by_name['field_match_type']
+_GENERICFIELDMATCH.oneofs_by_name['field_match_type'].fields.append(
+  _GENERICFIELDMATCH.fields_by_name['optional'])
+_GENERICFIELDMATCH.fields_by_name['optional'].containing_oneof = _GENERICFIELDMATCH.oneofs_by_name['field_match_type']
+_GENERICFIELDMATCH.oneofs_by_name['field_match_type'].fields.append(
+  _GENERICFIELDMATCH.fields_by_name['other'])
+_GENERICFIELDMATCH.fields_by_name['other'].containing_oneof = _GENERICFIELDMATCH.oneofs_by_name['field_match_type']
+_GENERICTABLEENTRY.fields_by_name['match'].message_type = _GENERICFIELDMATCH
+_GENERICTABLEENTRY.fields_by_name['table_data_union'].message_type = _TABLEDATAUNION
+_TABLEDATAUNION_PARAM.fields_by_name['value'].message_type = p4_dot_v1_dot_p4data__pb2._GENERICDATA
+_TABLEDATAUNION_PARAM.containing_type = _TABLEDATAUNION
+_TABLEDATAUNION.fields_by_name['params'].message_type = _TABLEDATAUNION_PARAM
 DESCRIPTOR.message_types_by_name['WriteRequest'] = _WRITEREQUEST
 DESCRIPTOR.message_types_by_name['WriteResponse'] = _WRITERESPONSE
 DESCRIPTOR.message_types_by_name['ReadRequest'] = _READREQUEST
@@ -3464,6 +3918,9 @@ DESCRIPTOR.message_types_by_name['GetForwardingPipelineConfigResponse'] = _GETFO
 DESCRIPTOR.message_types_by_name['Error'] = _ERROR
 DESCRIPTOR.message_types_by_name['CapabilitiesRequest'] = _CAPABILITIESREQUEST
 DESCRIPTOR.message_types_by_name['CapabilitiesResponse'] = _CAPABILITIESRESPONSE
+DESCRIPTOR.message_types_by_name['GenericFieldMatch'] = _GENERICFIELDMATCH
+DESCRIPTOR.message_types_by_name['GenericTableEntry'] = _GENERICTABLEENTRY
+DESCRIPTOR.message_types_by_name['TableDataUnion'] = _TABLEDATAUNION
 DESCRIPTOR.enum_types_by_name['SdnPort'] = _SDNPORT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -3925,6 +4382,75 @@ CapabilitiesResponse = _reflection.GeneratedProtocolMessageType('CapabilitiesRes
   })
 _sym_db.RegisterMessage(CapabilitiesResponse)
 
+GenericFieldMatch = _reflection.GeneratedProtocolMessageType('GenericFieldMatch', (_message.Message,), {
+
+  'Exact' : _reflection.GeneratedProtocolMessageType('Exact', (_message.Message,), {
+    'DESCRIPTOR' : _GENERICFIELDMATCH_EXACT,
+    '__module__' : 'p4.v1.p4runtime_pb2'
+    # @@protoc_insertion_point(class_scope:p4.v1.GenericFieldMatch.Exact)
+    })
+  ,
+
+  'Ternary' : _reflection.GeneratedProtocolMessageType('Ternary', (_message.Message,), {
+    'DESCRIPTOR' : _GENERICFIELDMATCH_TERNARY,
+    '__module__' : 'p4.v1.p4runtime_pb2'
+    # @@protoc_insertion_point(class_scope:p4.v1.GenericFieldMatch.Ternary)
+    })
+  ,
+
+  'LPM' : _reflection.GeneratedProtocolMessageType('LPM', (_message.Message,), {
+    'DESCRIPTOR' : _GENERICFIELDMATCH_LPM,
+    '__module__' : 'p4.v1.p4runtime_pb2'
+    # @@protoc_insertion_point(class_scope:p4.v1.GenericFieldMatch.LPM)
+    })
+  ,
+
+  'Range' : _reflection.GeneratedProtocolMessageType('Range', (_message.Message,), {
+    'DESCRIPTOR' : _GENERICFIELDMATCH_RANGE,
+    '__module__' : 'p4.v1.p4runtime_pb2'
+    # @@protoc_insertion_point(class_scope:p4.v1.GenericFieldMatch.Range)
+    })
+  ,
+
+  'Optional' : _reflection.GeneratedProtocolMessageType('Optional', (_message.Message,), {
+    'DESCRIPTOR' : _GENERICFIELDMATCH_OPTIONAL,
+    '__module__' : 'p4.v1.p4runtime_pb2'
+    # @@protoc_insertion_point(class_scope:p4.v1.GenericFieldMatch.Optional)
+    })
+  ,
+  'DESCRIPTOR' : _GENERICFIELDMATCH,
+  '__module__' : 'p4.v1.p4runtime_pb2'
+  # @@protoc_insertion_point(class_scope:p4.v1.GenericFieldMatch)
+  })
+_sym_db.RegisterMessage(GenericFieldMatch)
+_sym_db.RegisterMessage(GenericFieldMatch.Exact)
+_sym_db.RegisterMessage(GenericFieldMatch.Ternary)
+_sym_db.RegisterMessage(GenericFieldMatch.LPM)
+_sym_db.RegisterMessage(GenericFieldMatch.Range)
+_sym_db.RegisterMessage(GenericFieldMatch.Optional)
+
+GenericTableEntry = _reflection.GeneratedProtocolMessageType('GenericTableEntry', (_message.Message,), {
+  'DESCRIPTOR' : _GENERICTABLEENTRY,
+  '__module__' : 'p4.v1.p4runtime_pb2'
+  # @@protoc_insertion_point(class_scope:p4.v1.GenericTableEntry)
+  })
+_sym_db.RegisterMessage(GenericTableEntry)
+
+TableDataUnion = _reflection.GeneratedProtocolMessageType('TableDataUnion', (_message.Message,), {
+
+  'Param' : _reflection.GeneratedProtocolMessageType('Param', (_message.Message,), {
+    'DESCRIPTOR' : _TABLEDATAUNION_PARAM,
+    '__module__' : 'p4.v1.p4runtime_pb2'
+    # @@protoc_insertion_point(class_scope:p4.v1.TableDataUnion.Param)
+    })
+  ,
+  'DESCRIPTOR' : _TABLEDATAUNION,
+  '__module__' : 'p4.v1.p4runtime_pb2'
+  # @@protoc_insertion_point(class_scope:p4.v1.TableDataUnion)
+  })
+_sym_db.RegisterMessage(TableDataUnion)
+_sym_db.RegisterMessage(TableDataUnion.Param)
+
 
 DESCRIPTOR._options = None
 _WRITEREQUEST.fields_by_name['role_id']._options = None
@@ -3942,8 +4468,8 @@ _P4RUNTIME = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=7732,
-  serialized_end=8247,
+  serialized_start=8729,
+  serialized_end=9244,
   methods=[
   _descriptor.MethodDescriptor(
     name='Write',
