@@ -1727,6 +1727,11 @@ Both `Meter` and `DirectMeter` messages share the following fields:
       colors: GREEN, YELLOW, or RED. This mode is the default, but can also be
       set explicitly in a P4 program by adding the `@two_rate_three_color`
       annotation to the meter definition.
+    * `SINGLE_RATE_THREE_COLOR`: This is the *Single Rate Three Color Marker*
+      (srTCM) defined in RFC 2697 [@RFC2697]. This allows meters to use one rate
+      and an Excess Burst Size (EBS) to split packets into three potential
+      colors: GREEN, YELLOW, or RED. In a P4 program, this mode can be set by
+      adding the `@single_rate_three_color` annotation to the meter definition.
     * `SINGLE_RATE_TWO_COLOR`: This is a simplified version of RFC 2697
       [@RFC2697], which restricts meters to use only a single rate to mark
       packets GREEN or RED. RFC 2697 allows three colors by additionally
@@ -4246,15 +4251,20 @@ Meters are an advanced mechanism for keeping statistics, involving stateful
 "marking" and usually "throttling" of packets based on configured rates of
 traffic. The PSA metering function is based on the *Two Rate Three Color Marker*
 (trTCM) defined in RFC 2698 [@RFC2698]. P4Runtime clients may additionally
-restrict meter usage on a table to a simplified version of RFC 2697 [@RFC2697]
-that we call *Single Rate Two Color Marker*. The type of a table's meter is set
-by the `MeterSpec.Type` as described in the
-[Meter & DirectMeter section](#sec-meter-directmeter).
+restrict meter usage on a table to RFC 2697's [@RFC2697] *Single Rate Three
+Color Marker* (srTCM) or a simplified version of it that we call *Single Rate
+Two Color Marker*. The type of a table's meter is set by the `MeterSpec.Type` as
+described in the [Meter & DirectMeter section](#sec-meter-directmeter).
 
 The trTCM meters an arbitrary packet stream using two configured rates ---
 the Peak Information Rate (PIR) and Committed Information Rate (CIR), and their
 associated burst sizes --- and "marks" its packets as GREEN, YELLOW or RED based
 on the observed rate.
+
+The srTCM meters an arbitrary packet stream using a single configured rate ---
+the Committed Information Rate (CIR) and its associated burst size --- as well
+as the Excess Burst Size (EBS) and "marks" its packets as GREEN, YELLOW or RED
+based on the observed rate.
 
 The *Single Rate Two Color Marker* meters an arbitary packet stream using a
 single configured rate --- the Committed Information Rate (CIR) and its
@@ -4279,13 +4289,30 @@ message MeterConfig {
   int64 cburst = 2;  // Committed Burst Size
   int64 pir = 3;  // Peak Information Rate
   int64 pburst = 4;  // Peak Burst Size
+  int64 eburst = 5; // Excess burst size (only used for srTCM)
 }
 ~ End Proto
 
+A MeterConfig for a trTCM typed meter must only be accepted if `eburst` is
+unset. Otherwise, the server should return an `INVALID_ARGUMENT` error.
+
+A MeterConfig for a srTCM typed meter must only be accepted if `pir` and
+`pburst` are equal to `cir` and `cburst` respectively. Otherwise, the server
+should return an `INVALID_ARGUMENT` error.
+
 A MeterConfig for a *Single Rate Two Color Marker* typed meter must only be
-accepted if `pir` and `pburst` are either both unset, or equal to `cir` and
-`cburst` respectively. Otherwise, the server should return an `INVALID_ARGUMENT`
+accepted if `pir` and `pburst` are equal to `cir` and `cburst` respectively and
+`eburst` is unset. Otherwise, the server should return an `INVALID_ARGUMENT`
 error.
+
+A MeterConfig for a *Single Rate Two Color Marker* typed meter must only be
+accepted if `pir` and `pburst` are equal to `cir` and `cburst` respectively and
+`eburst` is unset. Otherwise, the server should return an `INVALID_ARGUMENT`
+error.
+
+Note: Any acceptable MeterConfig for a *Single Rate Two Color Marker* typed
+meter is also acceptable for either of the other two meter types and will mark
+packets identically in all three cases.
 
 ### `DirectMeterEntry`
 
@@ -6474,7 +6501,8 @@ properties, but we may include on in future versions of the API.
 ### Changes in v1.4.0
 
 * Add a `Type` field to the `MeterSpec` message allowing users to restrict the
-  type of meters that can be used for a table.
+  type of meters that can be used for a table and a new `eburst` field to the
+  `MeterConfig` message for use with one of the new `MeterSpec` types.
 * Add a `metadata` field to the `MulticastGroupEntry` message.
 * Clarify that the limitation on supported types for `FieldMatch`, action
   `Param`, and Packet IO metadata fields (no support for signed integers, with
@@ -6580,6 +6608,7 @@ the purpose of adding features for the P4Runtime API.
 | `@selector_size_semantics` | See section [#sec-p4info-action-profile] |
 | `@max_member_weight`       | See section [#sec-p4info-action-profile] |
 | `@two_rate_three_color`    | See section [#sec-meter-directmeter] |
+| `@single_rate_three_color` | See section [#sec-meter-directmeter] |
 | `@single_rate_two_color`   | See section [#sec-meter-directmeter] |
 | `@pkginfo`                 | See section [#sec-annotating-p4-code-with-pkginfo] |
 | `@p4runtime_translation`   | See sections [#sec-user-defined-types], [#sec-translation-of-port-numbers] |

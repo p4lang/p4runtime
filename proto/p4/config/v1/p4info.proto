@@ -345,13 +345,20 @@ message MeterSpec {
   enum Type {
     // As described in RFC 2698, allows meters to use two rates to split packets
     // into three potential colors.
+    // MeterConfigs on table entries using this meter type MUST have `eburst ==
+    // 0` (i.e. unset).
     TWO_RATE_THREE_COLOR = 0;
+    // As described in RFC 2697, allows meters to use one rate with an Excess
+    // Burst Size (EBS) to split packets into three potential colors.
+    // MeterConfigs on table entries using this meter type MUST have
+    // `cir == pir && cburst == pburst`.
+    SINGLE_RATE_THREE_COLOR = 1;
     // A simplified version of RFC 2697, restricting meters to using a single
     // rate to split packets into only RED or GREEN, by not providing an Excess
     // Burst Size (EBS).
     // MeterConfigs on table entries using this meter type MUST have
-    // `cir == pir && cburst == pburst` OR `pir == 0 && pburst == 0`.
-    SINGLE_RATE_TWO_COLOR = 1;
+    // `cir == pir && cburst == pburst && eburst == 0` (i.e. unset).
+    SINGLE_RATE_TWO_COLOR = 2;
   }
   Unit unit = 1;
   Type type = 2;
