@@ -1305,13 +1305,13 @@ where the `PlatformProperties` message looks as follows:
 message PlatformProperties {
   // The maximum number of multicast entries (i.e. multicast groups) that the
   // platform is expected to support. If 0, there are no requirements.
-  int64 multicast_table_size = 1;
+  int64 multicast_group_table_size = 1;
   // The maximum number of replicas that the platform is expected to support
   // across all  groups. If 0, there are no requirements.
-  int64 multicast_table_total_replicas = 2;
+  int64 multicast_group_table_total_replicas = 2;
   // The largest number of replicas that the platform is expected to support per
-  // group/entry. If 0, `multicast_table_total_replicas` should be used.
-  int64 multicast_table_max_replicas_per_entry = 3;
+  // group/entry. If 0, `multicast_group_table_total_replicas` should be used.
+  int64 multicast_group_table_max_replicas_per_entry = 3;
 }
 ~ End Proto
 
@@ -1359,8 +1359,8 @@ Above we see several different types of annotations:
   annotation, separated by commas. Each key must only appear once and the
   compiler must reject the program if one appears multiple times. The `key`s
   must be from among the message fields inside `PlatformProperty`, for example,
-  `multicast_table_size` or `multicast_table_total_replicas`. Each key-value
-  pair assigns a value to the corresponding field inside the single
+  `multicast_group_table_size` or `multicast_group_table_total_replicas`. Each
+  key-value pair assigns a value to the corresponding field inside the single
   `PlatformProperty` message inside the program's P4Info.
 
 * `@<anything else>` - This will create a `PkgInfo.annotation` entry

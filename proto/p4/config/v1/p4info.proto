@@ -52,13 +52,13 @@ message Documentation {
 message PlatformProperties {
   // The maximum number of multicast entries (i.e. multicast groups) that the
   // platform is expected to support. If 0, there are no requirements.
-  int64 multicast_table_size = 1;
+  int64 multicast_group_table_size = 1;
   // The maximum number of replicas that the platform is expected to support
   // across all  groups. If 0, there are no requirements.
-  int64 multicast_table_total_replicas = 2;
+  int64 multicast_group_table_total_replicas = 2;
   // The largest number of replicas that the platform is expected to support per
-  // group/entry. If 0, `multicast_table_total_replicas` should be used.
-  int64 multicast_table_max_replicas_per_entry = 3;
+  // group/entry. If 0, `multicast_group_table_total_replicas` should be used.
+  int64 multicast_group_table_max_replicas_per_entry = 3;
 }
 
 // Top-level package documentation describing the forwarding pipeline config
@@ -87,8 +87,8 @@ message PkgInfo {
   // Miscellaneous metadata, structured; a way to extend PkgInfo
   repeated StructuredAnnotation structured_annotations = 9;
   // If set, specifies the properties that the underlying platform should have.
-  // If the platform does conform to these properties, the server should reject
-  // the P4Info when used with a SetForwardingPipelineConfigRequest.
+  // If the platform does not conform to these properties, the server should
+  // reject the P4Info when used with a SetForwardingPipelineConfigRequest.
   PlatformProperties platform_properties = 11;
 }
 
