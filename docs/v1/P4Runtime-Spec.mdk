@@ -1293,8 +1293,8 @@ message PkgInfo {
   // Miscellaneous metadata, structured; a way to extend PkgInfo
   repeated StructuredAnnotation structured_annotations = 9;
   // If set, specifies the properties that the underlying platform should have.
-  // If the platform does conform to these properties, the server should reject
-  // the P4Info when used with a SetForwardingPipelineConfigRequest.
+  // If the platform does not conform to these properties, the server should
+  // reject the P4Info when used with a SetForwardingPipelineConfigRequest.
   PlatformProperties platform_properties = 11;
 }
 ~ End Proto
@@ -1303,14 +1303,15 @@ where the `PlatformProperties` message looks as follows:
 ~ Begin Proto
 // Used to describe the required properties of the underlying platform.
 message PlatformProperties {
-  // The maximum number of multicast entries (i.e. multicast groups) that the
-  // platform is expected to support. If 0, there are no requirements.
+  // The minimum number of multicast entries (i.e. multicast groups) that the
+  // platform is required to support. If 0, there are no requirements.
   int64 multicast_group_table_size = 1;
-  // The maximum number of replicas that the platform is expected to support
+  // The minimum number of replicas that the platform is required to support
   // across all  groups. If 0, there are no requirements.
   int64 multicast_group_table_total_replicas = 2;
-  // The largest number of replicas that the platform is expected to support per
+  // The number of replicas that the platform is required to support per
   // group/entry. If 0, `multicast_group_table_total_replicas` should be used.
+  // Must be no larger than `multicast_group_table_total_replicas`.
   int64 multicast_group_table_max_replicas_per_entry = 3;
 }
 ~ End Proto
