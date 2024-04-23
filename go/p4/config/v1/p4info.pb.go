@@ -607,14 +607,15 @@ type PlatformProperties struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The maximum number of multicast entries (i.e. multicast groups) that the
-	// platform is expected to support. If 0, there are no requirements.
+	// The minimum number of multicast entries (i.e. multicast groups) that the
+	// platform is required to support. If 0, there are no requirements.
 	MulticastGroupTableSize int64 `protobuf:"varint,1,opt,name=multicast_group_table_size,json=multicastGroupTableSize,proto3" json:"multicast_group_table_size,omitempty"`
-	// The maximum number of replicas that the platform is expected to support
+	// The minimum number of replicas that the platform is required to support
 	// across all  groups. If 0, there are no requirements.
 	MulticastGroupTableTotalReplicas int64 `protobuf:"varint,2,opt,name=multicast_group_table_total_replicas,json=multicastGroupTableTotalReplicas,proto3" json:"multicast_group_table_total_replicas,omitempty"`
-	// The largest number of replicas that the platform is expected to support per
+	// The number of replicas that the platform is required to support per
 	// group/entry. If 0, `multicast_group_table_total_replicas` should be used.
+	// Must be no larger than `multicast_group_table_total_replicas`.
 	MulticastGroupTableMaxReplicasPerEntry int64 `protobuf:"varint,3,opt,name=multicast_group_table_max_replicas_per_entry,json=multicastGroupTableMaxReplicasPerEntry,proto3" json:"multicast_group_table_max_replicas_per_entry,omitempty"`
 }
 
