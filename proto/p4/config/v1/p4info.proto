@@ -52,14 +52,14 @@ message Documentation {
 message PlatformProperties {
   // The minimum number of multicast entries (i.e. multicast groups) that the
   // platform is required to support. If 0, there are no requirements.
-  int64 multicast_group_table_size = 1;
+  int32 multicast_group_table_size = 1;
   // The minimum number of replicas that the platform is required to support
   // across all  groups. If 0, there are no requirements.
-  int64 multicast_group_table_total_replicas = 2;
+  int32 multicast_group_table_total_replicas = 2;
   // The number of replicas that the platform is required to support per
   // group/entry. If 0, `multicast_group_table_total_replicas` should be used.
   // Must be no larger than `multicast_group_table_total_replicas`.
-  int64 multicast_group_table_max_replicas_per_entry = 3;
+  int32 multicast_group_table_max_replicas_per_entry = 3;
 }
 
 // Top-level package documentation describing the forwarding pipeline config
