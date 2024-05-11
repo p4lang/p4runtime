@@ -53,6 +53,7 @@ mkdir -p "$BUILD_DIR/cpp_out"
 mkdir -p "$BUILD_DIR/grpc_out"
 mkdir -p "$BUILD_DIR/py_out"
 mkdir -p "$BUILD_DIR/go_out"
+mkdir -p "$BUILD_DIR/rust_out"
 
 set -o xtrace
 $PROTOC $PROTOS --cpp_out "$BUILD_DIR/cpp_out" $PROTOFLAGS
@@ -64,6 +65,16 @@ $PROTOC $PROTOS --grpc_out "$BUILD_DIR/grpc_out" --plugin=protoc-gen-grpc="$GRPC
 $PROTOC $PROTOS --python_out "$BUILD_DIR/py_out" $PROTOFLAGS --grpc_out "$BUILD_DIR/py_out" --plugin=protoc-gen-grpc="$GRPC_PY_PLUGIN"
 
 $PROTOC $PROTOS --go_out="$BUILD_DIR/go_out" --go-grpc_out="$BUILD_DIR/go_out" $PROTOFLAGS
+
+$PROTOC $PROTOS $PROTOFLAGS \
+    --prost_out="$BUILD_DIR/rust_out/src" \
+    --prost_opt=compile_well_known_types \
+    --prost_opt=extern_path=.google.protobuf=::pbjson_types \
+    --tonic_out="$BUILD_DIR/rust_out/src" \
+    --tonic_opt=compile_well_known_types \
+    --tonic_opt=extern_path=.google.protobuf=::pbjson_types \
+    --prost-crate_out="$BUILD_DIR/rust_out" \
+    --prost-crate_opt="gen_crate=rust/Cargo.toml"
 
 set +o xtrace
 
