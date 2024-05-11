@@ -21,6 +21,9 @@ cp -r "$tmpdir"/go_out/github.com/p4lang/p4runtime/go/* go/
 cp -r "$tmpdir"/py_out/p4 py/
 find py/p4 -type d -exec touch {}/__init__.py \;
 
+# Rust
+cp -r "$tmpdir"/rust_out/* rust/
+
 # Cleanup files owned by root user
 docker run --rm \
        -v "$tmpdir:/tmp/gen" \
