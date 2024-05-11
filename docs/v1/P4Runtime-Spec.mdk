@@ -4255,13 +4255,14 @@ array have default value 0.
 A P4Runtime client may request to read the counter values of one or more
 indirect counter instances with a `ReadRequest` by including a `CounterEntry`
 entity for each of the instances, specifying the `counter_id` and
-`index`. Wildcard reads are also supported as follows.
+`index`. Wildcard reads are also supported as follows:
 
 * If the `counter_id` field is set to 0 (default), the server returns the
   counter values for all indirect counter instances in the `ReadResponse`.
 
-* If the `index` field is not set, the server returns the counter values for all
-  indirect counters in the array identified by the unique id `counter_id`.
+* Otherwise, if the `index` field is not set, the server returns the counter
+  values for all indirect counters in the array identified by the unique id
+  `counter_id`.
 
 ## `MeterEntry` & `DirectMeterEntry`
 
@@ -4401,8 +4402,9 @@ supported as follows:
 * If the `meter_id` field is set to 0 (default), the server returns the
   configuration for all indirect meter instances in the `ReadResponse`.
 
-* If the `index` field is not set, the server returns the configuration for all
-  indirect meters in the array identified by the unique id `meter_id`.
+* Otherwise, if the `index` field is not set, the server returns the
+  configuration for all indirect meters in the array identified by the unique id
+  `meter_id`.
 
 ### `MeterCounterData`
 
