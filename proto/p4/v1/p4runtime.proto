@@ -389,6 +389,7 @@ message MeterConfig {
   // Peak burst size
   int64 pburst = 4;
   // Excess burst size (only used by srTCM).
+  // Added in 1.4.0.
   int64 eburst = 5;
 }
 

@@ -1727,17 +1727,24 @@ Both `Meter` and `DirectMeter` messages share the following fields:
       colors: GREEN, YELLOW, or RED. This mode is the default, but can also be
       set explicitly in a P4 program by adding the `@two_rate_three_color`
       annotation to the meter definition.
+      For example, in a V1Model P4 program, we might define a trTCM direct meter
+      as follows:
+      ~ Begin P4Example
+      @two_rate_three_color
+      direct_meter<color_type>(MeterType.bytes) my_meter;
+      ~ End P4Example
     * `SINGLE_RATE_THREE_COLOR`: This is the *Single Rate Three Color Marker*
       (srTCM) defined in RFC 2697 [@RFC2697]. This allows meters to use one rate
       and an Excess Burst Size (EBS) to split packets into three potential
       colors: GREEN, YELLOW, or RED. In a P4 program, this mode can be set by
       adding the `@single_rate_three_color` annotation to the meter definition.
     * `SINGLE_RATE_TWO_COLOR`: This is a simplified version of RFC 2697
-      [@RFC2697], which restricts meters to use only a single rate to mark
-      packets GREEN or RED. RFC 2697 allows three colors by additionally
-      providing an Excess Burst Size (EBS) that P4Runtime does not make
-      available. In a P4 program, this mode can be set by adding the
-      `@single_rate_two_color` annotation to the meter definition.
+      [@RFC2697], and the `SINGLE_RATE_THREE_COLOR` mode above.
+      `SINGLE_RATE_TWO_COLOR` restricts meters to use only a single rate
+      specified by the Committed Information Rate (CIR) and Committed Burst Size
+      (CBS) to mark packets GREEN or RED. In a P4 program, this mode can be set
+      by adding the `@single_rate_two_color` annotation to the meter definition.
+
 
 For indexed meters, the `Meter` message contains also a `size` field, an `int64`
 representing the maximum number of independent cells that can be held by this

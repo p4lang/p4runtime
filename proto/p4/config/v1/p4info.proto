@@ -342,6 +342,7 @@ message MeterSpec {
   }
   // Used to restrict the MeterConfigs that can be used to instantiate the
   // meter.
+  // Added in 1.4.0.
   enum Type {
     // As described in RFC 2698, allows meters to use two rates to split packets
     // into three potential colors.
@@ -361,6 +362,7 @@ message MeterSpec {
     SINGLE_RATE_TWO_COLOR = 2;
   }
   Unit unit = 1;
+  // Added in 1.4.0.
   Type type = 2;
 }
 
