@@ -1987,6 +1987,7 @@ type MeterConfig struct {
 	// Peak burst size
 	Pburst int64 `protobuf:"varint,4,opt,name=pburst,proto3" json:"pburst,omitempty"`
 	// Excess burst size (only used by srTCM).
+	// Added in 1.4.0.
 	Eburst int64 `protobuf:"varint,5,opt,name=eburst,proto3" json:"eburst,omitempty"`
 }
 
