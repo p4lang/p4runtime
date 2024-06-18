@@ -4349,11 +4349,6 @@ accepted if `pir` and `pburst` are equal to `cir` and `cburst` respectively and
 `eburst` is unset. Otherwise, the server should return an `INVALID_ARGUMENT`
 error.
 
-A MeterConfig for a *Single Rate Two Color Marker* typed meter must only be
-accepted if `pir` and `pburst` are equal to `cir` and `cburst` respectively and
-`eburst` is unset. Otherwise, the server should return an `INVALID_ARGUMENT`
-error.
-
 Note: Any acceptable MeterConfig for a *Single Rate Two Color Marker* typed
 meter is also acceptable for either of the other two meter types and will mark
 packets identically in all three cases.
