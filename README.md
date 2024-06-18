@@ -180,21 +180,8 @@ pip3 install p4runtime==1.3.0
 
 ### Rust
 
-To include the P4Runtime Rust crate to your project, use the `cargo` command:
-
-```bash
-cargo add p4runtime
-```
-
-Or add the following to your `Cargo.toml` file:
-
-```toml
-[dependencies]
-p4runtime = "1.3.0"
-```
-
-Or add this repository url to your `Cargo.toml` file if you want to use the
-latest version:
+To include the P4Runtime Rust crate to your project, add this repository url to
+your `Cargo.toml` file:
 
 ```toml
 [dependencies]
