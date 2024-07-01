@@ -217,6 +217,8 @@ message Table {
   repeated ActionRef action_refs = 3;
   // 0 (default value) means that the table does not have a const default action
   uint32 const_default_action_id = 4;
+  // The initial default action of the table. This can be overridden at runtime.
+  uint32 initial_default_action_id = 5;
   // P4 id of the "implementation" for this table (e.g. action profile id); 0
   // (default value) means that the table is a regular (direct) match table. As
   // of today, only action profiles are supported but other table
