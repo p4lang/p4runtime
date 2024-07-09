@@ -1546,6 +1546,11 @@ control plane. This message contains the following fields:
   set a different default action at runtime or change the default action's
   arguments.
 
+* `initial_default_action`, the default action that is executed with the
+   specified arguments when the table does not match.  If no explicit
+   default action is set, the identifier of this field will default to
+   the id of the `NoAction` action.
+
 * `implementation_id`, the `uint32` identifier of the "implementation" of this
   table. 0 (default value) means that the table is a regular (direct) match
   table. Otherwise, this field will carry the ID of an extern instance specified
