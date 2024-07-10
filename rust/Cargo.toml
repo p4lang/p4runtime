@@ -10,11 +10,11 @@ license = "Apache-2.0"
 repository = "https://github.com/p4lang/p4runtime"
 
 [dependencies]
-pbjson = "0.6.0"
-pbjson-types = "0.6.0"
-prost = "0.12.4"
-serde = "1.0.201"
-tonic = "0.11.0"
+pbjson = "0.7.0"
+pbjson-types = "0.7.0"
+prost = "0.13.1"
+serde = "1.0.204"
+tonic = "0.12.0"
 
 [features]
 default = ["proto_full"]
