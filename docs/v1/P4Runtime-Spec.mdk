@@ -4351,7 +4351,9 @@ error.
 
 Note: Any acceptable MeterConfig for a *Single Rate Two Color Marker* typed
 meter is also acceptable for either of the other two meter types and will mark
-packets identically in all three cases.
+packets identically in all three cases. Thus, changing the meter type from
+*Single Rate Two Color Marker* to *Single Rate Three Color Marker* or
+*Two Rate Three Color Marker* is a non-breaking change.
 
 ### `DirectMeterEntry`
 
