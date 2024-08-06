@@ -602,6 +602,7 @@ func (x *Documentation) GetDescription() string {
 }
 
 // Used to describe the required properties of the underlying platform.
+// Added in v1.4.0
 type PlatformProperties struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -704,6 +705,7 @@ type PkgInfo struct {
 	// If set, specifies the properties that the underlying platform should have.
 	// If the platform does not conform to these properties, the server should
 	// reject the P4Info when used with a SetForwardingPipelineConfigRequest.
+	// Added in 1.4.0
 	PlatformProperties *PlatformProperties `protobuf:"bytes,11,opt,name=platform_properties,json=platformProperties,proto3" json:"platform_properties,omitempty"`
 }
 
@@ -1654,11 +1656,13 @@ type isActionProfile_SelectorSizeSemantics interface {
 
 type ActionProfile_SumOfWeights_ struct {
 	// group size is the sum of the group's weights.
+	// Added in v1.4.0
 	SumOfWeights *ActionProfile_SumOfWeights `protobuf:"bytes,6,opt,name=sum_of_weights,json=sumOfWeights,proto3,oneof"`
 }
 
 type ActionProfile_SumOfMembers_ struct {
 	// group size is the sum of the group's members.
+	// Added in v1.4.0
 	SumOfMembers *ActionProfile_SumOfMembers `protobuf:"bytes,7,opt,name=sum_of_members,json=sumOfMembers,proto3,oneof"`
 }
 
@@ -2400,6 +2404,7 @@ func (x *Action_Param) GetStructuredAnnotations() []*StructuredAnnotation {
 // indicates that `size` and `max_group_size` represent the maximum sum of
 // weights that can be present across all selector groups and within a
 // single selector group respectively.
+// Added in v1.4.0
 type ActionProfile_SumOfWeights struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2441,6 +2446,7 @@ func (*ActionProfile_SumOfWeights) Descriptor() ([]byte, []int) {
 // indicates that `size` and `max_group_size` represent the maximum number
 // of members that can be present across all selector groups and within a
 // single selector group respectively.
+// Added in v1.4.0
 type ActionProfile_SumOfMembers struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
