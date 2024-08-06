@@ -58,7 +58,9 @@ service P4Runtime {
 //------------------------------------------------------------------------------
 message WriteRequest {
   uint64 device_id = 1;
-  uint64 role_id = 2 [deprecated = true];
+  // Deprecated in v1.4.0
+  uint64 role_id = 2 [deprecated=true];
+  // Added in v1.4.0
   string role = 6;
   Uint128 election_id = 3;
   // The write batch, comprising a list of Update operations. The P4Runtime
@@ -98,6 +100,7 @@ message WriteResponse {}
 message ReadRequest {
   uint64 device_id = 1;
   // When specified, only return table entries for the given role.
+  // Added in 1.4.0.
   string role = 3;
   repeated Entity entities = 2;
 }
@@ -184,6 +187,7 @@ message TableEntry {
   MeterConfig meter_config = 6;
   CounterData counter_data = 7;
   // Per color counters for tables with a direct meter.
+  // Added in v1.4.0
   MeterCounterData meter_counter_data = 12;
   // Set to true if the table entry is being used to update the non-const
   // default action of the table. If true, the "match" field must be empty and
@@ -342,6 +346,7 @@ message MeterEntry {
   uint32 meter_id = 1;
   Index index = 2;
   MeterConfig config = 3;
+  // Added in v1.4.0
   MeterCounterData counter_data = 4;
 }
 
@@ -358,6 +363,7 @@ message DirectMeterEntry {
   // table_entry.action is ignored. Other fields specify the match.
   TableEntry table_entry = 1;
   MeterConfig config = 2;
+  // Added in v1.4.0
   MeterCounterData counter_data = 3;
 }
 
@@ -424,6 +430,7 @@ message CounterData {
   int64 packet_count = 2;
 }
 
+// Added in v1.4.0
 message MeterCounterData {
   CounterData green = 1;
   CounterData yellow = 2;
@@ -444,7 +451,9 @@ message PacketReplicationEngineEntry {
 message Replica {
   oneof port_kind {
     // Using uint32 as ports is deprecated, use port field instead.
-    uint32 egress_port = 1 [deprecated = true];
+    // Deprecated in v1.4.0
+    uint32 egress_port = 1 [deprecated=true];
+    // Added in v1.4.0
     bytes port = 3;
   }
   uint32 instance = 2;
@@ -625,7 +634,9 @@ message MasterArbitrationUpdate {
 
 message Role {
   // Uniquely identifies this role.
-  uint64 id = 1 [deprecated = true];
+  // Deprecated in 1.4.0.
+  uint64 id = 1 [deprecated=true];
+  // Added in 1.4.0.
   string name = 3;
   // Describes the role configuration, i.e. what operations, P4 entities,
   // behaviors, etc. are in the scope of a given role. If config is not set
@@ -729,7 +740,9 @@ message SetForwardingPipelineConfigRequest {
     RECONCILE_AND_COMMIT = 5;
   }
   uint64 device_id = 1;
-  uint64 role_id = 2 [deprecated = true];
+  // Deprecated in 1.4.0.
+  uint64 role_id = 2 [deprecated=true];
+  // Added in 1.4.0.
   string role = 6;
   Uint128 election_id = 3;
   Action action = 4;
