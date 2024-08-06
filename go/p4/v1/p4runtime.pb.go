@@ -370,8 +370,11 @@ type WriteRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	DeviceId uint64 `protobuf:"varint,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	// Deprecated in v1.4.0
+	//
 	// Deprecated: Marked as deprecated in p4/v1/p4runtime.proto.
-	RoleId     uint64   `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	RoleId uint64 `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	// Added in v1.4.0
 	Role       string   `protobuf:"bytes,6,opt,name=role,proto3" json:"role,omitempty"`
 	ElectionId *Uint128 `protobuf:"bytes,3,opt,name=election_id,json=electionId,proto3" json:"election_id,omitempty"`
 	// The write batch, comprising a list of Update operations. The P4Runtime
@@ -501,6 +504,7 @@ type ReadRequest struct {
 
 	DeviceId uint64 `protobuf:"varint,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
 	// When specified, only return table entries for the given role.
+	// Added in 1.4.0.
 	Role     string    `protobuf:"bytes,3,opt,name=role,proto3" json:"role,omitempty"`
 	Entities []*Entity `protobuf:"bytes,2,rep,name=entities,proto3" json:"entities,omitempty"`
 }
@@ -995,6 +999,7 @@ type TableEntry struct {
 	MeterConfig *MeterConfig `protobuf:"bytes,6,opt,name=meter_config,json=meterConfig,proto3" json:"meter_config,omitempty"`
 	CounterData *CounterData `protobuf:"bytes,7,opt,name=counter_data,json=counterData,proto3" json:"counter_data,omitempty"`
 	// Per color counters for tables with a direct meter.
+	// Added in v1.4.0
 	MeterCounterData *MeterCounterData `protobuf:"bytes,12,opt,name=meter_counter_data,json=meterCounterData,proto3" json:"meter_counter_data,omitempty"`
 	// Set to true if the table entry is being used to update the non-const
 	// default action of the table. If true, the "match" field must be empty and
@@ -1816,9 +1821,10 @@ type MeterEntry struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MeterId     uint32            `protobuf:"varint,1,opt,name=meter_id,json=meterId,proto3" json:"meter_id,omitempty"`
-	Index       *Index            `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
-	Config      *MeterConfig      `protobuf:"bytes,3,opt,name=config,proto3" json:"config,omitempty"`
+	MeterId uint32       `protobuf:"varint,1,opt,name=meter_id,json=meterId,proto3" json:"meter_id,omitempty"`
+	Index   *Index       `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+	Config  *MeterConfig `protobuf:"bytes,3,opt,name=config,proto3" json:"config,omitempty"`
+	// Added in v1.4.0
 	CounterData *MeterCounterData `protobuf:"bytes,4,opt,name=counter_data,json=counterData,proto3" json:"counter_data,omitempty"`
 }
 
@@ -1897,8 +1903,9 @@ type DirectMeterEntry struct {
 
 	// The associated table entry. This field is required.
 	// table_entry.action is ignored. Other fields specify the match.
-	TableEntry  *TableEntry       `protobuf:"bytes,1,opt,name=table_entry,json=tableEntry,proto3" json:"table_entry,omitempty"`
-	Config      *MeterConfig      `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
+	TableEntry *TableEntry  `protobuf:"bytes,1,opt,name=table_entry,json=tableEntry,proto3" json:"table_entry,omitempty"`
+	Config     *MeterConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
+	// Added in v1.4.0
 	CounterData *MeterCounterData `protobuf:"bytes,3,opt,name=counter_data,json=counterData,proto3" json:"counter_data,omitempty"`
 }
 
@@ -2224,6 +2231,7 @@ func (x *CounterData) GetPacketCount() int64 {
 	return 0
 }
 
+// Added in v1.4.0
 type MeterCounterData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2452,12 +2460,14 @@ type isReplica_PortKind interface {
 
 type Replica_EgressPort struct {
 	// Using uint32 as ports is deprecated, use port field instead.
+	// Deprecated in v1.4.0
 	//
 	// Deprecated: Marked as deprecated in p4/v1/p4runtime.proto.
 	EgressPort uint32 `protobuf:"varint,1,opt,name=egress_port,json=egressPort,proto3,oneof"`
 }
 
 type Replica_Port struct {
+	// Added in v1.4.0
 	Port []byte `protobuf:"bytes,3,opt,name=port,proto3,oneof"`
 }
 
@@ -3509,9 +3519,11 @@ type Role struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Uniquely identifies this role.
+	// Deprecated in 1.4.0.
 	//
 	// Deprecated: Marked as deprecated in p4/v1/p4runtime.proto.
-	Id   uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Added in 1.4.0.
 	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	// Describes the role configuration, i.e. what operations, P4 entities,
 	// behaviors, etc. are in the scope of a given role. If config is not set
@@ -3985,8 +3997,11 @@ type SetForwardingPipelineConfigRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	DeviceId uint64 `protobuf:"varint,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	// Deprecated in 1.4.0.
+	//
 	// Deprecated: Marked as deprecated in p4/v1/p4runtime.proto.
-	RoleId     uint64                                    `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	RoleId uint64 `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	// Added in 1.4.0.
 	Role       string                                    `protobuf:"bytes,6,opt,name=role,proto3" json:"role,omitempty"`
 	ElectionId *Uint128                                  `protobuf:"bytes,3,opt,name=election_id,json=electionId,proto3" json:"election_id,omitempty"`
 	Action     SetForwardingPipelineConfigRequest_Action `protobuf:"varint,4,opt,name=action,proto3,enum=p4.v1.SetForwardingPipelineConfigRequest_Action" json:"action,omitempty"`
