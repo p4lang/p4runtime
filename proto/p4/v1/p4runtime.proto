@@ -107,6 +107,7 @@ message WriteResponse {
 message ReadRequest {
   uint64 device_id = 1;
   // When specified, only return table entries for the given role.
+  // Added in 1.4.0.
   string role = 3;
   repeated Entity entities = 2;
 }
