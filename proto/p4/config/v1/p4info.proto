@@ -311,7 +311,7 @@ message ActionProfile {
   // single selector group respectively.
   message SumOfMembers {
     // the maximum weight of each individual member in a group.
-    optional int32 max_member_weight = 1;
+    int32 max_member_weight = 1;
   }
 
   // specifies the semantics of `size` and `max_group_size` above
