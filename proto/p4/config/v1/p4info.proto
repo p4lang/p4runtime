@@ -207,6 +207,20 @@ message MatchField {
   repeated StructuredAnnotation structured_annotations = 9;
 }
 
+// A TableActionCall references a particular action id and executes the
+// action with the supplied list of arguments.
+// Arguments are matched to the id of the respective action parameter.
+// TableActionCalls may be used as the default action call of a table implementation.
+// Added in 1.4.0.
+message TableActionCall {
+  uint32 action_id = 1;
+  message Argument {
+    uint32 param_id = 2;
+    bytes value = 3;
+  }
+  repeated Argument arguments = 4;
+}
+
 message Table {
   Preamble preamble = 1;
   repeated MatchField match_fields = 2;
@@ -217,6 +231,9 @@ message Table {
   repeated ActionRef action_refs = 3;
   // 0 (default value) means that the table does not have a const default action
   uint32 const_default_action_id = 4;
+  // The initial default action of the table. This can be overridden at runtime.
+  // Added in 1.4.0.
+  TableActionCall initial_default_action = 5;
   // P4 id of the "implementation" for this table (e.g. action profile id); 0
   // (default value) means that the table is a regular (direct) match table. As
   // of today, only action profiles are supported but other table
