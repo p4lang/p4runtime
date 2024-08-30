@@ -136,6 +136,7 @@ them may be 0, described in the notes.
 | Field name | Message type | Type of P4 object referred to | Notes |
 | ---------- | ------------ | ----------------------------- | ----- |
 | `const_default_action_id` | `Table` | `Action` | 0 means "the table's `default_action` is not declared `const` |
+| `initial_default_action` | `Table` | `Action` | The initial default action used by the table. Can be overridden at runtime. |
 | `implementation_id` | `Table` | `ActionProfile` | 0 means "this table has no `implementation` table property. |
 | `direct_resource_ids` | `Table` | `DirectCounter` or `DirectMeter` | repeated so that a single table can refer to up to one of each |
 | `id` | sub-message `ActionRef` inside `Table` | `Action` | `ActionRef` messages are repeated, with a separate one for each action the table might invoke.  `ActionRef` messages contain optional annotation and `Scope` values that are specific to how a particular table is allowed to use that `Action` |

@@ -207,6 +207,20 @@ message MatchField {
   repeated StructuredAnnotation structured_annotations = 9;
 }
 
+// A TableActionCall references a particular action id and executes the
+// action with the supplied list of arguments.
+// Arguments are matched to the id of the respective action parameter.
+// TableActionCalls may be used as the default action call of a table implementation.
+// Added in 1.4.0.
+message TableActionCall {
+  uint32 action_id = 1;
+  message Argument {
+    uint32 param_id = 2;
+    bytes value = 3;
+  }
+  repeated Argument arguments = 4;
+}
+
 message Table {
   Preamble preamble = 1;
   repeated MatchField match_fields = 2;
@@ -217,6 +231,9 @@ message Table {
   repeated ActionRef action_refs = 3;
   // 0 (default value) means that the table does not have a const default action
   uint32 const_default_action_id = 4;
+  // The initial default action of the table. This can be overridden at runtime.
+  // Added in 1.4.0.
+  TableActionCall initial_default_action = 5;
   // P4 id of the "implementation" for this table (e.g. action profile id); 0
   // (default value) means that the table is a regular (direct) match table. As
   // of today, only action profiles are supported but other table
@@ -311,7 +328,7 @@ message ActionProfile {
   // single selector group respectively.
   message SumOfMembers {
     // the maximum weight of each individual member in a group.
-    optional int32 max_member_weight = 1;
+    int32 max_member_weight = 1;
   }
 
   // specifies the semantics of `size` and `max_group_size` above
@@ -358,7 +375,30 @@ message MeterSpec {
     BYTES = 1;
     PACKETS = 2;
   }
+  // Used to restrict the MeterConfigs that can be used to instantiate the
+  // meter.
+  // Added in 1.4.0.
+  enum Type {
+    // As described in RFC 2698, allows meters to use two rates to split packets
+    // into three potential colors.
+    // MeterConfigs on table entries using this meter type MUST have `eburst ==
+    // 0` (i.e. unset).
+    TWO_RATE_THREE_COLOR = 0;
+    // As described in RFC 2697, allows meters to use one rate with an Excess
+    // Burst Size (EBS) to split packets into three potential colors.
+    // MeterConfigs on table entries using this meter type MUST have
+    // `cir == pir && cburst == pburst`.
+    SINGLE_RATE_THREE_COLOR = 1;
+    // A simplified version of RFC 2697, restricting meters to using a single
+    // rate to split packets into only RED or GREEN, by not providing an Excess
+    // Burst Size (EBS).
+    // MeterConfigs on table entries using this meter type MUST have
+    // `cir == pir && cburst == pburst && eburst == 0` (i.e. unset).
+    SINGLE_RATE_TWO_COLOR = 2;
+  }
   Unit unit = 1;
+  // Added in 1.4.0.
+  Type type = 2;
 }
 
 message Meter {
