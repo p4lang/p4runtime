@@ -144,9 +144,9 @@ processes.
    pull request against the specification that a key committer must review and
    approve.
 
-When updating the Protobuf files in a pull request, you will also need to update
+>**Generated protobuf files**: When updating the Protobuf files in a pull request, you will also need to update
 the generated Go and Python files, which are hosted in this repository under
-[go/](go/) and [py/](py/). This can be done easily by running `./codegen/update.sh`,
+[go/](go/) and [py/](py/). This can be done easily **by running `./codegen/update.sh`**,
 provided docker is installed and your user is part of the "docker" group
 (which means that the `docker` command can be executed without `sudo`).
 
