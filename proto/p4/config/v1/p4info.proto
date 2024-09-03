@@ -49,6 +49,7 @@ message Documentation {
 }
 
 // Used to describe the required properties of the underlying platform.
+// Added in v1.4.0
 message PlatformProperties {
   // The minimum number of multicast entries (i.e. multicast groups) that the
   // platform is required to support. If 0, there are no requirements.
@@ -90,6 +91,7 @@ message PkgInfo {
   // If set, specifies the properties that the underlying platform should have.
   // If the platform does not conform to these properties, the server should
   // reject the P4Info when used with a SetForwardingPipelineConfigRequest.
+  // Added in 1.4.0
   PlatformProperties platform_properties = 11;
 }
 
@@ -321,11 +323,13 @@ message ActionProfile {
   // indicates that `size` and `max_group_size` represent the maximum sum of
   // weights that can be present across all selector groups and within a
   // single selector group respectively.
+  // Added in v1.4.0
   message SumOfWeights {}
 
   // indicates that `size` and `max_group_size` represent the maximum number
   // of members that can be present across all selector groups and within a
   // single selector group respectively.
+  // Added in v1.4.0
   message SumOfMembers {
     // the maximum weight of each individual member in a group.
     int32 max_member_weight = 1;
@@ -334,8 +338,10 @@ message ActionProfile {
   // specifies the semantics of `size` and `max_group_size` above
   oneof selector_size_semantics {
     // group size is the sum of the group's weights.
+    // Added in v1.4.0
     SumOfWeights sum_of_weights = 6;
     // group size is the sum of the group's members.
+    // Added in v1.4.0
     SumOfMembers sum_of_members = 7;
   }
 }
