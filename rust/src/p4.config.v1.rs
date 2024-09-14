@@ -34,7 +34,6 @@
 /// message and refer to the types by name in the P4DataTypeSpec message. We also
 /// support annotations for these type specs which can be useful, e.g. to
 /// identify well-known headers (such as ipv4).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4TypeInfo {
     #[prost(map="string, message", tag="1")]
@@ -53,7 +52,6 @@ pub struct P4TypeInfo {
     pub new_types: ::std::collections::HashMap<::prost::alloc::string::String, P4NewTypeSpec>,
 }
 /// Describes a P4_16 type.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4DataTypeSpec {
     #[prost(oneof="p4_data_type_spec::TypeSpec", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12")]
@@ -61,8 +59,7 @@ pub struct P4DataTypeSpec {
 }
 /// Nested message and enum types in `P4DataTypeSpec`.
 pub mod p4_data_type_spec {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeSpec {
         #[prost(message, tag="1")]
         Bitstring(super::P4BitstringLikeTypeSpec),
@@ -90,7 +87,6 @@ pub mod p4_data_type_spec {
         NewType(super::P4NamedType),
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4NamedType {
     #[prost(string, tag="1")]
@@ -98,15 +94,12 @@ pub struct P4NamedType {
 }
 /// Empty message as no type information needed, just used as a placeholder in
 /// the oneof to identify boolean types.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct P4BoolType {
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct P4ErrorType {
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4BitstringLikeTypeSpec {
     /// Useful to identify well-known types, such as IP address or Ethernet MAC
@@ -124,8 +117,7 @@ pub struct P4BitstringLikeTypeSpec {
 }
 /// Nested message and enum types in `P4BitstringLikeTypeSpec`.
 pub mod p4_bitstring_like_type_spec {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum TypeSpec {
         /// bit<W>
         #[prost(message, tag="1")]
@@ -138,33 +130,28 @@ pub mod p4_bitstring_like_type_spec {
         Varbit(super::P4VarbitTypeSpec),
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct P4BitTypeSpec {
     #[prost(int32, tag="1")]
     pub bitwidth: i32,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct P4IntTypeSpec {
     #[prost(int32, tag="1")]
     pub bitwidth: i32,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct P4VarbitTypeSpec {
     #[prost(int32, tag="1")]
     pub max_bitwidth: i32,
 }
 /// From the P4_16 spec: "A tuple is similar to a struct, in that it holds
 /// multiple values. Unlike a struct type, tuples have no named fields."
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4TupleTypeSpec {
     #[prost(message, repeated, tag="1")]
     pub members: ::prost::alloc::vec::Vec<P4DataTypeSpec>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4StructTypeSpec {
     #[prost(message, repeated, tag="1")]
@@ -180,8 +167,7 @@ pub struct P4StructTypeSpec {
 }
 /// Nested message and enum types in `P4StructTypeSpec`.
 pub mod p4_struct_type_spec {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Member {
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
@@ -189,7 +175,6 @@ pub mod p4_struct_type_spec {
         pub type_spec: ::core::option::Option<super::P4DataTypeSpec>,
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4HeaderTypeSpec {
     #[prost(message, repeated, tag="1")]
@@ -205,8 +190,7 @@ pub struct P4HeaderTypeSpec {
 }
 /// Nested message and enum types in `P4HeaderTypeSpec`.
 pub mod p4_header_type_spec {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Member {
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
@@ -214,7 +198,6 @@ pub mod p4_header_type_spec {
         pub type_spec: ::core::option::Option<super::P4BitstringLikeTypeSpec>,
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4HeaderUnionTypeSpec {
     #[prost(message, repeated, tag="1")]
@@ -230,8 +213,7 @@ pub struct P4HeaderUnionTypeSpec {
 }
 /// Nested message and enum types in `P4HeaderUnionTypeSpec`.
 pub mod p4_header_union_type_spec {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Member {
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
@@ -239,7 +221,6 @@ pub mod p4_header_union_type_spec {
         pub header: ::core::option::Option<super::P4NamedType>,
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4HeaderStackTypeSpec {
     #[prost(message, optional, tag="1")]
@@ -247,7 +228,6 @@ pub struct P4HeaderStackTypeSpec {
     #[prost(int32, tag="2")]
     pub size: i32,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4HeaderUnionStackTypeSpec {
     #[prost(message, optional, tag="1")]
@@ -255,7 +235,6 @@ pub struct P4HeaderUnionStackTypeSpec {
     #[prost(int32, tag="2")]
     pub size: i32,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyValuePair {
     #[prost(string, tag="1")]
@@ -263,13 +242,11 @@ pub struct KeyValuePair {
     #[prost(message, optional, tag="2")]
     pub value: ::core::option::Option<Expression>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyValuePairList {
     #[prost(message, repeated, tag="1")]
     pub kv_pairs: ::prost::alloc::vec::Vec<KeyValuePair>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expression {
     #[prost(oneof="expression::Value", tags="1, 2, 3")]
@@ -277,8 +254,7 @@ pub struct Expression {
 }
 /// Nested message and enum types in `Expression`.
 pub mod expression {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         #[prost(string, tag="1")]
         StringValue(::prost::alloc::string::String),
@@ -288,13 +264,11 @@ pub mod expression {
         BoolValue(bool),
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpressionList {
     #[prost(message, repeated, tag="1")]
     pub expressions: ::prost::alloc::vec::Vec<Expression>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredAnnotation {
     #[prost(string, tag="1")]
@@ -307,8 +281,7 @@ pub struct StructuredAnnotation {
 }
 /// Nested message and enum types in `StructuredAnnotation`.
 pub mod structured_annotation {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Body {
         #[prost(message, tag="2")]
         ExpressionList(super::ExpressionList),
@@ -317,7 +290,6 @@ pub mod structured_annotation {
     }
 }
 /// Location of code relative to a given source file.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceLocation {
     /// Path to the source file (absolute or relative to the working directory).
@@ -331,7 +303,6 @@ pub struct SourceLocation {
 }
 /// For "safe" enums with no underlying representation and no member integer
 /// values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4EnumTypeSpec {
     #[prost(message, repeated, tag="1")]
@@ -347,8 +318,7 @@ pub struct P4EnumTypeSpec {
 }
 /// Nested message and enum types in `P4EnumTypeSpec`.
 pub mod p4_enum_type_spec {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Member {
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
@@ -365,7 +335,6 @@ pub mod p4_enum_type_spec {
 /// For serializable (or "unsafe") enums, which have an underlying type. Note
 /// that as per the P4_16 specification, the underlying representation can only
 /// be a bit<W> type.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4SerializableEnumTypeSpec {
     #[prost(message, optional, tag="1")]
@@ -383,8 +352,7 @@ pub struct P4SerializableEnumTypeSpec {
 }
 /// Nested message and enum types in `P4SerializableEnumTypeSpec`.
 pub mod p4_serializable_enum_type_spec {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Member {
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
@@ -402,13 +370,11 @@ pub mod p4_serializable_enum_type_spec {
 }
 /// Similar to an enum, but there is always one and only one instance per P4
 /// program.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4ErrorTypeSpec {
     #[prost(string, repeated, tag="1")]
     pub members: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4NewTypeTranslation {
     /// the URI uniquely identifies the translation in order to enable the
@@ -424,14 +390,12 @@ pub struct P4NewTypeTranslation {
 }
 /// Nested message and enum types in `P4NewTypeTranslation`.
 pub mod p4_new_type_translation {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SdnString {
     }
     /// The object is either represented as an unsigned integer with a bitwidth of
     /// `sdn_bitwidth`, or as a string.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SdnType {
         #[prost(int32, tag="2")]
         SdnBitwidth(i32),
@@ -440,7 +404,6 @@ pub mod p4_new_type_translation {
     }
 }
 /// New types introduced with the "type" keyword
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4NewTypeSpec {
     /// for other annotations (not @p4runtime_translation)
@@ -457,8 +420,7 @@ pub struct P4NewTypeSpec {
 }
 /// Nested message and enum types in `P4NewTypeSpec`.
 pub mod p4_new_type_spec {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Representation {
         /// if no @p4runtime_translation annotation present
         #[prost(message, tag="1")]
@@ -468,7 +430,6 @@ pub mod p4_new_type_spec {
         TranslatedType(super::P4NewTypeTranslation),
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct P4Info {
     #[prost(message, optional, tag="1")]
@@ -500,7 +461,6 @@ pub struct P4Info {
     #[prost(message, optional, tag="200")]
     pub type_info: ::core::option::Option<P4TypeInfo>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Documentation {
     /// A brief description of something, e.g. one sentence
@@ -512,8 +472,7 @@ pub struct Documentation {
     pub description: ::prost::alloc::string::String,
 }
 /// Used to describe the required properties of the underlying platform.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PlatformProperties {
     /// The minimum number of multicast entries (i.e. multicast groups) that the
     /// platform is required to support. If 0, there are no requirements.
@@ -531,7 +490,6 @@ pub struct PlatformProperties {
 }
 /// Top-level package documentation describing the forwarding pipeline config
 /// Can be used to manage multiple P4 packages.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PkgInfo {
     /// a definitive name for this configuration, e.g. switch.p4_v1.0
@@ -574,8 +532,7 @@ pub struct PkgInfo {
 }
 /// wrapping the enum in a message to avoid name collisions in C++, where "enum
 /// values are siblings of their type, not children of it"
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct P4Ids {
 }
 /// Nested message and enum types in `P4Ids`.
@@ -660,7 +617,6 @@ pub mod p4_ids {
         }
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Preamble {
     /// ids share the same number-space; e.g. table ids cannot overlap with counter
@@ -699,7 +655,6 @@ pub struct Preamble {
     pub structured_annotations: ::prost::alloc::vec::Vec<StructuredAnnotation>,
 }
 /// used to group all extern instances of the same type in one message
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Extern {
     /// the extern_type_id is unique for a given architecture and must be in the
@@ -711,7 +666,6 @@ pub struct Extern {
     #[prost(message, repeated, tag="3")]
     pub instances: ::prost::alloc::vec::Vec<ExternInstance>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternInstance {
     #[prost(message, optional, tag="1")]
@@ -721,7 +675,6 @@ pub struct ExternInstance {
     #[prost(message, optional, tag="2")]
     pub info: ::core::option::Option<::pbjson_types::Any>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MatchField {
     #[prost(uint32, tag="1")]
@@ -787,8 +740,7 @@ pub mod match_field {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Match {
         #[prost(enumeration="MatchType", tag="5")]
         MatchType(i32),
@@ -798,7 +750,28 @@ pub mod match_field {
         OtherMatchType(::prost::alloc::string::String),
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
+/// A TableActionCall references a particular action id and executes the
+/// action with the supplied list of arguments.
+/// Arguments are matched to the id of the respective action parameter.
+/// TableActionCalls may be used as the default action call of a table implementation.
+/// Added in 1.4.0.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableActionCall {
+    #[prost(uint32, tag="1")]
+    pub action_id: u32,
+    #[prost(message, repeated, tag="4")]
+    pub arguments: ::prost::alloc::vec::Vec<table_action_call::Argument>,
+}
+/// Nested message and enum types in `TableActionCall`.
+pub mod table_action_call {
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Argument {
+        #[prost(uint32, tag="2")]
+        pub param_id: u32,
+        #[prost(bytes="vec", tag="3")]
+        pub value: ::prost::alloc::vec::Vec<u8>,
+    }
+}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     #[prost(message, optional, tag="1")]
@@ -814,6 +787,10 @@ pub struct Table {
     /// 0 (default value) means that the table does not have a const default action
     #[prost(uint32, tag="4")]
     pub const_default_action_id: u32,
+    /// The initial default action of the table. This can be overridden at runtime.
+    /// Added in 1.4.0.
+    #[prost(message, optional, tag="5")]
+    pub initial_default_action: ::core::option::Option<TableActionCall>,
     /// P4 id of the "implementation" for this table (e.g. action profile id); 0
     /// (default value) means that the table is a regular (direct) match table. As
     /// of today, only action profiles are supported but other table
@@ -882,7 +859,6 @@ pub mod table {
     }
 }
 /// used to list all possible actions in a Table
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionRef {
     #[prost(uint32, tag="1")]
@@ -930,7 +906,6 @@ pub mod action_ref {
         }
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     #[prost(message, optional, tag="1")]
@@ -940,8 +915,7 @@ pub struct Action {
 }
 /// Nested message and enum types in `Action`.
 pub mod action {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Param {
         #[prost(uint32, tag="1")]
         pub id: u32,
@@ -965,7 +939,6 @@ pub mod action {
         pub structured_annotations: ::prost::alloc::vec::Vec<super::StructuredAnnotation>,
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionProfile {
     #[prost(message, optional, tag="1")]
@@ -994,23 +967,20 @@ pub mod action_profile {
     /// indicates that `size` and `max_group_size` represent the maximum sum of
     /// weights that can be present across all selector groups and within a
     /// single selector group respectively.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SumOfWeights {
     }
     /// indicates that `size` and `max_group_size` represent the maximum number
     /// of members that can be present across all selector groups and within a
     /// single selector group respectively.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SumOfMembers {
         /// the maximum weight of each individual member in a group.
         #[prost(int32, tag="1")]
         pub max_member_weight: i32,
     }
     /// specifies the semantics of `size` and `max_group_size` above
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SelectorSizeSemantics {
         /// group size is the sum of the group's weights.
         #[prost(message, tag="6")]
@@ -1020,8 +990,7 @@ pub mod action_profile {
         SumOfMembers(SumOfMembers),
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CounterSpec {
     #[prost(enumeration="counter_spec::Unit", tag="1")]
     pub unit: i32,
@@ -1063,7 +1032,6 @@ pub mod counter_spec {
         }
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Counter {
     #[prost(message, optional, tag="1")]
@@ -1077,7 +1045,6 @@ pub struct Counter {
     #[prost(message, optional, tag="4")]
     pub index_type_name: ::core::option::Option<P4NamedType>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectCounter {
     #[prost(message, optional, tag="1")]
@@ -1088,8 +1055,7 @@ pub struct DirectCounter {
     #[prost(uint32, tag="3")]
     pub direct_table_id: u32,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MeterSpec {
     #[prost(enumeration="meter_spec::Unit", tag="1")]
     pub unit: i32,
@@ -1175,7 +1141,6 @@ pub mod meter_spec {
         }
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Meter {
     #[prost(message, optional, tag="1")]
@@ -1189,7 +1154,6 @@ pub struct Meter {
     #[prost(message, optional, tag="4")]
     pub index_type_name: ::core::option::Option<P4NamedType>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectMeter {
     #[prost(message, optional, tag="1")]
@@ -1206,7 +1170,6 @@ pub struct DirectMeter {
 /// respectively. There can be at most one header each with these annotations.
 /// This message captures the info contained within these special headers,
 /// and used in p4runtime.proto to supply the metadata.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ControllerPacketMetadata {
     /// preamble.name and preamble.id will specify header type ("packet_out" or
@@ -1220,8 +1183,7 @@ pub struct ControllerPacketMetadata {
 }
 /// Nested message and enum types in `ControllerPacketMetadata`.
 pub mod controller_packet_metadata {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metadata {
         #[prost(uint32, tag="1")]
         pub id: u32,
@@ -1244,7 +1206,6 @@ pub mod controller_packet_metadata {
         pub structured_annotations: ::prost::alloc::vec::Vec<super::StructuredAnnotation>,
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueSet {
     #[prost(message, optional, tag="1")]
@@ -1255,7 +1216,6 @@ pub struct ValueSet {
     #[prost(int32, tag="3")]
     pub size: i32,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Register {
     #[prost(message, optional, tag="1")]
@@ -1268,7 +1228,6 @@ pub struct Register {
     #[prost(message, optional, tag="4")]
     pub index_type_name: ::core::option::Option<P4NamedType>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Digest {
     #[prost(message, optional, tag="1")]

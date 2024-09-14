@@ -1,6 +1,6 @@
 [package]
 name = "p4runtime"
-version = "1.4.0-rc.5"
+version = "1.4.0"
 edition = "2021"
 authors = ["P4 API Working Group <p4-api@lists.p4.org>"]
 description = "P4Runtime Specification"
@@ -12,8 +12,8 @@ repository = "https://github.com/p4lang/p4runtime"
 [dependencies]
 pbjson = "0.7.0"
 pbjson-types = "0.7.0"
-prost = "0.13.1"
-tonic = "0.12.0"
+prost = "0.13.2"
+tonic = "0.12.2"
 
 [features]
 default = ["proto_full"]

@@ -23,8 +23,8 @@ pub mod p4_runtime_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -49,7 +49,7 @@ pub mod p4_runtime_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             P4RuntimeClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -239,7 +239,7 @@ pub mod p4_runtime_server {
     use tonic::codegen::*;
     /// Generated trait containing gRPC methods that should be implemented for use with P4RuntimeServer.
     #[async_trait]
-    pub trait P4Runtime: Send + Sync + 'static {
+    pub trait P4Runtime: std::marker::Send + std::marker::Sync + 'static {
         async fn write(
             &self,
             request: tonic::Request<super::WriteRequest>,
@@ -248,7 +248,7 @@ pub mod p4_runtime_server {
         type ReadStream: tonic::codegen::tokio_stream::Stream<
                 Item = std::result::Result<super::ReadResponse, tonic::Status>,
             >
-            + Send
+            + std::marker::Send
             + 'static;
         async fn read(
             &self,
@@ -272,7 +272,7 @@ pub mod p4_runtime_server {
         type StreamChannelStream: tonic::codegen::tokio_stream::Stream<
                 Item = std::result::Result<super::StreamMessageResponse, tonic::Status>,
             >
-            + Send
+            + std::marker::Send
             + 'static;
         async fn stream_channel(
             &self,
@@ -290,20 +290,18 @@ pub mod p4_runtime_server {
         >;
     }
     #[derive(Debug)]
-    pub struct P4RuntimeServer<T: P4Runtime> {
-        inner: _Inner<T>,
+    pub struct P4RuntimeServer<T> {
+        inner: Arc<T>,
         accept_compression_encodings: EnabledCompressionEncodings,
         send_compression_encodings: EnabledCompressionEncodings,
         max_decoding_message_size: Option<usize>,
         max_encoding_message_size: Option<usize>,
     }
-    struct _Inner<T>(Arc<T>);
-    impl<T: P4Runtime> P4RuntimeServer<T> {
+    impl<T> P4RuntimeServer<T> {
         pub fn new(inner: T) -> Self {
             Self::from_arc(Arc::new(inner))
         }
         pub fn from_arc(inner: Arc<T>) -> Self {
-            let inner = _Inner(inner);
             Self {
                 inner,
                 accept_compression_encodings: Default::default(),
@@ -353,8 +351,8 @@ pub mod p4_runtime_server {
     impl<T, B> tonic::codegen::Service<http::Request<B>> for P4RuntimeServer<T>
     where
         T: P4Runtime,
-        B: Body + Send + 'static,
-        B::Error: Into<StdError> + Send + 'static,
+        B: Body + std::marker::Send + 'static,
+        B::Error: Into<StdError> + std::marker::Send + 'static,
     {
         type Response = http::Response<tonic::body::BoxBody>;
         type Error = std::convert::Infallible;
@@ -366,7 +364,6 @@ pub mod p4_runtime_server {
             Poll::Ready(Ok(()))
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
-            let inner = self.inner.clone();
             match req.uri().path() {
                 "/p4.v1.P4Runtime/Write" => {
                     #[allow(non_camel_case_types)]
@@ -395,7 +392,6 @@ pub mod p4_runtime_server {
                     let max_encoding_message_size = self.max_encoding_message_size;
                     let inner = self.inner.clone();
                     let fut = async move {
-                        let inner = inner.0;
                         let method = WriteSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
@@ -442,7 +438,6 @@ pub mod p4_runtime_server {
                     let max_encoding_message_size = self.max_encoding_message_size;
                     let inner = self.inner.clone();
                     let fut = async move {
-                        let inner = inner.0;
                         let method = ReadSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
@@ -495,7 +490,6 @@ pub mod p4_runtime_server {
                     let max_encoding_message_size = self.max_encoding_message_size;
                     let inner = self.inner.clone();
                     let fut = async move {
-                        let inner = inner.0;
                         let method = SetForwardingPipelineConfigSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
@@ -548,7 +542,6 @@ pub mod p4_runtime_server {
                     let max_encoding_message_size = self.max_encoding_message_size;
                     let inner = self.inner.clone();
                     let fut = async move {
-                        let inner = inner.0;
                         let method = GetForwardingPipelineConfigSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
@@ -597,7 +590,6 @@ pub mod p4_runtime_server {
                     let max_encoding_message_size = self.max_encoding_message_size;
                     let inner = self.inner.clone();
                     let fut = async move {
-                        let inner = inner.0;
                         let method = StreamChannelSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
@@ -643,7 +635,6 @@ pub mod p4_runtime_server {
                     let max_encoding_message_size = self.max_encoding_message_size;
                     let inner = self.inner.clone();
                     let fut = async move {
-                        let inner = inner.0;
                         let method = CapabilitiesSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
@@ -665,8 +656,11 @@ pub mod p4_runtime_server {
                         Ok(
                             http::Response::builder()
                                 .status(200)
-                                .header("grpc-status", "12")
-                                .header("content-type", "application/grpc")
+                                .header("grpc-status", tonic::Code::Unimplemented as i32)
+                                .header(
+                                    http::header::CONTENT_TYPE,
+                                    tonic::metadata::GRPC_CONTENT_TYPE,
+                                )
                                 .body(empty_body())
                                 .unwrap(),
                         )
@@ -675,7 +669,7 @@ pub mod p4_runtime_server {
             }
         }
     }
-    impl<T: P4Runtime> Clone for P4RuntimeServer<T> {
+    impl<T> Clone for P4RuntimeServer<T> {
         fn clone(&self) -> Self {
             let inner = self.inner.clone();
             Self {
@@ -687,17 +681,9 @@ pub mod p4_runtime_server {
             }
         }
     }
-    impl<T: P4Runtime> Clone for _Inner<T> {
-        fn clone(&self) -> Self {
-            Self(Arc::clone(&self.0))
-        }
-    }
-    impl<T: std::fmt::Debug> std::fmt::Debug for _Inner<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "{:?}", self.0)
-        }
-    }
-    impl<T: P4Runtime> tonic::server::NamedService for P4RuntimeServer<T> {
-        const NAME: &'static str = "p4.v1.P4Runtime";
+    /// Generated gRPC service name
+    pub const SERVICE_NAME: &str = "p4.v1.P4Runtime";
+    impl<T> tonic::server::NamedService for P4RuntimeServer<T> {
+        const NAME: &'static str = SERVICE_NAME;
     }
 }
