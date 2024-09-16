@@ -89,9 +89,11 @@ pub struct P4HeaderUnionStack {
 pub struct WriteRequest {
     #[prost(uint64, tag="1")]
     pub device_id: u64,
+    /// Deprecated in v1.4.0
     #[deprecated]
     #[prost(uint64, tag="2")]
     pub role_id: u64,
+    /// Added in v1.4.0
     #[prost(string, tag="6")]
     pub role: ::prost::alloc::string::String,
     #[prost(message, optional, tag="3")]
@@ -164,6 +166,7 @@ pub struct ReadRequest {
     #[prost(uint64, tag="1")]
     pub device_id: u64,
     /// When specified, only return table entries for the given role.
+    /// Added in 1.4.0.
     #[prost(string, tag="3")]
     pub role: ::prost::alloc::string::String,
     #[prost(message, repeated, tag="2")]
@@ -314,6 +317,7 @@ pub struct TableEntry {
     #[prost(message, optional, tag="7")]
     pub counter_data: ::core::option::Option<CounterData>,
     /// Per color counters for tables with a direct meter.
+    /// Added in v1.4.0
     #[prost(message, optional, tag="12")]
     pub meter_counter_data: ::core::option::Option<MeterCounterData>,
     /// Set to true if the table entry is being used to update the non-const
@@ -562,6 +566,7 @@ pub struct MeterEntry {
     pub index: ::core::option::Option<Index>,
     #[prost(message, optional, tag="3")]
     pub config: ::core::option::Option<MeterConfig>,
+    /// Added in v1.4.0
     #[prost(message, optional, tag="4")]
     pub counter_data: ::core::option::Option<MeterCounterData>,
 }
@@ -581,6 +586,7 @@ pub struct DirectMeterEntry {
     pub table_entry: ::core::option::Option<TableEntry>,
     #[prost(message, optional, tag="2")]
     pub config: ::core::option::Option<MeterConfig>,
+    /// Added in v1.4.0
     #[prost(message, optional, tag="3")]
     pub counter_data: ::core::option::Option<MeterCounterData>,
 }
@@ -659,6 +665,7 @@ pub struct CounterData {
     #[prost(int64, tag="2")]
     pub packet_count: i64,
 }
+/// Added in v1.4.0
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MeterCounterData {
     #[prost(message, optional, tag="1")]
@@ -699,8 +706,10 @@ pub mod replica {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PortKind {
         /// Using uint32 as ports is deprecated, use port field instead.
+        /// Deprecated in v1.4.0
         #[prost(uint32, tag="1")]
         EgressPort(u32),
+        /// Added in v1.4.0
         #[prost(bytes, tag="3")]
         Port(::prost::alloc::vec::Vec<u8>),
     }
@@ -946,9 +955,11 @@ pub struct MasterArbitrationUpdate {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Role {
     /// Uniquely identifies this role.
+    /// Deprecated in 1.4.0.
     #[deprecated]
     #[prost(uint64, tag="1")]
     pub id: u64,
+    /// Added in 1.4.0.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
     /// Describes the role configuration, i.e. what operations, P4 entities,
@@ -1046,9 +1057,11 @@ pub struct Uint128 {
 pub struct SetForwardingPipelineConfigRequest {
     #[prost(uint64, tag="1")]
     pub device_id: u64,
+    /// Deprecated in 1.4.0.
     #[deprecated]
     #[prost(uint64, tag="2")]
     pub role_id: u64,
+    /// Added in 1.4.0.
     #[prost(string, tag="6")]
     pub role: ::prost::alloc::string::String,
     #[prost(message, optional, tag="3")]
