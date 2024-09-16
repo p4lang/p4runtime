@@ -472,6 +472,7 @@ pub struct Documentation {
     pub description: ::prost::alloc::string::String,
 }
 /// Used to describe the required properties of the underlying platform.
+/// Added in v1.4.0
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PlatformProperties {
     /// The minimum number of multicast entries (i.e. multicast groups) that the
@@ -527,6 +528,7 @@ pub struct PkgInfo {
     /// If set, specifies the properties that the underlying platform should have.
     /// If the platform does not conform to these properties, the server should
     /// reject the P4Info when used with a SetForwardingPipelineConfigRequest.
+    /// Added in 1.4.0
     #[prost(message, optional, tag="11")]
     pub platform_properties: ::core::option::Option<PlatformProperties>,
 }
@@ -967,12 +969,14 @@ pub mod action_profile {
     /// indicates that `size` and `max_group_size` represent the maximum sum of
     /// weights that can be present across all selector groups and within a
     /// single selector group respectively.
+    /// Added in v1.4.0
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SumOfWeights {
     }
     /// indicates that `size` and `max_group_size` represent the maximum number
     /// of members that can be present across all selector groups and within a
     /// single selector group respectively.
+    /// Added in v1.4.0
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SumOfMembers {
         /// the maximum weight of each individual member in a group.
@@ -983,9 +987,11 @@ pub mod action_profile {
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SelectorSizeSemantics {
         /// group size is the sum of the group's weights.
+        /// Added in v1.4.0
         #[prost(message, tag="6")]
         SumOfWeights(SumOfWeights),
         /// group size is the sum of the group's members.
+        /// Added in v1.4.0
         #[prost(message, tag="7")]
         SumOfMembers(SumOfMembers),
     }
