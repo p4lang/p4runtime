@@ -2266,7 +2266,8 @@ unambiguous. More specifically, if a client writes a P4 entity and then reads it
 back then the client should expect that the message it wrote and the message it
 read should match if the RPCs finished successfully (with the exception of parts
 of the response known to be data plane volatile, as explained in section on
-[Data plane volatile objects](#sec-data-plane-volatile-objects)). Consider the following pseudocode as an
+[Data plane volatile objects](#sec-data-plane-volatile-objects)).
+Consider the following pseudocode as an
 example:
 
 ~ Begin Pseudo
@@ -6550,59 +6551,67 @@ properties, but we may include on in future versions of the API.
 * Actions
   * Fix invalid `action_profile_id` in the One Shot Action Selector Programming
     example.
-  * Specify that `max_group_size` must be less than or equal to `size` for Action
-    Selectors.
+  * Specify that `max_group_size` must be less than or equal to `size` for
+    Action Selectors.
   * Add a `selector_size_semantics` field to the `ActionProfile` message
     in P4Info.
 
 * Controller Sessions, Roles, Arbitration:
   * Clarify controller session establishment, maintenance, role and arbitration
-  * Simplify specification for arbitration updates for which there is no change to
-    the controller's `election_id`; in particular, a "no-op" arbitration update
-    from a primary controller (the controller already was, and remains, the
-    primary controller) is essentially treated the same way as an arbitration
-    update which leads to the election of a new primary controller.
-  * Add support for string role identifiers and deprecate integer role identifiers.
-  * Add support for specifying a role in `ReadRequest` messages: if present, only
-    entities belonging to this specific role are returned.
-  * Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only unique
-    for live controllers.
+  * Simplify specification for arbitration updates for which there is no change
+    to the controller's `election_id`; in particular, a "no-op" arbitration
+    update from a primary controller (the controller already was, and remains,
+    the primary controller) is essentially treated the same way as an
+    arbitration update which leads to the election of a new primary controller.
+  * Add support for string role identifiers and deprecate integer role
+    identifiers.
+  * Add support for specifying a role in `ReadRequest` messages: if present,
+    only entities belonging to this specific role are returned.
+  * Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only
+    unique for live controllers.
 
 * Generated code
-  * Enable C++ Arena Allocation [@ArenaAllocation] by default in p4runtime.proto.
+  * Enable C++ Arena Allocation [@ArenaAllocation] by default in
+    p4runtime.proto.
   * Added Rust code generation
 
 * Meters
-  * Add a `Type` field to the `MeterSpec` message allowing users to restrict the
-    type of meters that can be used for a table and a new `eburst` field to the
-    `MeterConfig` message for use with one of the new `MeterSpec` types. See
-    section on [Meter & DirectMeter](#sec-meter-directmeter).
-  * Defined new meter annotations `@two_rate_three_color`, `@single_rate_two_color`, `@single_rate_three_color`
+  * Add a `Type` field to the `MeterSpec` message allowing users to restrict
+    the type of meters that can be used for a table and a new `eburst` field to
+    the `MeterConfig` message for use with one of the new `MeterSpec` types.
+    See section on [Meter & DirectMeter](#sec-meter-directmeter).
+  * Defined new meter annotations `@two_rate_three_color`,
+    `@single_rate_two_color`, `@single_rate_three_color`
   * Enable P4Runtime servers to provide per-color counter values when direct or
     indirect meter entries are read.
 
 * Miscellaneous
   * Add a `PlatformProperties` message specifying desired underlying platform
     properties to the `PkgInfo` message.
-  * Specify Read behavior in the absence of a P4Info (`ForwardingPipelineConfig`
-    not set yet).
+  * Specify Read behavior in the absence of a P4Info
+    (`ForwardingPipelineConfig` not set yet).
   * Clarify that for updates of type `INSERT`, error codes other than
     `INVALID_ARGUMENT` can be returned when applicable.
   * Clarified the meaning of set and unset scalar and message fields, see
   section on [default-valued fields](#sec-default-valued-fields).
-  * Described Dataplane Volatile Objects, see section [sec-data-plane-volatile-objects]
-  * Clarified use of bytestrings in messages, see section on [Bytestrings](#sec-bytestrings)
+  * Described Dataplane Volatile Objects, see section on
+    [Dataplane Volatile Objects](sec-data-plane-volatile-objects).
+  * Clarified use of bytestrings in messages, see section on
+    [Bytestrings](#sec-bytestrings)
 
 * Replication
   * Add a `metadata` field to the `MulticastGroupEntry` message.
-  * In message `Replica`, replaced primitive field `uint32 egress_port` in a compatible manner with new `oneof port_kind` containing preferred new field `bytes port`.
+  * In message `Replica`, replaced primitive field `uint32 egress_port`
+    in a compatible manner with new `oneof port_kind` containing preferred
+    new field `bytes port`.
 
 * Tables
   * Clarify that the limitation on supported types for `FieldMatch`, action
-    `Param`, and Packet IO metadata fields (no support for signed integers, with
-    type `int<W>`) apply to all minor revisions of P4Runtime v1, not just to
-    P4Runtime v1.0.
-  * Add `has_initial_entries` and `is_const` field fields to `Table` message to distinguish mutable and immutable initial table entries,
+    `Param`, and Packet IO metadata fields (no support for signed integers,
+    with type `int<W>`) apply to all minor revisions of P4Runtime v1, not just
+    to P4Runtime v1.0.
+  * Add `has_initial_entries` and `is_const` field fields to `Table` message to
+    distinguish mutable and immutable initial table entries,
     see section on [Constant Tables](#sec-constant-tables).
 
 ### Changes in v1.3.0
