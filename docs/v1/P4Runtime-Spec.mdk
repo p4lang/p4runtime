@@ -2265,8 +2265,8 @@ The reads and writes a client issues towards a server should be symmetrical and
 unambiguous. More specifically, if a client writes a P4 entity and then reads it
 back then the client should expect that the message it wrote and the message it
 read should match if the RPCs finished successfully (with the exception of parts
-of the response known to be data plane volatile, as explained in section
-[#sec-data-plane-volatile-objects]). Consider the following pseudocode as an
+of the response known to be data plane volatile, as explained in section on
+[Data plane volatile objects](#sec-data-plane-volatile-objects)). Consider the following pseudocode as an
 example:
 
 ~ Begin Pseudo
@@ -3411,7 +3411,7 @@ property in the P4~16~ source code, with no `const` qualifier before
 `entries`, and at least one entry in that list.  In the P4Info, such
 tables have `has_initial_entries` flag equal to true, but
 `is_const_table` is false.  For tables declared with `const entries`,
-see Section on [Constant Tables](#sec-constant-tables).
+see section on [Constant Tables](#sec-constant-tables).
 
 Every P4 table falls into one of three categories:
 
@@ -3446,7 +3446,7 @@ number of entries supported by the target for the table.
 
 The contents of preinitialized tables can be queried by the client
 through a `ReadRequest`.  The server fills in the same fields in the
-response as it does for constant tables, as described in Section on
+response as it does for constant tables, as described in section on
 [Constant Tables](#sec-constant-tables), and with the same restrictions on table
 features supported.
 
@@ -6568,11 +6568,15 @@ properties, but we may include on in future versions of the API.
   * Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only unique
     for live controllers.
 
+* Generated code
+  * Enable C++ Arena Allocation [@ArenaAllocation] by default in p4runtime.proto.
+  * Added Rust code generation
+
 * Meters
   * Add a `Type` field to the `MeterSpec` message allowing users to restrict the
     type of meters that can be used for a table and a new `eburst` field to the
     `MeterConfig` message for use with one of the new `MeterSpec` types. See
-    Section on [Meter & DirectMeter](#sec-meter-directmeter).
+    section on [Meter & DirectMeter](#sec-meter-directmeter).
   * Defined new meter annotations `@two_rate_three_color`, `@single_rate_two_color`, `@single_rate_three_color`
   * Enable P4Runtime servers to provide per-color counter values when direct or
     indirect meter entries are read.
@@ -6584,8 +6588,8 @@ properties, but we may include on in future versions of the API.
     not set yet).
   * Clarify that for updates of type `INSERT`, error codes other than
     `INVALID_ARGUMENT` can be returned when applicable.
-  * Enable C++ Arena Allocation [@ArenaAllocation] by default in p4runtime.proto.
-  * Clarified the meaning of set and unset scalar and message fields, see section [#sec-default-valued-fields].
+  * Clarified the meaning of set and unset scalar and message fields, see
+  section on [default-valued fields](#sec-default-valued-fields).
   * Described Dataplane Volatile Objects, see section [sec-data-plane-volatile-objects]
   * Clarified use of bytestrings in messages, see section on [Bytestrings](#sec-bytestrings)
 
@@ -6599,7 +6603,7 @@ properties, but we may include on in future versions of the API.
     type `int<W>`) apply to all minor revisions of P4Runtime v1, not just to
     P4Runtime v1.0.
   * Add `has_initial_entries` and `is_const` field fields to `Table` message to distinguish mutable and immutable initial table entries,
-    see Section on [Constant Tables](#sec-constant-tables).
+    see section on [Constant Tables](#sec-constant-tables).
 
 ### Changes in v1.3.0
 
