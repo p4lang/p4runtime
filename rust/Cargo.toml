@@ -13,7 +13,7 @@ repository = "https://github.com/p4lang/p4runtime"
 pbjson = "0.7.0"
 pbjson-types = "0.7.0"
 prost = "0.13.2"
-tonic = "0.12.2"
+tonic = "0.12.3"
 
 [features]
 default = ["proto_full"]
