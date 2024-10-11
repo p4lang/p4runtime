@@ -5,85 +5,57 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def p4runtime_deps():
     """Loads dependencies needed to compile p4runtime."""
-    # A recent absl version is required for gRPC, and the one pulled in by
-    # com_google_protobuf is not recent enough.
-    if "com_google_absl" not in native.existing_rules():
-        http_archive(
-            name = "com_google_absl",
-            sha256 = "4208129b49006089ba1d6710845a45e31c59b0ab6bff9e5788a87f55c5abd602",
-            strip_prefix = "abseil-cpp-20220623.0",
-            urls = [
-                "https://storage.googleapis.com/grpc-bazel-mirror/github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz",
-                "https://github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz",
-            ],
-        )
-    # Also required by the current gRPC version.
-    # Can probably be removed when Protobuf dependencies are updated.
-    if "upb" not in native.existing_rules():
-        http_archive(
-            name = "upb",
-            sha256 = "017a7e8e4e842d01dba5dc8aa316323eee080cd1b75986a7d1f94d87220e6502",
-            strip_prefix = "upb-e4635f223e7d36dfbea3b722a4ca4807a7e882e2",
-            urls = [
-                "https://storage.googleapis.com/grpc-bazel-mirror/github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
-                "https://github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
-            ],
-        )
     if not native.existing_rule("com_google_protobuf"):
         http_archive(
             name = "com_google_protobuf",
-            url = "https://github.com/protocolbuffers/protobuf/releases/download/v21.10/protobuf-all-21.10.tar.gz",
-            strip_prefix = "protobuf-21.10",
-            sha256 = "6fc9b6efc18acb2fd5fb3bcf981572539c3432600042b662a162c1226b362426",
+            url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v28.2.tar.gz",
+            strip_prefix = "protobuf-28.2",
+            sha256 = "b2340aa47faf7ef10a0328190319d3f3bee1b24f426d4ce8f4253b6f27ce16db",
         )
     if not native.existing_rule("rules_proto"):
         http_archive(
             name = "rules_proto",
-            urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/9e4c622ba8c2178b71420ed3d14fb8874beee3a5.tar.gz",
-                "https://github.com/bazelbuild/rules_proto/archive/9e4c622ba8c2178b71420ed3d14fb8874beee3a5.tar.gz",
-            ],
-            strip_prefix = "rules_proto-9e4c622ba8c2178b71420ed3d14fb8874beee3a5",
-            sha256 = "c2182b2d8894b43dc30afbdc2ce44a216e7c6c933ed34e216bfbf86e2f4e1e48",
+            sha256 = "6fb6767d1bef535310547e03247f7518b03487740c11b6c6adb7952033fe1295",
+            strip_prefix = "rules_proto-6.0.2",
+            url = "https://github.com/bazelbuild/rules_proto/releases/download/6.0.2/rules_proto-6.0.2.tar.gz",
         )
     if not native.existing_rule("io_bazel_rules_go"):
         http_archive(
             name = "io_bazel_rules_go",
+            sha256 = "f4a9314518ca6acfa16cc4ab43b0b8ce1e4ea64b81c38d8a3772883f153346b8",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.36.0/rules_go-v0.36.0.zip",
-                "https://github.com/bazelbuild/rules_go/releases/download/v0.36.0/rules_go-v0.36.0.zip",
+                "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.50.1/rules_go-v0.50.1.zip",
+                "https://github.com/bazelbuild/rules_go/releases/download/v0.50.1/rules_go-v0.50.1.zip",
             ],
-            sha256 = "ae013bf35bd23234d1dea46b079f1e05ba74ac0321423830119d3e787ec73483",
         )
     if not native.existing_rule("com_google_googleapis"):
         git_repository(
             name = "com_google_googleapis",
             remote = "https://github.com/googleapis/googleapis",
-            commit = "9fe00a1330817b5ce00919bf2861cd8a9cea1a00",
-            shallow_since = "1642638275 -0800",
+            commit = "de509e38d37a2a9d8b95e1ce78831189f4f3c0f4",
         )
     if not native.existing_rule("com_github_grpc_grpc"):
         http_archive(
             name = "com_github_grpc_grpc",
-            url = "https://github.com/grpc/grpc/archive/v1.51.1.tar.gz",
-            strip_prefix = "grpc-1.51.1",
-            sha256 = "b55696fb249669744de3e71acc54a9382bea0dce7cd5ba379b356b12b82d4229",
+            url = "https://github.com/grpc/grpc/archive/refs/tags/v1.67.0.tar.gz",
+            strip_prefix = "grpc-1.67.0",
+            sha256 = "af0638f73e4452e22e295f8b3f452518234254104713a08497f3d3aaa76733ad",
         )
     if not native.existing_rule("bazel_skylib"):
         http_archive(
             name = "bazel_skylib",
-            sha256 = "66ffd9315665bfaafc96b52278f57c7e2dd09f5ede279ea6d39b2be471e7e3aa",
+            sha256 = "bc283cdfcd526a52c3201279cda4bc298652efa898b10b4db0837dc51652756f",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
-                "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
+                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.7.1/bazel-skylib-1.7.1.tar.gz",
+                "https://github.com/bazelbuild/bazel-skylib/releases/download/1.7.1/bazel-skylib-1.7.1.tar.gz",
             ],
         )
     if not native.existing_rule("rules_license"):
         http_archive(
             name = "rules_license",
             urls = [
-                "https://mirror.bazel.build/github.com/bazelbuild/rules_license/releases/download/0.0.7/rules_license-0.0.7.tar.gz",
-                "https://github.com/bazelbuild/rules_license/releases/download/0.0.7/rules_license-0.0.7.tar.gz",
+                "https://mirror.bazel.build/github.com/bazelbuild/rules_license/releases/download/1.0.0/rules_license-1.0.0.tar.gz",
+                "https://github.com/bazelbuild/rules_license/releases/download/1.0.0/rules_license-1.0.0.tar.gz",
             ],
-            sha256 = "4531deccb913639c30e5c7512a054d5d875698daeb75d8cf90f284375fe7c360",
+            sha256 = "26d4021f6898e23b82ef953078389dd49ac2b5618ac564ade4ef87cced147b38",
         )
