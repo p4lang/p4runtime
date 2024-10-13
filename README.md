@@ -144,9 +144,9 @@ processes.
    pull request against the specification that a key committer must review and
    approve.
 
-When updating the Protobuf files in a pull request, you will also need to update
+>**Generated protobuf files**: When updating the Protobuf files in a pull request, you will also need to update
 the generated Go and Python files, which are hosted in this repository under
-[go/](go/) and [py/](py/). This can be done easily by running `./codegen/update.sh`,
+[go/](go/) and [py/](py/). This can be done easily **by running `./codegen/update.sh`**,
 provided docker is installed and your user is part of the "docker" group
 (which means that the `docker` command can be executed without `sudo`).
 
@@ -175,6 +175,16 @@ To install P4Runtime Python library, use the `pip3` command:
 pip3 install p4runtime
 # Or specify the version
 pip3 install p4runtime==1.3.0
+```
+
+### Rust
+
+To include the P4Runtime Rust crate to your project, add this repository url to
+your `Cargo.toml` file:
+
+```toml
+[dependencies]
+p4runtime = { git = "https://github.com/p4lang/p4runtime.git" }
 ```
 
 ## Guidelines for using Protocol Buffers (protobuf) in backwards-compatible ways
