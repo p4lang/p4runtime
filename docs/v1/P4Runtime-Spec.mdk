@@ -4569,7 +4569,7 @@ semantics.
   return `INVALID_ARGUMENT`. The `metadata` field is an arbitrary `bytes` value
   which is opaque to the target. There is no requirement of where this is
   stored, but it must be returned by the server along with the rest of the entry
-  when the client performs a read on the entry. The `fallback_ports` field 
+  when the client performs a read on the entry. The `fallback_ports` field.
 * `MODIFY`: Modify the set of replicas and metadata for a given multicast group
   entry, indexed by the given `multicast_group_id`. Same restrictions as
   `INSERT` apply here.
