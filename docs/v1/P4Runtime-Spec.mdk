@@ -4532,8 +4532,8 @@ entity {
       multicast_group_id: 1
       replicas { port: "\x05" instance: 1 }
       replicas { port: "\x0c" instance: 2 }
-      replicas { port: "\x12" instance: 3 }
-      replicas { port: "\x18" instance: 4 }
+      replicas { port: "\x12" instance: 3 fallback_ports: "\x13" }
+      replicas { port: "\x18" instance: 4 fallback_ports: "\x19" fallback_ports: "\x20" }
     }
   }
 }
@@ -4545,6 +4545,8 @@ pipeline as independent packets with egress port set to PSA device port numbers
 corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
 translation between SDN ports and PSA device ports, refer to the
 [PSA Metadata Translation](#sec-translation-of-port-numbers) section.
+The replicas support fallback ports, which are backup SDN ports used during
+multicast when the primary multicast `port` becomes unavailable.
 
 The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
@@ -4567,7 +4569,7 @@ semantics.
   return `INVALID_ARGUMENT`. The `metadata` field is an arbitrary `bytes` value
   which is opaque to the target. There is no requirement of where this is
   stored, but it must be returned by the server along with the rest of the entry
-  when the client performs a read on the entry.
+  when the client performs a read on the entry. The `fallback_ports` field 
 * `MODIFY`: Modify the set of replicas and metadata for a given multicast group
   entry, indexed by the given `multicast_group_id`. Same restrictions as
   `INSERT` apply here.

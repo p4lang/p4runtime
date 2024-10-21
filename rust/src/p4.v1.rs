@@ -745,6 +745,8 @@ pub mod packet_replication_engine_entry {
 pub struct Replica {
     #[prost(uint32, tag="2")]
     pub instance: u32,
+    #[prost(bytes="vec", repeated, tag="4")]
+    pub fallback_ports: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
     #[prost(oneof="replica::PortKind", tags="1, 3")]
     pub port_kind: ::core::option::Option<replica::PortKind>,
 }

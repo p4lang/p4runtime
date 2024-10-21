@@ -457,6 +457,7 @@ message Replica {
     bytes port = 3;
   }
   uint32 instance = 2;
+  repeated bytes fallback_ports = 4;
 }
 
 // The (port, instance) pair must be unique for each replica in a given
