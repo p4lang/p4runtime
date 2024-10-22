@@ -459,6 +459,11 @@ message Replica {
   uint32 instance = 2;
 }
 
+message FallbackReplicas {
+  // Added in 1.4.2.
+  repeated Replica replicas = 1;
+}
+
 // The (port, instance) pair must be unique for each replica in a given
 // multicast group entry. A packet may be multicast by setting the
 // multicast_group field of PSA ingress output metadata to multicast_group_id
@@ -472,7 +477,8 @@ message MulticastGroupEntry {
   // Added in 1.4.0.
   bytes metadata = 3;
   // Backup replicas used as a fallback port.
-  repeated Replica backups = 4;
+  // Added in 1.4.2.
+  repeated FallbackReplicas backups = 4;
 }
 
 // A packet may be cloned by setting the clone_session_id field of PSA

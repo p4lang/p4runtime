@@ -762,6 +762,13 @@ pub mod replica {
         Port(::prost::alloc::vec::Vec<u8>),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FallbackReplicas {
+    /// Added in 1.4.2.
+    #[prost(message, repeated, tag="1")]
+    pub replicas: ::prost::alloc::vec::Vec<Replica>,
+}
 /// The (port, instance) pair must be unique for each replica in a given
 /// multicast group entry. A packet may be multicast by setting the
 /// multicast_group field of PSA ingress output metadata to multicast_group_id
@@ -780,8 +787,9 @@ pub struct MulticastGroupEntry {
     #[prost(bytes="vec", tag="3")]
     pub metadata: ::prost::alloc::vec::Vec<u8>,
     /// Backup replicas used as a fallback port.
+    /// Added in 1.4.2.
     #[prost(message, repeated, tag="4")]
-    pub backups: ::prost::alloc::vec::Vec<Replica>,
+    pub backups: ::prost::alloc::vec::Vec<FallbackReplicas>,
 }
 /// A packet may be cloned by setting the clone_session_id field of PSA
 /// ingress/egress output metadata to session_id of a programmed clone session

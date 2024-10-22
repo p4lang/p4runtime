@@ -4534,8 +4534,22 @@ entity {
       replicas { port: "\x0c" instance: 2 }
       replicas { port: "\x12" instance: 3 }
       replicas { port: "\x18" instance: 4 }
-      backups { port: "\x13" instance: 5 }
-      backups { port: "\x19" instance: 6 }
+      backups { 
+        replicas { port: "\x06" instance: 5 }
+        replicas { port: "\x07" instance: 6 }
+      }
+      backups { 
+        replicas { port: "\x0d" instance: 7 }
+        replicas { port: "\x0e" instance: 8 }
+      }
+      backups { 
+        replicas { port: "\x13" instance: 9 }
+        replicas { port: "\x14" instance: 10 }
+      }
+      backups { 
+        replicas { port: "\x19" instance: 11 }
+        replicas { port: "\x1a" instance: 12 }
+      }
     }
   }
 }
@@ -4552,9 +4566,11 @@ The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
 multicast; if the multicast group is set, it will override the unicast egress
 port. If the P4 `multicast_group` metadata is set to a value that is not
-programmed in the PRE, then the packet is dropped. Fallback ports for multicast
-uses one of the backup replicas when the primary multicast `port` becomes
-unavailable.
+programmed in the PRE, then the packet is dropped. For each replicas(i) in
+the `multicast_group_entry`, there must be an associated backups(i) or
+`multicast_group_entry` cannot have any backups at all. Fallback ports for
+multicast uses one of the backups(i) replicas when the primary `port` of a
+replicas(i) becomes unavailable.
 
 A multicast group may be inserted, modified or deleted as per the following
 semantics.
@@ -4682,6 +4698,7 @@ semantics:
   service for each clone packet instance will be set to the value programmed in
   the clone session entry (`class_of_service` field). This value must be a valid
   value for the PSA `ClassOfService_t` type, which supports runtime translation
+  by default [@PSATranslation], or the server must return
   `INVALID_ARGUMENT`. See [PSA Metadata
   Translation](#sec-translation-of-port-numbers) for more information. The
   `packet_length_bytes` field must be set to a non-zero value if the clone
