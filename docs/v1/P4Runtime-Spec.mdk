@@ -4552,9 +4552,9 @@ The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
 multicast; if the multicast group is set, it will override the unicast egress
 port. If the P4 `multicast_group` metadata is set to a value that is not
-programmed in the PRE, then the packet is dropped. The backup replicas are
-used for fallback ports, which are backup SDN ports used during multicast
-when the primary multicast `port` becomes unavailable.
+programmed in the PRE, then the packet is dropped. Fallback ports for multicast
+uses one of the backup replicas when the primary multicast `port` becomes
+unavailable.
 
 A multicast group may be inserted, modified or deleted as per the following
 semantics.
