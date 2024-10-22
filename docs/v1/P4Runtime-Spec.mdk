@@ -4534,19 +4534,19 @@ entity {
       replicas { port: "\x0c" instance: 2 }
       replicas { port: "\x12" instance: 3 }
       replicas { port: "\x18" instance: 4 }
-      backups { 
+      backups {
         replicas { port: "\x06" instance: 5 }
         replicas { port: "\x07" instance: 6 }
       }
-      backups { 
+      backups {
         replicas { port: "\x0d" instance: 7 }
         replicas { port: "\x0e" instance: 8 }
       }
-      backups { 
+      backups {
         replicas { port: "\x13" instance: 9 }
         replicas { port: "\x14" instance: 10 }
       }
-      backups { 
+      backups {
         replicas { port: "\x19" instance: 11 }
         replicas { port: "\x1a" instance: 12 }
       }
