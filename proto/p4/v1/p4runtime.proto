@@ -457,7 +457,6 @@ message Replica {
     bytes port = 3;
   }
   uint32 instance = 2;
-  repeated bytes fallback_ports = 4;
 }
 
 // The (port, instance) pair must be unique for each replica in a given
@@ -472,6 +471,8 @@ message MulticastGroupEntry {
   // Arbitrary metadata from the controller that is opaque to the target.
   // Added in 1.4.0.
   bytes metadata = 3;
+  // Backup replicas used as a fallback port.
+  repeated Replica backups = 4;
 }
 
 // A packet may be cloned by setting the clone_session_id field of PSA

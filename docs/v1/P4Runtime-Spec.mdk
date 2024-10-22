@@ -4545,14 +4545,14 @@ pipeline as independent packets with egress port set to PSA device port numbers
 corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
 translation between SDN ports and PSA device ports, refer to the
 [PSA Metadata Translation](#sec-translation-of-port-numbers) section.
-The replicas support fallback ports, which are backup SDN ports used during
-multicast when the primary multicast `port` becomes unavailable.
 
 The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
 multicast; if the multicast group is set, it will override the unicast egress
 port. If the P4 `multicast_group` metadata is set to a value that is not
-programmed in the PRE, then the packet is dropped.
+programmed in the PRE, then the packet is dropped. The backup replicas are
+used for fallback ports, which are backup SDN ports used during multicast
+when the primary multicast `port` becomes unavailable.
 
 A multicast group may be inserted, modified or deleted as per the following
 semantics.

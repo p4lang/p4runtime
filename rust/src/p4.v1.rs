@@ -745,8 +745,6 @@ pub mod packet_replication_engine_entry {
 pub struct Replica {
     #[prost(uint32, tag="2")]
     pub instance: u32,
-    #[prost(bytes="vec", repeated, tag="4")]
-    pub fallback_ports: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
     #[prost(oneof="replica::PortKind", tags="1, 3")]
     pub port_kind: ::core::option::Option<replica::PortKind>,
 }
@@ -781,6 +779,9 @@ pub struct MulticastGroupEntry {
     /// Added in 1.4.0.
     #[prost(bytes="vec", tag="3")]
     pub metadata: ::prost::alloc::vec::Vec<u8>,
+    /// Backup replicas used as a fallback port.
+    #[prost(message, repeated, tag="4")]
+    pub backups: ::prost::alloc::vec::Vec<Replica>,
 }
 /// A packet may be cloned by setting the clone_session_id field of PSA
 /// ingress/egress output metadata to session_id of a programmed clone session
