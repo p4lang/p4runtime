@@ -4532,8 +4532,10 @@ entity {
       multicast_group_id: 1
       replicas { port: "\x05" instance: 1 }
       replicas { port: "\x0c" instance: 2 }
-      replicas { port: "\x12" instance: 3 fallback_ports: "\x13" }
-      replicas { port: "\x18" instance: 4 fallback_ports: "\x19" fallback_ports: "\x20" }
+      replicas { port: "\x12" instance: 3 }
+      replicas { port: "\x18" instance: 4 }
+      backups { port: "\x13" instance: 5 }
+      backups { port: "\x19" instance: 6 }
     }
   }
 }
