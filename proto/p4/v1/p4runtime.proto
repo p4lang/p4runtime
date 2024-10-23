@@ -460,7 +460,7 @@ message Replica {
 }
 
 message FallbackReplicas {
-  // Added in 1.4.2.
+  // Added in 1.5.0.
   repeated Replica replicas = 1;
 }
 
@@ -477,7 +477,7 @@ message MulticastGroupEntry {
   // Added in 1.4.0.
   bytes metadata = 3;
   // Backup replicas used as a fallback port.
-  // Added in 1.4.2.
+  // Added in 1.5.0.
   repeated FallbackReplicas backups = 4;
 }
 
