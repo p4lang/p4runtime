@@ -2502,7 +2502,7 @@ type FallbackReplicas struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Added in 1.4.2.
+	// Added in 1.5.0.
 	Replicas []*Replica `protobuf:"bytes,1,rep,name=replicas,proto3" json:"replicas,omitempty"`
 }
 
@@ -2562,7 +2562,7 @@ type MulticastGroupEntry struct {
 	// Added in 1.4.0.
 	Metadata []byte `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// Backup replicas used as a fallback port.
-	// Added in 1.4.2.
+	// Added in 1.5.0.
 	Backups []*FallbackReplicas `protobuf:"bytes,4,rep,name=backups,proto3" json:"backups,omitempty"`
 }
 

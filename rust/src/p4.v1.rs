@@ -765,7 +765,7 @@ pub mod replica {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FallbackReplicas {
-    /// Added in 1.4.2.
+    /// Added in 1.5.0.
     #[prost(message, repeated, tag="1")]
     pub replicas: ::prost::alloc::vec::Vec<Replica>,
 }
@@ -787,7 +787,7 @@ pub struct MulticastGroupEntry {
     #[prost(bytes="vec", tag="3")]
     pub metadata: ::prost::alloc::vec::Vec<u8>,
     /// Backup replicas used as a fallback port.
-    /// Added in 1.4.2.
+    /// Added in 1.5.0.
     #[prost(message, repeated, tag="4")]
     pub backups: ::prost::alloc::vec::Vec<FallbackReplicas>,
 }
