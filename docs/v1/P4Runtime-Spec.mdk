@@ -4566,8 +4566,12 @@ corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
 translation between SDN ports and PSA device ports, refer to the
 [PSA Metadata Translation](#sec-translation-of-port-numbers) section. Each
 replica can optionally have a list of backup replicas used as fallback ports
-for multicast. When the primary port (replica) becomes unavailable, the system
-uses the first available backup replica.
+for multicast. When the primary port (replica) goes down, the system
+uses the first backup replica for which its port is up. Whenever the primary
+port goes back up, the system will use the primary port again. In the case
+when the primary replica's ports and the backup replicas' ports are down,
+nothing is done for recovery until the primary replica or the backup replicas's
+ports go back up.
 
 The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
