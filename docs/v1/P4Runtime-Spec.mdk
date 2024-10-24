@@ -4530,25 +4530,29 @@ entity {
   packet_replication_engine_entry {
     multicast_group_entry {
       multicast_group_id: 1
-      replicas { port: "\x05" instance: 1 }
-      replicas { port: "\x0c" instance: 2 }
-      replicas { port: "\x12" instance: 3 }
-      replicas { port: "\x18" instance: 4 }
-      backups {
-        replicas { port: "\x06" instance: 5 }
-        replicas { port: "\x07" instance: 6 }
+      replicas {
+        port: "\x05"
+        instance: 1
+        backup_replicas { port: "\x06" instance: 5 }
+        backup_replicas { port: "\x07" instance: 6 }
       }
-      backups {
-        replicas { port: "\x0d" instance: 7 }
-        replicas { port: "\x0e" instance: 8 }
+      replicas {
+        port: "\x0c"
+        instance: 2
+        backup_replicas { port: "\x0d" instance: 7 }
+        backup_replicas { port: "\x0e" instance: 8 }
       }
-      backups {
-        replicas { port: "\x13" instance: 9 }
-        replicas { port: "\x14" instance: 10 }
+      replicas {
+        port: "\x12"
+        instance: 3
+        backup_replicas { port: "\x13" instance: 9 }
+        backup_replicas { port: "\x14" instance: 10 }
       }
-      backups {
-        replicas { port: "\x19" instance: 11 }
-        replicas { port: "\x1a" instance: 12 }
+      replicas {
+        port: "\x18"
+        instance: 4
+        backup_replicas { port: "\x19" instance: 11 }
+        backup_replicas { port: "\x1a" instance: 12 }
       }
     }
   }
@@ -4560,17 +4564,16 @@ four replicas of an ARP packet. These replicas will appear in the egress
 pipeline as independent packets with egress port set to PSA device port numbers
 corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
 translation between SDN ports and PSA device ports, refer to the
-[PSA Metadata Translation](#sec-translation-of-port-numbers) section.
+[PSA Metadata Translation](#sec-translation-of-port-numbers) section. Each
+replica can optionally have a list of backup replicas used as fallback ports
+for multicast. When the primary port (replica) becomes unavailable, the system
+uses the first available backup replica.
 
 The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
 multicast; if the multicast group is set, it will override the unicast egress
 port. If the P4 `multicast_group` metadata is set to a value that is not
-programmed in the PRE, then the packet is dropped. For each replicas(i) in
-the `multicast_group_entry`, there must be an associated backups(i) or
-`multicast_group_entry` cannot have any backups at all. Fallback ports for
-multicast uses the first available replica in the list of backups(i) replicas
-when the primary `port` of a replicas(i) becomes unavailable.
+programmed in the PRE, then the packet is dropped.
 
 A multicast group may be inserted, modified or deleted as per the following
 semantics.

@@ -739,12 +739,26 @@ pub mod packet_replication_engine_entry {
         CloneSessionEntry(super::CloneSessionEntry),
     }
 }
+/// A backup replica used as a fallback port for a replica.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupReplica {
+    /// Added in v1.5.0.
+    #[prost(bytes="vec", tag="1")]
+    pub port: ::prost::alloc::vec::Vec<u8>,
+    #[prost(uint32, tag="2")]
+    pub instance: u32,
+}
 /// Used for replicas created for cloning and multicasting actions.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Replica {
     #[prost(uint32, tag="2")]
     pub instance: u32,
+    /// Backup replicas used as a fallback port for the replica.
+    /// Added in v1.5.0.
+    #[prost(message, repeated, tag="4")]
+    pub backup_replicas: ::prost::alloc::vec::Vec<BackupReplica>,
     #[prost(oneof="replica::PortKind", tags="1, 3")]
     pub port_kind: ::core::option::Option<replica::PortKind>,
 }
@@ -761,13 +775,6 @@ pub mod replica {
         #[prost(bytes, tag="3")]
         Port(::prost::alloc::vec::Vec<u8>),
     }
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FallbackReplicas {
-    /// Added in 1.5.0.
-    #[prost(message, repeated, tag="1")]
-    pub replicas: ::prost::alloc::vec::Vec<Replica>,
 }
 /// The (port, instance) pair must be unique for each replica in a given
 /// multicast group entry. A packet may be multicast by setting the
@@ -786,10 +793,6 @@ pub struct MulticastGroupEntry {
     /// Added in 1.4.0.
     #[prost(bytes="vec", tag="3")]
     pub metadata: ::prost::alloc::vec::Vec<u8>,
-    /// Backup replicas used as a fallback port.
-    /// Added in 1.5.0.
-    #[prost(message, repeated, tag="4")]
-    pub backups: ::prost::alloc::vec::Vec<FallbackReplicas>,
 }
 /// A packet may be cloned by setting the clone_session_id field of PSA
 /// ingress/egress output metadata to session_id of a programmed clone session
