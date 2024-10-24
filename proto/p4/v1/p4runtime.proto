@@ -450,8 +450,8 @@ message PacketReplicationEngineEntry {
 // A backup replica used as a fallback port for a replica.
 message BackupReplica {
   // Added in v1.5.0.
-	bytes port = 1;
-	uint32 instance = 2;
+  bytes port = 1;
+  uint32 instance = 2;
 }
 
 // Used for replicas created for cloning and multicasting actions.
