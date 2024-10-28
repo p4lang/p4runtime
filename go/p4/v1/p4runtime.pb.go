@@ -2401,8 +2401,8 @@ func (*PacketReplicationEngineEntry_MulticastGroupEntry) isPacketReplicationEngi
 
 func (*PacketReplicationEngineEntry_CloneSessionEntry) isPacketReplicationEngineEntry_Type() {}
 
-// Added in v1.5.0.
 // A backup replica used as a fallback when the primary replica port goes down.
+// Added in v1.5.0.
 type BackupReplica struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

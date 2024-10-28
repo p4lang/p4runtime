@@ -739,8 +739,8 @@ pub mod packet_replication_engine_entry {
         CloneSessionEntry(super::CloneSessionEntry),
     }
 }
-/// Added in v1.5.0.
 /// A backup replica used as a fallback when the primary replica port goes down.
+/// Added in v1.5.0.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupReplica {
