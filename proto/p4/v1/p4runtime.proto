@@ -447,9 +447,9 @@ message PacketReplicationEngineEntry {
   }
 }
 
-// A backup replica used as a fallback port for a replica.
+// Added in v1.5.0.
+// A backup replica used as a fallback when the primary replica port goes down.
 message BackupReplica {
-  // Added in v1.5.0.
   bytes port = 1;
   uint32 instance = 2;
 }
@@ -464,7 +464,8 @@ message Replica {
     bytes port = 3;
   }
   uint32 instance = 2;
-  // Backup replicas used as a fallback port for the replica.
+  // List of backup replicas used as a fallback when the primary replica port
+  // goes down, in order of preference.
   // Added in v1.5.0.
   repeated BackupReplica backup_replicas = 4;
 }

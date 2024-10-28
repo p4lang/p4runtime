@@ -4533,26 +4533,24 @@ entity {
       replicas {
         port: "\x05"
         instance: 1
-        backup_replicas { port: "\x06" instance: 5 }
-        backup_replicas { port: "\x07" instance: 6 }
       }
       replicas {
         port: "\x0c"
         instance: 2
-        backup_replicas { port: "\x0d" instance: 7 }
-        backup_replicas { port: "\x0e" instance: 8 }
+        backup_replicas { port: "\x0d" instance: 5 }
       }
       replicas {
         port: "\x12"
         instance: 3
-        backup_replicas { port: "\x13" instance: 9 }
-        backup_replicas { port: "\x14" instance: 10 }
+        backup_replicas { port: "\x13" instance: 6 }
+        backup_replicas { port: "\x14" instance: 7 }
       }
       replicas {
         port: "\x18"
         instance: 4
-        backup_replicas { port: "\x19" instance: 11 }
-        backup_replicas { port: "\x1a" instance: 12 }
+        backup_replicas { port: "\x19" instance: 8 }
+        backup_replicas { port: "\x1a" instance: 9 }
+        backup_replicas { port: "\x1b" instance: 10 }
       }
     }
   }
@@ -4566,15 +4564,15 @@ corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
 translation between SDN ports and PSA device ports, refer to the
 [PSA Metadata Translation](#sec-translation-of-port-numbers) section. Each
 replica can optionally have a list of backup replicas used as fallback ports
-for multicast. When the primary port (replica) goes down, the system
-uses the first backup replica for which its port is up. Whenever the primary
-port goes back up, the system will use the primary port again. In the case
-when the primary replica's ports and the backup replicas' ports are down,
-nothing is done for recovery until the primary replica or the backup replicas's
-ports go back up. When the primary and all the backups are down for a
-particular replica, the packet processing side effects can result in one of the
-two main expected behaviors that the user is recommended to implement.
-In the first case, no replica is created so none of the side effects from the
+for multicast. When the primary port (replica) goes down, the system uses the
+first backup replica whose port is up. Whenever the primary port goes back up,
+the system will use the primary port again. In the case when the primary
+replica's ports and the backup replicas' ports are down, nothing is done for
+recovery until the primary replica's or backup replicas' ports go back up.
+When the primary and all the backups are down for a particular replica, the
+packet processing side effects can result in one of the two main expected
+behaviors that the target is recommended to implement. In the first case, no
+replica is created so none of the side effects from the
 after-multicast-replication processing should occur for this replica. In the
 second case, the system sends one replica to the primary port, which gets
 dropped, but the system will perform any side effects of the

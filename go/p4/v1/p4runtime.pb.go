@@ -2401,13 +2401,13 @@ func (*PacketReplicationEngineEntry_MulticastGroupEntry) isPacketReplicationEngi
 
 func (*PacketReplicationEngineEntry_CloneSessionEntry) isPacketReplicationEngineEntry_Type() {}
 
-// A backup replica used as a fallback port for a replica.
+// Added in v1.5.0.
+// A backup replica used as a fallback when the primary replica port goes down.
 type BackupReplica struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Added in v1.5.0.
 	Port     []byte `protobuf:"bytes,1,opt,name=port,proto3" json:"port,omitempty"`
 	Instance uint32 `protobuf:"varint,2,opt,name=instance,proto3" json:"instance,omitempty"`
 }
@@ -2470,7 +2470,8 @@ type Replica struct {
 	//	*Replica_Port
 	PortKind isReplica_PortKind `protobuf_oneof:"port_kind"`
 	Instance uint32             `protobuf:"varint,2,opt,name=instance,proto3" json:"instance,omitempty"`
-	// Backup replicas used as a fallback port for the replica.
+	// List of backup replicas used as a fallback when the primary replica port
+	// goes down, in order of preference.
 	// Added in v1.5.0.
 	BackupReplicas []*BackupReplica `protobuf:"bytes,4,rep,name=backup_replicas,json=backupReplicas,proto3" json:"backup_replicas,omitempty"`
 }

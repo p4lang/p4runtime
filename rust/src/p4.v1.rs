@@ -739,11 +739,11 @@ pub mod packet_replication_engine_entry {
         CloneSessionEntry(super::CloneSessionEntry),
     }
 }
-/// A backup replica used as a fallback port for a replica.
+/// Added in v1.5.0.
+/// A backup replica used as a fallback when the primary replica port goes down.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupReplica {
-    /// Added in v1.5.0.
     #[prost(bytes="vec", tag="1")]
     pub port: ::prost::alloc::vec::Vec<u8>,
     #[prost(uint32, tag="2")]
@@ -755,7 +755,8 @@ pub struct BackupReplica {
 pub struct Replica {
     #[prost(uint32, tag="2")]
     pub instance: u32,
-    /// Backup replicas used as a fallback port for the replica.
+    /// List of backup replicas used as a fallback when the primary replica port
+    /// goes down, in order of preference.
     /// Added in v1.5.0.
     #[prost(message, repeated, tag="4")]
     pub backup_replicas: ::prost::alloc::vec::Vec<BackupReplica>,
