@@ -756,7 +756,7 @@ pub struct Replica {
     #[prost(uint32, tag="2")]
     pub instance: u32,
     /// List of backup replicas used as a fallback when the primary replica port
-    /// goes down, in order of preference.
+    /// (and all higher-preference backup replica ports) are down.
     /// Added in v1.5.0.
     #[prost(message, repeated, tag="4")]
     pub backup_replicas: ::prost::alloc::vec::Vec<BackupReplica>,
