@@ -4564,21 +4564,28 @@ corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
 translation between SDN ports and PSA device ports, refer to the
 [PSA Metadata Translation](#sec-translation-of-port-numbers) section. Each
 replica can optionally have a list of backup replicas used as fallback ports
-for multicast. When the primary port (replica) goes down, the system uses the
-first backup replica whose port is up. Whenever the primary port goes back up,
-the system will use the primary port again. In the case when the primary
-replica's ports and the backup replicas' ports are down, nothing is done for
-recovery until the primary replica's or backup replicas' ports go back up.
-When the primary and all the backups are down for a particular replica, the
-packet processing side effects can result in one of the two main expected
-behaviors that the target is recommended to implement. In the first case, no
-replica is created so none of the side effects from the
-after-multicast-replication processing should occur for this replica. In the
-second case, the system sends one replica to the primary port, which gets
-dropped, but the system will perform any side effects of the
-after-multicast-replication processing. Note that the packet processing side
-effects include counter updates, meter updates, and any P4 register array
-writes in the P4 code after the multicast replication is done.
+for multicast, where the highest-preference starts with the primary replica
+followed by its backup replicas in order. When the highest-preferred port of a
+replica or a backup replica goes down, the system uses the next
+highest-preferred backup replica whose port is up. Whenever a higher-preferred
+port goes back up, the system will use the associated replica or backup replica
+as the primary port again. In the case when the primary replica's ports and the
+backup replicas' ports are down, nothing is done for recovery until the primary
+replica's or backup replicas' ports go back up. When the primary and all the
+backups are down for a particular replica, the packet processing side effects
+can result in one of the two main expected behaviors that the target is
+recommended to implement:
+
+1. No replica is created so none of the side effects from the
+   after-multicast-replication processing should occur for this replica.
+
+2. The system sends one replica to the primary port, which gets dropped,
+   but the system will perform any side effects of the
+   after-multicast-replication processing.
+
+Note that the packet processing side effects include counter updates, meter
+updates, and any P4 register array writes in the P4 code after the multicast
+replication is done.
 
 The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
@@ -4600,7 +4607,9 @@ semantics.
   the same port as any of its backup replicas, or the server must return
   `INVALID_ARGUMENT`. All replicas and backup replicas in a particular
   multicast group requires uniqueness among all (port, instance)-pairs, or the
-  server must return `INVALID_ARGUMENT`. The `metadata` field is an arbitrary
+  server must return `INVALID_ARGUMENT`. The support for back replicas is
+  optional by the target and if the target does not support backup replicas,
+  it must return an `UNIMPLEMENTED` error. The `metadata` field is an arbitrary
   `bytes` value, which is opaque to the target. There is no requirement of
   where this is stored, but it must be returned by the server along with the
   rest of the entry when the client performs a read on the entry.
@@ -4613,8 +4622,6 @@ semantics.
   metadata in the data plane set to the deleted `multicast_group_id` will be
   dropped.
 
-The support for back replicas is optional by the target and if the target does
-not support backup replicas, it must return an `UNIMPLEMENTED` error.
 When reading a multicast group, only `multicast_group_id` is considered. All
 other fields in `MulticastGroupEntry` are ignored. To perform a *wildcard*
 `Read` on all configured multicast group entries, the `multicast_group_id` field
