@@ -2471,7 +2471,7 @@ type Replica struct {
 	PortKind isReplica_PortKind `protobuf_oneof:"port_kind"`
 	Instance uint32             `protobuf:"varint,2,opt,name=instance,proto3" json:"instance,omitempty"`
 	// List of backup replicas used as a fallback when the primary replica port
-	// goes down, in order of preference.
+	// (and all higher-preference backup replica ports) are down.
 	// Added in v1.5.0.
 	BackupReplicas []*BackupReplica `protobuf:"bytes,4,rep,name=backup_replicas,json=backupReplicas,proto3" json:"backup_replicas,omitempty"`
 }
