@@ -1,5 +1,5 @@
 Title : P4Runtime Specification
-Title Note: version 1.4.0-dev
+Title Note: version 1.5.0-dev
 Title Footer: &date;
 Author: The P4.org API Working Group
 Heading depth: 5
@@ -4530,10 +4530,28 @@ entity {
   packet_replication_engine_entry {
     multicast_group_entry {
       multicast_group_id: 1
-      replicas { port: "\x05" instance: 1 }
-      replicas { port: "\x0c" instance: 2 }
-      replicas { port: "\x12" instance: 3 }
-      replicas { port: "\x18" instance: 4 }
+      replicas {
+        port: "\x05"
+        instance: 1
+      }
+      replicas {
+        port: "\x0c"
+        instance: 2
+        backup_replicas { port: "\x0d" instance: 5 }
+      }
+      replicas {
+        port: "\x12"
+        instance: 3
+        backup_replicas { port: "\x13" instance: 6 }
+        backup_replicas { port: "\x14" instance: 7 }
+      }
+      replicas {
+        port: "\x18"
+        instance: 4
+        backup_replicas { port: "\x19" instance: 8 }
+        backup_replicas { port: "\x1a" instance: 9 }
+        backup_replicas { port: "\x1b" instance: 10 }
+      }
     }
   }
 }
@@ -4544,7 +4562,30 @@ four replicas of an ARP packet. These replicas will appear in the egress
 pipeline as independent packets with egress port set to PSA device port numbers
 corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
 translation between SDN ports and PSA device ports, refer to the
-[PSA Metadata Translation](#sec-translation-of-port-numbers) section.
+[PSA Metadata Translation](#sec-translation-of-port-numbers) section. Each
+replica can optionally have a list of backup replicas used as fallback ports
+for multicast, where the highest-preference starts with the primary replica
+followed by its backup replicas in order. When the highest-preferred port of a
+replica or a backup replica goes down, the system uses the next
+highest-preferred backup replica whose port is up. Whenever a higher-preferred
+port goes back up, the system will use the associated replica or backup replica
+as the primary port again. In the case when the primary replica's ports and the
+backup replicas' ports are down, nothing is done for recovery until the primary
+replica's or backup replicas' ports go back up. When the primary and all the
+backups are down for a particular replica, the packet processing side effects
+can result in one of the two main expected behaviors that the target is
+recommended to implement:
+
+1. No replica is created so none of the side effects from the
+   after-multicast-replication processing should occur for this replica.
+
+2. The system sends one replica to the primary port, which gets dropped,
+   but the system will perform any side effects of the
+   after-multicast-replication processing.
+
+Note that the packet processing side effects include counter updates, meter
+updates, and any P4 register array writes in the P4 code after the multicast
+replication is done.
 
 The egress packets may be distinguished for further processing in the egress
 using the `instance` metadata. Note that a packet may not be both unicast and
@@ -4562,12 +4603,16 @@ semantics.
   `instance` ID is also a `uint32`, and its value may not exceed the maximum
   allowed by the target for the `EgressInstance_t` type (0 is allowed), or the
   server must return an `INVALID_ARGUMENT` error. The egress port (`port` field)
-  must be an SDN port and must refer to a singleton port. No two replicas may
-  have identical values of *both* `port` and `instance`, or the server must
-  return `INVALID_ARGUMENT`. The `metadata` field is an arbitrary `bytes` value
-  which is opaque to the target. There is no requirement of where this is
-  stored, but it must be returned by the server along with the rest of the entry
-  when the client performs a read on the entry.
+  must be an SDN port and must refer to a singleton port. A replica cannot have
+  the same port as any of its backup replicas, or the server must return
+  `INVALID_ARGUMENT`. All replicas and backup replicas in a particular
+  multicast group requires uniqueness among all (port, instance)-pairs, or the
+  server must return `INVALID_ARGUMENT`. The support for back replicas is
+  optional by the target and if the target does not support backup replicas,
+  it must return an `UNIMPLEMENTED` error. The `metadata` field is an arbitrary
+  `bytes` value, which is opaque to the target. There is no requirement of
+  where this is stored, but it must be returned by the server along with the
+  rest of the entry when the client performs a read on the entry.
 * `MODIFY`: Modify the set of replicas and metadata for a given multicast group
   entry, indexed by the given `multicast_group_id`. Same restrictions as
   `INSERT` apply here.
