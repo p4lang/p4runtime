@@ -11,13 +11,13 @@ on:
       - '*-dev'
 
 jobs:
-  madoko-lint:
+  asciidoc -lint:
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v3
     - name: Run linter
       run: |
-        ./tools/madokolint.py docs/v1/P4Runtime-Spec.mdk
+        ./tools/asciidoc lint.py docs/v1/P4Runtime-Spec.adoc
 
   build-spec:
     runs-on: [ubuntu-latest]
@@ -25,5 +25,5 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build spec
       run: |
-        docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make
+        docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc :latest make
         ls docs/v1/build
