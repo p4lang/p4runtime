@@ -17,6 +17,7 @@
 :stylesdir: resources/theme/
 :stylesheet: p4-stylesheet.css
 :source-highlighter: rouge
+:data-uri:
 :bibtex-file: resources/theme/references.bib
 :bibtex-order: appearance
 :bibtex-style: ieee
@@ -50,7 +51,7 @@ protocol-independent runtime APIs for P4-defined or P4-described data
 planes. This document specifies one such API, called *P4Runtime*. It is meant to
 disambiguate and augment the programmatic API definition expressed in Protobuf
 format and available at
-[https://github.com/p4lang/p4runtime/tree/main/proto](https://github.com/p4lang/p4runtime/tree/main/proto).
+link:https://github.com/p4lang/p4runtime/tree/main/proto[https://github.com/p4lang/p4runtime/tree/main/proto].
 
 === P4 Language Version Applicability
 
@@ -217,7 +218,7 @@ The following are not in scope of this specification document:
 [#sec-reference-architecture]
 == Reference Architecture 
 
-Figure <<#fig-reference-architecture>> represents the P4Runtime Reference
+<<#fig-reference-architecture>> represents the P4Runtime Reference
 Architecture. The device or target to be controlled is at the bottom, and one or
 more controllers is shown at the top. P4Runtime only grants write access to a
 single primary controller for each read/write entity. A role defines a grouping
@@ -362,7 +363,7 @@ number of reasons, the most likely of which are:
 2. The target was not implemented using P4 code to begin with, although it still
    obeys the control plane API specified in the P4Info.
 
-As discussed in Section <<#sec-p4-as-behavioral-description-language>>, in the
+As discussed in <<#sec-p4-as-behavioral-description-language>>, in the
 absence of a P4 program describing the data plane behavior, the detailed
 knowledge required to write correct control plane code must come from other
 sources, e.g. documentation.
@@ -397,14 +398,14 @@ may have the ability to access information from memory before the upgrade.
 == Controller Use-cases
 
 P4Runtime allows for more than one controller. The mechanisms and semantics are
-described in a later<<#sec-client-arbitration-and-controller-replication>>. Here we
+described in <<#sec-client-arbitration-and-controller-replication>>. Here we
 present a number of use-cases. Each use-case highlights a particular aspect of
 P4Runtime's flexibility and is not intended to be exhaustive. Real-world
 use-cases may combine various techniques and be more complex.
 
 === Single Embedded Controller
 
-Figure <<#fig-single-embedded-controller>> shows perhaps the simplest use-case. A
+<<#fig-single-embedded-controller>> shows perhaps the simplest use-case. A
 device or target has an embedded controller which communicates to an on-board
 switch via P4Runtime. This might be appropriate for an embedded appliance which
 is not intended for SDN use-cases.
@@ -422,7 +423,7 @@ image::single-embedded-controller.png[]
 
 === Single Remote Controller
 
-Figure <<fig-single-remote-controller>> shows a single remote Controller in
+<<fig-single-remote-controller>> shows a single remote Controller in
 charge of the P4 target. In this use-case, the device has no control of the
 pipeline, it just hosts the server. While this is possible, it is probably more
 practical to have a hybrid use-case as described in subsequent sections.
@@ -434,7 +435,7 @@ image::single-embedded-controller.png[]
 
 === Embedded + Single Remote Controller
 
-Figure <<fig-embedded-plus-single-remote-controller>> illustrates the use-case of
+<<fig-embedded-plus-single-remote-controller>> illustrates the use-case of
 an embedded controller plus a single remote controller. Both controllers are
 clients of the single server. The embedded controller is in charge of one set of
 P4 entities plus the pipeline configuration. The remote controller is in charge
@@ -451,7 +452,7 @@ image::embedded-plus-single-remote-controller.png[]
 
 === Embedded + Two Remote Controllers
 
-Figure <<fig-embedded-plus-two-remote-controllers>> illustrates the case of an
+<<fig-embedded-plus-two-remote-controllers>> illustrates the case of an
 embedded controller similar to the previous use-case, and two remote
 controllers. One of the remote controllers is responsible for some entities,
 e.g. routing tables, and the other remote controller is responsible for other
@@ -463,7 +464,7 @@ image::embedded-plus-two-remote-controllers.png[]
 
 === Embedded Controller + Two High-Availability Remote Controllers
 
-Figure <<fig-embedded-plus-two-remote-ha-controllers>> illustrates a single
+<<fig-embedded-plus-two-remote-ha-controllers>> illustrates a single
 embedded controller plus two remote controllers in an active-standby (i.e.
 primary-backup) HA (High-Availability) configuration. Controller #1 is the
 active controller and is in charge of some entities. If it fails, Controller #2
@@ -1225,12 +1226,12 @@ P4Runtime messages. IDs are 32-bit unsigned integers which are assigned by the
 compiler during the P4Info generation process. IDs are assigned in such a way
 that it is possible based on the ID value alone to deduce the type of the object
 (e.g. table, action, counter, ...). The most significant 8 bits of the ID
-encodes the object type (as per Table <<#tab-mapping-p4-obj-ids>>). The
+encodes the object type (as per <<#tab-mapping-p4-obj-ids>>). The
 p4info.proto file includes a mapping from object type to 8-bit prefix value,
 encoded as an enum definition (`p4.config.v1.P4Ids.Prefix`). These values must
 be used (e.g. by the compiler) when allocating IDs. The remaining 24 bits must
 be generated in such a way that the resulting IDs must be globally unique in
-the scope of the P4Info message. Table <<#tab-format-p4-obj-ids>> shows the ID
+the scope of the P4Info message. <<#tab-format-p4-obj-ids>> shows the ID
 layout.
 
 //The row 0x04 as to be fixed as is in the madoko document
@@ -1268,7 +1269,7 @@ layout.
 |===
 
 It is possible to statically set the least-significant 24 bits of the ID in the
-P4 program source by annotating the object with `@id` (see Table
+P4 program source by annotating the object with `@id` (see
 <<#tab-exmpl-p4-obj-ids>>). The compiler must honor the `@id` annotations when
 generating the P4Info message and must fail the compilation if
 statically-assigned ID suffixes lead to non-unique IDs (i.e. if the P4
@@ -1923,7 +1924,7 @@ the following fields:
 
 * `extern_type_id`, a 32-bit unsigned integer which uniquely identifies the
   extern type in the context of the architecture. It must be in the 
-  xref:sec-id-allocation[reserved range]`[0x81, 0xfe]`. Note that this value does not need
+  xref:sec-id-allocation[reserved range] `[0x81, 0xfe]` . Note that this value does not need
   to be unique across all architectures from all organizations, since at any
   given time every device managed by a P4Runtime server maps to a single P4Info
   message and a single architecture.
@@ -2100,8 +2101,7 @@ The reads and writes a client issues towards a server should be symmetrical and
 unambiguous. More specifically, if a client writes a P4 entity and then reads it
 back then the client should expect that the message it wrote and the message it
 read should match if the RPCs finished successfully (with the exception of parts
-of the response known to be data plane volatile, as explained in section
-<<#sec-data-plane-volatile-objects>>). Consider the following pseudocode as an
+of the response known to be data plane volatile, as explained in <<#sec-data-plane-volatile-objects>>). Consider the following pseudocode as an
 example:
 
 [source,pseudo]
@@ -2183,7 +2183,7 @@ and the action calls the `set_entry_expire_time` extern function (or any
 of the other extern functions defined to have an effect similar to
 calling `set_entry_expire_time`).
 
-For a PNA cte:[PNA] table with the property `add_on_miss` equal to `true`
+For a PNA cite:[PNA] table with the property `add_on_miss` equal to `true`
 the data plane can insert new entries into the table without any
 controller's involvement.
 
@@ -2346,7 +2346,7 @@ it returns an `OUT_OF_RANGE` error.
 
 For all binary strings, P4Runtime uses big-endian (i.e. network) byte-order.
 For signed integer values (`int<W>` P4 type), P4Runtime uses the same two's
-complement bitwise representation as P4. Table <<#tab-valid-bytestring-encoding>>
+complement bitwise representation as P4. <<#tab-valid-bytestring-encoding>>
 shows various examples of integer values that the server accepts as valid
 P4Runtime binary strings according to the criteria in the list above.
 
@@ -2371,7 +2371,7 @@ P4Runtime binary strings according to the criteria in the list above.
 | `int<16>` | 0 (0x0)        | `\x00`                  | yes                 
 |===
 
-Table <<#tab-invalid-bytestring-encoding>> shows some examples of invalid
+<<#tab-invalid-bytestring-encoding>> shows some examples of invalid
 P4Runtime binary strings:
 
 
@@ -2422,7 +2422,7 @@ The P4~16~ language includes more complex types than just binary strings
 cite:[P4ComplexTypes]. Most of these complex data types can be exposed to the
 control plane through table key expressions, Value Set lookup expressions,
 Register (PSA extern type) value types, etc. Not supporting these more complex
-types can be very limiting. Table <<#tab-p4-type-usage>> shows the different
+types can be very limiting. <<#tab-p4-type-usage>> shows the different
 P4~16~ types and how they are allowed to be used, as per the P4~16~
 specification.
 
@@ -3233,8 +3233,7 @@ in the P4~16~ source code.  In the P4Info, such tables have
 `is_const_table` equal to true, and if the list of entries in the
 source code has at least one entry in it, they also have
 `has_initial_entries` flag equal to true.  For tables declared with
-the `entries` property, without `const` before `entries` see Section
-<<#sec-preinitialized-tables>>.
+the `entries` property, without `const` before `entries` see <<#sec-preinitialized-tables>>.
 
 The only write updates which are allowed for constant tables are `MODIFY`
 operations on direct resources, and the default action (assuming the default
@@ -3317,7 +3316,7 @@ in a normal table can.
 
 The contents of all table entries within the `entries` table
 properties in a P4 program can be written to a separate output file by
-the open source `p4c` compiler.  See Section <<#sec-entries-files>> for
+the open source `p4c` compiler.  See <<#sec-entries-files>> for
 details.
 
 [#sec-table-wildcard-reads]
@@ -3768,8 +3767,7 @@ An `ActionProfileGroup` entity update message has the following fields:
       `INVALID_ARGUMENT` if the client attempts to use it.
     ** `watch_port` is the controller-defined port that the member's
       liveness depends on. At runtime, the member must be excluded from
-      selection if the watch port is down.  See Section
-      <<#action-selector-constraints>> for notes on the behavior if all members in
+      selection if the watch port is down.  See <<#action-selector-constraints>> for notes on the behavior if all members in
       a group are excluded for this reason. If `watch_port` is empty, then the
       member is always included in the selection, regardless of the status of
       any port of the device.  The value must be empty or the SDN port of an
@@ -3880,7 +3878,7 @@ is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
 
 * `watch_port` is the controller-defined port that the action's liveness depends
   on. At runtime, the action must be excluded from selection if the watch port
-  is down. See Section <<#sec-action-profile-group-programming>> for more details
+  is down. See <<#sec-action-profile-group-programming>> for more details
   on the `watch_port` field, which also apply for one shot action selector
   programming.
 
@@ -4002,7 +4000,7 @@ message that it receives.
 ==== Constraints on action selector programming 
 
 The PSA specification states that the following features are *optional* in
-action selector implementations [@PSAActionSelector]:
+action selector implementations cite:[PSAActionSelector]:
 
 . Support for non-empty groups where in the same group, different members are
    bound to different actions.
@@ -4422,7 +4420,7 @@ As a result of the above P4Runtime programming, the target device will create
 four replicas of an ARP packet. These replicas will appear in the egress
 pipeline as independent packets with egress port set to PSA device port numbers
 corresponding to SDN port numbers 5, 12, 18 and 24. For more discussion on the
-translation between SDN ports and PSA device ports, refer to the xref:sec-translation-of-port-numbers[PSA Metadata Translation] section.Each
+translation between SDN ports and PSA device ports, refer to the xref:sec-translation-of-port-numbers[PSA Metadata Translation] section. Each
 replica can optionally have a list of backup replicas used as fallback ports
 for multicast, where the highest-preference starts with the primary replica
 followed by its backup replicas in order. When the highest-preferred port of a
@@ -4493,7 +4491,7 @@ must be set to 0, its default value.
 The PSA specification states that the valid *data plane* values for multicast
 group ids (`MulticastGroup_t`) range from 1 (0 is a special value that indicates
 no multicast replication is to be performed for a packet) to the maximum value
-supported by the target [@PSATranslation]. This means that, in the absence of
+supported by the target cite:[PSATranslation]. This means that, in the absence of
 translation, the client must set the `multicast_group_id` field to a value in
 this range when inserting a multicast group. However, because P4Runtime reserves
 0 as a special *wildcard* value which is used to read all the multicast groups
@@ -4958,7 +4956,7 @@ their own error codes in their chosen error-space. This specification document
 tries to cover all possible generic error cases and to provide the appropriate
 value for the canonical error code based on best practices cite:[gRPCStatusCodes].
 
-Figure ,,<<#fig-p4prg>>.. illustrates how these messages fit together.
+<<#fig-p4prg>>.. illustrates how these messages fit together.
 
 .P4Runtime Error Report Message Format.
 [#fig-p4prg]
@@ -5086,7 +5084,7 @@ message WriteRequest {
 The `device_id` uniquely identifies the target P4 device. The `role` and
 `election_id` define the client role and election-id as described in the
 xref:sec-client-arbitration-and-controller-replication[Primary-Backup Arbitration and Controller
-Replication]section. The server is expected to perform the following checks (in this order)
+Replication] section. The server is expected to perform the following checks (in this order)
 before processing the `updates` list:
 
 . If `device_id` does not match any of the devices known to the P4Runtime
@@ -5949,7 +5947,9 @@ burst of `PacketIn` messages.
 Note that client arbitration errors are never reported using the `StreamError`
 message. Invalid `MasterArbitrationUpdate` messages sent by the client cause the
 stream to be terminated and the appropriate error code to be returned to the
-client immediately. See section [#sec-arbitration-updates].
+client immediately. See section <<#sec-arbitration-updates>>.
+
+[#sec-stream-error-messages]
 ==== Examples of `StreamError` Messages
 
  * **Malformed packet-out metadata.** If the server receives a `PacketOut`
@@ -6041,7 +6041,7 @@ translated types which are not declared as part of the PSA architecture.
 [#fig-psa-metadata-translation]
 image::psa-metadata-translation.png[]
 
-Figure <<#fig-psa-metadata-translation>> illustrates a motivating example,
+<<#fig-psa-metadata-translation>> illustrates a motivating example,
 where a centralized controller is controlling two P4Runtime targets in a fabric.
 Switch 1 and Switch 2 use different PSA devices, each defining its own port type
 and number space. In this example, Switch 1 uses a device with 9-bit space for
@@ -6497,69 +6497,70 @@ No content changes; tag was incremented only.
 ==== Changes in v1.4.0
 
 * Actions
-* Fix invalid `action_profile_id` in the One Shot Action Selector Programming
-  example.
-  Specify that `max_group_size` must be less than or equal to `size` for
-    Action Selectors.
-  * Add a `selector_size_semantics` field to the `ActionProfile` message
-    in P4Info.
+  ** Fix invalid `action_profile_id` in the One Shot Action Selector Programming
+     example.
+     Specify that `max_group_size` must be less than or equal to `size` for
+     Action Selectors.
+  ** Add a `selector_size_semantics` field to the `ActionProfile` message
+     in P4Info.
 
 * Controller Sessions, Roles, Arbitration:
-  * Clarify controller session establishment, maintenance, role and arbitration
-  * Simplify specification for arbitration updates for which there is no change
+  ** Clarify controller session establishment, maintenance, role and arbitration
+  ** Simplify specification for arbitration updates for which there is no change
     to the controller's `election_id`; in particular, a "no-op" arbitration
     update from a primary controller (the controller already was, and remains,
     the primary controller) is essentially treated the same way as an
     arbitration update which leads to the election of a new primary controller.
-  * Add support for string role identifiers and deprecate integer role
+  ** Add support for string role identifiers and deprecate integer role
     identifiers.
-  * Add support for specifying a role in `ReadRequest` messages: if present,
+  ** Add support for specifying a role in `ReadRequest` messages: if present,
     only entities belonging to this specific role are returned.
-  * Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only
+  ** Clarify that the (`device_id`, `role`, `election_id`) 3-tuples are only
     unique for live controllers.
 
 * Generated code
-  * Enable C++ Arena Allocation cite:[ArenaAllocation] by default in
-    p4runtime.proto.
-  * Added Rust code generation
+  ** Enable C++ Arena Allocation cite:[ArenaAllocation] by default in
+     p4runtime.proto.
+  ** Added Rust code generation
 
 * Meters
-  * Add a `Type` field to the `MeterSpec` message allowing users to restrict
-    the type of meters that can be used for a table and a new `eburst` field to
-    the `MeterConfig` message for use with one of the new `MeterSpec` types.
-    See section on xref:sec-meter-directmeter[Meter & DirectMeter].
-  * Defined new meter annotations `@two_rate_three_color`,
+  ** Add a `Type` field to the `MeterSpec` message allowing users to restrict
+     the type of meters that can be used for a table and a new `eburst` field to
+     the `MeterConfig` message for use with one of the new `MeterSpec` types.
+     See section on xref:sec-meter-directmeter[Meter & DirectMeter].
+  ** Defined new meter annotations `@two_rate_three_color`,
     `@single_rate_two_color`, `@single_rate_three_color`
-  * Enable P4Runtime servers to provide per-color counter values when direct or
-    indirect meter entries are read.
+  ** Enable P4Runtime servers to provide per-color counter values when direct or
+     indirect meter entries are read.
 
 * Miscellaneous
-  * Add a `PlatformProperties` message specifying desired underlying platform
+  ** Add a `PlatformProperties` message specifying desired underlying platform
     properties to the `PkgInfo` message.
-  * Specify Read behavior in the absence of a P4Info
+  ** Specify Read behavior in the absence of a P4Info
     (`ForwardingPipelineConfig` not set yet).
-  * Clarify that for updates of type `INSERT`, error codes other than
+  ** Clarify that for updates of type `INSERT`, error codes other than
     `INVALID_ARGUMENT` can be returned when applicable.
-  * Clarified the meaning of set and unset scalar and message fields, see
-  section on xref:sec-default-valued-fields[default-valued fields].
-  * Described Dataplane Volatile Objects, see section on xref:sec-data-plane-volatile-objects[Dataplane Volatile Objects].
-  * Clarified use of bytestrings in messages, see section on xref:sec-bytestrings[Bytestrings].
+  ** Clarified the meaning of set and unset scalar and message fields, see
+     section on xref:sec-default-valued-fields[default-valued fields].
+  ** Described Dataplane Volatile Objects, see section on xref:sec-data-plane-volatile-objects[Dataplane Volatile Objects].
+  ** Clarified use of bytestrings in messages, see section on xref:sec-bytestrings[Bytestrings].
 
 * Replication
-  * Add a `metadata` field to the `MulticastGroupEntry` message.
-  * In message `Replica`, replaced primitive field `uint32 egress_port`
+  ** Add a `metadata` field to the `MulticastGroupEntry` message.
+  ** In message `Replica`, replaced primitive field `uint32 egress_port`
     in a compatible manner with new `oneof port_kind` containing preferred
     new field `bytes port`.
 
 * Tables
-  * Clarify that the limitation on supported types for `FieldMatch`, action
+  ** Clarify that the limitation on supported types for `FieldMatch`, action
     `Param`, and Packet IO metadata fields (no support for signed integers,
     with type `int<W>`) apply to all minor revisions of P4Runtime v1, not just
     to P4Runtime v1.0.
-  * Add `has_initial_entries` and `is_const` field fields to `Table` message to
+  ** Add `has_initial_entries` and `is_const` field fields to `Table` message to
     distinguish mutable and immutable initial table entries,
     see section on [Constant Tables](#sec-constant-tables).
-* ==== Changes in v1.3.0
+
+==== Changes in v1.3.0
 
 * Add IANA assigned TCP port, 9559, to P4Runtime server discussion.
 * Move "Security considerations" section to P4Runtime server discussion.
@@ -6617,7 +6618,7 @@ No content changes; tag was incremented only.
 
 === P4 Annotations
 
-Table <<#tab-p4-annotations>> lists P4~16~ annotations introduced primarily for
+<<#tab-p4-annotations>> lists P4~16~ annotations introduced primarily for
 the purpose of adding features for the P4Runtime API.
 
 .Example of statically-assigned P4Info object IDs
@@ -6625,19 +6626,19 @@ the purpose of adding features for the P4Runtime API.
 [#tab-p4-annotations]
 |===
 | Annotation                 | Description                           
-| `@brief`                   | See section <<#sec-annotating-p4-entities-with-documentation>> 
-| `@controller_header`       | See section <<#sec-controller-packet-meta>>
-| `@description`             | See section <<#sec-annotating-p4-entities-with-documentation>> 
-| `@id`                      | See section <<#sec-id-allocation>>
-| `@max_group_size`          | See sections <<#sec-p4info-action-profile>>, <<#sec-action-profile-group-programming>>
-| `@selector_size_semantics` | See section <<#sec-p4info-action-profile>> 
-| `@max_member_weight`       | See section <<#sec-p4info-action-profile>>
-| `@two_rate_three_color`    | See section <<#sec-meter-directmeter>>
-| `@single_rate_three_color` | See section <<#sec-meter-directmeter>>
-| `@single_rate_two_color`   | See section <<#sec-meter-directmeter>>
-| `@pkginfo`                 | See section <<#sec-annotating-p4-code-with-pkginfo>> 
-| `@platform_property`       | See section <<#sec-annotating-p4-code-with-pkginfo>> 
-| `@p4runtime_translation`   | See sections <<#sec-user-defined-types>>, <<#sec-translation-of-port-numbers>> 
+| `@brief`                   | See <<#sec-annotating-p4-entities-with-documentation>> 
+| `@controller_header`       | See <<#sec-controller-packet-meta>>
+| `@description`             | See <<#sec-annotating-p4-entities-with-documentation>> 
+| `@id`                      | See <<#sec-id-allocation>>
+| `@max_group_size`          | See <<#sec-p4info-action-profile>>, <<#sec-action-profile-group-programming>>
+| `@selector_size_semantics` | See <<#sec-p4info-action-profile>> 
+| `@max_member_weight`       | See <<#sec-p4info-action-profile>>
+| `@two_rate_three_color`    | See <<#sec-meter-directmeter>>
+| `@single_rate_three_color` | See <<#sec-meter-directmeter>>
+| `@single_rate_two_color`   | See <<#sec-meter-directmeter>>
+| `@pkginfo`                 | See <<#sec-annotating-p4-code-with-pkginfo>> 
+| `@platform_property`       | See <<#sec-annotating-p4-code-with-pkginfo>> 
+| `@p4runtime_translation`   | See <<#sec-user-defined-types>>, <<#sec-translation-of-port-numbers>> 
 |===
 
 [#sec-value-set-example]
@@ -6737,8 +6738,7 @@ servers.
 In gRPC, the status of a RPC request is sent as metadata, whose size is limited
 by the `grpc.max_metadata_size` gRPC channel argument.  By default, this limit
 is 8KB, which can be a problem for the `Write` P4Runtime RPC.  The `Write` RPC
-returns an individual error for every item in a batch (see Section
-<<#sec-write-rpc>>), which can quickly result in a status size over 8KB.  In that
+returns an individual error for every item in a batch (see <<#sec-write-rpc>>), which can quickly result in a status size over 8KB.  In that
 case, the gRPC server would not send the status, but instead send a
 `RESOURCE_EXHAUSTED` error, without any of the individual errors.
 
@@ -6839,7 +6839,7 @@ containing the data for one table entry.
 Note that if a P4Runtime client attempted to send a `WriteRequest` to
 a P4Runtime server with the contents of the entries file, the server
 must return an error for each entry that has `is_const` true, as
-described in Section <<#sec-table-entry>>.
+described in <<#sec-table-entry>>.
 
 [bibliography]
 == References
