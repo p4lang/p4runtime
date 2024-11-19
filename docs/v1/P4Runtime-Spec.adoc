@@ -799,7 +799,7 @@ These messages appear nested within many other messages.
 Good content within a documentation field is extremely helpful to P4Runtime
 application developers.
 
-[source,p4]
+[source,protobuf]
 ----
 message Documentation {
   // A brief description of something, e.g. one sentence
@@ -816,7 +816,7 @@ message Documentation {
 The preamble serves as the "descriptor" for each entity and contains the unique
 instance ID, name, alias, annotations and documentation.
 
-[source,p4]
+[source,protobuf]
 ----
 message Preamble {
   // ids share the same number-space; e.g. table ids cannot overlap with counter
@@ -866,7 +866,7 @@ The P4 compiler should not emit `annotation` messages in the P4Info for these
 specific cases; instead, it should generate the `Documentation` messages as
 described.
 The following example shows documentation annotations for a `table` entity:
-[source,p4]
+[source,protobuf]
 ----
 @brief("Match IPv4 addresses to next-hop MAC and port")
 @description("Match IPv4 addresses to next-hop MAC and port. \
@@ -893,7 +893,7 @@ Similarly, structured annotations are represented in `repeated StructuredAnnotat
 The `structured_annotations` contain parsed representations of the original annotation source. This parsing includes expression-evaluation, so the resulting P4Info may contain a simplified replica of the original structured annotations.
 
 The structured annotation messages are defined in p4types.proto.
-[source,p4]
+[source,protobuf]
 ----
 message KeyValuePair {
   string key = 1;
@@ -962,7 +962,7 @@ table t {
 
 The generated P4Info will contain the following.
 
-[source,p4]
+[source,protobuf]
 ----
 structured_annotations {
   name: "Empty"
@@ -1510,7 +1510,7 @@ The `ActionProfile` message includes the following fields:
   `sum_of_weights` for backwards compatibility in Action Selectors. In Action
   Profiles, this value must be unset.
 
-=== `Counter` & `DirectCounter`
+==== `Counter` & `DirectCounter`
 
 `Counter` and `DirectCounter` messages are used to specify all possible
 instances of Counter and Direct Counter PSA externs respectively. Both externs
@@ -1550,7 +1550,7 @@ field, which indicates whether the index has a xref:sec-user-defined-types[user-
 type]. This is useful for xref:sec-psa-metadata-translation[translation].The underlying built-in type must be a fixed-width unsigned bitstring (`bit<W>`).
 
 [#sec-meter-directmeter]
-=== `Meter` & `DirectMeter`
+==== `Meter` & `DirectMeter`
 
 `Meter` and `DirectMeter` messages are used to specify all possible instances of
 Meter and Direct Meter PSA externs. Both externs provide mechanism to keep data
@@ -1616,7 +1616,7 @@ field, which indicates whether the index has a xref:sec-user-defined-types[user-
 type]. This is useful for xref:sec-psa-metadata-translation[translation]. The underlying built-in type must be a fixed-width unsigned bitstring (`bit<W>`).
 
 [#sec-controller-packet-meta]
-=== `ControllerPacketMetadata` 
+==== `ControllerPacketMetadata` 
 
 `ControllerPacketMetadata` messages are used to describe any metadata associated
 with controller packet-in and packet-out. A packet-in is defined as a data plane
@@ -1730,7 +1730,7 @@ encapsulate controller packets. However, in this case the client will be
 responsible for extracting the metadata from the serialized header in packet-in
 messages and for serializing the metadata when generating packet-out messages.
 
-=== `ValueSet`
+==== `ValueSet`
 
 `ValueSet` messages are used to specify all possible P4 Parser Value
 Sets. Parser Value Sets can be used by the control plane to specify runtime
@@ -1866,7 +1866,7 @@ resolves to a `bit<W>`. For each `MatchField` that corresponds to a user-defined
 type, the `type_name` field must be set to the appropriate value (i.e. the name
 of the type).
 
-=== `Register`
+==== `Register`
 
 `Register` messages are used to specify all possible instances of Register PSA
 externs.
@@ -1891,7 +1891,7 @@ The `Register` message defines the following fields:
   xref:sec-psa-metadata-translation[translation]. The underlying built-in type
   must be a fixed-width unsigned bitstring (`bit<W>`).
 
-=== `Digest`
+==== `Digest`
 
 `Digest` messages are used to specify all possible instances of Packet Digest
 PSA externs.
@@ -1914,7 +1914,7 @@ The `Digest` message defines the following fields:
   notification using a `P4DataTypeSpec` message (see section on xref:sec-representation-of-arbitrary-p4-types[Representation of Arbitrary P4 Types]).
 
 [#sec-p4info-extern]
-=== `Extern` 
+==== `Extern` 
 
 `Extern` messages are used to specify all extern instances across all extern
 types for a non-PSA architecture. This is useful when extending P4Runtime to
@@ -1947,7 +1947,7 @@ the following fields:
 If the P4 program does not include any instance of a given extern type, the
 `Extern` message instance for that type should be omitted from the P4Info.
 
-== Support for Arbitrary P4 Types with P4TypeInfo
+=== Support for Arbitrary P4 Types with P4TypeInfo
 
 See section on xref:sec-representation-of-arbitrary-p4-types[Representation of Arbitrary P4
 Types].
@@ -1998,7 +1998,7 @@ message to clearly identify cases where a cookie is not present.
 There is a subtle distinction between the treatment of default-valued scalar
 fields vs default-valued message fields in P4Runtime.
 
-=== Set / Unset Scalar Fields
+==== Set / Unset Scalar Fields
 
 In Protobuf version 3 (*proto3*), the default value of scalar fields is `0` for
 numeric types such as `int32`, and the empty string `""` for string types
@@ -2015,7 +2015,7 @@ In contrast to scalar fields, note that for message fields, we often do make
 a distinction between an unset message field vs a message field set to its
 default value, see the next section.
 
-=== Set / Unset Message Fields
+==== Set / Unset Message Fields
 
 In Protobuf version 3 (*proto3*), the default value for a message field is
 "unset" cite:[ProtoDefaults]. An application, such as the P4Runtime client or
@@ -2095,7 +2095,7 @@ counter_id: <id>
       message.
 
 [#sec-read-write-symmetry]
-== Read-Write Symmetry 
+=== Read-Write Symmetry 
 
 The reads and writes a client issues towards a server should be symmetrical and
 unambiguous. More specifically, if a client writes a P4 entity and then reads it
@@ -2135,7 +2135,7 @@ that different orderings of the same elements are considered equal. This method
 of comparing Protobuf messages may come at a cost in performance.
 
 [#sec-data-plane-volatile-objects]
-=== Data plane volatile objects 
+==== Data plane volatile objects 
 
 An exception to read-write symmetry are objects whose contents or
 fields can change by the action of the data plane alone, even if no
@@ -2244,7 +2244,7 @@ Not data plane volatile in any architectures defined by P4.org
 specifications.
 
 [#sec-bytestrings]
-== Bytestrings 
+=== Bytestrings 
 
 P4Runtime integer values may be too large to fit in Protobuf primitive data
 types (32-bit and 64-bit words). The P4 language does not put any limit on the
@@ -2288,17 +2288,16 @@ may not be of type `int<W>`. The rules for encoding signed values thus only
 apply to messages of type `P4Data` (see <<#sec-p4data-in-p4runtime-proto>>).
 
 For a value of type `bit<W>`, the fewest number of bits required to represent
-the integer value $V > 0$ is the smallest integer $A$ such that $V \leq 2^A -
-1$.
+the integer value latexmath:[$V > 0$] is the smallest integer latexmath:[$A$] such that latexmath:[$V \leq 2^A - 1$].
 
 For a value of type `int<W>`, the fewest number of bits required to represent
-the integer value $V \neq 0$ in 2's complement form is the smallest integer $A$
-such that $-2^{A-1} \leq V \leq 2^{A-1} - 1$.
+the integer value latexmath:[$V \neq 0$]in 2's complement form is the smallest integer latexmath:[$A$]
+such that latexmath:[$-2^{A-1} \leq V \leq 2^{A-1} - 1$].
 
-As a special case, define that the value $V=0$ requires at least $A=1$ bit to
+As a special case, define that the value latexmath:[$V=0$] requires at least latexmath:[$A=1$] bit to
 represent, regardless of whether it is signed or unsigned.
 
-The shortest possible binary string for an integer $V$ that needs $A$ bits to
+The shortest possible binary string for an integer latexmath:[$V$] that needs latexmath:[$A$] bits to
 represent it is computed as:
 [source,c++]
 ----
@@ -2414,9 +2413,9 @@ the binary string is less than the maximum length specified in the P4 program,
 and return an `OUT_OF_RANGE` error code otherwise.
 
 [#sec-representation-of-arbitrary-p4-types]
-== Representation of Arbitrary P4 Types 
+=== Representation of Arbitrary P4 Types 
 
-=== Problem Statement
+==== Problem Statement
 
 The P4~16~ language includes more complex types than just binary strings
 cite:[P4ComplexTypes]. Most of these complex data types can be exposed to the
@@ -2479,7 +2478,7 @@ in addition to the binary contents of this header. Rather than coming-up with a
 serialization format from scratch, we decided to use a Protobuf representation
 for all P4~16~ types.
 
-=== P4 Type Specifications in p4info.proto
+==== P4 Type Specifications in p4info.proto
 
 In order for the P4Runtime client to generate correctly-formatted messages and
 for the P4Runtime service implementation to validate them, P4Info needs to
@@ -2528,7 +2527,7 @@ P4~16~ declaration. The same goes for the order of members of an `enum`
 (serializable or not) or members of `error`.
 
 [#sec-p4data-in-p4runtime-proto]
-=== `P4Data` in p4runtime.proto 
+==== `P4Data` in p4runtime.proto 
 
 P4Runtime uses the `P4Data` message to represent values of arbitrary types. The
 P4Runtime client must generate correct `P4Data` messages based on the type
@@ -2561,7 +2560,7 @@ guaranteeing read-write symmetry --- by introducing the following requirements:
    included in the P4Info, in the corresponding `P4HeaderStackTypeSpec` or
    `P4HeaderUnionStackTypeSpec` message.
 
-=== Example
+==== Example
 
 Let's look at the Register example again:
 
@@ -2661,7 +2660,7 @@ update {
 }
 ----
 
-=== `enum`, serializable `enum` and `error`
+==== `enum`, serializable `enum` and `error`
 
 P4~16~ supports 2 different classes of enumeration types: without underlying
 type (safe enum) and with underlying type (serializable enum or "unsafe" enum)
@@ -2683,7 +2682,7 @@ it easier for the server to respect the xref:sec-read-write-symmetry[read-write
 symmetry] principle.
 
 [#sec-user-defined-types]
-=== User-defined types 
+==== User-defined types 
 
 P4~16~ enables programmers to introduce new types cite:[P4NewTypes]. While similar
 to `typedef`, this mechanism introduces in fact a new type, which is not a
@@ -2803,7 +2802,7 @@ configuration file passed on the command-line when invoking the compiler). This
 mechanism should take precedence over `@p4runtime_translation` to enable users
 to overwrite annotations included as part of the P4 architecture definition.
 
-=== Trade-off for v1.x Releases
+==== Trade-off for v1.x Releases
 
 For the v1.x release ofs P4Runtime, it was decided not to replace occurrences of
 `bytes` with `P4Data` in the `p4.v1.FieldMatch` message, which is used to
@@ -2989,7 +2988,7 @@ The `is_const` field must be `false` in any `INSERT`, `MODIFY`, or
 must reject the operation and return an `INVALID_ARGUMENT` error.
 
 [#sec-match-format]
-=== Match Format 
+==== Match Format 
 
 The bytes fields in the `FieldMatch` message follow the format described in
 xref:sec-bytestrings[Bytestrings].
@@ -3140,7 +3139,7 @@ assert(low != min_field_value || high != max_field_value)
 assert(BytestringValid(match.optional().value()))
 ----
 
-=== Action Specification
+==== Action Specification
 
 The `TableEntry` `action` field must be set for every `INSERT` update but may be
 left unset for `MODIFY` updates, in which case the action specification for the
@@ -3193,7 +3192,7 @@ has not been inserted in the corresponding action profile instance yet, the
 P4Runtime server must return a `NOT_FOUND` error code.
 
 [#sec-default-entry]
-=== Default Entry 
+==== Default Entry 
 
 According to the P4 specification, the default entry for a table is always set.
 It can be set at compile-time by the P4 programmer --- or defaults to `NoAction`
@@ -3225,7 +3224,7 @@ indirect tables --- tables with an ActionProfile or ActionSelector
 hope that it would simplify the implementation of the P4Runtime service.
 
 [#sec-constant-tables]
-=== Constant Tables 
+==== Constant Tables 
 
 Constant tables are defined as tables whose match entries are
 immutable. They are identified by the table property `const entries`
@@ -3263,7 +3262,7 @@ explicitly specifying priorities for entries in constant tables, but
 `p4c` does not yet support this.
 
 [#sec-preinitialized-tables]
-=== Preinitialized tables 
+==== Preinitialized tables 
 
 Preinitialized tables are those defined with an `entries` table
 property in the P4~16~ source code, with no `const` qualifier before
@@ -3320,7 +3319,7 @@ the open source `p4c` compiler.  See <<#sec-entries-files>> for
 details.
 
 [#sec-table-wildcard-reads]
-=== Wildcard Reads 
+==== Wildcard Reads 
 
 When performing a `ReadRequest`, the P4Runtime client can select all entries
 from one or all tables on the target and use several of the `TableEntry` fields
@@ -3466,7 +3465,7 @@ single entry (the "don't care" entry) as long as the `priority` field is set to
 the correct value.
 
 [#sec-direct-resources]
-=== Direct Resources 
+==== Direct Resources 
 
 In addition to the `DirectCounterEntry` and `DirectMeterEntry` entities,
 P4Runtime support reading and writing direct resources as part of the
@@ -3569,7 +3568,7 @@ meter configuration, it needs to be provided again in the `TableEntry` message
 (i.e. the `meter_config` field must be set to match the existing configuration).
 
 [#sec-idle-timeout]
-=== Idle-timeout 
+==== Idle-timeout 
 
 P4Runtime supports idle timeout for table entries. When adding a table entry,
 the client can specify a Time-To-Live (TTL) value. If at any time during its
@@ -3622,7 +3621,7 @@ For more information about idle timeout, in particular regarding
 `IdleTimeoutNotification`, please refer to the xref:sec-table-idle-timeout-notification[Table idle timeout notifications] section.
 
 [#sec-action-profile-member-and-group]
-== `ActionProfileMember` & `ActionProfileGroup` 
+=== `ActionProfileMember` & `ActionProfileGroup` 
 
 P4Runtime defines an API for programming a PSA ActionProfile extern using
 `ActionProfileMember` messages. A PSA ActionSelector extern can be programmed
@@ -3678,7 +3677,7 @@ The obtained member id is used to look up the member table in the selector and
 obtain the action specification, which is then used to modify the packet or its
 metadata.
 
-=== Action Profile Member Programming
+==== Action Profile Member Programming
 
 Action profile members are entries in the ActionProfile or ActionSelector and
 are referenced by a `uint32` identifier that is bound to an action
@@ -3732,7 +3731,7 @@ an existing ActionProfile or ActionSelector object, and a `member_id` equal to
 0, will read all members of that specified object.
 
 [#sec-action-profile-group-programming]
-=== Action Profile Group Programming 
+==== Action Profile Group Programming 
 
 Action profile groups are entries in an ActionSelector and are referenced by a
 `uint32` identifier that is bound to a set of action profile members already
@@ -4919,7 +4918,7 @@ section on xref:sec-extending-p4runtime[Extending P4Runtime for non-PSA
 Architectures] for more information.
 
 [#sec-error-reporting-messages]
-=== Error Reporting Messages 
+== Error Reporting Messages 
 
 P4Runtime is based on gRPC and all RPCs return a status to indicate success or
 failure. gRPC supports multiple language bindings; we use C++ binding below to
@@ -4975,7 +4974,7 @@ error-reporting mechanism is orthogonal to the one described in this section,
 which applies to unary RPCs. See the section on xref:sec-stream-error-reporting[Stream Error
 Reporting] for more information.
 
-=== Atomicity of Individual `Write` and `Read` Operations
+== Atomicity of Individual `Write` and `Read` Operations
 
 Each individual entity in a batch is guaranteed to be read or written atomically
 relative to packet forwarding. For example, for every table data plane `apply`
@@ -5060,7 +5059,7 @@ P4Runtime implementation for a P4-programmable target, we expect the P4 compiler
 to reject the program.
 
 [#sec-write-rpc]
-=== `Write` RPC 
+== `Write` RPC 
 
 The `Write` RPC updates one or more P4 entities on the target. The request is
 defined as follows:
@@ -5118,7 +5117,7 @@ This is modeled as performing an update operation on the given entity against
 its entity container. The entity container is either a *logical* table (e.g.
 `CounterEntry`) or an actual table (e.g. `TableEntry`) in the P4 data
 plane. Each entity in the container is uniquely identified by its *key*. Please
-refer to the [P4 Entity Messages](#sec-p4-entity-msgs) section for details on
+refer to the xref:sec-p4-entity-msgs[P4 Entity Messages] section for details on
 what parts of the entity specification make up the *key* for each P4 entity.
 
 An update can be one of the following types:
@@ -5155,20 +5154,20 @@ entity or table (in the case of `TableEntry` entities).
 
 The P4Runtime server may choose to reorder updates in a batch when processing
 them, and/or process updates in parallel.  Updates across multiple concurrent
-`WriteRequest`s can also be processed interleaved and/or in parallel.
+``WriteRequest``s can also be processed interleaved and/or in parallel.
 However, **the processing of requests must be strictly serializable**.  That
-is, given a history $S$ of `WriteRequest`s including the responses to those
-requests, there must exist an order $L$ for all updates in $S$, such that:
+is, given a history latexmath:[$S$] of ``WriteRequest``s including the responses to those
+requests, there must exist an order latexmath:[$L$] for all updates in latexmath:[$S$], such that:
 
 . All updates from the same write request must appear as a contiguous
-   subsequence in $L$, but the order within that subsequence can be arbitrary.
-. For two updates $u_1$ and $u_2$, if the write request containing $u_1$
-   completed before the write request of $u_2$ was sent, then $u_1$ must appear
-   before $u_2$ in $L$.
-. Executing all updates in $L$ sequentially must yield the same response for
-   every update as in $S$.
-. The observable state of the switch after $S$ (e.g., through the `Read` RPC)
-   is identical to the one obtained by sequentially executing $L$.
+   subsequence in latexmath:[$L$], but the order within that subsequence can be arbitrary.
+. For two updates latexmath:[$u_1$] and latexmath:[$u_2$], if the write request containing latexmath:[$u_1$]
+   completed before the write request of latexmath:[$u_2$] was sent, then latexmath:[$u_1$] must appear
+   before latexmath:[$u_2$] in latexmath:[$L$].
+. Executing all updates in latexmath:[$L$] sequentially must yield the same response for
+   every update as in latexmath:[$S$].
+. The observable state of the switch after latexmath:[$S$] (e.g., through the `Read` RPC)
+   is identical to the one obtained by sequentially executing latexmath:[$L$].
 
 The `Write` RPC demarcates the batch boundary, and can be used to ensure
 ordering between dependent updates. When the `Write` RPC returns, it is required
@@ -5248,7 +5247,7 @@ decide to use `DATAPLANE_ATOMIC` at one time and default behavior
 
 === Error Reporting
 
-Please see section [Error Reporting Messages](#sec-error-reporting-messages) for
+Please see section xref:sec-error-reporting-messages[Error Reporting Messages] for
 information on error reporting messages and guidelines. P4Runtime server will
 populate `grpc::Status` as follows:
 
@@ -5300,7 +5299,7 @@ binary_error_details {
 }
 ----
 
-=== `Read` RPC
+== `Read` RPC
 
 The `Read` RPC retrieves one or more P4 entities from the P4Runtime server. The
 request is defined as:
@@ -5457,7 +5456,7 @@ multi-reader lock (also known as multiple-readers/single-writer lock).
 Conversely (e.g. in a single-threaded architecture), it may choose to serialize
 `Read` RPC processing.
 
-==== Parallelism of Read and Write Requests
+=== Parallelism of Read and Write Requests
 
 A P4Runtime server may be implemented to serve at most one
 `ReadRequest` or `WriteRequest` message at a time, sequentially.  It
@@ -5502,7 +5501,7 @@ parallel.  It is not required that a P4Runtime server do this, and may
 be difficult to implement correctly.
 
 
-=== `SetForwardingPipelineConfig` RPC
+== `SetForwardingPipelineConfig` RPC
 
 A P4Runtime client may configure the P4Runtime target with a new P4 pipeline by
 invoking the `SetForwardingPipelineConfig RPC`. The request is defined as:
@@ -5583,7 +5582,7 @@ config is part of the device's software image, or is supplied using a
 different mechanism). In such cases, the RPC should return an
 `UNIMPLEMENTED` error.
 
-=== `GetForwardingPipelineConfig` RPC
+== `GetForwardingPipelineConfig` RPC
 
 The forwarding-pipeline configuration of the target can be retrieved by invoking
 the `GetForwardingPipelineConfig RPC`. The request is defined as:
@@ -5651,10 +5650,10 @@ If a P4Runtime server supports both `SetForwardingPipelineConfig` as well as
 returning the `p4_device_config`, there should be read-write symmetry between
 `SetForwardingPipelineConfig` and `GetForwardingPipelineConfig` RPCs.
 
-=== P4Runtime Stream Messages
+== P4Runtime Stream Messages
 
 [#sec-packet-i_o]
-==== Packet I/O 
+=== Packet I/O 
 
 P4Runtime supports controller packet-in and packet-out by means of `PacketIn`
 and `PacketOut` stream messages, respectively.
@@ -5726,7 +5725,7 @@ message PacketMetadata {
   the section on [Stream Error Reporting](#sec-stream-error-reporting) for more
   information on `error`.
 
-==== Client Arbitration Update
+=== Client Arbitration Update
 
 P4Runtime's client arbitration mechanism ensures that only the current primary
 can modify state on the switch, and that the `election_id` is monotonically
@@ -5796,7 +5795,7 @@ it populates the `MasterArbitrationUpdate` message using the `device_id`,
 also populates the `status` field in the `MasterArbitrationUpdate` according to
 the rules in an xref:sec-arbitration-updates[earlier section].
 
-===== Unset Election ID
+==== Unset Election ID
 
 The sender need not specify an `election_id`. If the `election_id` is
 unset, the sender's `election_id` is considered lower than any
@@ -5813,12 +5812,12 @@ is different from an unset `election_id`, see
 xref:sec-default-valued-fields[the section on default-valued fields].
 
 
-==== Digest Messages
+=== Digest Messages
 
 See the [DigestEntry](#sec-digestentry) section.
 
 [#sec-table-idle-timeout-notification]
-==== Table Idle Timeout Notification 
+=== Table Idle Timeout Notification 
 
 When a table supports idle timeout (as per the P4Info message), the primary
 client can specify a TTL value for each entry in the table (see
@@ -5889,7 +5888,7 @@ while (true) {
 }
 ----
 
-==== Architecture-Specific Notifications
+=== Architecture-Specific Notifications
 
 P4Runtime supports streaming arbitrary Protobuf messages between the server and
 the client on `StreamChannel`, by including an `Any` Protobuf field cite:[ProtoAny]
@@ -5899,7 +5898,7 @@ streaming of data from the server to the client, much like the xref:sec-digesten
 extern]. See section on xref:sec-extending-p4runtime[Extending P4Runtime for non-PSA Architectures]for more information.
 
 [#sec-stream-error-reporting]
-==== Stream Error Reporting 
+=== Stream Error Reporting 
 
 The P4Runtime server can asynchronously report errors which occur when
 processing `StreamMessageRequest` messages, using the `error` message field (of
@@ -5995,7 +5994,7 @@ error {
 }
 ----
 
-=== `Capabilities` RPC
+== `Capabilities` RPC
 
 The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
 discover the capabilities of the P4Runtime server implementation. At the moment,
@@ -6020,10 +6019,10 @@ not implement this RPC (i.e. an `UNIMPLEMENTED` error is returned by the
 P4Runtime service) implements an older version of the P4Runtime specification
 (1.0 or a pre-release version of 1.0).
 
-=== Portability Considerations
+== Portability Considerations
 
 [#sec-psa-metadata-translation]
-==== PSA Metadata Translation 
+=== PSA Metadata Translation 
 
 The *Portable Switch Architecture* (PSA) defines standard metadata, whose
 data plane types are different on different PSA targets. In order to enable
@@ -6113,7 +6112,7 @@ perform the translation.
 The sub-sections below detail the translation mechanics for different usage of
 PSA port types in P4 programs.
 
-===== Translation of Packet-IO Header Fields
+==== Translation of Packet-IO Header Fields
 
 Port type fields can be part of header types. For example, ports may be part of
 Packet IO headers, as in the following example:.
@@ -6155,7 +6154,7 @@ config. The server will then insert the translated controller-specific value in
 the packet-in metadata fields before sending the packet over the stream channel
 to the controller.
 
-===== Translation of Match Fields
+==== Translation of Match Fields
 
 Port type entities, particularly ingress and egress port standard metadata, may
 be used as match fields in a P4 table's match key as shown in the example below:
@@ -6191,7 +6190,7 @@ require that for these match kinds the port match be either *de facto* "exact"
 (0xffffffff mask for `TERNARY`, prefix-length of 32 for `LPM`, or same low and
 high bounds for `RANGE`) or "don't care".
 
-===== Translation of Action Parameters
+==== Translation of Action Parameters
 
 `PortId_t` type parameters can be part of a P4 action definition as shown in the
 example below:
@@ -6220,7 +6219,7 @@ translation is required for this parameter. The P4Runtime server will use the
 switch configuration to translate action parameter values between the controller
 and the target device.
 
-===== Port Translation for PSA Extern APIs
+==== Port Translation for PSA Extern APIs
 
 The P4Runtime API for action selectors supports specifying a watch field per
 member in an action profile group that is programmed in a selector. This field
@@ -6240,7 +6239,7 @@ representation of the port(s). The P4Runtime server will translate these SDN
 ports to device-specific port numbers for multicasting and cloning in the data
 plane.
 
-===== Using Port as an Index to a Register, Indirect Counter or Indirect Meter
+==== Using Port as an Index to a Register, Indirect Counter or Indirect Meter
 
 P4Runtime supports using a translated value (`PortId_t` or any other translated
 type for which the underlying built-in type is `bit<W>`) as an index to a
@@ -6281,7 +6280,7 @@ using SDN port numbers as indices, and not device-specific port numbers. The
 server that translation is required.
 
 [#sec-p4runtime-versioning]
-=== P4Runtime Versioning 
+== P4Runtime Versioning 
 
 P4Runtime follows the Google guidelines for versioning cloud APIs
 cite:[APIVersioning]. We use a `MAJOR.MINOR.PATCH` style version number scheme and
@@ -6321,7 +6320,7 @@ P4Runtime Github repository cite:[P4RuntimeRepo] and the version label follows
 semantic versioning rules cite:[SemVer].
 
 [#sec-extending-p4runtime]
-=== Extending P4Runtime for non-PSA Architectures 
+== Extending P4Runtime for non-PSA Architectures 
 
 P4Runtime includes native support for PSA programs and in particular support for
 runtime control of PSA extern instances. While the definition of Protobuf
@@ -6344,7 +6343,7 @@ as the major version number for the P4Runtime version they "extend".
 For the remainder of this section, we will refer to these two files as
 *p4info-ext* and *p4runtime-ext* respectively.
 
-==== Extending P4Runtime for Architecture-Specific Externs
+=== Extending P4Runtime for Architecture-Specific Externs
 
 Each P4 architecture can define its own set of extern types. Controlling them at
 runtime requires defining new Protobuf messages in both *p4info-ext* and
@@ -6361,7 +6360,7 @@ extern MyNewPacketCounter<T> {
 }
 ----
 
-===== Extending the P4Info message
+==== Extending the P4Info message
 
 * Id prefixes `0x81` through `0xfe` are reserved for architecture-specific
   externs. It is recommended that *p4info-ext* include a `P4Ids` message based
@@ -6394,7 +6393,7 @@ message MyNewPacketCounter {
 }
 ----
 
-===== Extending the P4Runtime Service
+==== Extending the P4Runtime Service
 
 Just like *p4info-ext*, *p4runtime-ext* should include a Protobuf message
 definition for every extern type that can be controlled at runtime. This message
@@ -6423,9 +6422,9 @@ should define the appropriate Protobuf messages for this bidirectional streaming
 in *p4runtime-ext* and embed instances of these messages in
 `p4.v1.StreamMessageRequest` and `p4.v1.StreamMessageResponse` as appropriate.
 
-==== Architecture-Specific Table Extensions
+=== Architecture-Specific Table Extensions
 
-===== New Match Types
+==== New Match Types
 
 An architecture may introduce new table match types cite:[P4MatchTypes]. P4Runtime
 accounts for this by providing the following hooks:
@@ -6444,7 +6443,7 @@ accounts for this by providing the following hooks:
   `other` field, which can then be decoded by the P4Runtime server using the
   match type name included in P4Info.
 
-===== New Table Properties
+==== New Table Properties
 
 An architecture may introduce additional table properties
 cite:[P4TableProperties]. In some instances, it can be desirable to include the
@@ -6454,7 +6453,7 @@ field cite:[ProtoAny]. At the moment, there is not any mechanism to extend the
 `p4.v1.TableEntry` message based on the value of architecture-specific table
 properties, but we may include on in future versions of the API.
 
-=== Known Limitations of Current P4Runtime Version
+== Known Limitations of Current P4Runtime Version
 
 * `FieldMatch`, action `Param`, and controller packet metadata fields only
   support unsigned bitstrings, i.e. values of one of the following types (not
@@ -6802,15 +6801,16 @@ entries declared via the `entries` table property within the program.
 
 An example P4~16~ program that can be used to demonstrate this
 capability is `table-entries-ternary-bmv2.p4` cite:[p4cTestProgramForConstEntries]:
-
-    git clone https://github.com/p4lang/p4c
-    cd p4c/testdata/p4_16_samples
-    mkdir tmp
-    p4test --arch v1model \
-        --p4runtime-files tmp/p4info.txt \
-        --p4runtime-entries-files tmp/entries.txt \
-        table-entries-ternary-bmv2.p4
-
+[source, bash]
+----
+git clone https://github.com/p4lang/p4c
+cd p4c/testdata/p4_16_samples
+mkdir tmp
+p4test --arch v1model \
+    --p4runtime-files tmp/p4info.txt \
+    --p4runtime-entries-files tmp/entries.txt \
+    table-entries-ternary-bmv2.p4
+----
 You can replace the `.txt` suffix of the file name `tmp/entries.txt`
 in the example command above with `.json` or `.bin`.  The `.bin`
 format is a binary P4Runtime API protobuf message format.  The `.txt`
