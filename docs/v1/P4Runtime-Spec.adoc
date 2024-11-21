@@ -256,7 +256,7 @@ metadata. Furthermore, the controller can query the target for the
 
 .P4Runtime Reference Architecture.
 [#fig-reference-architecture]
-image::reference-architecture.png[]
+image::reference-architecture.png[width=400,align="center"]
 
 
 === P4Runtime Service Implementation
@@ -419,7 +419,7 @@ an IPC.
 
 .Use-Case: Single Embedded Controller
 [#fig-single-embedded-controller]
-image::single-embedded-controller.png[]
+image::single-embedded-controller.png[width=400,align="center"]
 
 
 === Single Remote Controller
@@ -431,7 +431,7 @@ practical to have a hybrid use-case as described in subsequent sections.
 
 .Use-Case: Single Remote Controller
 [#fig-single-remote-controller]
-image::single-embedded-controller.png[]
+image::single-embedded-controller.png[width=400,align="center"]
 
 
 === Embedded + Single Remote Controller
@@ -449,7 +449,7 @@ controller might manage the contents of routing tables.
 
 .Use-Case: Embedded Plus Single Remote Controller
 [#fig-embedded-plus-single-remote-controller]
-image::embedded-plus-single-remote-controller.png[]
+image::embedded-plus-single-remote-controller.png[width=400,align="center"]
 
 === Embedded + Two Remote Controllers
 
@@ -461,7 +461,7 @@ entities, perhaps statistics tables. Role-based access divides the ownership.
 
 .Use-Case: Embedded Plus Two Remote Controllers
 [#fig-embedded-plus-two-remote-controllers]
-image::embedded-plus-two-remote-controllers.png[]
+image::embedded-plus-two-remote-controllers.png[width=400,align="center"]
 
 === Embedded Controller + Two High-Availability Remote Controllers
 
@@ -475,7 +475,7 @@ role-based client arbitration scheme supports it.
 
 .Use-Case: Embedded Plus Two Remote High-Availability Controllers
 [#fig-embedded-plus-two-remote-ha-controllers]
-image::embedded-plus-two-remote-controllers.png[]
+image::embedded-plus-two-remote-controllers.png[width=400,align="center"]
 
 [#sec-client-arbitration-and-controller-replication]
 == Client Arbitration and Controller Replication
@@ -514,8 +514,7 @@ follows:
   client that has the highest `election_id` that the device has ever received
   for the same (`device_id`, `role`) values.  A connection between a controller
   instance and a device id --- which involves a persistent `StreamChannel` ---
-  can be referred to as a P4Runtime client.
-  
+  can be referred to as a P4Runtime client. + 
   Note that the P4Runtime server does not assign a `role` or `election_id` to
   any controller. It is up to an arbitration mechanism outside of the server to
   decide on the controller roles, and the `election_id` values used for each
@@ -546,8 +545,8 @@ follows:
       packet-in and packet-out messages. Note that unless specified otherwise by
       the role definitions, only the primary controller can participate in
       packet I/O. This feature is explained in more details in the xref:sec-packet-i_o[Packet I/O] section.
-
-  Note that a controller session is only required if the controller wants to do
+    +
+    Note that a controller session is only required if the controller wants to do
   Packet I/O, or modify the forwarding state.
 
 * Note that the stream is opened per device. In case a switching platform has
@@ -867,7 +866,7 @@ The P4 compiler should not emit `annotation` messages in the P4Info for these
 specific cases; instead, it should generate the `Documentation` messages as
 described.
 The following example shows documentation annotations for a `table` entity:
-[source,protobuf]
+[source,p4]
 ----
 @brief("Match IPv4 addresses to next-hop MAC and port")
 @description("Match IPv4 addresses to next-hop MAC and port. \
@@ -1020,7 +1019,7 @@ table t {
 
 The generated P4Info will contain:
 
-[source,p4]
+[source,protobuf]
 ----
 structured_annotations {
   name: "MixedKV"
@@ -1052,7 +1051,7 @@ structured_annotations {
 A source location describes a location within a *.p4*-source file. The
 `SourceLocation` message is defined in p4types.proto as follows:
 
-[source,p4]
+[source,protobuf]
 ----
 // Location of code relative to a given source file.
 message SourceLocation {
@@ -1094,7 +1093,7 @@ library. Although all fields are technically "optional," every implementation
 should include as a minimum the name, version, doc and arch fields. The other
 fields are recommended to be included.
 
-[source,p4]
+[source,protobuf]
 ----
 // Can be used to manage multiple P4 packages.
 message PkgInfo {
@@ -1126,7 +1125,7 @@ message PkgInfo {
 }
 ----
 where the `PlatformProperties` message looks as follows:
-[source,p4]
+[source,protobuf]
 ----
 // Used to describe the required properties of the underlying platform.
 message PlatformProperties {
@@ -1502,14 +1501,13 @@ The `ActionProfile` message includes the following fields:
       allowed for weight.
 
 
-  PSA programs can use the `@selector_size_semantics` annotation with one of
-  `sum_of_weights` or `sum_of_members` to specify this value for Action
-  Selectors. In the `sum_of_members` case, the `@max_member_weight` annotation
-  can be used to specify `max_member_weight`. Unless otherwise specified, the
-  value of `selector_size_semantics` should default to `sum_of_weights`.
-  However, an unset `selector_size_semantics` should also be treated as
-  `sum_of_weights` for backwards compatibility in Action Selectors. In Action
-  Profiles, this value must be unset.
+PSA programs can use the `@selector_size_semantics` annotation with one of
+`sum_of_weights` or `sum_of_members` to specify this value for Action Selectors. In the `sum_of_members` case, the `@max_member_weight` annotation
+can be used to specify `max_member_weight`. Unless otherwise specified, the
+value of `selector_size_semantics` should default to `sum_of_weights`.
+However, an unset `selector_size_semantics` should also be treated as
+`sum_of_weights` for backwards compatibility in Action Selectors. In Action
+Profiles, this value must be unset.
 
 ==== `Counter` & `DirectCounter`
 
@@ -1579,8 +1577,9 @@ Both `Meter` and `DirectMeter` messages share the following fields:
     ** `BYTES`, which signifies that this meter can be configured with rates
       expressed in bytes/second.
     ** `PACKETS`, for rates expressed in packets/second.
-
-  The meter type can be any of the `MeterSpec.Type` enum values:
+    +
+    The meter type can be any of the `MeterSpec.Type` enum values:
+    +
     * `TWO_RATE_THREE_COLOR`: This is the *Two Rate Three Color Marker* (trTCM)
       defined in RFC 2698 cite:[RFC2698]. This is the standard P4Runtime meter type
       and allows meters to use two rates to split packets into three potential
@@ -1589,11 +1588,13 @@ Both `Meter` and `DirectMeter` messages share the following fields:
       annotation to the meter definition.
       For example, in a V1Model P4 program, we might define a trTCM direct meter
       as follows:
+      +
       [source,p4]
       ----
       @two_rate_three_color
       direct_meter<color_type>(MeterType.bytes) my_meter;
       ----
+      
     * `SINGLE_RATE_THREE_COLOR`: This is the *Single Rate Three Color Marker*
       (srTCM) defined in RFC 2697 cite:[RFC2697]. This allows meters to use one rate
       and an Excess Burst Size (EBS) to split packets into three potential
@@ -2154,7 +2155,7 @@ volatile.
 Data plane volatility depends upon the definition of the extern and
 its control plane API.
 
-==== TableEntry
+=====TableEntry
 
 For a table with a direct counter associated with it, the `counter_data`
 field of a `TableEntry` can be modified by the data plane when packets
@@ -2192,54 +2193,54 @@ For a PNA cite:[PNA] table with the property `pna_idle_timeout` equal to
 `PNA_IdleTimeout_t.AUTO_DELETE`, the data plane can delete existing
 entries from the table without any controller's involvement.
 
-==== ActionProfileMember
+===== ActionProfileMember
 
 Not data plane volatile in any architectures defined by P4.org
 specifications.
 
-==== ActionProfileGroup
+===== ActionProfileGroup
 
 Not data plane volatile in any architectures defined by P4.org
 specifications. The `watch_port` feature does affect how action
 selectors behave while processing packets, but this feature does not
 affect what a P4Runtime client sees when it reads the configuration.
 
-==== MeterEntry
+===== MeterEntry
 
 The field `counter_data` is modified by the data plane when the
 corresponding meter is updated in the data plane.
 
-==== DirectMeterEntry
+===== DirectMeterEntry
 
 The field `counter_data` is modified by the data plane when the
 corresponding meter is updated in the data plane.
 
-==== CounterEntry
+===== CounterEntry
 
 The field `data` is modified by the data plane when the corresponding
 counter is updated in the data plane.
 
-==== DirectCounterEntry
+===== DirectCounterEntry
 
 The field `data` is modified by the data plane when the corresponding
 counter is updated in the data plane.
 
-==== PacketReplicationEngineEntry
+===== PacketReplicationEngineEntry
 
 Not data plane volatile in any architectures defined by P4.org
 specifications.
 
-==== ValueSetEntry
+===== ValueSetEntry
 
 Not data plane volatile in any architectures defined by P4.org
 specifications.
 
-==== RegisterEntry
+===== RegisterEntry
 
 The field `data` can be modified by the data plane when the
 corresponding register entry is updated in the data plane.
 
-==== DigestEntry
+===== DigestEntry
 
 Not data plane volatile in any architectures defined by P4.org
 specifications.
@@ -2292,7 +2293,7 @@ For a value of type `bit<W>`, the fewest number of bits required to represent
 the integer value latexmath:[$V > 0$] is the smallest integer latexmath:[$A$] such that latexmath:[$V \leq 2^A - 1$].
 
 For a value of type `int<W>`, the fewest number of bits required to represent
-the integer value latexmath:[$V \neq 0$]in "2's" complement form is the smallest integer latexmath:[$A$]
+the integer value latexmath:[$V \neq 0$] in "2's" complement form is the smallest integer latexmath:[$A$]
 such that latexmath:[$-2^{A-1} \leq V \leq 2^{A-1} - 1$].
 
 As a special case, define that the value latexmath:[$V=0$] requires at least latexmath:[$A=1$] bit to
@@ -3821,7 +3822,7 @@ object, and a `group_id` equal to 0, will read all groups of that one specified
 object.
 
 [#sec-max-size-rules]
-==== Rules on Setting `max_size`
+===== Rules on Setting `max_size`
 
 The valid values for `max_size` depend on the static `max_group_size` included
 in the P4Info message:
@@ -4486,7 +4487,7 @@ other fields in `MulticastGroupEntry` are ignored. To perform a *wildcard*
 must be set to 0, its default value.
 
 [#sec-valid-values-for-mg-id]
-==== Valid Values for `multicast_group_id` 
+===== Valid Values for `multicast_group_id` 
 
 The PSA specification states that the valid *data plane* values for multicast
 group ids (`MulticastGroup_t`) range from 1 (0 is a special value that indicates
@@ -4604,7 +4605,7 @@ default value. The `session_id` field can never be equal to 0 in a `Write`
 RPC. If it does, the server must return an `INVALID_ARGUMENT` error.
 
 [#sec-valid-values-for-session-id]
-==== Valid Values for `session_id` 
+===== Valid Values for `session_id` 
 
 The PSA specification states that the valid *data plane* values for clone
 session ids (`CloneSessionId_t`) range from 0 to the maximum value supported by
@@ -5213,7 +5214,7 @@ enum. A P4Runtime server is required to support only the modes marked as
   of the rollback mechanism are outside the scope of this specification. One
   possibility is to create a shadow copy of both the software and hardware state
   at the start, and restore it upon failure.
-
+  +
   If a P4Runtime server does not support this option at all, an
   `UNIMPLEMENTED` error is returned at all times. If a P4Runtime
   supports some batches in an rollback way but not others (e.g. it is
@@ -5234,7 +5235,7 @@ enum. A P4Runtime server is required to support only the modes marked as
   all operations within the batch. At the end (if there were no errors), a
   simple pointer-swap like approach can be used to switch to this half of the
   table.
-
+  +
   If a P4Runtime server does not support this option at all, an `UNIMPLEMENTED`
   error is returned at all times. If a P4Runtime supports some batches in an
   atomic way but not others, an `UNIMPLEMENTED` error is returned when the batch
@@ -6642,7 +6643,7 @@ the purpose of adding features for the P4Runtime API.
 |===
 
 [#sec-value-set-example]
-==== A More Complex Value Set Example 
+=== A More Complex Value Set Example 
 
 This section includes a more complex Value Set example, with multiple matches of
 different kinds.
@@ -6794,7 +6795,7 @@ size. The gRPC server running the P4Runtime service must not set the maximum
 receive message size to a value smaller than the default (4MB).
 
 [#sec-entries-files]
-==== P4Runtime Entries files 
+=== P4Runtime Entries files 
 
 The open source P4 compiler `p4c` cite:[p4c] implements an option to
 generate an "entries file", i.e. a file that contains all table
