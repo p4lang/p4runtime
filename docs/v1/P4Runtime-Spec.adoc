@@ -983,7 +983,7 @@ table t {
 
 The generated P4Info will contain:
 
-[source,p4]
+[source,protobuf]
 ----
 structured_annotations {
   name: "MixedExprList"
@@ -1284,7 +1284,7 @@ error if the 8-bit prefix does not contain the correct value, or leave it as is
 if it is correct.
 
 //The second row as to be fixed as is in the madoko document
-.Example of statically-assigned P4Info object IDs
+.P4 annotations introduced by P4Runtime
 [cols="2",width=80%, align=center, options=header, unbreakable]
 [#tab-exmpl-p4-obj-ids]
 |===
@@ -1577,10 +1577,11 @@ Both `Meter` and `DirectMeter` messages share the following fields:
     ** `BYTES`, which signifies that this meter can be configured with rates
       expressed in bytes/second.
     ** `PACKETS`, for rates expressed in packets/second.
-    +
-    The meter type can be any of the `MeterSpec.Type` enum values:
-    +
-    * `TWO_RATE_THREE_COLOR`: This is the *Two Rate Three Color Marker* (trTCM)
++
+--
+The meter type can be any of the `MeterSpec.Type` enum values:
+
+    ** `TWO_RATE_THREE_COLOR`: This is the *Two Rate Three Color Marker* (trTCM)
       defined in RFC 2698 cite:[RFC2698]. This is the standard P4Runtime meter type
       and allows meters to use two rates to split packets into three potential
       colors: GREEN, YELLOW, or RED. This mode is the default, but can also be
@@ -1588,25 +1589,25 @@ Both `Meter` and `DirectMeter` messages share the following fields:
       annotation to the meter definition.
       For example, in a V1Model P4 program, we might define a trTCM direct meter
       as follows:
-      +
-      [source,p4]
-      ----
-      @two_rate_three_color
-      direct_meter<color_type>(MeterType.bytes) my_meter;
-      ----
-      
-    * `SINGLE_RATE_THREE_COLOR`: This is the *Single Rate Three Color Marker*
++
+[source,p4]
+----
+@two_rate_three_color
+direct_meter<color_type>(MeterType.bytes) my_meter;
+----
+    
+    ** `SINGLE_RATE_THREE_COLOR`: This is the *Single Rate Three Color Marker*
       (srTCM) defined in RFC 2697 cite:[RFC2697]. This allows meters to use one rate
       and an Excess Burst Size (EBS) to split packets into three potential
       colors: GREEN, YELLOW, or RED. In a P4 program, this mode can be set by
       adding the `@single_rate_three_color` annotation to the meter definition.
-    * `SINGLE_RATE_TWO_COLOR`: This is a simplified version of RFC 2697
+    ** `SINGLE_RATE_TWO_COLOR`: This is a simplified version of RFC 2697
       cite:[RFC2697], and the `SINGLE_RATE_THREE_COLOR` mode above.
       `SINGLE_RATE_TWO_COLOR` restricts meters to use only a single rate
       specified by the Committed Information Rate (CIR) and Committed Burst Size
       (CBS) to mark packets GREEN or RED. In a P4 program, this mode can be set
       by adding the `@single_rate_two_color` annotation to the meter definition.
-
+--
 For indexed meters, the `Meter` message contains also a `size` field, an `int64`
 representing the maximum number of independent cells that can be held by this
 meter. Conversely, the `DirectMeter` message contains a `direct_table_id` field
@@ -1688,7 +1689,7 @@ header PacketIn_t {
                           original packet */
 }
 ----
-[source,p4]
+[source,protobuf]
 ----
 controller_packet_metadata {
   preamble {
@@ -1774,8 +1775,10 @@ these cases and gives an example `ValueSet` message when appropriate.
 ----
 @id(1) value_set<bit<8> >(4) pvs;
 select (hdr.f8) { /* ... */ }
-~ End P4Example
-~ Begin Prototext
+----
+
+[source,protobuf]
+----
 value_sets {
   preamble {
     id: 0x03000001
@@ -1828,7 +1831,7 @@ struct match_t {
 @id(1) value_set<match_t>(4) pvs;
 select ({ hdr.f8, hdr.f16, hdr.f32 }) { /* ... */ }
 ----
-[source,p4]
+[source,protobuf]
 ----
 value_sets {
   preamble {
@@ -1962,7 +1965,7 @@ forwarding-pipeline and map various IDs passed in P4Runtime entity messages. It
 is formally called the "Device Configuration" and sometimes also referred to as
 the "P4 Blob". It is defined as:
 
-[source,p4]
+[source,protobuf]
 ----
 message ForwardingPipelineConfig {
   config.P4Info p4info = 1;
@@ -2061,7 +2064,7 @@ entry.mutable_index();
 
     * Here is the corresponding Protobuf message in text format:
 
-[source,p4]
+[source,protobuf]
 ----
 counter_id: <id>
 index {}
@@ -2086,7 +2089,7 @@ entry.set_counter_id(<id>);
 
     * Here is the corresponding Protobuf message in text format:
 
-[source,p4]
+[source,protobuf]
 ----
 counter_id: <id>
 ----
@@ -2150,12 +2153,12 @@ modify objects in the data plane via an `Update` message.  For each, a
 description is given of the parts of that entity that are data plane
 volatile.
 
-==== ExternEntry
+===== ExternEntry
 
 Data plane volatility depends upon the definition of the extern and
 its control plane API.
 
-=====TableEntry
+===== TableEntry
 
 For a table with a direct counter associated with it, the `counter_data`
 field of a `TableEntry` can be modified by the data plane when packets
@@ -2293,7 +2296,7 @@ For a value of type `bit<W>`, the fewest number of bits required to represent
 the integer value latexmath:[$V > 0$] is the smallest integer latexmath:[$A$] such that latexmath:[$V \leq 2^A - 1$].
 
 For a value of type `int<W>`, the fewest number of bits required to represent
-the integer value latexmath:[$V \neq 0$] in "2's" complement form is the smallest integer latexmath:[$A$]
+the integer value latexmath:[$V \neq 0$] in 2's complement form is the smallest integer latexmath:[$A$]
 such that latexmath:[$-2^{A-1} \leq V \leq 2^{A-1} - 1$].
 
 As a special case, define that the value latexmath:[$V=0$] requires at least latexmath:[$A=1$] bit to
@@ -2429,12 +2432,11 @@ specification.
 
 //looking for a better solution because is horrible
 .P4 Type Usage
-[.center,cols="4",width=70%, grid=cols,align=center, options=header, unbreakable]
+[.center,%autowidth]
 [#tab-p4-type-usage]
 |===
-|                | Container type                                       
-|                |                       |              |
-| Element type   | header                | header_union | struct or tuple 
+| Element type 3+^| Container type
+|                | header                | header_union | struct or tuple 
 | `bit<W>`       | allowed               | error        | allowed         
 | `int<W>`       | allowed               | error        | allowed         
 | `varbit<W>`    | allowed               | error        | allowed         
@@ -2449,7 +2451,6 @@ specification.
 | `header_union` | error                 | error        | allowed         
 | `struct`       | error                 | error        | allowed         
 | `tuple`        | error                 | error        | allowed         
-
 |===
 
 [^enum_header]: an `enum` type used as a field in a `header` must specify a
@@ -2577,7 +2578,7 @@ Register<ip_t, bit<32> >(128) register_ip;
 
 Here's the corresponding entry in the P4Info message:
 
-[source,proto]
+[source,protobuf]
 ----
 registers {
   preamble {
@@ -5214,14 +5215,14 @@ enum. A P4Runtime server is required to support only the modes marked as
   of the rollback mechanism are outside the scope of this specification. One
   possibility is to create a shadow copy of both the software and hardware state
   at the start, and restore it upon failure.
-  +
-  If a P4Runtime server does not support this option at all, an
-  `UNIMPLEMENTED` error is returned at all times. If a P4Runtime
-  supports some batches in an rollback way but not others (e.g. it is
-  more straightforward to implement batches that contain only `INSERT`
-  operations, vs. those that contain `DELETE` operations), an
-  `UNIMPLEMENTED` error is returned when the batch cannot be executed
-  in a data plane-atomic way.
++
+If a P4Runtime server does not support this option at all, an
+`UNIMPLEMENTED` error is returned at all times. If a P4Runtime
+supports some batches in an rollback way but not others (e.g. it is
+more straightforward to implement batches that contain only `INSERT`
+operations, vs. those that contain `DELETE` operations), an
+`UNIMPLEMENTED` error is returned when the batch cannot be executed
+in a data plane-atomic way.
 
 * *Optional*: `DATAPLANE_ATOMIC`: This is the strictest requirement where the
   entire batch must be atomic from a data plane point of view. Every data plane
@@ -5235,11 +5236,11 @@ enum. A P4Runtime server is required to support only the modes marked as
   all operations within the batch. At the end (if there were no errors), a
   simple pointer-swap like approach can be used to switch to this half of the
   table.
-  +
-  If a P4Runtime server does not support this option at all, an `UNIMPLEMENTED`
-  error is returned at all times. If a P4Runtime supports some batches in an
-  atomic way but not others, an `UNIMPLEMENTED` error is returned when the batch
-  cannot be executed in a data plane-atomic way.
++
+If a P4Runtime server does not support this option at all, an `UNIMPLEMENTED`
+error is returned at all times. If a P4Runtime supports some batches in an
+atomic way but not others, an `UNIMPLEMENTED` error is returned when the batch
+cannot be executed in a data plane-atomic way.
 
 There is no expectation that a given client must always use the same `Atomicity`
 enum value. At any given time, the client is free to compose batches and assign
@@ -5273,7 +5274,7 @@ populate `grpc::Status` as follows:
    updates. If some of the updates were successful, the corresponding
    `p4.Error` should set the code to `OK` and omit other fields.
 
-[source,prototext]
+[source,protobuf]
 ----
 # Example of a grpc::Status returned for a Write RPC with a batch of 3 updates.
 # The first and third updates encountered an error, while the second update
@@ -5958,7 +5959,7 @@ client immediately. See section <<#sec-arbitration-updates>>.
    `ControllerPacketMetadata` message for "packet_out", the server may send the
    following `StreamMessageResponse` back to the client:
 
-[source,prototext]
+[source,protobuf]
 ----
 error {
     canonical_code: 3  # INVALID_ARGUMENT
@@ -5982,7 +5983,7 @@ error {
    (Maximum Transmission Unit) for the egress link, the server may generate the
    following `StreamMessageResponse`:
 
-[source,prototext]
+[source,protobuf]
 ----
 error {
     canonical_code: 3  # INVALID_ARGUMENT
@@ -6260,7 +6261,7 @@ action a(PortId_t p) {
 This P4 Counter declaration will translate into the following entry in the
 P4Info messsage:
 
-[source,prototext]
+[source,protobuf]
 ----
 counters {
   preamble {
@@ -6662,7 +6663,7 @@ select ({ hdr.f8, hdr.f16, hdr.f32 }) { /* ... */ }
 This P4 Value Set declaration will translate into the following entry in the
 P4Info messsage:
 
-[source,prototext]
+[source,protobuf]
 ----
 value_sets {
   preamble {
@@ -6694,7 +6695,7 @@ value_sets {
 A P4Runtime client can set the membership for this Value Set with `WriteRequest`
 messages similar to this one:
 
-[source,prototext]
+[source,protobuf]
 ----
 type: MODIFY
 entity {
