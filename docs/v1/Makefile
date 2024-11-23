@@ -1,4 +1,3 @@
-
 SPEC=P4Runtime-Spec
 
 ROUGE_STYLE=github
@@ -26,7 +25,7 @@ ${SPEC}.html: ${SPEC}.adoc figs
 	time asciidoctor -v \
 	-r asciidoctor-mathematical \
 	-r asciidoctor-bibtex \
-	-r asciidoctor-lists \ 
+	-r asciidoctor-lists \
 	-a rouge-css=$(ROUGE_CSS) $<
 
 clean:

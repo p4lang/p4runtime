@@ -5,62 +5,67 @@ specification document.
 
 # Markup version
 
-The markup version uses Madoko (https://www.madoko.net) to produce
+The markup version uses AsciiDoc (https://docs.asciidoctor.org/) to produce
 HTML and PDF versions of the documentation. Pre-built versions of the
 documentation are available on the [P4.org specifications
 page](https://p4.org/specs).
 
 
 Files:
-- `P4Runtime-spec.mdk` is the main file. 
-- assets: Figures
-  - `*.odg` - OfficeLibre source drawing file used to export images. These are
+- `P4Runtime-Spec.adoc` is the main file. 
+- resources: 
+  - figs
+    - `*.odg` - OfficeLibre source drawing file used to export images. These are
     bulk-rendered at build time into .svg and .png images via `soffice`
     command-line (required in build environment)
+  - fonts 
+      - `*.ttf` - Type font source file used to export fonts.
+  - theme: 
+      - `*.yaml` - Describes how PDF P4Runtime specification will be displayed.
+      - `*.css`  - Describes how HTML P4Runtime specification will displayed.
+      - `*.bib`  - Bibliography file that contains a list of bibliographical item, such as articles, books, and theses.
 - `Makefile` builds documentation in the build subdirectory
-- `p4.json` is providing custom syntax highlighting for P4. It is a rip off from
-  the cpp.json provided by Madoko (the "extend" clause does not work, my version
-  of Madoko asks for a "tokenizer" to be defined). Style customization for each
-  token can be done using CSS style attributes (see `token.keyword` in
-  `P4Runtime-spec.mdk`).
+
 
 ## Building
 
-The easiest way to render the Madoko specification documentation is to use the
-`p4lang/p4rt-madoko:latest` Docker` image:
+The easiest way to render the AsciiDoc specification documentation is to use the
+`p4lang/p4rt-asciidoc:latest` Docker` image:
 
-    docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make
+    docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc:latest make
 
 ### Linux
 ```
-sudo apt-get install nodejs
-sudo npm install madoko -g
-sudo apt-get install libreoffice
-sudo apt-get install texlive-science texlive-xetex
-make [all | html | pdf ]
+rvm install ruby-3.3.1
+rvm use 3.3.1
+gem install asciidoctor
+gem install asciidoctor-pdf
+gem install asciidoctor-bibtex
+gem install asciidoctor-mathematical
+gem install prawn-gmagick
+gem install rouge
+gem install asciidoctor-bibtex
+gem install asciidoctor-lists
+gem install prawn-gmagick
+make 
 ```
-In particular (on Ubuntu 16.04 at least), don't try `sudo apt-get install npm`
-because `npm` is already included and this will yield a bunch of confusing error
-messages from `apt-get`.
-
-`dvipng` is used to render "math" inside BibTex (used for bibliography)
-titles, so you will need to install it as well. On Debian-based Linux, it can be
-done with `sudo apt-get install dvipng`.
+You can use the [local
+installation](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/install-asciidoctor-linux.sh)
+method.
 
 ### MacOS
 
 We use the [local
-installation](http://research.microsoft.com/en-us/um/people/daan/madoko/doc/reference.html#sec-installation-and-usage)
-method. For Mac OS, I installed node.js using Homebrew and then Madoko using
-npm:
+installation](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/install-asciidoctor-linux.sh)
+method. For Mac OS you can install AsciiDoc using Homebrew via:
 ```
-brew install node.js
-npm install madoko -g
+brew install asciidoctor
 ```
-Note that to build the PDF you need a functional TeX version installed.
 
 ### Windows
 
-You need to install miktex [http://miktex.org/], madoko
-[https://www.madoko.net/] and node.js [https://nodejs.org/en/].  To
-build you can invoke the make.bat script.
+You need to install chocolatey [https://chocolatey.org/] or rubyInstaller [https://rubyinstaller.org/downloads/]. 
+Once you’ve installed Ruby , open a terminal and type:
+```
+ gem install asciidoctor
+```

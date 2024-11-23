@@ -1577,8 +1577,7 @@ Both `Meter` and `DirectMeter` messages share the following fields:
     ** `BYTES`, which signifies that this meter can be configured with rates
       expressed in bytes/second.
     ** `PACKETS`, for rates expressed in packets/second.
-+
---
+
 The meter type can be any of the `MeterSpec.Type` enum values:
 
     ** `TWO_RATE_THREE_COLOR`: This is the *Two Rate Three Color Marker* (trTCM)
@@ -1607,7 +1606,7 @@ direct_meter<color_type>(MeterType.bytes) my_meter;
       specified by the Committed Information Rate (CIR) and Committed Burst Size
       (CBS) to mark packets GREEN or RED. In a P4 program, this mode can be set
       by adding the `@single_rate_two_color` annotation to the meter definition.
---
+
 For indexed meters, the `Meter` message contains also a `size` field, an `int64`
 representing the maximum number of independent cells that can be held by this
 meter. Conversely, the `DirectMeter` message contains a `direct_table_id` field
@@ -2109,7 +2108,7 @@ read should match if the RPCs finished successfully (with the exception of parts
 of the response known to be data plane volatile, as explained in <<#sec-data-plane-volatile-objects>>). Consider the following pseudocode as an
 example:
 
-[source,pseudo]
+[source,python]
 ----
 intended_value = value
 
@@ -2435,8 +2434,8 @@ specification.
 [.center,%autowidth]
 [#tab-p4-type-usage]
 |===
-| Element type 3+^| Container type
-|                | header                | header_union | struct or tuple 
+| *Element type* 3+^| *Container type*
+|                | *header*               | *header_union* | *struct or tuple* 
 | `bit<W>`       | allowed               | error        | allowed         
 | `int<W>`       | allowed               | error        | allowed         
 | `varbit<W>`    | allowed               | error        | allowed         
@@ -2638,7 +2637,7 @@ type_info {
 ----
 Here's a `p4.WriteRequest` to set the value of `register_ip[12]`:
 
-[source,proto]
+[source,protobuf]
 ----
 update {
   type: INSERT
@@ -2760,7 +2759,7 @@ type bit<9> PortId_32_t;
 In this case, the P4Info message would include the following `P4TypeInfo`
 messages:
 
-[source,proto]
+[source,protobuf]
 ----
 type_info {
   new_types {
@@ -2857,7 +2856,7 @@ table t {
 
 This table would have the following representation in the generated P4Info
 message:
-[source,proto]
+[source,protobuf]
 ----
 tables {
   preamble {
@@ -3036,7 +3035,7 @@ In this P4Runtime request, the client omits the table's `TERNARY` field
 from the repeated `match` field to indicate a "don't care" match. As shown
 below, the `match` specifies only the `EXACT` field given by `field_id: 2`.
 
-[source,proto]
+[source,protobuf]
 ----
 device_id: 3
 entities {
@@ -3066,7 +3065,7 @@ P4Runtime server must return an `INVALID_ARGUMENT` error code.
     * The binary string encoding of the value must conform to the
       xref:sec-bytestrings[Bytestrings] requirements.
 
-[source,pseudo]
+[source,python]
 ----
 assert(BytestringValid(match.exact().value()))
 ----
@@ -3077,7 +3076,7 @@ assert(BytestringValid(match.exact().value()))
     * "Don't care" match must be omitted.
     * "Don't care" bits must be 0 in value.
 
-[source,pseudo]
+[source,python]
 ----
 assert(BytestringValid(match.lpm().value()))
 
@@ -3099,7 +3098,7 @@ assert(trailing_zeros >= field_bits - pLen)
       most-significant value bits need zero-padding before any logical
       operations with the mask.
 
-[source,pseudo]
+[source,python]
 ----
 assert(BytestringValid(match.ternary().value()))
 assert(BytestringValid(match.ternary().mask()))
@@ -3120,7 +3119,7 @@ assert(value & mask == value)
     * Low bound must be less than or equal to the high bound.
     * "Don't care" match must be omitted.
 
-[source,pseudo]
+[source,python]
 ----
 assert(BytestringValid(match.range().low()))
 assert(BytestringValid(match.range().high()))
@@ -3137,7 +3136,7 @@ assert(low != min_field_value || high != max_field_value)
     * The binary string encoding of the value must conform to the
       xref:sec-bytestrings[Bytestrings] requirements.
 
-[source,pseudo]
+[source,python]
 ----
 assert(BytestringValid(match.optional().value()))
 ----
@@ -3364,7 +3363,7 @@ fields may be used to select and filter results:
 For example, in order to read all entries from all tables from device 3, the
 client can use the following `ReadRequest` message.
 
-[source,proto]
+[source,protobuf]
 ----
 device_id: 3
 entities {
@@ -3381,7 +3380,7 @@ In order to read all entries with priority 11 from a specific table (with id
 0x0212ab34) from device 3, the client can use the following `ReadRequest`
 message:
 
-[source,proto]
+[source,protobuf]
 ----
 device_id: 3
 entities {
@@ -3421,7 +3420,7 @@ table t {
 
 The following `WriteRequest` message can be used to add 2 entries:
 
-[source,proto]
+[source,protobuf]
 ----
 device_id: 3
 entities {
@@ -3447,7 +3446,7 @@ The first entry is a "don't care" entry, while the second one matches all
 
 The following `ReadRequest` message will return *all* entries in the table, not
 just the "don't care" entry.
-[source,proto]
+[source,protobuf]
 ----
 device_id: 3
 entities {
@@ -3897,7 +3896,7 @@ the one shot message.
 For example, consider the action selector table defined xref:sec-action-profile-member-and-group[role]. This table could be programmed
 with the following one shot update:
 
-[source,proto]
+[source,protobuf]
 ----
 table_entry {
   table_id: 0x0212ab34
@@ -4062,7 +4061,7 @@ P4Runtime message can be used for all three types of PSA counters --- `PACKETS`,
 * `byte_count` is an `int64`, corresponding to the number of octets.
 * `packet_count` is an `int64`, corresponding to the number of packets.
 
-[source,proto]
+[source,protobuf]
 ----
 message CounterData {
   int64 byte_count = 1;
@@ -4085,7 +4084,7 @@ P4Runtime client may modify the associated direct counter entry using the
 `DirectCounterEntry` message. Once the table entry is deleted the associated
 direct counter entry can no longer be accessed.
 
-[source,proto]
+[source,protobuf]
 ----
 message DirectCounterEntry {
   TableEntry table_entry = 1;
@@ -4208,7 +4207,7 @@ primary purpose of the color counters is for debugging purposes.
 A meter may be configured as a direct or indirect instance, similar to a
 counter. The `MeterConfig` P4Runtime message represents meter configuration.
 
-[source,proto]
+[source,protobuf]
 ----
 message MeterConfig {
   int64 cir = 1;  // Committed Information Rate
@@ -4246,7 +4245,7 @@ P4Runtime client may modify the associated direct meter entry using the
 `DirectMeterEntry` message. Once the table entry is deleted the associated
 direct meter entry can no longer be accessed.
 
-[source,proto]
+[source,protobuf]
 ----
 message DirectMeterEntry {
   TableEntry table_entry = 1;
@@ -4310,7 +4309,7 @@ follows:
   represents the per color counter values associated with the corresponding
   meter.
 
-[source,proto]
+[source,protobuf]
 ----
 message MeterEntry {
   uint32 meter_id = 1;
@@ -4402,7 +4401,7 @@ control arp_multicast(inout H hdr, inout M smeta) {
 At runtime, the client writes the following update in the target (shown in
 Protobuf text format).
 
-[source,proto]
+[source,protobuf]
 ----
 type: INSERT
 entity {
@@ -4539,7 +4538,7 @@ control clone_low_ttl(inout H hdr, inout M smeta) {
 At runtime, the client writes the following update in the target (shown in
 Protobuf text format).
 
-[source,proto]
+[source,protobuf]
 ----
 type: INSERT
 entity {
@@ -4646,7 +4645,7 @@ state parse_l2 {
 
 The corresponding entry in the P4Info for this Value Set is:
 
-[source,proto]
+[source,protobuf]
 ----
 value_sets {
   preamble {
@@ -4665,7 +4664,7 @@ value_sets {
 At runtime, the client writes the following update in the target (shown in
 Protobuf text format).
 
-[source,proto]
+[source,protobuf]
 ----
 type: MODIFY
 entity {
@@ -4898,7 +4897,7 @@ while (true) {
 This is used to support a P4 extern entity that is not part of PSA. It is
 defined as:
 
-[source,proto]
+[source,protobuf]
 ----
 message ExternEntry {
   uint32 extern_type_id = 1;
@@ -4930,7 +4929,7 @@ explain how error reporting works in the failure case.
 gRPC uses `grpc::Status` cite:[gRPCStatus] to represent the status returned by an
 RPC. It has 3 attributes:
 
-[source,cpp]
+[source,c++]
 ----
 StatusCode code_;
 grpc::string error_message_;
@@ -4942,7 +4941,7 @@ overall RPC status. The `error_message_` is a developer-facing error message,
 which should be in English. The `binary_error_details_` carries a serialized
 `google.rpc.Status` message cite:[ProtoStatus] message, which has 3 fields:
 
-[source,proto]
+[source,protobuf]
 ----
 int32 code = 1;  // see code.proto
 string message = 2;
@@ -5067,7 +5066,7 @@ to reject the program.
 The `Write` RPC updates one or more P4 entities on the target. The request is
 defined as follows:
 
-[source,proto]
+[source,protobuf]
 ----
 message WriteRequest {
   uint64 device_id = 1;
@@ -5102,7 +5101,7 @@ before processing the `updates` list:
 The updates field is a list of P4 entity updates to be applied. Each update is
 defined as:
 
-[source,proto]
+[source,protobuf]
 ----
 message Update {
   enum Type {
@@ -5307,7 +5306,7 @@ binary_error_details {
 The `Read` RPC retrieves one or more P4 entities from the P4Runtime server. The
 request is defined as:
 
-[source,proto]
+[source,protobuf]
 ----
 message ReadRequest {
   uint64 device_id = 1;
@@ -5333,7 +5332,7 @@ require an `election_id`, and they do not require the presence of an open
 The `Read `response consists of a sequence of messages (a gRPC `stream`) with
 each message defined as:
 
-[source,proto]
+[source,protobuf]
 ----
 message ReadResponse {
   repeated Entity entities = 1;
@@ -5378,7 +5377,7 @@ For example, in a *request* of type `CounterEntry`:
 To read the entire forwarding state for a given device, the P4Runtime client can
 generate the following `ReadRequest`:
 
-[source,proto]
+[source,protobuf]
 ----
 device_id: <ID>
 entities {
@@ -5509,7 +5508,7 @@ be difficult to implement correctly.
 A P4Runtime client may configure the P4Runtime target with a new P4 pipeline by
 invoking the `SetForwardingPipelineConfig RPC`. The request is defined as:
 
-[source,proto]
+[source,protobuf]
 ----
 message SetForwardingPipelineConfigRequest {
   enum Action {
@@ -5590,7 +5589,7 @@ different mechanism). In such cases, the RPC should return an
 The forwarding-pipeline configuration of the target can be retrieved by invoking
 the `GetForwardingPipelineConfig RPC`. The request is defined as:
 
-[source,proto]
+[source,protobuf]
 ----
 message GetForwardingPipelineConfigRequest {
   enum ResponseType {
@@ -5626,7 +5625,7 @@ its value can be one of:
 
 The response contains the `ForwardingPipelineConfig` for the specified device:
 
-[source,proto]
+[source,protobuf]
 ----
 message GetForwardingPipelineConfigResponse {
   ForwardingPipelineConfig config = 1;
@@ -5677,7 +5676,7 @@ in the P4Info using the `ControllerPacketMetadata` messages.
 Both `PacketIn` and `PacketOut` stream messages share the same fields and are
 defined as follows:
 
-[source,proto]
+[source,protobuf]
 ----
 // Packet sent from the controller to the switch.
 message PacketOut {
@@ -5759,7 +5758,7 @@ reset. In fact, a full restart is the only way to reset the `election_id`.
 
 The `MasterArbitrationUpdate` message is defined as follows:
 
-[source,proto]
+[source,protobuf]
 ----
 message MasterArbitrationUpdate {
   uint64 device_id = 1;
@@ -5862,7 +5861,7 @@ server software, the channel or the client can handle.
 Here is a reasonable pseudo-code implementation for idle timeout for table
 entries:
 
-[source,cpp]
+[source,c++]
 ----
 IdleTimeoutStream stream;
 
@@ -6089,7 +6088,7 @@ ports in the device-specific port number space. P4Runtime reserves
 device-independent and controller-specific 32-bit constants for the CPU port and
 the recirculation port as follows:
 
-[source,proto]
+[source,protobuf]
 ----
 enum SdnPort {
   SDN_PORT_UNKNOWN = 0;
@@ -6369,7 +6368,7 @@ extern MyNewPacketCounter<T> {
   externs. It is recommended that *p4info-ext* include a `P4Ids` message based
   on the one in p4info.proto that the P4 compiler can refer to when xref:sec-id-allocation[assigning IDs] to each extern instance.
 
-[source,proto]
+[source,protobuf]
 ----
 message P4Ids {
   enum Prefix {
@@ -6386,7 +6385,7 @@ message P4Ids {
   xref:sec-p4info-extern[`p4.config.v1.ExternInstance`] message as the `info`
   field, which is of type `Any` cite:[ProtoAny].
 
-[source,proto]
+[source,protobuf]
 ----
 message MyNewPacketCounter {
   // corresponds to the T type parameter in the P4 extern definition
@@ -6407,7 +6406,7 @@ embedded in an xref:sec-extern-entry[`ExternEntry`] message generated by the
 P4Runtime client.
 
 Here is a possible Protobuf message for our `MyNewPacketCounter` P4 extern:
-[source,proto]
+[source,protobuf]
 ----
 // This message enables reading / writing data to the counter at the provided
 // index
@@ -6754,7 +6753,7 @@ channel.  As a rule of thumb, it might make sense to allow for at least
 `8192 + MAX_UPDATES_PER_WRITE * 100` bytes of metadata.
 
 For example, in C++, one can create a client channel as follows:
-[source,cpp]
+[source,c++]
 ----
 const int MAX_UPDATES_PER_WRITE = 100;
 ::grpc::ChannelArguments arguments;
@@ -6778,7 +6777,7 @@ setting the `grpc.max_receive_message_length` when building the gRPC server.
 
 For example, in C++, one can set the maximum receive message size as follows:
 
-[source,cpp]
+[source,c++]
 ----
 const int MAX_RECEIVE_MESSAGE_SIZE = 128 * 1024 * 1024;  // 128MB
 ::grpc::ServerBuilder server_builder;
