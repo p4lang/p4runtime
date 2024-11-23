@@ -36,36 +36,13 @@ The easiest way to render the AsciiDoc specification documentation is to use the
 
 ### Linux
 ```
-rvm install ruby-3.3.1
-rvm use 3.3.1
-gem install asciidoctor
-gem install asciidoctor-pdf
-gem install asciidoctor-bibtex
-gem install asciidoctor-mathematical
-gem install prawn-gmagick
-gem install rouge
-gem install asciidoctor-bibtex
-gem install asciidoctor-lists
-gem install prawn-gmagick
-make 
-```
-You can use the [local
-installation](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/install-asciidoctor-linux.sh)
+You can use the [local installation](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/install-asciidoctor-linux.sh)
 method.
 
 ### MacOS
 
-We use the [local
-installation](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/install-asciidoctor-linux.sh)
-method. For Mac OS you can install AsciiDoc using Homebrew via:
-```
-brew install asciidoctor
-```
+We do not yet have instructions for generating PDF and HTML from AsciiDoc source on macOS. You are welcome to contribute documentation for how to do so if you find instructions that work.
 
 ### Windows
 
-You need to install chocolatey [https://chocolatey.org/] or rubyInstaller [https://rubyinstaller.org/downloads/]. 
-Once you’ve installed Ruby , open a terminal and type:
-```
- gem install asciidoctor
-```
+We do not yet have instructions for generating PDF and HTML from AsciiDoc source on Windows. You are welcome to contribute documentation for how to do so if you find instructions that work.
