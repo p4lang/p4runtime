@@ -132,7 +132,7 @@ The following are not in scope of this specification document:
   the future describing one possible role definition scheme.
 
 [#sec-terms-definitions]
-== Terms and Definitions 
+== Terms and Definitions
 
 * arbitration
   : Refers to the process through which P4Runtime ensures that at any given
@@ -217,7 +217,7 @@ The following are not in scope of this specification document:
     identification of resources.
 
 [#sec-reference-architecture]
-== Reference Architecture 
+== Reference Architecture
 
 <<#fig-reference-architecture>> represents the P4Runtime Reference
 Architecture. The device or target to be controlled is at the bottom, and one or
@@ -309,7 +309,7 @@ configuration from a running device to synchronize the controller to its current
 state.
 
 [#sec-p4-as-behavioral-description-language]
-=== P4 as a Behavioral Description Language 
+=== P4 as a Behavioral Description Language
 
 P4 can be considered a behavioral description of a switching device which may or
 may not execute "P4" natively. There is no requirement that a P4 compiler be
@@ -387,7 +387,7 @@ allow some controllers access to just the functionality required. For example, a
 controller may only need read access to statistics counters and nothing more.
 
 [#sec-restarts]
-=== P4Runtime State Across Restarts 
+=== P4Runtime State Across Restarts
 
 All targets support full restarts, where all forwarding state is reset and the
 P4Runtime server starts with a clean state.  Some targets may also support
@@ -514,7 +514,7 @@ follows:
   client that has the highest `election_id` that the device has ever received
   for the same (`device_id`, `role`) values.  A connection between a controller
   instance and a device id --- which involves a persistent `StreamChannel` ---
-  can be referred to as a P4Runtime client. + 
+  can be referred to as a P4Runtime client. +
   Note that the P4Runtime server does not assign a `role` or `election_id` to
   any controller. It is up to an arbitration mechanism outside of the server to
   decide on the controller roles, and the `election_id` values used for each
@@ -889,7 +889,7 @@ P4Info supports this.
 The annotations described up to this point, e.g. `@brief()`, have all been
 unstructured annotations, or simply annotations. These are represented in
 P4Info as `repeated string annotations` fields in the various `messages`.
-Similarly, structured annotations are represented in `repeated StructuredAnnotation structured_annotations` fields which are siblings to the unstructured `annotations`. 
+Similarly, structured annotations are represented in `repeated StructuredAnnotation structured_annotations` fields which are siblings to the unstructured `annotations`.
 The `structured_annotations` contain parsed representations of the original annotation source. This parsing includes expression-evaluation, so the resulting P4Info may contain a simplified replica of the original structured annotations.
 
 The structured annotation messages are defined in p4types.proto.
@@ -1142,7 +1142,7 @@ message PlatformProperties {
 }
 ----
 [#sec-annotating-p4-code-with-pkginfo]
-==== Annotating P4 code with PkgInfo 
+==== Annotating P4 code with PkgInfo
 
 A P4 program's `PkgInfo` may be declared using one or more of the following
 annotations, attached to the `main` block only:
@@ -1239,33 +1239,33 @@ layout.
 [width=90%, cols="2", grid=cols,align=center, options=header, unbreakable]
 [#tab-mapping-p4-obj-ids]
 |===
-| 8-bit prefix value | P4 object type                                                       
-| 0x00               | Reserved (unspecified)                                               
-| 0x01               | Action                                                               
-| 0x02               | Table                                                                
-| 0x03               | Value-set                                                            
-| 0x04               | Controller header (header type with `@controller_header` annotation) 
-| 0x05...0x0f        | Reserved (for future P4 built-in objects)                            
-| 0x10               | Reserved (start of PSA extern types)                                 
-| 0x11               | PSA Action profiles / selectors                                      
-| 0x12               | PSA Counter                                                          
-| 0x13               | PSA Direct counter                                                   
-| 0x14               | PSA Meter                                                            
-| 0x15               | PSA Direct meter                                                     
-| 0x16               | PSA Register                                                         
-| 0x17               | PSA Digest                                                           
-| 0x18...0x7f        | Reserved (for future PSA extern types)                               
-| 0x80               | Reserved (start of vendor-specific extern types)                     
-| 0x81...0xfe        | Vendor-specific extern types                                         
-| 0xff               | Reserved (max prefix value)                                          
+| 8-bit prefix value | P4 object type
+| 0x00               | Reserved (unspecified)
+| 0x01               | Action
+| 0x02               | Table
+| 0x03               | Value-set
+| 0x04               | Controller header (header type with `@controller_header` annotation)
+| 0x05...0x0f        | Reserved (for future P4 built-in objects)
+| 0x10               | Reserved (start of PSA extern types)
+| 0x11               | PSA Action profiles / selectors
+| 0x12               | PSA Counter
+| 0x13               | PSA Direct counter
+| 0x14               | PSA Meter
+| 0x15               | PSA Direct meter
+| 0x16               | PSA Register
+| 0x17               | PSA Digest
+| 0x18...0x7f        | Reserved (for future PSA extern types)
+| 0x80               | Reserved (start of vendor-specific extern types)
+| 0x81...0xfe        | Vendor-specific extern types
+| 0xff               | Reserved (max prefix value)
 |===
 
 .Format of P4Info object IDs
 [.center,cols="2",width=70%, grid=cols,align=center, options=header, unbreakable]
 [#tab-format-p4-obj-ids]
 |===
-| MSB bit 31 ........ bit 24 | bit 23 ....................... bit 0 LSB 
-| Object type prefix         | Generated suffix (e.g. by the compiler)  
+| MSB bit 31 ........ bit 24 | bit 23 ....................... bit 0 LSB
+| Object type prefix         | Generated suffix (e.g. by the compiler)
 |===
 
 It is possible to statically set the least-significant 24 bits of the ID in the
@@ -1288,12 +1288,12 @@ if it is correct.
 [cols="2",width=80%, align=center, options=header, unbreakable]
 [#tab-exmpl-p4-obj-ids]
 |===
-| P4 declaration(s)              | Compiler-allocated ID(s)                                   
-| `@id(0x12ab34) table tA...`    | 0x0212ab34                                                 
-| `@id(0x12ab34) table tA...`    | **Error**(same ID suffixes for 2 objects of the same type) 
-| `@id(0x12ab34) table tB...`    |                                                            
-| `@id(0x12ab34) table tA...`    | 0x0212ab34                                                 
-| `@id(0x12ab34) action act1...` | 0x0112ab34                                                 
+| P4 declaration(s)              | Compiler-allocated ID(s)
+| `@id(0x12ab34) table tA...`    | 0x0212ab34
+| `@id(0x12ab34) table tA...`    | **Error**(same ID suffixes for 2 objects of the same type)
+| `@id(0x12ab34) table tB...`    |
+| `@id(0x12ab34) table tA...`    | 0x0212ab34
+| `@id(0x12ab34) action act1...` | 0x0112ab34
 |===
 
 The `@id` annotation can also be used to choose the ID for match fields,
@@ -1594,7 +1594,6 @@ The meter type can be any of the `MeterSpec.Type` enum values:
 @two_rate_three_color
 direct_meter<color_type>(MeterType.bytes) my_meter;
 ----
-    
     ** `SINGLE_RATE_THREE_COLOR`: This is the *Single Rate Three Color Marker*
       (srTCM) defined in RFC 2697 cite:[RFC2697]. This allows meters to use one rate
       and an Excess Burst Size (EBS) to split packets into three potential
@@ -1618,7 +1617,7 @@ field, which indicates whether the index has a xref:sec-user-defined-types[user-
 type]. This is useful for xref:sec-psa-metadata-translation[translation]. The underlying built-in type must be a fixed-width unsigned bitstring (`bit<W>`).
 
 [#sec-controller-packet-meta]
-==== `ControllerPacketMetadata` 
+==== `ControllerPacketMetadata`
 
 `ControllerPacketMetadata` messages are used to describe any metadata associated
 with controller packet-in and packet-out. A packet-in is defined as a data plane
@@ -1663,7 +1662,7 @@ message contains the following fields:
     ** `annotations`, a repeated field of strings, each one representing a P4
       annotation associated to this metadata.
     ** `bitwidth`, an `int32` representing the size in bits of this metadata.
-    ** `type_name`, which indicates whether the metadata field has a 
+    ** `type_name`, which indicates whether the metadata field has a
         xref:sec-user-defined-types[user-defined type]; this is useful for
         xref:sec-psa-metadata-translation[translation].
 
@@ -1918,7 +1917,7 @@ The `Digest` message defines the following fields:
   notification using a `P4DataTypeSpec` message (see section on xref:sec-representation-of-arbitrary-p4-types[Representation of Arbitrary P4 Types]).
 
 [#sec-p4info-extern]
-==== `Extern` 
+==== `Extern`
 
 `Extern` messages are used to specify all extern instances across all extern
 types for a non-PSA architecture. This is useful when extending P4Runtime to
@@ -1927,7 +1926,7 @@ to at most one `Extern` message instance in P4Info. The `Extern` message defines
 the following fields:
 
 * `extern_type_id`, a 32-bit unsigned integer which uniquely identifies the
-  extern type in the context of the architecture. It must be in the 
+  extern type in the context of the architecture. It must be in the
   xref:sec-id-allocation[reserved range] `[0x81, 0xfe]` . Note that this value does not need
   to be unique across all architectures from all organizations, since at any
   given time every device managed by a P4Runtime server maps to a single P4Info
@@ -1957,7 +1956,7 @@ See section on xref:sec-representation-of-arbitrary-p4-types[Representation of A
 Types].
 
 [#sec-p4-fwd-pipe-config]
-== P4 Forwarding-Pipeline Configuration 
+== P4 Forwarding-Pipeline Configuration
 
 The `ForwardingPipelineConfig` captures data needed to realize a P4
 forwarding-pipeline and map various IDs passed in P4Runtime entity messages. It
@@ -1994,10 +1993,10 @@ field is optional. For this reason, the actual value is wrapped in its own
 message to clearly identify cases where a cookie is not present.
 
 [#sec-message-formatting-principles]
-== General Principles for Message Formatting 
+== General Principles for Message Formatting
 
 [#sec-default-valued-fields]
-=== Default-valued Fields 
+=== Default-valued Fields
 
 There is a subtle distinction between the treatment of default-valued scalar
 fields vs default-valued message fields in P4Runtime.
@@ -2099,7 +2098,7 @@ counter_id: <id>
       message.
 
 [#sec-read-write-symmetry]
-=== Read-Write Symmetry 
+=== Read-Write Symmetry
 
 The reads and writes a client issues towards a server should be symmetrical and
 unambiguous. More specifically, if a client writes a P4 entity and then reads it
@@ -2139,7 +2138,7 @@ that different orderings of the same elements are considered equal. This method
 of comparing Protobuf messages may come at a cost in performance.
 
 [#sec-data-plane-volatile-objects]
-==== Data plane volatile objects 
+==== Data plane volatile objects
 
 An exception to read-write symmetry are objects whose contents or
 fields can change by the action of the data plane alone, even if no
@@ -2248,7 +2247,7 @@ Not data plane volatile in any architectures defined by P4.org
 specifications.
 
 [#sec-bytestrings]
-=== Bytestrings 
+=== Bytestrings
 
 P4Runtime integer values may be too large to fit in Protobuf primitive data
 types (32-bit and 64-bit words). The P4 language does not put any limit on the
@@ -2357,21 +2356,21 @@ P4Runtime binary strings according to the criteria in the list above.
 [.center,cols="4",width=70%,align=center, options=header, unbreakable]
 [#tab-valid-bytestring-encoding]
 |===
-| P4 type   | Integer value  | P4Runtime binary string | Read-write symmetry 
-| `bit<8>`  | 99 (0x63)      | `\x63`                  | yes                 
-| `bit<16>` | 99 (0x63)      | `\x00\x63`              | no                  
-| `bit<16>` | 99 (0x63)      | `\x63`                  | yes                 
-| `bit<16>` | 12388 (0x3064) | `\x30\x64`              | yes                 
-| `bit<16>` | 12388 (0x3064) | `\x00\x30\x64`          | no                  
-| `bit<12>` | 99 (0x63)      | `\x00\x63`              | no                  
-| `bit<12>` | 99 (0x63)      | `\x63`                  | yes                 
-| `bit<12>` | 99 (0x63)      | `\x00\x00\x63`          | no                  
-| `int<8>`  | 99 (0x63)      | `\x63`                  | yes                 
-| `int<8>`  | -99 (-0x63)    | `\x9d`                  | yes                 
-| `int<8>`  | -99 (-0x63)    | `\xff\x9d`              | no                  
-| `int<12>` | -739 (-0x2e3)  | `\xfd\x1d`              | yes                 
-| `int<16>` | 0 (0x0)        | `\x00\x00`              | no                  
-| `int<16>` | 0 (0x0)        | `\x00`                  | yes                 
+| P4 type   | Integer value  | P4Runtime binary string | Read-write symmetry
+| `bit<8>`  | 99 (0x63)      | `\x63`                  | yes
+| `bit<16>` | 99 (0x63)      | `\x00\x63`              | no
+| `bit<16>` | 99 (0x63)      | `\x63`                  | yes
+| `bit<16>` | 12388 (0x3064) | `\x30\x64`              | yes
+| `bit<16>` | 12388 (0x3064) | `\x00\x30\x64`          | no
+| `bit<12>` | 99 (0x63)      | `\x00\x63`              | no
+| `bit<12>` | 99 (0x63)      | `\x63`                  | yes
+| `bit<12>` | 99 (0x63)      | `\x00\x00\x63`          | no
+| `int<8>`  | 99 (0x63)      | `\x63`                  | yes
+| `int<8>`  | -99 (-0x63)    | `\x9d`                  | yes
+| `int<8>`  | -99 (-0x63)    | `\xff\x9d`              | no
+| `int<12>` | -739 (-0x2e3)  | `\xfd\x1d`              | yes
+| `int<16>` | 0 (0x0)        | `\x00\x00`              | no
+| `int<16>` | 0 (0x0)        | `\x00`                  | yes
 |===
 
 <<#tab-invalid-bytestring-encoding>> shows some examples of invalid
@@ -2382,16 +2381,16 @@ P4Runtime binary strings:
 [.center,cols="2",width=70%,align=center, options=header, unbreakable]
 [#tab-invalid-bytestring-encoding]
 |===
-| P4 type   | P4Runtime binary string 
-| `bit<8>`  | `\x01\x63`              
-| `bit<8>`  | `empty string`          
-| `bit<16>` | `\x01\x00\x63`          
-| `bit<12>` | `\x10\x63`              
-| `bit<12>` | `\x01\x00\x63`          
-| `bit<12>` | `\x00\x40\x63`          
-| `int<8>`  | `\x00\x9d`              
-| `int<12>` | `\x8d\x1d`              
-| `int<16>` | `empty string`          
+| P4 type   | P4Runtime binary string
+| `bit<8>`  | `\x01\x63`
+| `bit<8>`  | `empty string`
+| `bit<16>` | `\x01\x00\x63`
+| `bit<12>` | `\x10\x63`
+| `bit<12>` | `\x01\x00\x63`
+| `bit<12>` | `\x00\x40\x63`
+| `int<8>`  | `\x00\x9d`
+| `int<12>` | `\x8d\x1d`
+| `int<16>` | `empty string`
 |===
 
 As the preceding examples illustrate, a P4Runtime server must accept a wide
@@ -2417,7 +2416,7 @@ the binary string is less than the maximum length specified in the P4 program,
 and return an `OUT_OF_RANGE` error code otherwise.
 
 [#sec-representation-of-arbitrary-p4-types]
-=== Representation of Arbitrary P4 Types 
+=== Representation of Arbitrary P4 Types
 
 ==== Problem Statement
 
@@ -2435,21 +2434,21 @@ specification.
 [#tab-p4-type-usage]
 |===
 | *Element type* 3+^| *Container type*
-|                | *header*               | *header_union* | *struct or tuple* 
-| `bit<W>`       | allowed               | error        | allowed         
-| `int<W>`       | allowed               | error        | allowed         
-| `varbit<W>`    | allowed               | error        | allowed         
-| `int`          | error                 | error        | error           
-| `void`         | error                 | error        | error           
-| `error`        | error                 | error        | allowed         
-| `match_kind`   | error                 | error        | error           
-| `bool`         | error                 | error        | allowed         
-| `enum`         | allowed[1]            | error        | allowed         
-| `header`       | error                 | allowed      | allowed         
-| header stack   | error                 | error        | allowed         
-| `header_union` | error                 | error        | allowed         
-| `struct`       | error                 | error        | allowed         
-| `tuple`        | error                 | error        | allowed         
+|                | *header*               | *header_union* | *struct or tuple*
+| `bit<W>`       | allowed               | error        | allowed
+| `int<W>`       | allowed               | error        | allowed
+| `varbit<W>`    | allowed               | error        | allowed
+| `int`          | error                 | error        | error
+| `void`         | error                 | error        | error
+| `error`        | error                 | error        | allowed
+| `match_kind`   | error                 | error        | error
+| `bool`         | error                 | error        | allowed
+| `enum`         | allowed[1]            | error        | allowed
+| `header`       | error                 | allowed      | allowed
+| header stack   | error                 | error        | allowed
+| `header_union` | error                 | error        | allowed
+| `struct`       | error                 | error        | allowed
+| `tuple`        | error                 | error        | allowed
 |===
 
 [1] An `enum` type used as a field in a `header` must specify a
@@ -2529,7 +2528,7 @@ P4~16~ declaration. The same goes for the order of members of an `enum`
 (serializable or not) or members of `error`.
 
 [#sec-p4data-in-p4runtime-proto]
-==== `P4Data` in p4runtime.proto 
+==== `P4Data` in p4runtime.proto
 
 P4Runtime uses the `P4Data` message to represent values of arbitrary types. The
 P4Runtime client must generate correct `P4Data` messages based on the type
@@ -2684,7 +2683,7 @@ it easier for the server to respect the xref:sec-read-write-symmetry[read-write
 symmetry] principle.
 
 [#sec-user-defined-types]
-==== User-defined types 
+==== User-defined types
 
 P4~16~ enables programmers to introduce new types cite:[P4NewTypes]. While similar
 to `typedef`, this mechanism introduces in fact a new type, which is not a
@@ -2887,7 +2886,7 @@ tables {
 ----
 
 [#sec-p4-entity-msgs]
-== P4 Entity Messages 
+== P4 Entity Messages
 
 P4Runtime covers P4 entities that are either part of the P4~16~ language, or
 defined as PSA externs. The sections below describe the messages for each
@@ -2932,7 +2931,7 @@ the `TableEntry` entity, which has the following fields:
   performs a read on the entry.
 
 * `meter_config`, which is used to read and write the configuration for the
-  direct meter entry attached to this table entry, if any. See 
+  direct meter entry attached to this table entry, if any. See
   xref:sec-direct-resources[Direct resources] section for more information.
 
 * `counter_data`, which is used to read and write the value for the direct
@@ -2990,7 +2989,7 @@ The `is_const` field must be `false` in any `INSERT`, `MODIFY`, or
 must reject the operation and return an `INVALID_ARGUMENT` error.
 
 [#sec-match-format]
-==== Match Format 
+==== Match Format
 
 The bytes fields in the `FieldMatch` message follow the format described in
 xref:sec-bytestrings[Bytestrings].
@@ -3114,7 +3113,7 @@ assert(value & mask == value)
 
 * `RANGE` match
     * The binary string encoding of the low bound (when present) and high bound
-      (when present) must conform to the xref:sec-bytestrings[Bytestrings] 
+      (when present) must conform to the xref:sec-bytestrings[Bytestrings]
       requirements.
     * Low bound must be less than or equal to the high bound.
     * "Don't care" match must be omitted.
@@ -3194,7 +3193,7 @@ has not been inserted in the corresponding action profile instance yet, the
 P4Runtime server must return a `NOT_FOUND` error code.
 
 [#sec-default-entry]
-==== Default Entry 
+==== Default Entry
 
 According to the P4 specification, the default entry for a table is always set.
 It can be set at compile-time by the P4 programmer --- or defaults to `NoAction`
@@ -3226,7 +3225,7 @@ indirect tables --- tables with an ActionProfile or ActionSelector
 hope that it would simplify the implementation of the P4Runtime service.
 
 [#sec-constant-tables]
-==== Constant Tables 
+==== Constant Tables
 
 Constant tables are defined as tables whose match entries are
 immutable. They are identified by the table property `const entries`
@@ -3264,7 +3263,7 @@ explicitly specifying priorities for entries in constant tables, but
 `p4c` does not yet support this.
 
 [#sec-preinitialized-tables]
-==== Preinitialized tables 
+==== Preinitialized tables
 
 Preinitialized tables are those defined with an `entries` table
 property in the P4~16~ source code, with no `const` qualifier before
@@ -3321,7 +3320,7 @@ the open source `p4c` compiler.  See <<#sec-entries-files>> for
 details.
 
 [#sec-table-wildcard-reads]
-==== Wildcard Reads 
+==== Wildcard Reads
 
 When performing a `ReadRequest`, the P4Runtime client can select all entries
 from one or all tables on the target and use several of the `TableEntry` fields
@@ -3467,7 +3466,7 @@ single entry (the "don't care" entry) as long as the `priority` field is set to
 the correct value.
 
 [#sec-direct-resources]
-==== Direct Resources 
+==== Direct Resources
 
 In addition to the `DirectCounterEntry` and `DirectMeterEntry` entities,
 P4Runtime support reading and writing direct resources as part of the
@@ -3570,7 +3569,7 @@ meter configuration, it needs to be provided again in the `TableEntry` message
 (i.e. the `meter_config` field must be set to match the existing configuration).
 
 [#sec-idle-timeout]
-==== Idle-timeout 
+==== Idle-timeout
 
 P4Runtime supports idle timeout for table entries. When adding a table entry,
 the client can specify a Time-To-Live (TTL) value. If at any time during its
@@ -3623,7 +3622,7 @@ For more information about idle timeout, in particular regarding
 `IdleTimeoutNotification`, please refer to the xref:sec-table-idle-timeout-notification[Table idle timeout notifications] section.
 
 [#sec-action-profile-member-and-group]
-=== `ActionProfileMember` & `ActionProfileGroup` 
+=== `ActionProfileMember` & `ActionProfileGroup`
 
 P4Runtime defines an API for programming a PSA ActionProfile extern using
 `ActionProfileMember` messages. A PSA ActionSelector extern can be programmed
@@ -3733,7 +3732,7 @@ an existing ActionProfile or ActionSelector object, and a `member_id` equal to
 0, will read all members of that specified object.
 
 [#sec-action-profile-group-programming]
-==== Action Profile Group Programming 
+==== Action Profile Group Programming
 
 Action profile groups are entries in an ActionSelector and are referenced by a
 `uint32` identifier that is bound to a set of action profile members already
@@ -3848,7 +3847,7 @@ in the P4Info message:
     group-creation time.
 
 [#sec-oneshot]
-==== One Shot Action Selector Programming 
+==== One Shot Action Selector Programming
 
 P4Runtime supports syntactic sugar to program a table, which is implemented with
 an action selector, in one shot. One shot means that a table entry, an action
@@ -3998,7 +3997,7 @@ an action selector implementation. Support for the `ActionProfileMember` and
 message that it receives.
 
 [#action-selector-constraints]
-==== Constraints on action selector programming 
+==== Constraints on action selector programming
 
 The PSA specification states that the following features are *optional* in
 action selector implementations cite:[PSAActionSelector]:
@@ -4505,7 +4504,7 @@ other fields in `MulticastGroupEntry` are ignored. To perform a *wildcard*
 must be set to 0, its default value.
 
 [#sec-valid-values-for-mg-id]
-===== Valid Values for `multicast_group_id` 
+===== Valid Values for `multicast_group_id`
 
 The PSA specification states that the valid *data plane* values for multicast
 group ids (`MulticastGroup_t`) range from 1 (0 is a special value that indicates
@@ -4605,9 +4604,9 @@ semantics:
   value for the PSA `ClassOfService_t` type, which supports runtime translation
   by default cite:[PSATranslation], or the server must return
   `INVALID_ARGUMENT`. See xref:sec-translation-of-port-numbers[PSA Metadata
-  Translation] for more information. The `packet_length_bytes` field must be 
-  set to a non-zero value if the clone packet should be truncated to the given 
-  value (in bytes). If the`packet_length_bytes` field is 0 (default), 
+  Translation] for more information. The `packet_length_bytes` field must be
+  set to a non-zero value if the clone packet should be truncated to the given
+  value (in bytes). If the`packet_length_bytes` field is 0 (default),
   no truncation on the clone will be performed.
 * `MODIFY`: Modify the attributes of a given clone session entry, indexed by the
   given `clone_session_id`. Same restrictions as `INSERT` apply here.
@@ -4623,7 +4622,7 @@ default value. The `session_id` field can never be equal to 0 in a `Write`
 RPC. If it does, the server must return an `INVALID_ARGUMENT` error.
 
 [#sec-valid-values-for-session-id]
-===== Valid Values for `session_id` 
+===== Valid Values for `session_id`
 
 The PSA specification states that the valid *data plane* values for clone
 session ids (`CloneSessionId_t`) range from 0 to the maximum value supported by
@@ -4768,7 +4767,7 @@ control plane operations.
   error.
 
 [#sec-digestentry]
-=== `DigestEntry` 
+=== `DigestEntry`
 
 A digest is one mechanism to send a message from the data plane to the
 control plane. It is traditionally used for MAC address learning: when a packet
@@ -4910,7 +4909,7 @@ while (true) {
 ----
 
 [#sec-extern-entry]
-=== `ExternEntry` 
+=== `ExternEntry`
 
 This is used to support a P4 extern entity that is not part of PSA. It is
 defined as:
@@ -4938,7 +4937,7 @@ section on xref:sec-extending-p4runtime[Extending P4Runtime for non-PSA
 Architectures] for more information.
 
 [#sec-error-reporting-messages]
-== Error Reporting Messages 
+== Error Reporting Messages
 
 P4Runtime is based on gRPC and all RPCs return a status to indicate success or
 failure. gRPC supports multiple language bindings; we use C++ binding below to
@@ -5079,7 +5078,7 @@ P4Runtime implementation for a P4-programmable target, we expect the P4 compiler
 to reject the program.
 
 [#sec-write-rpc]
-== `Write` RPC 
+== `Write` RPC
 
 The `Write` RPC updates one or more P4 entities on the target. The request is
 defined as follows:
@@ -5165,7 +5164,7 @@ If an update is not allowed under the given controller role, the server must
 return a `PERMISSION_DENIED` error for this update.
 
 [#sec-batching-and-ordering-of-updates]
-=== Batching and Ordering of Updates 
+=== Batching and Ordering of Updates
 
 P4Runtime supports batching of `Write` operations. The list of updates in a
 `WriteRequest` is referred to as a *batch*. A batch can consist of arbitrary
@@ -5206,7 +5205,7 @@ should be sent sequentially, waiting for the previous call to be acknowledged
 before sending the next one.
 
 [#sec-batch-atomicity]
-=== Batch Atomicity 
+=== Batch Atomicity
 
 A P4Runtime server may arbitrarily reorder messages within a batch. The
 atomicity semantics of the batch operations are defined by the `Atomicity`
@@ -5377,7 +5376,7 @@ entity.  Please refer to the xref:sec-p4-entity-msgs[P4 Entity Messages] section
 for details on what parts of the entity specification make up the entity *key*.
 
 [#sec-wildcard-reads]
-=== Wildcard Reads 
+=== Wildcard Reads
 
 P4Runtime allows wildcard read of P4 entities. A *request* may omit or use
 default values for parts of the entity key to achieve wildcard behavior. Please
@@ -5673,7 +5672,7 @@ returning the `p4_device_config`, there should be read-write symmetry between
 == P4Runtime Stream Messages
 
 [#sec-packet-i_o]
-=== Packet I/O 
+=== Packet I/O
 
 P4Runtime supports controller packet-in and packet-out by means of `PacketIn`
 and `PacketOut` stream messages, respectively.
@@ -5837,7 +5836,7 @@ xref:sec-default-valued-fields[the section on default-valued fields].
 See the [DigestEntry](#sec-digestentry) section.
 
 [#sec-table-idle-timeout-notification]
-=== Table Idle Timeout Notification 
+=== Table Idle Timeout Notification
 
 When a table supports idle timeout (as per the P4Info message), the primary
 client can specify a TTL value for each entry in the table (see
@@ -5918,7 +5917,7 @@ streaming of data from the server to the client, much like the xref:sec-digesten
 extern]. See section on xref:sec-extending-p4runtime[Extending P4Runtime for non-PSA Architectures] for more information.
 
 [#sec-stream-error-reporting]
-=== Stream Error Reporting 
+=== Stream Error Reporting
 
 The P4Runtime server can asynchronously report errors which occur when
 processing `StreamMessageRequest` messages, using the `error` message field (of
@@ -6042,7 +6041,7 @@ P4Runtime service) implements an older version of the P4Runtime specification
 == Portability Considerations
 
 [#sec-psa-metadata-translation]
-=== PSA Metadata Translation 
+=== PSA Metadata Translation
 
 The *Portable Switch Architecture* (PSA) defines standard metadata, whose
 data plane types are different on different PSA targets. In order to enable
@@ -6072,7 +6071,7 @@ the non-forwarding switch config data that is delivered separately to the
 switch.
 
 [#sec-translation-of-port-numbers]
-==== Translation of Port Numbers 
+==== Translation of Port Numbers
 
 In order to support the above SDN use case, P4Runtime requires translation of
 port metadata values between the controller's space and the PSA device's space
@@ -6300,7 +6299,7 @@ using SDN port numbers as indices, and not device-specific port numbers. The
 server that translation is required.
 
 [#sec-p4runtime-versioning]
-== P4Runtime Versioning 
+== P4Runtime Versioning
 
 P4Runtime follows the Google guidelines for versioning cloud APIs
 cite:[APIVersioning]. We use a `MAJOR.MINOR.PATCH` style version number scheme and
@@ -6340,7 +6339,7 @@ P4Runtime Github repository cite:[P4RuntimeRepo] and the version label follows
 semantic versioning rules cite:[SemVer].
 
 [#sec-extending-p4runtime]
-== Extending P4Runtime for non-PSA Architectures 
+== Extending P4Runtime for non-PSA Architectures
 
 P4Runtime includes native support for PSA programs and in particular support for
 runtime control of PSA extern instances. While the definition of Protobuf
@@ -6507,7 +6506,7 @@ properties, but we may include on in future versions of the API.
   patch version numbers.
 
 [appendix]
-= Appendix 
+= Appendix
 
 === Revision History
 ==== Changes in v1.4.1
@@ -6644,24 +6643,24 @@ the purpose of adding features for the P4Runtime API.
 [cols="2",width=80%, align=center, options=header, unbreakable]
 [#tab-p4-annotations]
 |===
-| Annotation                 | Description                           
-| `@brief`                   | See <<#sec-annotating-p4-entities-with-documentation>> 
+| Annotation                 | Description
+| `@brief`                   | See <<#sec-annotating-p4-entities-with-documentation>>
 | `@controller_header`       | See <<#sec-controller-packet-meta>>
-| `@description`             | See <<#sec-annotating-p4-entities-with-documentation>> 
+| `@description`             | See <<#sec-annotating-p4-entities-with-documentation>>
 | `@id`                      | See <<#sec-id-allocation>>
 | `@max_group_size`          | See <<#sec-p4info-action-profile>>, <<#sec-action-profile-group-programming>>
-| `@selector_size_semantics` | See <<#sec-p4info-action-profile>> 
+| `@selector_size_semantics` | See <<#sec-p4info-action-profile>>
 | `@max_member_weight`       | See <<#sec-p4info-action-profile>>
 | `@two_rate_three_color`    | See <<#sec-meter-directmeter>>
 | `@single_rate_three_color` | See <<#sec-meter-directmeter>>
 | `@single_rate_two_color`   | See <<#sec-meter-directmeter>>
-| `@pkginfo`                 | See <<#sec-annotating-p4-code-with-pkginfo>> 
-| `@platform_property`       | See <<#sec-annotating-p4-code-with-pkginfo>> 
-| `@p4runtime_translation`   | See <<#sec-user-defined-types>>, <<#sec-translation-of-port-numbers>> 
+| `@pkginfo`                 | See <<#sec-annotating-p4-code-with-pkginfo>>
+| `@platform_property`       | See <<#sec-annotating-p4-code-with-pkginfo>>
+| `@p4runtime_translation`   | See <<#sec-user-defined-types>>, <<#sec-translation-of-port-numbers>>
 |===
 
 [#sec-value-set-example]
-=== A More Complex Value Set Example 
+=== A More Complex Value Set Example
 
 This section includes a more complex Value Set example, with multiple matches of
 different kinds.
@@ -6813,7 +6812,7 @@ size. The gRPC server running the P4Runtime service must not set the maximum
 receive message size to a value smaller than the default (4MB).
 
 [#sec-entries-files]
-=== P4Runtime Entries files 
+=== P4Runtime Entries files
 
 The open source P4 compiler `p4c` cite:[p4c] implements an option to
 generate an "entries file", i.e. a file that contains all table
