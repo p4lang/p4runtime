@@ -1284,7 +1284,7 @@ error if the 8-bit prefix does not contain the correct value, or leave it as is
 if it is correct.
 
 //The second row as to be fixed as is in the madoko document
-.Example of statically-assigned P4Info object IDs
+.P4 annotations introduced by P4Runtime
 [cols="2",width=80%, align=center, options=header, unbreakable]
 [#tab-exmpl-p4-obj-ids]
 |===
@@ -6639,7 +6639,7 @@ No content changes; tag was incremented only.
 <<#tab-p4-annotations>> lists P4~16~ annotations introduced primarily for
 the purpose of adding features for the P4Runtime API.
 
-.Example of statically-assigned P4Info object IDs
+.P4 annotations introduced by P4Runtime
 [cols="2",width=80%, align=center, options=header, unbreakable]
 [#tab-p4-annotations]
 |===
