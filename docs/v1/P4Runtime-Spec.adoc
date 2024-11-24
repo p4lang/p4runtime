@@ -1284,7 +1284,7 @@ error if the 8-bit prefix does not contain the correct value, or leave it as is
 if it is correct.
 
 //The second row as to be fixed as is in the madoko document
-.P4 annotations introduced by P4Runtime
+.Example of statically-assigned P4Info object IDs
 [cols="2",width=80%, align=center, options=header, unbreakable]
 [#tab-exmpl-p4-obj-ids]
 |===
@@ -2444,7 +2444,7 @@ specification.
 | `error`        | error                 | error        | allowed         
 | `match_kind`   | error                 | error        | error           
 | `bool`         | error                 | error        | allowed         
-| `enum`         | allowed[^enum_header] | error        | allowed         
+| `enum`         | allowed[1]            | error        | allowed         
 | `header`       | error                 | allowed      | allowed         
 | header stack   | error                 | error        | allowed         
 | `header_union` | error                 | error        | allowed         
@@ -2452,7 +2452,7 @@ specification.
 | `tuple`        | error                 | error        | allowed         
 |===
 
-[^enum_header]: an `enum` type used as a field in a `header` must specify a
+[1] An `enum` type used as a field in a `header` must specify a
     underlying type and representation for `enum` elements.
 
 For example, the following P4~16~ objects involve complex types that need to be
@@ -4408,10 +4408,28 @@ entity {
   packet_replication_engine_entry {
     multicast_group_entry {
       multicast_group_id: 1
-      replicas { port: "\x05" instance: 1 }
-      replicas { port: "\x0c" instance: 2 }
-      replicas { port: "\x12" instance: 3 }
-      replicas { port: "\x18" instance: 4 }
+      replicas {
+        port: "\x05"
+        instance: 1
+      }
+      replicas {
+        port: "\x0c"
+        instance: 2
+        backup_replicas { port: "\x0d" instance: 5 }
+      }
+      replicas {
+        port: "\x12"
+        instance: 3
+        backup_replicas { port: "\x13" instance: 6 }
+        backup_replicas { port: "\x14" instance: 7 }
+      }
+      replicas {
+        port: "\x18"
+        instance: 4
+        backup_replicas { port: "\x19" instance: 8 }
+        backup_replicas { port: "\x1a" instance: 9 }
+        backup_replicas { port: "\x1b" instance: 10 }
+      }
     }
   }
 }
@@ -5897,7 +5915,7 @@ the client on `StreamChannel`, by including an `Any` Protobuf field cite:[ProtoA
 named `other` in both `StreamMessageRequest` and `StreamMessageResponse`. This
 enables support for architecture-specific externs which require asynchronous
 streaming of data from the server to the client, much like the xref:sec-digestentry[PSA `Digest`
-extern]. See section on xref:sec-extending-p4runtime[Extending P4Runtime for non-PSA Architectures]for more information.
+extern]. See section on xref:sec-extending-p4runtime[Extending P4Runtime for non-PSA Architectures] for more information.
 
 [#sec-stream-error-reporting]
 === Stream Error Reporting 
