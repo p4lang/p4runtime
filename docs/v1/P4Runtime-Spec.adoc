@@ -1284,7 +1284,7 @@ error if the 8-bit prefix does not contain the correct value, or leave it as is
 if it is correct.
 
 //The second row as to be fixed as is in the madoko document
-.P4 annotations introduced by P4Runtime
+.Example of statically-assigned P4Info object IDs
 [cols="2",width=80%, align=center, options=header, unbreakable]
 [#tab-exmpl-p4-obj-ids]
 |===
