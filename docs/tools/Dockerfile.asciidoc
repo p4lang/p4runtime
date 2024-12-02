@@ -14,7 +14,7 @@ RUN   gem install asciidoctor \
       cd rouge \
       git log -n 1 | cat \
       gem build rouge.gemspec \ 
-      gem install gem 
+      gem install rouge 
 
 VOLUME ["/usr/src/p4-spec"]
 WORKDIR /usr/src/p4-spec
