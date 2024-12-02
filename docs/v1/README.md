@@ -29,7 +29,7 @@ Files:
 ## Document Figures
 
 Each image in the specification has a corresponding `.odg` file under
-`figures/`. These are LibreOffice drawing files. The files are rendered into
+`resources/figs/`. These are LibreOffice drawing files. The files are rendered into
 `.svg` and `.png` images (for HTML and PDF output, resepectively) at build time,
 using the `soffice` command-line tool. The page size for each image should be
 adjusted manually by the author ("artist") to just fit the image on the
@@ -39,9 +39,17 @@ screen shot below. (Do not check the "Fit object to paper format" box - it will
 change the object's aspect ratio.)
 ![LibreOffice](libre-office.png)
 
+Commands to convert a image from `.odg` to `.svg` and/or `.png`:
 ```
-soffice --convert-to svg --outdir resources/figs/ resources/figs/*.odg > /dev/null
-soffice --convert-to png --outdir resources/figs/ resources/figs/*.odg > /dev/null
+soffice --convert-to svg figure_name.odg 
+soffice --convert-to png figure_name.odg 
+```
+
+Commands to convert a image `.odg` to `.svg` and/or `.png` and  move to `resources/figs/`:
+
+```
+soffice --convert-to svg  --outdir resources/figs/  figure_name.odg 
+soffice --convert-to png  --outdir resources/figs/  figure_name.odg 
 ```
 
 ## Building
