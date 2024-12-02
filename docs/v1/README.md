@@ -26,6 +26,23 @@ Files:
       - `*.bib`  - Bibliography file that contains a list of bibliographical item, such as articles, books, and theses.
 - `Makefile` builds documentation in the build subdirectory
 
+## Document Figures
+
+Each image in the specification has a corresponding `.odg` file under
+`figures/`. These are LibreOffice drawing files. The files are rendered into
+`.svg` and `.png` images (for HTML and PDF output, resepectively) at build time,
+using the `soffice` command-line tool. The page size for each image should be
+adjusted manually by the author ("artist") to just fit the image on the
+apparrent "page," to minimize padding around the image in the rendered
+document. Use the menu item `Format | Page/Size Properties.` See the example
+screen shot below. (Do not check the "Fit object to paper format" box - it will
+change the object's aspect ratio.)
+![LibreOffice](libre-office.png)
+
+```
+soffice --convert-to svg --outdir resources/figs/ resources/figs/*.odg > /dev/null
+soffice --convert-to png --outdir resources/figs/ resources/figs/*.odg > /dev/null
+```
 
 ## Building
 
