@@ -28,6 +28,12 @@ Files:
 
 ## Document Figures
 
+The P4Runtime specification can be generated on your local machine or via the Docker container. Due to this, the document figure can be rendered using two different approaches
+
+### Local machine
+
+You need to install [LibreOffice](https://nl.libreoffice.org/) on your local machine.
+
 Each image in the specification has a corresponding `.odg` file under
 `resources/figs/`. These are LibreOffice drawing files. The files are rendered into
 `.svg` and `.png` images (for HTML and PDF output, resepectively) at build time,
@@ -51,6 +57,11 @@ Commands to convert a image `.odg` to `.svg` and/or `.png` and  move to `resourc
 soffice --convert-to svg  --outdir resources/figs/  figure_name.odg 
 soffice --convert-to png  --outdir resources/figs/  figure_name.odg 
 ```
+### Docker container
+
+The Docker container, generated from the `p4lang/p4rt-asciidoc:latest` image, does not require 
+LibreOffice to be installed.
+
 
 ## Building
 
@@ -61,8 +72,8 @@ The easiest way to render the AsciiDoc specification documentation is to use the
 
 ### Linux
 ```
-You can use the [local installation](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/install-asciidoctor-linux.sh)
-method.
+You can use the [local installation](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/install-asciidoctor-linux.sh) method, and you also need to install LibreOffice to render the 
+images into .svg and .png formats.
 
 ### MacOS
 
