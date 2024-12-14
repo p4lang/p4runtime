@@ -14,7 +14,7 @@ jobs:
   madoko-lint:
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Run linter
       run: |
         ./tools/madokolint.py docs/v1/P4Runtime-Spec.mdk
@@ -22,7 +22,7 @@ jobs:
   build-spec:
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build spec
       run: |
         docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make

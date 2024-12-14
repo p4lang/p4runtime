@@ -10,7 +10,7 @@ jobs:
     if: ${{ github.repository == 'p4lang/p4runtime' }}
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build spec
       run: |
         docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-madoko:latest make

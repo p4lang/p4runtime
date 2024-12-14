@@ -14,33 +14,75 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    env:
-      BAZEL: bazelisk-linux-amd64
+    strategy:
+      matrix:
+        os:
+          - ubuntu-22.04
+          - ubuntu-24.04
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
-    
+
     - name: Mount bazel cache
-      uses: actions/cache@v2
+      uses: actions/cache/restore@v4
       with:
         # See https://docs.bazel.build/versions/master/output_directories.html
         path: "~/.cache/bazel"
         # Create a new cache entry whenever Bazel files change.
         # See https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
-        key: bazel-${{ runner.os }}-build-${{ hashFiles('**/*.bzl', '**/*.bazel') }}
+        key: bazel-${{ matrix.os }}-${{ hashFiles('**/*.bazel*') }}
         restore-keys: |
-          bazel-${{ runner.os }}-build-
+          bazel-${{ matrix.os }}-
 
-    - name: Install bazelisk
-      run: |
-        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.15.0/$BAZEL"
-        chmod +x $BAZEL
-        sudo mv $BAZEL /usr/local/bin/bazel
+    - name: Save start time
+      uses: josStorer/get-current-time@v2
+      id: start-time
+      with:
+        # Unix timestamp -- seconds since 1970.
+        format: X
 
     - name: Build proto/
       run: cd proto && bazel build //... && bazel test //...
 
     - name: Build bazel/example/
       run: cd bazel/example/ && bazel build //...
+
+    - name: Save end time
+      # Always save the end time so we can calculate the build duration.
+      if: always()
+      uses: josStorer/get-current-time@v2
+      id: end-time
+      with:
+        # Unix timestamp -- seconds since 1970.
+        format: X
+
+    - name: Calculate build duration
+      # Always calculate the build duration so we can update the cache if needed.
+      if: always()
+      run: |
+        START=${{ steps.start-time.outputs.formattedTime }}
+        END=${{ steps.end-time.outputs.formattedTime }}
+        DURATION=$(( $END - $START ))
+        echo "duration=$DURATION" | tee "$GITHUB_ENV"
+
+    - name: Compress cache
+      # Always compress the cache so we can update the cache if needed.
+      if: always()
+      run: rm -rf $(bazel info repository_cache)
+
+    - name: Save bazel cache
+      uses: actions/cache/save@v4
+      # Only create a new cache entry if we're on the main branch or the build takes >5mins.
+      #
+      # NOTE: Even though `always()` evaluates to true, and `true && x == x`,
+      # the `always() &&` prefix is not redundant! The call to `always()` has a
+      # side effect, which is to override the default behavior of automagically
+      # canceling this step if a previous step failed.
+      # (Don't blame me, blame GitHub Actions!)
+      if: always() && (github.ref_name == 'main' || env.duration > 300)
+      with:
+        path: "~/.cache/bazel"
+        key: bazel-${{ matrix.os }}-${{ hashFiles('**/*.bazel*') }}-${{ github.run_id }}
