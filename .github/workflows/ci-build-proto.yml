@@ -14,13 +14,22 @@ on:
 
 jobs:
   build:
+
     strategy:
       matrix:
-        os:
-          - ubuntu-22.04
-          - ubuntu-24.04
-          - ubuntu-latest
+        # We only test on the oldest version we want to support and latest, and
+        # hope things also work for versions in the middle.
+        os: [ubuntu-22.04, ubuntu-latest]
+        bazel_version: [6.x, latest]
+      # Don't abort other runs when one of them fails, to ease debugging.
+      fail-fast: false
+
     runs-on: ${{ matrix.os }}
+
+    env:
+      USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
+      KEY: bazel-${{ matrix.bazel_version }}-${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v4
       with:
@@ -33,9 +42,9 @@ jobs:
         path: "~/.cache/bazel"
         # Create a new cache entry whenever Bazel files change.
         # See https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
-        key: bazel-${{ matrix.os }}-${{ hashFiles('**/*.bazel*') }}
+        key: ${{ env.KEY }}-${{ hashFiles('**/*.bazel*', '**/*.bzl') }}
         restore-keys: |
-          bazel-${{ matrix.os }}-
+          ${{ env.KEY }}
 
     - name: Save start time
       uses: josStorer/get-current-time@v2
@@ -85,4 +94,4 @@ jobs:
       if: always() && (github.ref_name == 'main' || env.duration > 300)
       with:
         path: "~/.cache/bazel"
-        key: bazel-${{ matrix.os }}-${{ hashFiles('**/*.bazel*') }}-${{ github.run_id }}
+        key: ${{ env.KEY }}-${{ hashFiles('**/*.bazel*', '**/*.bzl') }}-${{ github.run_id }}
