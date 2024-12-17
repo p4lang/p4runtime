@@ -2299,7 +2299,7 @@ C++ API supports comparing messages while treating repeated fields as sets, so
 that different orderings of the same elements are considered equal. This method
 of comparing Protobuf messages may come at a cost in performance.
 The `backup_replicas` must be returned in order when read to preserve the
-hierarchy of highest-preferred backup replicas.
+sequence of highest-preferred backup replicas.
 
 ### Data plane volatile objects { #sec-data-plane-volatile-objects }
 
