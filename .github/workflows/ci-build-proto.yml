@@ -2,11 +2,11 @@ name: "build protobufs"
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - '*-dev'
   pull_request:
-    branches: 
+    branches:
       - main
       - '*-dev'
   schedule:
@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
-    
+
     - name: Mount bazel cache
       uses: actions/cache@v2
       with:
@@ -33,14 +33,11 @@ jobs:
         restore-keys: |
           bazel-${{ runner.os }}-build-
 
-    - name: Install bazelisk
-      run: |
-        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.15.0/$BAZEL"
-        chmod +x $BAZEL
-        sudo mv $BAZEL /usr/local/bin/bazel
-
     - name: Build proto/
       run: cd proto && bazel build //... && bazel test //...
 
-    - name: Build bazel/example/
-      run: cd bazel/example/ && bazel build //...
+    - name: Build bazel/example/using-workspace/
+      run: cd bazel/example/using-workspace && bazel build //...
+
+    - name: Build bazel/example/using-bzlmod/
+      run: cd bazel/example/using-bzlmod && bazel build //...

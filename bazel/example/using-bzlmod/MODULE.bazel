@@ -1,0 +1,24 @@
+bazel_dep(
+    name = "p4runtime",
+    repo_name = "com_github_p4lang_p4runtime",
+)
+
+# In your own project, you will likely want to use `http_archive` instead
+# of `local_repository` to load p4runtime.
+local_path_override(
+    module_name = "p4runtime",
+    path = "../../../proto",
+)
+
+# git_override(
+#     module_name = "p4runtime",
+#     strip_prefix = "p4runtime-1.4.1/proto",
+#     urls = ["https://github.com/p4lang/p4runtime/archive/v1.4.1.tar.gz"],
+#     # sha256 = "<insert hash value here>",
+# )
+
+bazel_dep(
+    name = "protobuf",
+    version = "29.1",
+    repo_name = "com_google_protobuf",
+)
