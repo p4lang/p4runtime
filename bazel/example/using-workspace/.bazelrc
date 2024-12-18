@@ -1,0 +1,7 @@
+# Use `WORKSPACE.bazel` instead of bzlmod (`MODULE.bazel`).
+common --enable_workspace
+common --noenable_bzlmod
+
+# Use C++14 (required for recent gRPC versions).
+build --cxxopt=-std=c++14
+build --host_cxxopt=-std=c++14
