@@ -1,12 +1,15 @@
 # Emacs
 *~
 docs/v1/build/
-bazel-*
 .DS_Store
 build
 dist
 *.egg-info
 .eggs
 
-# rust
+# Rust
 target/
+
+# Bazel
+bazel-*
+*.lock
