@@ -1693,7 +1693,7 @@ controller_packet_metadata {
   preamble {
     id: 2868916615
     name: "packet_out"
-    annotations: "@controller_header(\"packet_out\")"
+    annotations: "@controller_header(\"packet_out"\)"
   }
   metadata {
     id: 1
@@ -1711,7 +1711,7 @@ controller_packet_metadata {
   preamble {
     id: 2868941301
     name: "packet_in"
-    annotations: "@controller_header(\"packet_in\")"
+    annotations: "@controller_header(\"packet_in"\)"
   }
   metadata {
     id: 1
@@ -2064,7 +2064,7 @@ entry.mutable_index();
 
 [source,protobuf]
 ----
-counter_id: <id>
+counter_id: "id_value"
 index {}
 ----
 
@@ -2089,7 +2089,7 @@ entry.set_counter_id(<id>);
 
 [source,protobuf]
 ----
-counter_id: <id>
+counter_id: "id_value"
 ----
 
     * **Expected behavior**: All counter entries for the provided counter
@@ -2603,7 +2603,8 @@ type_info {
             bitwidth: 4
           }
         }
-      } # ...
+      } 
+  ...
   headers {
     key: "ipv6_t"
     value {
@@ -2614,7 +2615,8 @@ type_info {
             bitwidth: 4
           }
         }
-      } # ...
+      }
+  ...
   header_unions {
     key: "ip_t"
     value {
@@ -2652,7 +2654,8 @@ update {
           valid_header {
             is_valid: true
             bitstrings: "\x04"
-            bitstrings: # ...
+            bitstrings: 
+            ...
           }
         }
       }
@@ -2763,8 +2766,8 @@ messages:
 type_info {
   new_types {
     key: "PortId_String_t"
-    value {  # P4NewTypeSpec
-      translated_type {  # P4NewTypeTranslation
+    value {  // P4NewTypeSpec
+      translated_type {  // P4NewTypeTranslation
         uri: "p4.org/psa/v1/PortId_String_t"
         sdn_string: {}
       }
@@ -2775,8 +2778,8 @@ type_info {
 type_info {
   new_types {
     key: "PortId_Bit32_t"
-    value {  # P4NewTypeSpec
-      translated_type {  # P4NewTypeTranslation
+    value {  // P4NewTypeSpec
+      translated_type {  // P4NewTypeTranslation
         uri: "p4.org/psa/v1/PortId_Bit32_t"
         sdn_bitwidth: 32
       }
@@ -2787,8 +2790,8 @@ type_info {
 type_info {
   new_types {
     key: "PortId_32_t"
-    value {  # P4NewTypeSpec
-      translated_type {  # P4NewTypeTranslation
+    value {  // P4NewTypeSpec
+      translated_type {  // P4NewTypeTranslation
         uri: "p4.org/psa/v1/PortId_32_t"
         sdn_bitwidth: 32
       }
@@ -2866,7 +2869,7 @@ tables {
   match_fields {
     id: 1
     name: "meta.port1"
-    # notice that bitwidth is unset
+    // notice that bitwidth is unset
     match_type: EXACT
     type_name {
       name: "PortId_String_t"
@@ -2881,7 +2884,7 @@ tables {
       name: "PortId_Bit32_t"
     }
   }
-  # ...
+  ...
 }
 ----
 
@@ -3039,16 +3042,16 @@ below, the `match` specifies only the `EXACT` field given by `field_id: 2`.
 device_id: 3
 entities {
   table_entry {
-    table_id: 33554439  # Table t's ID.
+    table_id: 33554439  // Table t's ID.
     match {
-      # field_id 1 is not present to use the don't care ternary value.
+      // field_id 1 is not present to use the don't care ternary value.
       field_id: 2
       exact {
         value: "\x20"
       }
     }
     action {
-      # Action selection goes here.
+      // Action selection goes here.
     }
   }
 }
@@ -3423,9 +3426,9 @@ The following `WriteRequest` message can be used to add 2 entries:
 ----
 device_id: 3
 entities {
-  table_entry { # don't care entry
+  table_entry { // don't care entry
     table_id: 0x0212ab34
-    # ...
+    ...
   }
   table entry {
     table_id: 0x0212ab34
@@ -3435,7 +3438,7 @@ entities {
         value: 0x0a000000
         prefix_len: 8
       }
-    # ...
+    ...
   }
 }
 ----
@@ -4562,7 +4565,7 @@ entity {
   packet_replication_engine_entry {
     clone_session_entry {
       session_id: 100
-      replicas { port: "\xff\xff\xff\xfd" instance: 1 } # to CPU
+      replicas { port: "\xff\xff\xff\xfd" instance: 1 } // to CPU
       class_of_service: 2
       packet_length_bytes: 4096
     }
@@ -4671,10 +4674,10 @@ value_sets {
   }
   match {
     id: 1
-    bitwidth: <ETH_TYPE_BITWIDTH>
+    bitwidth: "ETH_TYPE_BITWIDTH_VALUE"
     match_type: EXACT
   }
-  size: <MAX_TRILL_TYPES>
+  size: "MAX_TRILL_TYPES_VALUE"
 }
 ----
 
@@ -5292,28 +5295,28 @@ populate `grpc::Status` as follows:
 
 [source,protobuf]
 ----
-# Example of a grpc::Status returned for a Write RPC with a batch of 3 updates.
-# The first and third updates encountered an error, while the second update
-# succeeded.
-code_ = 2  # UNKNOWN
+Example of a grpc::Status returned for a Write RPC with a batch of 3 updates.
+The first and third updates encountered an error, while the second update
+succeeded.
+code_ = 2  // UNKNOWN
 error_message_ = "Write failure."
 binary_error_details {
-  code: 2  # UNKNOWN
+  code: 2  // UNKNOWN
   message: "Write failure."
   details {
-    canonical_code: 8  # RESOURCE_EXHAUSTED
+    canonical_code: 8  // RESOURCE_EXHAUSTED
     message: "Table is full."
     space: "targetX-psa-vendorY"
     code: 500  # ERR_TABLE_FULL
   }
   details {
-    canonical_code: 0  # OK
+    canonical_code: 0  // OK
   }
   details {
-    canonical_code: 6  # ALREADY_EXISTS
+    canonical_code: 6 // ALREADY_EXISTS
     message: "Entity already exists."
     space: "targetX-psa-vendorY"
-    code: 600  # ERR_ENTITY_ALREADY_EXISTS
+    code: 600  // ERR_ENTITY_ALREADY_EXISTS
   }
 }
 ----
@@ -5396,12 +5399,12 @@ generate the following `ReadRequest`:
 
 [source,protobuf]
 ----
-device_id: <ID>
+device_id: "DEVICE_ID"
 entities {
-  extern_entry { }  # read all extern instances for all supported extern types
-  table_entry { }  # read all table entries for all tables
-  action_profile_member { }  # read all members for all action profiles
-  action_profile_group { }  # read all groups for all action profiles
+  extern_entry { }  // read all extern instances for all supported extern types
+  table_entry { }  // read all table entries for all tables
+  action_profile_member { }  // read all members for all action profiles
+  action_profile_group { }  // read all groups for all action profiles
   ...
 }
 ----
@@ -5978,10 +5981,10 @@ client immediately. See section <<#sec-arbitration-updates>>.
 [source,protobuf]
 ----
 error {
-    canonical_code: 3  # INVALID_ARGUMENT
+    canonical_code: 3  // INVALID_ARGUMENT
     message: "Unknown metadata field id 7."
     packet_out {
-      # copied from the PacketOut message received from the client
+      // copied from the PacketOut message received from the client
       packet_out {
         payload: ...
         metadata {
@@ -5989,7 +5992,8 @@ error {
           name: "I_should_not_be_here"
           bitwidth: 32
         }
-        # more metadata
+        // more metadata
+        ...
       }
     }
 ----
@@ -6002,13 +6006,13 @@ error {
 [source,protobuf]
 ----
 error {
-    canonical_code: 3  # INVALID_ARGUMENT
+    canonical_code: 3  // INVALID_ARGUMENT
     message: "Packet exceeds the MTU for port."
     space: "targetX-psa-vendor1"
-    code: 123  # MTU_EXCEEDED
+    code: 123  // MTU_EXCEEDED
     packet_out {
-      # we do not set the packet_out field as it does not provide any
-      # extra information to the client
+      // we do not set the packet_out field as it does not provide any
+      // extra information to the client
     }
 }
 ----
@@ -6722,10 +6726,10 @@ entity {
         field_id: 1
         exact { value: 0xac }
       }
-      # match for field_id 2 is missing => don't care match
+      // match for field_id 2 is missing => don't care match
       match {
         field_id: 3
-        other { ... }  # some serialized Any message (architecture-specific)
+        other { ... }  // some serialized Any message (architecture-specific)
       }
     }
     members {
@@ -6739,7 +6743,7 @@ entity {
       }
       match {
         field_id: 3
-        other { ... }  # some serialized Any message (architecture-specific)
+        other { ... }  // some serialized Any message (architecture-specific)
       }
     }
   }
