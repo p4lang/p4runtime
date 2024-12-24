@@ -5833,7 +5833,7 @@ xref:sec-default-valued-fields[the section on default-valued fields].
 
 === Digest Messages
 
-See the [DigestEntry](#sec-digestentry) section.
+See <<#sec-digestentry>>.
 
 [#sec-table-idle-timeout-notification]
 === Table Idle Timeout Notification
