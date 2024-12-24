@@ -2654,8 +2654,7 @@ update {
           valid_header {
             is_valid: true
             bitstrings: "\x04"
-            bitstrings: 
-            ...
+            bitstrings: ...
           }
         }
       }
