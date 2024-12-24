@@ -233,7 +233,7 @@ may refer to one or more controllers.
 The P4Runtime API defines the messages and semantics of the interface between
 the client(s) and the server. The API is specified by the p4runtime.proto
 Protobuf file, which is available on GitHub as part of the standard
-cite:[P4RuntimeRepo].  It may be compiled via protoc --- the Protobuf compiler ---
+cite:[P4RuntimeRepo].  It may be compiled via protoc &#8212; the Protobuf compiler &#8212;
 to produce both client and server implementation stubs in a variety of
 languages. It is the responsibility of target implementers to instrument the
 server.
@@ -289,7 +289,7 @@ device config and P4Info metadata. These comprise the `ForwardingPipelineConfig`
 message. A P4Runtime controller chooses a configuration appropriate to a
 particular target and installs it via a `SetForwardingPipelineConfig`
 RPC. Metadata in the P4Info describes both the overall program itself
-(`PkgInfo`) as well as all entity instances derived from the P4 program ---
+(`PkgInfo`) as well as all entity instances derived from the P4 program &#8212;
 tables and extern instances. Each entity instance has an associated numeric ID
 assigned by the P4 compiler which serves as a concise "handle" used in API
 calls.
@@ -513,7 +513,7 @@ follows:
   primary independently for each (`device_id`, `role`) pair. The primary is the
   client that has the highest `election_id` that the device has ever received
   for the same (`device_id`, `role`) values.  A connection between a controller
-  instance and a device id --- which involves a persistent `StreamChannel` ---
+  instance and a device id &#8212; which involves a persistent `StreamChannel` &#8212;
   can be referred to as a P4Runtime client. +
   Note that the P4Runtime server does not assign a `role` or `election_id` to
   any controller. It is up to an arbitration mechanism outside of the server to
@@ -2254,7 +2254,7 @@ types (32-bit and 64-bit words). The P4 language does not put any limit on the
 size of integer values, whether unsigned (`bit<W>`) or signed (`int<W>`), and it
 is up to the P4 programmer to choose the appropriate sizes. Because of this
 flexibility, P4Runtime represents P4 integer values as binary strings, using the
-`bytes` Protobuf type. The correct bitwidth --- as per the P4 program --- of
+`bytes` Protobuf type. The correct bitwidth &#8212; as per the P4 program &#8212; of
 each integer variable exposed through P4Runtime is specified in the P4Info
 message.
 
@@ -2539,8 +2539,8 @@ case (P4~16~ `bit<W>` type).
 Just like its P4Info counterpart - `P4DataTypeSpec` -, `P4Data` uses a Protobuf
 `oneof` to represent all possible values.
 
-We define a canonical representation for `P4Data` messages --- therefore
-guaranteeing read-write symmetry --- by introducing the following requirements:
+We define a canonical representation for `P4Data` messages &#8212; therefore
+guaranteeing read-write symmetry &#8212; by introducing the following requirements:
 
  * The order of `members` in `P4StructLike` and the order of `bitstrings` in
    `P4Header` must match the order in the corresponding p4info.proto type
@@ -2665,7 +2665,7 @@ update {
 
 P4~16~ supports 2 different classes of enumeration types: without underlying
 type (safe enum) and with underlying type (serializable enum or "unsafe" enum)
-cite:[P4Enums]. For `enum` types with no underlying type --- as well as `error` ---
+cite:[P4Enums]. For `enum` types with no underlying type &#8212; as well as `error` &#8212;
 there is no integer value associated with each symbolic member entry (whether
 assigned automatically by the compiler or directly in the P4 source). We
 therefore use a human-readable string in `P4Data` to represent `enum` and
@@ -2678,7 +2678,7 @@ underlying type need to have a corresponding name. `P4TypeInfo` includes the
 mapping between entry name and entry value. When providing serializable enum
 values through `P4Data`, one must use the assigned integer value (`enum_value`
 bytestring field). P4Runtime does not provide a way for the client to use the
-name --- even when the enum member has one --- instead of the value, as it makes
+name &#8212; even when the enum member has one &#8212; instead of the value, as it makes
 it easier for the server to respect the xref:sec-read-write-symmetry[read-write
 symmetry] principle.
 
@@ -2730,14 +2730,14 @@ the following fields:
 
     ** `translated_type`, if and only if the P4 `type` declaration was annotated
       with `@p4runtime_translation`. It is of type `P4NewTypeTranslation`,
-      which itself has two fields --- `uri` and either `sdn_string` or
-      `sdn_bitwidth` ---, which map to the two input parameters to the
+      which itself has two fields &#8212; `uri` and either `sdn_string` or
+      `sdn_bitwidth` &#8212;, which map to the two input parameters to the
       annotation.
 
 * `annotations`, a repeated field of strings, each one representing a P4
   annotation associated to the type declaration.
 
-For example, an architecture --- in this case PSA --- may introduce a new type
+For example, an architecture &#8212; in this case PSA &#8212; may introduce a new type
 for port numbers:
 
 [source,p4]
@@ -3183,8 +3183,8 @@ The `Action` Protobuf message has the following fields:
   xref:sec-bytestrings[Bytestrings]. The P4Runtime client must provide a valid
   value for each parameter of the P4 action; we do not support default values
   for action parameters. The server must return an `INVALID_ARGUMENT` error code
-  if a parameter id is missing, if an extra parameter --- id not found in the
-  P4Info --- was provided by the client, if a parameter value is missing, or if
+  if a parameter id is missing, if an extra parameter &#8212; id not found in the
+  P4Info &#8212; was provided by the client, if a parameter value is missing, or if
   the value provided for one of the parameters does not conform to the
   xref:sec-bytestrings[Bytestrings] format.
 
@@ -3196,8 +3196,8 @@ P4Runtime server must return a `NOT_FOUND` error code.
 ==== Default Entry
 
 According to the P4 specification, the default entry for a table is always set.
-It can be set at compile-time by the P4 programmer --- or defaults to `NoAction`
-(which is a no-op) otherwise --- and assuming it is not declared as `const`, can
+It can be set at compile-time by the P4 programmer &#8212; or defaults to `NoAction`
+(which is a no-op) otherwise &#8212; and assuming it is not declared as `const`, can
 be modified by the P4Runtime client. Because the default entry is always set, we
 do not allow `INSERT` and `DELETE` updates on the default entry and the
 P4Runtime server must return an `INVALID_ARGUMENT` error code if the client
@@ -3220,8 +3220,8 @@ Apart from the above restrictions, the default entry is treated like a regular
 entry, including with regards to xref:sec-direct-resources[direct resources].
 
 In this P4Runtime release, we have decided to restrict the default entry for
-indirect tables --- tables with an ActionProfile or ActionSelector
-`implementation` property --- to a constant `NoAction` action entry, with the
+indirect tables &#8212; tables with an ActionProfile or ActionSelector
+`implementation` property &#8212; to a constant `NoAction` action entry, with the
 hope that it would simplify the implementation of the P4Runtime service.
 
 [#sec-constant-tables]
@@ -3330,8 +3330,8 @@ the field to act as a wildcard. This default value is zero for scalar fields
 such as `priority` and "unset" for message fields such as `match`. The following
 fields may be used to select and filter results:
 
-* `table_id`: If default (0), entries from all tables --- including constant
-  tables --- will be selected and no other filter can be used. Otherwise only
+* `table_id`: If default (0), entries from all tables &#8212; including constant
+  tables &#8212; will be selected and no other filter can be used. Otherwise only
   the specified table will be considered.
 * `match`: If default (unset), all entries from the specified table will be
   considered. Otherwise, results will be filtered based on the provided match
@@ -3459,8 +3459,8 @@ This issue also exists for tables with `TERNARY`, `RANGE`, and `OPTIONAL`
 matches. However, in this case the priority is also taken into account for
 wildcard reads, and because a priority of 0 is not valid, in practice only the
 entries with the same priority as the "don't care" entry will be returned to the
-client. If the client uses distinct priority values for all entries --- which is
-strongly recommended to achieve xref:sec-table-entry[deterministic behavior] ---,
+client. If the client uses distinct priority values for all entries &#8212; which is
+strongly recommended to achieve xref:sec-table-entry[deterministic behavior] &#8212;,
 then there is no ambiguity because the wildcard read will actually return a
 single entry (the "don't care" entry) as long as the `priority` field is set to
 the correct value.
@@ -3575,8 +3575,8 @@ P4Runtime supports idle timeout for table entries. When adding a table entry,
 the client can specify a Time-To-Live (TTL) value. If at any time during its
 lifetime, the data plane entry is not "hit" (i.e. not selected by any packet
 lookup) for a lapse of time greater or equal to its TTL, the P4Runtime should,
-with best effort, generate a stream notification --- using the
-`IdleTimeoutNotification` message --- to the primary client, which can then take
+with best effort, generate a stream notification &#8212; using the
+`IdleTimeoutNotification` message &#8212; to the primary client, which can then take
 action, such as remove the idle table entry.
 
 Two fields of the `TableEntry` Protobuf message are used to implement idle
@@ -4054,8 +4054,8 @@ all members of a group are down.
 PSA defines Counters as a mechanism for keeping statistics of bytes and packets.
 Statistics may be updated as a result of an action associated with a table
 entry, or a direct invocation such as from a P4 control. The `CounterData`
-P4Runtime message can be used for all three types of PSA counters --- `PACKETS`,
-`BYTES` and `PACKETS_AND_BYTES` --- and consists of the following fields:
+P4Runtime message can be used for all three types of PSA counters &#8212; `PACKETS`,
+`BYTES` and `PACKETS_AND_BYTES` &#8212; and consists of the following fields:
 
 * `byte_count` is an `int64`, corresponding to the number of octets.
 * `packet_count` is an `int64`, corresponding to the number of packets.
@@ -4179,19 +4179,19 @@ Color Marker* (srTCM) or a simplified version of it that we call *Single Rate
 Two Color Marker*. The type of a table's meter is set by the `MeterSpec.Type` as
 described in the xref:sec-meter-directmeter[Meter & DirectMeter section].
 
-The trTCM meters an arbitrary packet stream using two configured rates ---
+The trTCM meters an arbitrary packet stream using two configured rates &#8212;
 the Peak Information Rate (PIR) and Committed Information Rate (CIR), and their
-associated burst sizes --- and "marks" its packets as GREEN, YELLOW or RED based
+associated burst sizes &#8212; and "marks" its packets as GREEN, YELLOW or RED based
 on the observed rate.
 
-The srTCM meters an arbitrary packet stream using a single configured rate ---
-the Committed Information Rate (CIR) and its associated burst size --- as well
+The srTCM meters an arbitrary packet stream using a single configured rate &#8212;
+the Committed Information Rate (CIR) and its associated burst size &#8212; as well
 as the Excess Burst Size (EBS) and "marks" its packets as GREEN, YELLOW or RED
 based on the observed rate.
 
 The *Single Rate Two Color Marker* meters an arbitary packet stream using a
-single configured rate --- the Committed Information Rate (CIR) and its
-associated burst size --- and "marks" its packets as GREEN or RED based on the
+single configured rate &#8212; the Committed Information Rate (CIR) and its
+associated burst size &#8212; and "marks" its packets as GREEN or RED based on the
 observed rate.
 
 `MeterEntry` & `DirectMeterEntry` have an additional field `counter_data` that
@@ -4801,8 +4801,8 @@ if they are not duplicate.
 
     ** `max_timeout_ns`: the maximum server buffering delay in nanoseconds for an
       outstanding digest message.
-    ** `max_list_size`: the maximum digest list size --- in number of digest
-      messages --- sent by the server to the client as a single `DigestList`
+    ** `max_list_size`: the maximum digest list size &#8212; in number of digest
+      messages &#8212; sent by the server to the client as a single `DigestList`
       Protobuf message.
     ** `ack_timeout_ns`: the timeout in nanoseconds that a server must wait for a
       digest list acknowledgement from the client before new digest messages can
@@ -6094,8 +6094,8 @@ type bit<32> PortIdInHeader_t;
 ----
 
 The first argument to the `@p4runtime_translation` annotation is a URI that
-indicates to the P4Runtime server which numerical mapping --- provided by the
-out-of-band switch configuration mechanism --- to use to translate between the
+indicates to the P4Runtime server which numerical mapping &#8212; provided by the
+out-of-band switch configuration mechanism &#8212; to use to translate between the
 SDN value and the data plane value. The second argument is the bitwidth of the
 SDN representation of the translated entity (32-bit in the case of ports).
 
@@ -6123,8 +6123,8 @@ enum SdnPort {
 }
 ----
 
-The switch config will map `SDN_PORT_RECIRCULATE` and `SDN_PORT_CPU` --- as well
-as any SDN port number corresponding to a "regular" front-panel port --- to the
+The switch config will map `SDN_PORT_RECIRCULATE` and `SDN_PORT_CPU` &#8212; as well
+as any SDN port number corresponding to a "regular" front-panel port &#8212; to the
 corresponding device-specific values, in order to enable the P4Runtime server to
 perform the translation.
 
@@ -6157,7 +6157,7 @@ packet-out metadata (`egress_port`) value of width 32-bit from the given set of
 SDN port values in the switch config. The server will then translate the SDN
 port value into the device-specific port value from the mapping provided in the
 out-of-band switch configuration (the mapping can be identified using the
-translation URI --- first argument to the `@p4runtime_translation`
+translation URI &#8212; first argument to the `@p4runtime_translation`
 annotation). Any subsequent reference to the `egress_port` field in the
 data plane will use the translated value. `PortIdInHeader_t` is used in the
 header definition instead of `PortId_t` to guarantee byte-aligned headers in
@@ -6781,7 +6781,7 @@ return grpc::CreateCustomChannel(address, credentials, arguments);
 ==== gRPC Server Maximum Receive Message Size
 
 At the time of writing, the default maximum receive message size in gRPC is 4MB
---- while the default maximum send message size is unlimited. This can be a
+&#8212; while the default maximum send message size is unlimited. This can be a
 problem for the `SetForwardingPipelineConfig` RPC, since for some targets the
 binary `p4_device_config` can exceed 4MB, in which case by default the P4Runtime
 server would return an `INVALID_ARGUMENT` error. To a lesser extent, this may
@@ -6805,8 +6805,8 @@ builder.BuildAndStart();
 ----
 
 On the client side, we recommend that P4Runtime clients do not use `Write`
-batches larger than the default maximum receive message size (4MB) --- in case
-the server did not deem necessary to increase the default value ---, unless the
+batches larger than the default maximum receive message size (4MB) &#8212; in case
+the server did not deem necessary to increase the default value &#8212;, unless the
 clients are aware that the server is using a larger maximum receive message
 size. The gRPC server running the P4Runtime service must not set the maximum
 receive message size to a value smaller than the default (4MB).
