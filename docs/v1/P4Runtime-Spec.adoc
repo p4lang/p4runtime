@@ -2603,7 +2603,7 @@ type_info {
             bitwidth: 4
           }
         }
-      } 
+      }
   ...
   headers {
     key: "ipv6_t"
