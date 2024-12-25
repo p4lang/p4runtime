@@ -258,7 +258,7 @@ metadata. Furthermore, the controller can query the target for the
 [#fig-reference-architecture]
 image::reference-architecture.png[width=400,align="center"]
 
-
+<<<
 === P4Runtime Service Implementation
 
 The P4Runtime API is implemented by a program that runs a gRPC server which
@@ -984,6 +984,7 @@ table t {
 The generated P4Info will contain:
 
 [source,protobuf]
+[%unbreakable]
 ----
 structured_annotations {
   name: "MixedExprList"
@@ -1688,6 +1689,7 @@ header PacketIn_t {
 }
 ----
 [source,protobuf]
+[%unbreakable]
 ----
 controller_packet_metadata {
   preamble {
@@ -2001,6 +2003,7 @@ message to clearly identify cases where a cookie is not present.
 There is a subtle distinction between the treatment of default-valued scalar
 fields vs default-valued message fields in P4Runtime.
 
+<<<
 ==== Set / Unset Scalar Fields
 
 In Protobuf version 3 (*proto3*), the default value of scalar fields is `0` for
@@ -2501,6 +2504,8 @@ for named types, which is useful to identify well-known headers, such as IPv4 or
 IPv6.  `P4TypeInfo` also includes the list of parser errors for the program, as
 a `P4ErrorTypeSpec` message.
 
+[%unbreakable]
+--
 `P4DataTypeSpec` is meant to be used in P4Info, to specify the expected format
 of the P4-dependent values being exchanged between the P4Runtime client and
 server. Each `P4DataTypeSpec` message corresponds to a compile-time type in the
@@ -2519,7 +2524,7 @@ compile-time type is represented as a Protobuf `oneof`, which can be:
   since they are the only sub-types allowed in headers and values with one of
   these types are represented similarly in P4Runtime (with the Protobuf `bytes`
   type).
-
+--
 For all P4~16~ compound types (`tuple`, `struct`, `header`, and `header_union`),
 the order of `members` in the repeated field of the Protobuf type specification
 is guaranteed to be the same as the order of the members in the corresponding
@@ -2561,7 +2566,6 @@ guaranteeing read-write symmetry &#8212; by introducing the following requiremen
    `P4HeaderUnionStackTypeSpec` message.
 
 ==== Example
-
 Let's look at the Register example again:
 
 [source,p4]
@@ -2635,6 +2639,7 @@ type_info {
   }
 }
 ----
+
 Here's a `p4.WriteRequest` to set the value of `register_ip[12]`:
 
 [source,protobuf]
@@ -2755,11 +2760,12 @@ type bit<9> PortId_Bit32_t;
 @p4runtime_translation("p4.org/psa/v1/PortId_32_t", 32)
 type bit<9> PortId_32_t;
 ----
-
+<<<
 In this case, the P4Info message would include the following `P4TypeInfo`
 messages:
 
 [source,protobuf]
+[%unbreakable]
 ----
 type_info {
   new_types {
@@ -2819,6 +2825,8 @@ parameters and match fields, we include a `type_name` field in `p4.config.v1.Mat
 `p4.config.v1.Action.Param` and `p4.config.v1.ControllerPacketMetadata.Metadata`. In addition,
 the `bitwidth` field for all of these message types must abide by the following rule when `type_name` names a translated user-defined type:
 
+[%unbreakable]
+--
  * If the *controller_type* is a fixed-width unsigned bitstring, the `bitwidth`
    field must be set to the bitwidth of the *controller_type*. This information
    is redundant with the one included in the `P4TypeInfo` entry for the
@@ -2830,7 +2838,7 @@ the `bitwidth` field for all of these message types must abide by the following 
  * Otherwise (i.e, if the *controller_type* is a string), the `bitwidth` must
    be "unset", which, in Protobuf version 3, is the same as setting the field to
    0.
-
+--
 For example, consider the following P4 snippet, which declares a P4 table
 matching on two expressions with translated user-defined types:
 
@@ -3292,10 +3300,11 @@ Every P4 table falls into one of three categories:
 
 A preinitialized table is allowed to have a mix of some entries marked
 `const`, and other entries not marked `const`.
-
+[%unbreakable]
+--
 Entries not marked `const` may be modified or deleted, just as a
 client may do for any entry in a normal table.
-
+--
 Entries marked `const` behave like entries in a constant table,
 i.e. only `MODIFY` operations on direct resources are allowed.
 
@@ -4979,7 +4988,7 @@ value for the canonical error code based on best practices cite:[gRPCStatusCodes
 
 .P4Runtime Error Report Message Format.
 [#fig-p4prg]
-image::error-report.png[]
+image::error-report.png[width=400,align="center"]
 
 gRPC provides utility functions `ExtractErrorDetails()` and `SetErrorDetails()`
 cite:[gRPCErrorDetails] to easily convert between `grpc::Status` and
@@ -5085,6 +5094,7 @@ The `Write` RPC updates one or more P4 entities on the target. The request is
 defined as follows:
 
 [source,protobuf]
+[%unbreakable]
 ----
 message WriteRequest {
   uint64 device_id = 1;
@@ -6059,7 +6069,7 @@ translated types which are not declared as part of the PSA architecture.
 
 .P4Runtime Metadata Translation for the Portable Switch Architecture
 [#fig-psa-metadata-translation]
-image::psa-metadata-translation.png[]
+image::psa-metadata-translation.png[width=400,align="center"]
 
 <<#fig-psa-metadata-translation>> illustrates a motivating example,
 where a centralized controller is controlling two P4Runtime targets in a fabric.
@@ -6364,6 +6374,7 @@ as the major version number for the P4Runtime version they "extend".
 For the remainder of this section, we will refer to these two files as
 *p4info-ext* and *p4runtime-ext* respectively.
 
+<<<
 === Extending P4Runtime for Architecture-Specific Externs
 
 Each P4 architecture can define its own set of extern types. Controlling them at
