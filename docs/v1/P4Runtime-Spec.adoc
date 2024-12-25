@@ -2046,8 +2046,7 @@ if (counter_entry->has_index()) {
 }
 ----
 
-. Reading a single counter entry at index 0 in the counter array with id
-`<id>`:
+. Reading a single counter entry at index 0 in the counter array with id `<id>`:
     * Here is the C++ client code:
 
 [source,c++]
@@ -2075,7 +2074,7 @@ index {}
       value. Scalar fields with default values are omitted from the textual
       representation of Protobuf messages.
 
-
+[start=2]
 . Reading all counter entries by leaving the `index` field unset
     * Here is the C++ client code:
 
@@ -5306,7 +5305,7 @@ binary_error_details {
     canonical_code: 8  // RESOURCE_EXHAUSTED
     message: "Table is full."
     space: "targetX-psa-vendorY"
-    code: 500  # ERR_TABLE_FULL
+    code: 500  // ERR_TABLE_FULL
   }
   details {
     canonical_code: 0  // OK
