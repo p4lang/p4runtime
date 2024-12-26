@@ -47,7 +47,7 @@ hr { -moz-box-sizing: content-box; box-sizing: content-box; height: 0; }
 mark { background: #ff0; color: #000; }
 
 /** Correct font family set oddly in Safari 5 and Chrome. */
-code, kbd, pre, samp { font-family: monospace, serif; font-size: 1em; }
+code, kbd, pre, samp { font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-size:12px; }
 
 /** Improve readability of pre-formatted text in all browsers. */
 pre { white-space: pre-wrap; }
