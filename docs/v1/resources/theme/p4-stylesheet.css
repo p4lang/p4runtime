@@ -632,7 +632,7 @@ h2 { color: #030303; border-bottom: 1px solid #dddddd; }
 #header, #content, #footnotes { max-width: 660px; padding-left: 0; padding-right: 0; }
 
 
-#content ul li { padding-left: .7em; }
+#content ul li { padding-left: 0; }
 
 .olist.procedure > ol { counter-reset: li; list-style: none; position: relative; }
 .olist.procedure > ol > li { position: relative; padding: 5px 0 5px 55px; margin-bottom: 5px; }
