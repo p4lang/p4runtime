@@ -5,7 +5,8 @@ LABEL description="Dockerfile used for building the asciidoc specification"
 RUN  apt-get update && \
      apt-get install -y cmake flex bison libglib2.0-dev libcairo2-dev libpango1.0-dev libxml2-dev libwebp-dev libzstd-dev libgdk-pixbuf-2.0-dev time
 
-RUN   gem install asciidoctor && \
+RUN   apt-get install -y libreoffice && \
+      gem install asciidoctor && \
       echo 'gem: --no-document' > /etc/gemrc && \
       gem install nokogiri && \
       gem install rghost && \

@@ -6,7 +6,6 @@ ROUGE_CSS=style
 all: ${SPEC}.pdf ${SPEC}.html
 
 build:
-	mkdir -p build
 
 ${SPEC}.pdf: ${SPEC}.adoc
 	time asciidoctor-pdf -v \
@@ -23,5 +22,11 @@ ${SPEC}.html: ${SPEC}.adoc
 	-r asciidoctor-lists \
 	-a rouge-css=$(ROUGE_CSS) $<
 
+images:
+	soffice --convert-to png --outdir resources/figs resources/figs/*.odg > /dev/null 2>&1
+
+ci: images all
+
+  
 clean:
 	/bin/rm -f ${SPEC}.pdf ${SPEC}.html
