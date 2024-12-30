@@ -68,7 +68,7 @@ LibreOffice to be installed.
 The easiest way to render the AsciiDoc specification documentation is to use the
 `p4lang/p4rt-asciidoc:latest` Docker` image:
 
-    docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc:latest make
+    docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc:latest make build_spec_with_images
 
 ### Linux
 ```
