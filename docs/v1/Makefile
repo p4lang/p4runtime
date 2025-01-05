@@ -7,7 +7,7 @@ all: ${SPEC}.pdf ${SPEC}.html
 
 build:
 
-${SPEC}.pdf: ${SPEC}.adoc
+${SPEC}.pdf: ${SPEC}.adoc images
 	time asciidoctor-pdf -v \
 	-a pdf-fontsdir=resources/fonts \
 	-r asciidoctor-mathematical \
@@ -15,7 +15,7 @@ ${SPEC}.pdf: ${SPEC}.adoc
 	-r asciidoctor-lists \
 	-a rouge-style=$(ROUGE_STYLE) $<
 
-${SPEC}.html: ${SPEC}.adoc
+${SPEC}.html: ${SPEC}.adoc images
 	time asciidoctor -v \
 	-r asciidoctor-mathematical \
 	-r asciidoctor-bibtex \
