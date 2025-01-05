@@ -23,6 +23,7 @@ ${SPEC}.html: ${SPEC}.adoc
 	-a rouge-css=$(ROUGE_CSS) $<
 
 images:
+	soffice --convert-to svg --outdir resources/figs resources/figs/*.odg > /dev/null 2>&1
 	soffice --convert-to png --outdir resources/figs resources/figs/*.odg > /dev/null 2>&1
 
 build_spec_with_images: images all
