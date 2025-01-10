@@ -26,5 +26,5 @@ jobs:
     - name: Build spec
       run: |
         make -C docs/tools/
-        docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc :latest make build_spec_with_images
+        docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc make build_spec_with_images
         ls docs/v1/build
