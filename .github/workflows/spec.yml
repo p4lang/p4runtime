@@ -18,6 +18,14 @@ jobs:
     - name: Run linter
       run: |
         ./tools/asciidoclint.py docs/v1/P4Runtime-Spec.adoc
+  
+  docker:
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run docker
+      run: |
+        make -C docs/tools/
 
   build-spec:
     runs-on: [ubuntu-latest]
