@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2019 VMware, Inc.
+# Copyright 2024
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
 
 # DISCLAIMER: This is a work in progress. This linter was written specifically
 # for the P4Runtime specification document and may not be useful for other
-# Madoko documents, as it may be making some assumptions as to how the document
+# AsciiDoc documents, as it may be making some assumptions as to how the document
 # was written.
 
-# TODO: handle Madoko includes (we do not use them for the P4Runtime spec)?
+
 
 
 import argparse
@@ -33,25 +33,25 @@ import sys
 import traceback
 
 
-DEFAULT_CONF = 'madokolint.conf.json'
+DEFAULT_CONF = 'asciidocint.conf.json'
 LINE_WRAP_LENGTH = 80
 
 
-parser = argparse.ArgumentParser(description='Lint tool for Madoko code')
+parser = argparse.ArgumentParser(description='Lint tool for Asciidoc code')
 parser.add_argument('files', metavar='FILE', type=str, nargs='+',
                     help='Input files')
 parser.add_argument('--conf', type=str,
                     help='Configuration file for lint tool')
 
 
-class MadokoFmtError(Exception):
+class AsciidocFmtError(Exception):
     def __init__(self, filename, lineno, description):
         self.filename = filename
         self.lineno = lineno
         self.description = description
 
     def __str__(self):
-        return "Unexpected Madoko code in file {} at line {}: {}".format(
+        return "Unexpected Asciidoc code in file {} at line {}: {}".format(
             self.filename, self.lineno, self.description)
 
 
@@ -122,7 +122,7 @@ class Context:
 
 
 class ContextSkipBlocks(Context):
-    """A context used to only visit Madoko code outside of blocks."""
+    """A context used to only visit Asciidoc code outside of blocks."""
 
     Block = namedtuple('Block', ['num_tildes', 'name'])
 
@@ -143,19 +143,19 @@ class ContextSkipBlocks(Context):
                 return False
             if has_end:
                 if not self.blocks_stack:
-                    raise MadokoFmtError(filename, lineno, "Block end line but no block was begun")
+                    raise AsciidocFmtError(filename, lineno, "Block end line but no block was begun")
                 expected = self.blocks_stack.pop()
                 if num_tildes != expected.num_tildes or blockname != expected.name:
-                    raise MadokoFmtError(
+                    raise AsciidocFmtError(
                         filename, lineno,
                         "Block end line does not match last visited block begin line")
                 return False
             if blockname is None:
                 if not self.blocks_stack:
-                    raise MadokoFmtError(filename, lineno, "Block end line but no block was begun")
+                    raise AsciidocFmtError(filename, lineno, "Block end line but no block was begun")
                 expected = self.blocks_stack.pop()
                 if num_tildes != expected.num_tildes:
-                    raise MadokoFmtError(
+                    raise AsciidocFmtError(
                         filename, lineno,
                         "Block end line does not match last visited block begin line")
                 return False
@@ -168,7 +168,7 @@ class ContextSkipBlocks(Context):
 
 # TODO: would "skip metadata" be more generic?
 class ContextAfterTitle(Context):
-    """A context used to visit only Madoko code after the [TITLE] block element.
+    """A context used to visit only Asciidoc code after the [TITLE] block element.
     """
 
     def __init__(self, *args):
@@ -244,22 +244,6 @@ def check_trailing_whitespace(path):
     foreach_line(path, Context(), check)
 
 
-def check_predefined_abbreviations(path):
-    abbreviations = {
-        'e.g.': '&eg;',
-        'i.e.': '&ie;',
-        'et al.': '&etal;',
-    }
-
-    def check(line, lineno):
-        for k, v in abbreviations.items():
-            if k in line:
-                lint_state.error(path, lineno, line,
-                                 "contains '{}', use '{}' instead".format(k, v))
-
-    foreach_line(path, ContextCompose(ContextAfterTitle(), ContextSkipBlocks()), check)
-
-
 def check_keywords(path):
     def check(line, lineno):
         for word in line.split():
@@ -275,7 +259,6 @@ def check_keywords(path):
 
 def process_one(path):
     check_line_wraps(path)
-    check_predefined_abbreviations(path)
     check_trailing_whitespace(path)
     check_keywords(path)
 
@@ -288,7 +271,7 @@ def main():
             print("'{}' is not a valid file path".format(f))
             sys.exit(1)
         _, ext = os.path.splitext(f)
-        if ext != ".mdk":
+        if ext != ".adoc":
             print("'{}' does not have an .mdk extension")
             sys.exit(1)
 
@@ -313,7 +296,7 @@ def main():
     for f in args.files:
         try:
             process_one(f)
-        except MadokoFmtError as e:
+        except AsciidocFmtError as e:
             print(e)
 
     errors_cnt = lint_state.errors_cnt
