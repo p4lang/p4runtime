@@ -18,7 +18,7 @@ jobs:
         fetch-depth: 0
     - name: Build spec
       run: |
-        docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc :latest make
+        docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc:latest make
         ls docs/v1/build
     - name: Upload spec to S3
       uses: jakejarvis/s3-sync-action@v0.5.1
