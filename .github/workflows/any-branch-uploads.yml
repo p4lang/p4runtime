@@ -15,7 +15,8 @@ jobs:
       run: |
         make -C docs/tools/
         docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc make
-        ls docs/v1/build
+        ls docs/v1/P4Runtime-Spec.pdf
+        ls docs/v1/P4Runtime-Spec.html
     - name: Upload spec to S3 if needed
       if: ${{ github.actor != 'dependabot[bot]' }}
       uses: jakejarvis/s3-sync-action@v0.5.1
