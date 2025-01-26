@@ -31,14 +31,15 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-west-2'
-        SOURCE_DIR: 'docs/v1/build'
+        SOURCE_DIR: 'docs/v1/'
         DEST_DIR: docs/${{ github.ref_name }}
     - name: Prepare spec for upload to gh-pages
       run: |
         git checkout gh-pages
         mkdir -p spec
         rm -rf spec/$TAG
-        cp -r docs/v1/build spec/$TAG
+        cp docs/v1/P4Runtime-Spec.html spec/$TAG
+        cp docs/v1/P4Runtime-Spec.pdf spec/$TAG
     - name: Upload spec to gh-pages
       uses: EndBug/add-and-commit@v9
       with:
