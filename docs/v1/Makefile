@@ -34,4 +34,4 @@ images:
 build_spec_with_images: images all
 
 clean:
-	/bin/rm -rf build resources/figs/*.png
+	/bin/rm -rf build resources/figs/*.png resources/figs/*.svg
