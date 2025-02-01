@@ -5,7 +5,7 @@ specification document.
 
 # Markup version
 
-The markup version uses AsciiDoc (https://docs.asciidoctor.org/) to produce
+The markup version uses [AsciiDoc](https://docs.asciidoctor.org/) to produce
 HTML and PDF versions of the documentation. Pre-built versions of the
 documentation are available on the [P4.org specifications
 page](https://p4.org/specs).
