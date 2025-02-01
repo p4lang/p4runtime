@@ -30,6 +30,6 @@ images:
 	soffice --convert-to png --outdir resources/figs resources/figs/*.odg > /dev/null 2>&1
 
 build_spec_with_images: images all
- 
+
 clean:
 	/bin/rm -f ${SPEC}.pdf ${SPEC}.html
