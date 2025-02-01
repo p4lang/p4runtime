@@ -1,3 +1,6 @@
+// Copyright 2020 Antonin Bas
+// SPDX-License-Identifier: Apache-2.0
+
 module github.com/p4lang/p4runtime
 
 go 1.20

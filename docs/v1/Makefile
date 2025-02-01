@@ -1,3 +1,6 @@
+# Copyright 2018 Antonin Bas
+# SPDX-License-Identifier: Apache-2.0
+
 SPEC=P4Runtime-Spec
 
 ROUGE_STYLE=github

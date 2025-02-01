@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Copyright 2020 Antonin Bas
+# SPDX-License-Identifier: Apache-2.0
 
 # This ensures that the P4Runtime Protobuf files are correct and compile with
 # the protoc compiler (CPP, gRPC, Python and Go).

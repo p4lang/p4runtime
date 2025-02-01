@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Copyright 2020 Yi Tseng
+# SPDX-License-Identifier: Apache-2.0
+
 set -eo pipefail
 
 THIS_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"

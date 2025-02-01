@@ -1,3 +1,5 @@
+# Copyright 2025 Davide Scano
+# SPDX-License-Identifier: Apache-2.0
 FROM  ruby:3.3.5
 LABEL maintainer="P4 API Working Group <p4-dev@lists.p4.org>"
 LABEL description="Dockerfile used for building the asciidoc specification"

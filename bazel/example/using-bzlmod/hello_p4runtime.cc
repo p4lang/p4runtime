@@ -1,3 +1,6 @@
+// Copyright 2024 Steffen Smolka
+// SPDX-License-Identifier: Apache-2.0
+
 #include <iostream>
 
 #include "google/protobuf/text_format.h"

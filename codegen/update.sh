@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Copyright 2020 Yi Tseng
+# SPDX-License-Identifier: Apache-2.0
 
 set -e
 
