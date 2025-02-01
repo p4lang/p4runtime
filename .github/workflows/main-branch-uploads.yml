@@ -18,8 +18,7 @@ jobs:
       run: |
         make -C docs/tools/
         docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc make
-        ls docs/v1/P4Runtime-Spec.pdf
-        ls docs/v1/P4Runtime-Spec.html
+        ls docs/v1/build
     - name: Upload spec to S3
       uses: jakejarvis/s3-sync-action@v0.5.1
       with:
@@ -29,15 +28,14 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-west-2'
-        SOURCE_DIR: 'docs/v1'
+        SOURCE_DIR: 'docs/v1/build'
         DEST_DIR: docs/main
     - name: Prepare spec for upload to gh-pages
       run: |
         git checkout gh-pages
         mkdir -p spec
         rm -rf spec/main
-        cp docs/v1/P4Runtime-Spec.html spec/main
-        cp docs/v1/P4Runtime-Spec.pdf spec/main
+        cp -r docs/v1/build spec/main
     - name: Upload spec to gh-pages
       uses: EndBug/add-and-commit@v9
       with:

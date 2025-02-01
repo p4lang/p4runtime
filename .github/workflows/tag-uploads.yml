@@ -20,8 +20,7 @@ jobs:
       run: |
         make -C docs/tools/
         docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc make
-        ls docs/v1/P4Runtime-Spec.pdf
-        ls docs/v1/P4Runtime-Spec.html
+        ls docs/v1/build
     - name: Upload spec to S3
       uses: jakejarvis/s3-sync-action@v0.5.1
       with:
@@ -38,8 +37,7 @@ jobs:
         git checkout gh-pages
         mkdir -p spec
         rm -rf spec/$TAG
-        cp docs/v1/P4Runtime-Spec.html spec/$TAG
-        cp docs/v1/P4Runtime-Spec.pdf spec/$TAG
+        cp -r docs/v1/build spec/$TAG
     - name: Upload spec to gh-pages
       uses: EndBug/add-and-commit@v9
       with:
