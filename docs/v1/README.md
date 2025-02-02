@@ -5,7 +5,7 @@ specification document.
 
 # Markup version
 
-The markup version uses AsciiDoc (https://docs.asciidoctor.org/) to produce
+The markup version uses [AsciiDoc](https://docs.asciidoctor.org/) to produce
 HTML and PDF versions of the documentation. Pre-built versions of the
 documentation are available on the [P4.org specifications
 page](https://p4.org/specs).
@@ -71,7 +71,7 @@ The easiest way to render the AsciiDoc specification documentation is to use the
     docker run -v `pwd`/docs/v1:/usr/src/p4-spec p4lang/p4rt-asciidoc:latest make build_spec_with_images
 
 ### Linux
-```
+
 You can use the [local installation](https://github.com/p4lang/p4-spec/blob/main/p4-16/spec/install-asciidoctor-linux.sh) method, and you also need to install LibreOffice to render the 
 images into .svg and .png formats.
 
