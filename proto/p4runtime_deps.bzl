@@ -1,3 +1,5 @@
+# Copyright 2020 Steffen Smolka
+# SPDX-License-Identifier: Apache-2.0
 """Load dependencies needed to compile p4runtime as a 3rd-party consumer."""
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
