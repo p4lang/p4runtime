@@ -1,1 +1,0 @@
-madoko --pdf -vv --png --odir=build P4Runtime-spec.mdk

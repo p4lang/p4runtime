@@ -1,0 +1,31 @@
+FROM  ruby:3.3.5
+LABEL maintainer="P4 API Working Group <p4-dev@lists.p4.org>"
+LABEL description="Dockerfile used for building the asciidoc specification"
+
+RUN  apt-get update && \
+     apt-get install -y cmake flex bison libglib2.0-dev libcairo2-dev libpango1.0-dev libxml2-dev libwebp-dev libzstd-dev libgdk-pixbuf-2.0-dev time
+
+RUN   apt-get install -y libreoffice && \
+      gem install asciidoctor && \
+      echo 'gem: --no-document' > /etc/gemrc && \
+      gem install nokogiri && \
+      gem install rghost && \
+      gem install asciidoctor-diagram && \
+      gem install asciidoctor-plantuml && \
+      gem install asciidoctor-pdf --version 2.3.19 && \
+      gem install asciidoctor-pdf-cjk && \
+      gem install asciidoctor-lists --version 1.1.2 && \
+      gem install coderay pygments.rb thread_safe && \
+      gem install slim && \
+      gem install concurrent-ruby && \
+      gem install haml tilt && \
+      gem install asciidoctor-mathematical && \
+      gem install asciidoctor-bibtex &&\
+      git clone https://github.com/rouge-ruby/rouge &&\
+      cd rouge && \
+      git log -n 1 | cat && \
+      gem build rouge.gemspec && \ 
+      gem install rouge 
+
+VOLUME ["/usr/src/p4-spec"]
+WORKDIR /usr/src/p4-spec
