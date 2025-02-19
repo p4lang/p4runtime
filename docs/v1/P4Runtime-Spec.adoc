@@ -6877,3 +6877,4 @@ described in <<#sec-table-entry>>.
 
 [bibliography]
 == References
+bibliography::references.bib[ieee]
