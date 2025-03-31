@@ -1,4 +1,4 @@
-name: "build protobufs"
+name: "Build Protobufs"
 
 on:
   push:
@@ -14,24 +14,18 @@ on:
 
 jobs:
   build:
-
     strategy:
       matrix:
-        # We only test on the oldest version we want to support and latest.
-        # We trust that things also work for versions in the middle.
         os: [ubuntu-22.04, ubuntu-latest]
-        # See Bazelisk README for legal values.
         bazel_version: [7.x, latest]
-      # Don't abort other runs when one of them fails, to ease debugging.
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
 
     env:
-      # This tells Bazelisk (installed as `bazel`) to use specified version.
-      # https://github.com/bazelbuild/bazelisk?tab=readme-ov-file#how-does-bazelisk-know-which-bazel-version-to-run
       USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
       CACHE_KEY: ${{ matrix.os }}_bazel-${{ matrix.bazel_version }}
+      BAZEL_DISK_CACHE: ~/.cache/bazel-disk
 
     steps:
     - uses: actions/checkout@v4
@@ -41,10 +35,9 @@ jobs:
     - name: Mount bazel cache
       uses: actions/cache/restore@v4
       with:
-        # See https://docs.bazel.build/versions/master/output_directories.html
-        path: "~/.cache/bazel"
-        # Create a new cache entry whenever Bazel files change.
-        # See https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
+        path: |
+          ~/.cache/bazel
+          ~/.cache/bazel-disk
         key: ${{ env.CACHE_KEY }}-${{ hashFiles('**/*.bazel*', '**/*.bzl') }}
         restore-keys: |
           ${{ env.CACHE_KEY }}
@@ -53,53 +46,45 @@ jobs:
       uses: josStorer/get-current-time@v2
       id: start-time
       with:
-        # Unix timestamp -- seconds since 1970.
         format: X
 
-    - name: Build proto/
-      run: cd proto && bazel build //... && bazel test //...
+    - name: Build Protos
+      run: |
+        cd proto
+        bazel build //... --disk_cache=${{ env.BAZEL_DISK_CACHE }} --jobs=$(nproc)
+        bazel test //... --test_output=errors --jobs=$(nproc)
 
-    - name: Build bazel/example/using-bzlmod/
-      run: cd bazel/example/using-bzlmod && bazel build //...
+    - name: Build Bzlmod Example
+      run: |
+        cd bazel/example/using-bzlmod
+        bazel build //... --disk_cache=${{ env.BAZEL_DISK_CACHE }} --jobs=$(nproc)
 
-    - name: Build bazel/example/using-workspace/
-      run: cd bazel/example/using-workspace && bazel build //...
-      # This is a legacy example that doesn't work beyond Bazel 7.x.
+    - name: Build Workspace Example (Only for Bazel 7.x)
       if: ${{ env.USE_BAZEL_VERSION == '7.x' }}
+      run: |
+        cd bazel/example/using-workspace
+        bazel build //... --disk_cache=${{ env.BAZEL_DISK_CACHE }} --jobs=$(nproc)
 
     - name: Save end time
-      # Always save the end time so we can calculate the build duration.
       if: always()
       uses: josStorer/get-current-time@v2
       id: end-time
       with:
-        # Unix timestamp -- seconds since 1970.
         format: X
 
-    - name: Calculate build duration
-      # Always calculate the build duration so we can update the cache if needed.
+    - name: Calculate Build Duration
       if: always()
       run: |
         START=${{ steps.start-time.outputs.formattedTime }}
         END=${{ steps.end-time.outputs.formattedTime }}
-        DURATION=$(( $END - $START ))
+        DURATION=$(( END - START ))
         echo "duration=$DURATION" | tee "$GITHUB_ENV"
-
-    - name: Compress cache
-      # Always compress the cache so we can update the cache if needed.
-      if: always()
-      run: rm -rf $(bazel info repository_cache)
 
     - name: Save bazel cache
       uses: actions/cache/save@v4
-      # Only create a new cache entry if we're on the main branch or the build takes >3mins.
-      #
-      # NOTE: Even though `always()` evaluates to true, and `true && x == x`,
-      # the `always() &&` prefix is not redundant! The call to `always()` has a
-      # side effect, which is to override the default behavior of automagically
-      # canceling this step if a previous step failed.
-      # (Don't blame me, blame GitHub Actions!)
       if: always() && (github.ref_name == 'main' || env.duration > 180)
       with:
-        path: "~/.cache/bazel"
+        path: |
+          ~/.cache/bazel
+          ~/.cache/bazel-disk
         key: ${{ env.CACHE_KEY }}-${{ hashFiles('**/*.bazel*', '**/*.bzl') }}-${{ github.run_id }}
