@@ -2,6 +2,6 @@
 common --enable_bzlmod
 common --noenable_workspace
 
-# Use C++14 (required for recent gRPC versions).
-build --cxxopt=-std=c++14
-build --host_cxxopt=-std=c++14
+# Use C++17 (required for recent gRPC versions).
+build --cxxopt=-std=c++17
+build --host_cxxopt=-std=c++17
