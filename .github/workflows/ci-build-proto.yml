@@ -16,6 +16,8 @@ jobs:
   build:
     strategy:
       matrix:
+        # We only test on the oldest version we want to support and latest.
+        # We trust that things also work for versions in the middle.
         os: [ubuntu-22.04, ubuntu-latest]
         bazel_version: [7.x, latest]
       fail-fast: false
