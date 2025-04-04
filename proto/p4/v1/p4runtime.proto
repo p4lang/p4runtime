@@ -840,4 +840,7 @@ message CapabilitiesResponse {
   // The full semantic version string (e.g. "1.1.0-rc.1") corresponding to the
   // version of the P4Runtime API currently implemented by the server.
   string p4runtime_api_version = 1;
+
+  // Used for experimental features before proposing them for standardization.
+  .google.protobuf.Any experimental = 999;
 }

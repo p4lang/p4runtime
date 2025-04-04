@@ -6036,6 +6036,11 @@ message only includes the `p4runtime_api_version` string field. This field must
 be set to the full semantic version string cite:[SemVer] corresponding to the
 version of the P4Runtime API implemented by the server, e.g. "1.1.0-rc.1".
 
+The `CapabilitiesResponse` message also contains an `Any` Protobuf message cite:[ProtoAny].
+The intended use case is to allow parties to experiment with features before 
+proposing them for standardization. NOTE: `Any` will be replaced with proto
+`extensions` cite:[ProtoExtension] once `p4runtime.proto` is migrated from `proto3` to proto `editions`.
+
 Future versions of P4Runtime may introduce more advanced capability discovery
 features. For example, P4Runtime supports three xref:sec-batch-atomicity[atomicity
 modes] for `WriteRequest` batches, two of them being
