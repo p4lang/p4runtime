@@ -6037,7 +6037,7 @@ be set to the full semantic version string cite:[SemVer] corresponding to the
 version of the P4Runtime API implemented by the server, e.g. "1.1.0-rc.1".
 
 The `CapabilitiesResponse` message also contains an `Any` Protobuf message cite:[ProtoAny].
-The intended use case is to allow parties to experiment with features before 
+The intended use case is to allow parties to experiment with features before
 proposing them for standardization. NOTE: `Any` will be replaced with proto
 `extensions` cite:[ProtoExtension] once `p4runtime.proto` is migrated from `proto3` to proto `editions`.
 

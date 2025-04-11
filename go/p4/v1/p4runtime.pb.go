@@ -4514,6 +4514,7 @@ type CapabilitiesResponse struct {
 	// version of the P4Runtime API currently implemented by the server.
 	P4RuntimeApiVersion string `protobuf:"bytes,1,opt,name=p4runtime_api_version,json=p4runtimeApiVersion,proto3" json:"p4runtime_api_version,omitempty"`
 	// Used for experimental features before proposing them for standardization.
+	// Added in 1.5.0.
 	Experimental *anypb.Any `protobuf:"bytes,999,opt,name=experimental,proto3" json:"experimental,omitempty"`
 }
 

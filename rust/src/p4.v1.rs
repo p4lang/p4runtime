@@ -1349,6 +1349,7 @@ pub struct CapabilitiesResponse {
     #[prost(string, tag="1")]
     pub p4runtime_api_version: ::prost::alloc::string::String,
     /// Used for experimental features before proposing them for standardization.
+    /// Added in 1.5.0.
     #[prost(message, optional, tag="999")]
     pub experimental: ::core::option::Option<::pbjson_types::Any>,
 }

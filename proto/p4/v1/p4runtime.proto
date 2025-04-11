@@ -842,5 +842,6 @@ message CapabilitiesResponse {
   string p4runtime_api_version = 1;
 
   // Used for experimental features before proposing them for standardization.
+  // Added in 1.5.0.
   .google.protobuf.Any experimental = 999;
 }
