@@ -1348,6 +1348,10 @@ pub struct CapabilitiesResponse {
     /// version of the P4Runtime API currently implemented by the server.
     #[prost(string, tag="1")]
     pub p4runtime_api_version: ::prost::alloc::string::String,
+    /// Used for experimental features before proposing them for standardization.
+    /// Added in 1.5.0.
+    #[prost(message, optional, tag="999")]
+    pub experimental: ::core::option::Option<::pbjson_types::Any>,
 }
 /// ------------------------------------------------------------------------------
 /// Reserved controller-specified SDN port numbers for reference.

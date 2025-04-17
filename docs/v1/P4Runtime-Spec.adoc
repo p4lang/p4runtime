@@ -6032,9 +6032,16 @@ error {
 The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
 discover the capabilities of the P4Runtime server implementation. At the moment,
 the `CapabilitiesRequest` message is empty and the `CapabilitiesResponse`
-message only includes the `p4runtime_api_version` string field. This field must
-be set to the full semantic version string cite:[SemVer] corresponding to the
-version of the P4Runtime API implemented by the server, e.g. "1.1.0-rc.1".
+message includes the `p4runtime_api_version` string field and the `experimental`
+field, which has type `Any` Protobuf message cite:[ProtoAny].
+
+The `p4runtime_api_version` field must be set to the full semantic version string cite:[SemVer]
+corresponding to the version of the P4Runtime API implemented by the server, e.g. "1.1.0-rc.1".
+
+The ` experimental` field is intended to allow parties to experiment with features
+before proposing them for standardization. NOTE: This field will be deprecated after
+`p4runtime.proto` is migrated from `proto3` to proto `editions`. Proto `extensions` cite:[ProtoExtension]
+will be introduced as the standard way to support experimental use cases.
 
 Future versions of P4Runtime may introduce more advanced capability discovery
 features. For example, P4Runtime supports three xref:sec-batch-atomicity[atomicity
