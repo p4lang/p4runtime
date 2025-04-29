@@ -1340,6 +1340,9 @@ pub struct Error {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CapabilitiesRequest {
+    /// Added in v1.5.0
+    #[prost(uint64, tag="1")]
+    pub device_id: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
