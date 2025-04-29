@@ -6030,10 +6030,15 @@ error {
 == `Capabilities` RPC
 
 The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
-discover the capabilities of the P4Runtime server implementation. At the moment,
-the `CapabilitiesRequest` message is empty and the `CapabilitiesResponse`
-message includes the `p4runtime_api_version` string field and the `experimental`
-field, which has type `Any` Protobuf message cite:[ProtoAny].
+discover the capabilities of the P4Runtime server implementation.
+
+The `CapabilitiesRequest` message contains a single field `device_id`.
+
+The `device_id` uniquely identifies the target P4 device. A `NOT_FOUND` error is
+returned if the `device_id` is not recognized by the P4Runtime server.
+
+The `CapabilitiesResponse` message includes the `p4runtime_api_version` string field
+and the `experimental` field, which has type `Any` Protobuf message cite:[ProtoAny].
 
 The `p4runtime_api_version` field must be set to the full semantic version string cite:[SemVer]
 corresponding to the version of the P4Runtime API implemented by the server, e.g. "1.1.0-rc.1".
