@@ -4472,6 +4472,8 @@ type CapabilitiesRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Optional: Response should include the device-specific capabilities of the
+	// device identified by `device_id` in addition to server-wide capabilities.
 	// Added in v1.5.0
 	DeviceId uint64 `protobuf:"varint,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
 }

@@ -835,6 +835,8 @@ enum SdnPort {
 
 //------------------------------------------------------------------------------
 message CapabilitiesRequest {
+  // Optional: Response should include the device-specific capabilities of the
+  // device identified by `device_id` in addition to server-wide capabilities.
   // Added in v1.5.0
   uint64 device_id = 1;
 }

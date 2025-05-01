@@ -1340,6 +1340,8 @@ pub struct Error {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CapabilitiesRequest {
+    /// Optional: Response should include the device-specific capabilities of the
+    /// device identified by `device_id` in addition to server-wide capabilities.
     /// Added in v1.5.0
     #[prost(uint64, tag="1")]
     pub device_id: u64,
