@@ -6030,27 +6030,32 @@ error {
 == `Capabilities` RPC
 
 The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
-discover the capabilities of the P4Runtime server implementation.
+discover the capabilities of the P4Runtime server implementation and the devices
+the server controls..
 
 The `CapabilitiesRequest` message contains a single optional field `device_id`.
 
-`device_id` is an optional filter to limit the capabilities in the response to those
-applicable to the target P4 device. A `NOT_FOUND` error is returned if the `device_id`
-is not recognized by the P4Runtime server. If `device_id` is unset (or 0), the response
-should only include capabilities that are server-wide (those which are applicable
-across all devices). Note that if `device_id` is set to a valid id, both server-wide and
-device-specific capabilities will be returned.
+`device_id` is an optional filter to limit the capabilities in the response to
+those applicable to the target P4 device. A `NOT_FOUND` error is returned if
+the `device_id` is not recognized by the P4Runtime server. If `device_id` is
+unset (i.e. 0), the response should only include capabilities that are
+server-wide (those which are applicable across all devices). Note that if
+`device_id` is set to a valid id, both server-wide and device-specific
+capabilities will be returned.
 
-The `CapabilitiesResponse` message includes the `p4runtime_api_version` string field
-and the `experimental` field, which has type `Any` Protobuf message cite:[ProtoAny].
+The `CapabilitiesResponse` message includes the `p4runtime_api_version` string
+field and the `experimental` field, which has type `Any` Protobuf message cite:[ProtoAny].
 
-The `p4runtime_api_version` field must be set to the full semantic version string cite:[SemVer]
-corresponding to the version of the P4Runtime API implemented by the server, e.g. "1.1.0-rc.1".
+The `p4runtime_api_version` field must be set to the full semantic version
+string cite:[SemVer] corresponding to the version of the P4Runtime API implemented by the
+server, e.g. "1.1.0-rc.1". This is a server-wide capability.
 
-The ` experimental` field is intended to allow parties to experiment with features
-before proposing them for standardization. NOTE: This field will be deprecated after
-`p4runtime.proto` is migrated from `proto3` to proto `editions`. Proto `extensions` cite:[ProtoExtension]
-will be introduced as the standard way to support experimental use cases.
+The ` experimental` field is intended to allow parties to experiment with
+features before proposing them for standardization. This field may contain
+server-wide and/or device-specific capabilities. NOTE: This field will be
+deprecated after `p4runtime.proto` is migrated from `proto3` to proto
+`editions`. Proto `extensions` cite:[ProtoExtension] will be introduced as the standard way
+to support experimental use cases.
 
 Future versions of P4Runtime may introduce more advanced capability discovery
 features. For example, P4Runtime supports three xref:sec-batch-atomicity[atomicity
