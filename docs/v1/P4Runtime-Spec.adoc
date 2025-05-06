@@ -6031,7 +6031,7 @@ error {
 
 The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
 discover the capabilities of the P4Runtime server implementation and the devices
-the server controls..
+the server controls.
 
 The `CapabilitiesRequest` message contains a single optional field `device_id`.
 
