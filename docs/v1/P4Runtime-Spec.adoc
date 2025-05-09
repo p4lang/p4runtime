@@ -601,13 +601,18 @@ their write requests. gRPC provides authentication methods cite:[gRPCAuth] that
 should be deployed to prevent untrusted clients from creating channels, and thus
 from making changes or even reading the state of the server.
 
-=== Default Role
+=== Default Role and Default Device ID
 
 A controller can omit the role message in `MasterArbitrationUpdate`. This
 implies the "default role", which corresponds to "full pipeline access".
 This also implies that a default role has a `role_id` of `""` (default).
 If using a default role, all RPCs from the controller (e.g. `Write`) must
 leave the `role` unset.
+
+The "default device_id" corresponds to `0`. As mentioned [previously](#sec-default-valued-fields),
+an application is unable to distinguish between unset vs default valued scalar
+fields. Some requests (e.g. [Cabilities](#sec-capabilities-rpc)) uniquely handle an unset `device_id`.
+Therefore, a device must NEVER be assigned a `device_id` of 0.
 
 [#sec-arbitration-role-config]
 === Role Config
@@ -6027,6 +6032,7 @@ error {
 }
 ----
 
+[#sec-capabilities-rpc]
 == `Capabilities` RPC
 
 The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
