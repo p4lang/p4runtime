@@ -610,7 +610,7 @@ If using a default role, all RPCs from the controller (e.g. `Write`) must
 leave the `role` unset.
 
 As per section [X](#sec-default-valued-fields), default values are invalid for all scalar P4 object IDs.
-This includes `device_id`, so the `0` ID may not be assigned to a device. 
+This includes `device_id`, so the `0` ID may not be assigned to a device.
 
 The "default device_id" corresponds to `0`. As mentioned [previously](),
 an application is unable to distinguish between unset vs default valued scalar
