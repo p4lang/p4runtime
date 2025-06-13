@@ -610,8 +610,7 @@ If using a default role, all RPCs from the controller (e.g. `Write`) must
 leave the `role` unset.
 
 As per section [Default-Valued Fields](#sec-default-valued-fields), default values are invalid for all
-scalar P4 object IDs. This includes `device_id`, so the `0` ID must not be
-assigned to a device.
+scalar P4 object IDs. This includes `device_i`, which must be non-zero.
 
 [#sec-arbitration-role-config]
 === Role Config
