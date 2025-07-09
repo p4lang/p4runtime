@@ -3990,7 +3990,8 @@ inserted. Therefore, 3 distinct `WriteRequest` batches are required.
 
 It is possible to include several `ActionProfileAction` messages with the same
 exact `action` specification in one `ActionProfileActionSet` message. However,
-the P4Runtime client is encouraged not to do so, as the same can be achieved by
+when using the `sum_of_weights` group size calculation, the P4Runtime client is
+encouraged not to do so, as the same can be achieved by
 using the `weight` field. Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
