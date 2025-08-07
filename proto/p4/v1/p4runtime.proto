@@ -284,6 +284,7 @@ message Action {
 
 message ActionProfileActionSet {
   repeated ActionProfileAction action_profile_actions = 1;
+  // Support per-group hash modes and resouce usage modes. Added in v1.5.0.
   enum BucketSelectionMode {
     DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR = 0;
     HASH = 1;
