@@ -284,6 +284,18 @@ message Action {
 
 message ActionProfileActionSet {
   repeated ActionProfileAction action_profile_actions = 1;
+  enum BucketSelectionMode {
+    DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR = 0;
+    HASH = 1;
+    RANDOM = 2;
+  }
+  enum SizeSemantics {
+    DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR = 0;
+    SUM_OF_WEIGHTS = 1;
+    SUM_OF_MEMBERS = 2;
+  }
+  BucketSelectionMode bucket_selection_mode = 2;
+  SizeSemantics size_semantics = 3;
 }
 
 message ActionProfileAction {
