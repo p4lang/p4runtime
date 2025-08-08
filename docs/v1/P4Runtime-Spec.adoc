@@ -3873,14 +3873,15 @@ does not need to keep track of group ids and member ids.
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
 `ActionProfileAction` messages, a `BucketSelectionMode` message, and a
-`SizeSemantics` message. The `BucketSelectionMode` enum consists of
-`DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR`, `HASH`, and `RANDOM`.
-The SizeSemantics`SizeSemantics` enum consists of
+`SizeSemantics` message, used for resource accounting. The `BucketSelectionMode`
+ enum consists of `DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR`, `HASH`, and `RANDOM`.
+The `SizeSemantics` enum consists of
 `DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR`, `SUM_OF_WEIGHTS`, and
-`SUM_OF_MEMBERS`. The `ActionProfileAction` set should have cardinality no
-greater than `max_group_size` (if `max_group_size` is nonzero) if
-`selector_size_semantics` is `sum_of_members`, or else the server must return
-`INVALID_ARGUMENT`. Each `ActionProfileAction` message has the following fields:
+`SUM_OF_MEMBERS`, which dictates the hashing mode to use for the packet. 
+The `ActionProfileAction` set should have cardinality no greater than
+`max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
+is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`.
+Each `ActionProfileAction` message has the following fields:
 
 * `action` is one of the actions specified by the table that is being
   programmed.
