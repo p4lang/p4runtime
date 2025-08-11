@@ -222,56 +222,58 @@ func (Update_Type) EnumDescriptor() ([]byte, []int) {
 	return file_p4_v1_p4runtime_proto_rawDescGZIP(), []int{4, 0}
 }
 
-// Support per-group hash modes and resouce usage modes. Added in v1.5.0.
-type ActionProfileActionSet_BucketSelectionMode int32
+// Support per-group hash modes and resource usage modes.
+// Added in v1.5.0.
+type ActionProfileActionSet_ActionSelectionMode int32
 
 const (
-	ActionProfileActionSet_DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR ActionProfileActionSet_BucketSelectionMode = 0
-	ActionProfileActionSet_HASH                                       ActionProfileActionSet_BucketSelectionMode = 1
-	ActionProfileActionSet_RANDOM                                     ActionProfileActionSet_BucketSelectionMode = 2
+	ActionProfileActionSet_DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR ActionProfileActionSet_ActionSelectionMode = 0
+	ActionProfileActionSet_HASH                                       ActionProfileActionSet_ActionSelectionMode = 1
+	ActionProfileActionSet_RANDOM                                     ActionProfileActionSet_ActionSelectionMode = 2
 )
 
-// Enum value maps for ActionProfileActionSet_BucketSelectionMode.
+// Enum value maps for ActionProfileActionSet_ActionSelectionMode.
 var (
-	ActionProfileActionSet_BucketSelectionMode_name = map[int32]string{
+	ActionProfileActionSet_ActionSelectionMode_name = map[int32]string{
 		0: "DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR",
 		1: "HASH",
 		2: "RANDOM",
 	}
-	ActionProfileActionSet_BucketSelectionMode_value = map[string]int32{
+	ActionProfileActionSet_ActionSelectionMode_value = map[string]int32{
 		"DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR": 0,
 		"HASH":   1,
 		"RANDOM": 2,
 	}
 )
 
-func (x ActionProfileActionSet_BucketSelectionMode) Enum() *ActionProfileActionSet_BucketSelectionMode {
-	p := new(ActionProfileActionSet_BucketSelectionMode)
+func (x ActionProfileActionSet_ActionSelectionMode) Enum() *ActionProfileActionSet_ActionSelectionMode {
+	p := new(ActionProfileActionSet_ActionSelectionMode)
 	*p = x
 	return p
 }
 
-func (x ActionProfileActionSet_BucketSelectionMode) String() string {
+func (x ActionProfileActionSet_ActionSelectionMode) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (ActionProfileActionSet_BucketSelectionMode) Descriptor() protoreflect.EnumDescriptor {
+func (ActionProfileActionSet_ActionSelectionMode) Descriptor() protoreflect.EnumDescriptor {
 	return file_p4_v1_p4runtime_proto_enumTypes[3].Descriptor()
 }
 
-func (ActionProfileActionSet_BucketSelectionMode) Type() protoreflect.EnumType {
+func (ActionProfileActionSet_ActionSelectionMode) Type() protoreflect.EnumType {
 	return &file_p4_v1_p4runtime_proto_enumTypes[3]
 }
 
-func (x ActionProfileActionSet_BucketSelectionMode) Number() protoreflect.EnumNumber {
+func (x ActionProfileActionSet_ActionSelectionMode) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use ActionProfileActionSet_BucketSelectionMode.Descriptor instead.
-func (ActionProfileActionSet_BucketSelectionMode) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use ActionProfileActionSet_ActionSelectionMode.Descriptor instead.
+func (ActionProfileActionSet_ActionSelectionMode) EnumDescriptor() ([]byte, []int) {
 	return file_p4_v1_p4runtime_proto_rawDescGZIP(), []int{11, 0}
 }
 
+// Added in v1.5.0.
 type ActionProfileActionSet_SizeSemantics int32
 
 const (
@@ -1571,9 +1573,11 @@ type ActionProfileActionSet struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ActionProfileActions []*ActionProfileAction                     `protobuf:"bytes,1,rep,name=action_profile_actions,json=actionProfileActions,proto3" json:"action_profile_actions,omitempty"`
-	BucketSelectionMode  ActionProfileActionSet_BucketSelectionMode `protobuf:"varint,2,opt,name=bucket_selection_mode,json=bucketSelectionMode,proto3,enum=p4.v1.ActionProfileActionSet_BucketSelectionMode" json:"bucket_selection_mode,omitempty"`
-	SizeSemantics        ActionProfileActionSet_SizeSemantics       `protobuf:"varint,3,opt,name=size_semantics,json=sizeSemantics,proto3,enum=p4.v1.ActionProfileActionSet_SizeSemantics" json:"size_semantics,omitempty"`
+	ActionProfileActions []*ActionProfileAction `protobuf:"bytes,1,rep,name=action_profile_actions,json=actionProfileActions,proto3" json:"action_profile_actions,omitempty"`
+	// Added in v1.5.0.
+	ActionSelectionMode ActionProfileActionSet_ActionSelectionMode `protobuf:"varint,2,opt,name=action_selection_mode,json=actionSelectionMode,proto3,enum=p4.v1.ActionProfileActionSet_ActionSelectionMode" json:"action_selection_mode,omitempty"`
+	// Added in v1.5.0.
+	SizeSemantics ActionProfileActionSet_SizeSemantics `protobuf:"varint,3,opt,name=size_semantics,json=sizeSemantics,proto3,enum=p4.v1.ActionProfileActionSet_SizeSemantics" json:"size_semantics,omitempty"`
 }
 
 func (x *ActionProfileActionSet) Reset() {
@@ -1615,9 +1619,9 @@ func (x *ActionProfileActionSet) GetActionProfileActions() []*ActionProfileActio
 	return nil
 }
 
-func (x *ActionProfileActionSet) GetBucketSelectionMode() ActionProfileActionSet_BucketSelectionMode {
+func (x *ActionProfileActionSet) GetActionSelectionMode() ActionProfileActionSet_ActionSelectionMode {
 	if x != nil {
-		return x.BucketSelectionMode
+		return x.ActionSelectionMode
 	}
 	return ActionProfileActionSet_DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR
 }
@@ -5507,19 +5511,19 @@ var file_p4_v1_p4runtime_proto_rawDesc = []byte{
 	0x2e, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c,
 	0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x14, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50,
 	0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x65, 0x0a,
-	0x15, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x5f, 0x73, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f,
+	0x15, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f,
 	0x6e, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x31, 0x2e, 0x70,
 	0x34, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x66, 0x69,
-	0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x2e, 0x42, 0x75, 0x63, 0x6b,
-	0x65, 0x74, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x52,
-	0x13, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x2e, 0x41, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x52,
+	0x13, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e,
 	0x4d, 0x6f, 0x64, 0x65, 0x12, 0x52, 0x0a, 0x0e, 0x73, 0x69, 0x7a, 0x65, 0x5f, 0x73, 0x65, 0x6d,
 	0x61, 0x6e, 0x74, 0x69, 0x63, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x2b, 0x2e, 0x70,
 	0x34, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x66, 0x69,
 	0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x2e, 0x53, 0x69, 0x7a, 0x65,
 	0x53, 0x65, 0x6d, 0x61, 0x6e, 0x74, 0x69, 0x63, 0x73, 0x52, 0x0d, 0x73, 0x69, 0x7a, 0x65, 0x53,
-	0x65, 0x6d, 0x61, 0x6e, 0x74, 0x69, 0x63, 0x73, 0x22, 0x5b, 0x0a, 0x13, 0x42, 0x75, 0x63, 0x6b,
-	0x65, 0x74, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x12,
+	0x65, 0x6d, 0x61, 0x6e, 0x74, 0x69, 0x63, 0x73, 0x22, 0x5b, 0x0a, 0x13, 0x41, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x12,
 	0x2e, 0x0a, 0x2a, 0x44, 0x45, 0x46, 0x41, 0x55, 0x4c, 0x54, 0x5f, 0x4d, 0x4f, 0x44, 0x45, 0x5f,
 	0x44, 0x45, 0x54, 0x45, 0x52, 0x4d, 0x49, 0x4e, 0x45, 0x44, 0x5f, 0x42, 0x59, 0x5f, 0x41, 0x43,
 	0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x53, 0x45, 0x4c, 0x45, 0x43, 0x54, 0x4f, 0x52, 0x10, 0x00, 0x12,
@@ -5988,7 +5992,7 @@ var file_p4_v1_p4runtime_proto_goTypes = []interface{}{
 	(SdnPort)(0),                // 0: p4.v1.SdnPort
 	(WriteRequest_Atomicity)(0), // 1: p4.v1.WriteRequest.Atomicity
 	(Update_Type)(0),            // 2: p4.v1.Update.Type
-	(ActionProfileActionSet_BucketSelectionMode)(0),      // 3: p4.v1.ActionProfileActionSet.BucketSelectionMode
+	(ActionProfileActionSet_ActionSelectionMode)(0),      // 3: p4.v1.ActionProfileActionSet.ActionSelectionMode
 	(ActionProfileActionSet_SizeSemantics)(0),            // 4: p4.v1.ActionProfileActionSet.SizeSemantics
 	(SetForwardingPipelineConfigRequest_Action)(0),       // 5: p4.v1.SetForwardingPipelineConfigRequest.Action
 	(GetForwardingPipelineConfigRequest_ResponseType)(0), // 6: p4.v1.GetForwardingPipelineConfigRequest.ResponseType
@@ -6099,7 +6103,7 @@ var file_p4_v1_p4runtime_proto_depIdxs = []int32{
 	18,  // 33: p4.v1.TableAction.action_profile_action_set:type_name -> p4.v1.ActionProfileActionSet
 	68,  // 34: p4.v1.Action.params:type_name -> p4.v1.Action.Param
 	19,  // 35: p4.v1.ActionProfileActionSet.action_profile_actions:type_name -> p4.v1.ActionProfileAction
-	3,   // 36: p4.v1.ActionProfileActionSet.bucket_selection_mode:type_name -> p4.v1.ActionProfileActionSet.BucketSelectionMode
+	3,   // 36: p4.v1.ActionProfileActionSet.action_selection_mode:type_name -> p4.v1.ActionProfileActionSet.ActionSelectionMode
 	4,   // 37: p4.v1.ActionProfileActionSet.size_semantics:type_name -> p4.v1.ActionProfileActionSet.SizeSemantics
 	17,  // 38: p4.v1.ActionProfileAction.action:type_name -> p4.v1.Action
 	17,  // 39: p4.v1.ActionProfileMember.action:type_name -> p4.v1.Action

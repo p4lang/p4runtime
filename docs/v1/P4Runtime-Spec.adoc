@@ -3872,12 +3872,36 @@ does not need to keep track of group ids and member ids.
 
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
-`ActionProfileAction` messages, a `BucketSelectionMode` message, and a
-`SizeSemantics` message, used for resource accounting. The `BucketSelectionMode`
- enum consists of `DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR`, `HASH`, and `RANDOM`.
-The `SizeSemantics` enum consists of
-`DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR`, `SUM_OF_WEIGHTS`, and
-`SUM_OF_MEMBERS`, which dictates the hashing mode to use for the packet. 
+`ActionProfileAction` messages, a `ActionSelectionMode` enum, and a
+`SizeSemantics` enum. The `ActionSelectionMode` and `SizeSemantics` enums
+override the existing action selector settings.
+
+Each `ActionSelectionMode` enum can take on the following values:
+* `DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR`: uses the action specified by the
+action selector, ensuring backward compatibility.
+
+* `HASH`: selects an action based on the hash mode from the action selector.
+
+* `RANDOM`: selects an action at random.
+
+Each `SizeSemantics` enum can take on the following values:
+* `DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR`: uses the size specified by the
+action selector, ensuring backward compatibility.
+
+* `SUM_OF_WEIGHTS`: the group's size is the sum of the individual weights of
+all its members.
+
+* `SUM_OF_MEMBERS`: the group's size is the total count of its members.
+
+All servers and targets must support the
+DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR and
+DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR values for BucketSelectionMode and
+SizeSemantics respectively. Servers must also support the specific value
+combination that corresponds to that default. Otherwise, if the target does not
+support per-group hash settings, the server should return UNIMPLEMENTED. If the
+target supports per-group hash settings, but not the specific combination given,
+the server should return INVALID_ARGUMENT.
+
 The `ActionProfileAction` set should have cardinality no greater than
 `max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
 is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`.

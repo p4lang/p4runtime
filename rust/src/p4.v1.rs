@@ -499,31 +499,34 @@ pub mod action {
 pub struct ActionProfileActionSet {
     #[prost(message, repeated, tag="1")]
     pub action_profile_actions: ::prost::alloc::vec::Vec<ActionProfileAction>,
-    #[prost(enumeration="action_profile_action_set::BucketSelectionMode", tag="2")]
-    pub bucket_selection_mode: i32,
+    /// Added in v1.5.0.
+    #[prost(enumeration="action_profile_action_set::ActionSelectionMode", tag="2")]
+    pub action_selection_mode: i32,
+    /// Added in v1.5.0.
     #[prost(enumeration="action_profile_action_set::SizeSemantics", tag="3")]
     pub size_semantics: i32,
 }
 /// Nested message and enum types in `ActionProfileActionSet`.
 pub mod action_profile_action_set {
-    /// Support per-group hash modes and resouce usage modes. Added in v1.5.0.
+    /// Support per-group hash modes and resource usage modes.
+    /// Added in v1.5.0.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
-    pub enum BucketSelectionMode {
+    pub enum ActionSelectionMode {
         DefaultModeDeterminedByActionSelector = 0,
         Hash = 1,
         Random = 2,
     }
-    impl BucketSelectionMode {
+    impl ActionSelectionMode {
         /// String value of the enum field names used in the ProtoBuf definition.
         ///
         /// The values are not transformed in any way and thus are considered stable
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BucketSelectionMode::DefaultModeDeterminedByActionSelector => "DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR",
-                BucketSelectionMode::Hash => "HASH",
-                BucketSelectionMode::Random => "RANDOM",
+                ActionSelectionMode::DefaultModeDeterminedByActionSelector => "DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR",
+                ActionSelectionMode::Hash => "HASH",
+                ActionSelectionMode::Random => "RANDOM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -536,6 +539,7 @@ pub mod action_profile_action_set {
             }
         }
     }
+    /// Added in v1.5.0.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum SizeSemantics {
