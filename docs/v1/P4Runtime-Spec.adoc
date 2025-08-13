@@ -3908,12 +3908,8 @@ Each `ActionSelectionMode` enum can take on the following values:
   would correspond to setting `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM` to
   `SAI_HASH_ALGORITHM_NONE`, using the default action selector mode.
 
-* `HASH`: selects an action based on the hash mode from the action selector. In
-  a SAI-based switch, this would correspond to setting
-  `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM` to `SAI_HASH_ALGORITHM_CRC`,
-  `SAI_HASH_ALGORITHM_XOR`, `SAI_HASH_ALGORITHM_CRC_32LO`,
-  `SAI_HASH_ALGORITHM_CRC_32HI`, `SAI_HASH_ALGORITHM_CRC_CCITT`, or
-  `SAI_HASH_ALGORITHM_CRC_XOR`.
+* `HASH`: selects an action based on the result of the hashing algorithm chosen
+  by the switch.
 
 * `RANDOM`: selects an action at random. In a SAI-based switch, this would
   correspond to setting `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM` to
