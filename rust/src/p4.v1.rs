@@ -499,22 +499,25 @@ pub mod action {
 pub struct ActionProfileActionSet {
     #[prost(message, repeated, tag="1")]
     pub action_profile_actions: ::prost::alloc::vec::Vec<ActionProfileAction>,
-    /// Added in v1.5.0.
+    /// Determines how the group selects a per-packet action.
     #[prost(enumeration="action_profile_action_set::ActionSelectionMode", tag="2")]
     pub action_selection_mode: i32,
-    /// Added in v1.5.0.
+    /// Determines the resources used by the group.
     #[prost(enumeration="action_profile_action_set::SizeSemantics", tag="3")]
     pub size_semantics: i32,
 }
 /// Nested message and enum types in `ActionProfileActionSet`.
 pub mod action_profile_action_set {
-    /// Support per-group hash modes and resource usage modes.
     /// Added in v1.5.0.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ActionSelectionMode {
+        /// Uses the mode specified by the action selector.
         DefaultModeDeterminedByActionSelector = 0,
+        /// Uses the hash mode specified by the action selector or a target-defined
+        /// hash mode if there is none.
         Hash = 1,
+        /// Picks the action randomly.
         Random = 2,
     }
     impl ActionSelectionMode {
@@ -543,8 +546,11 @@ pub mod action_profile_action_set {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum SizeSemantics {
+        /// Uses the mode specified by the action selector.
         DefaultSizeDeterminedByActionSelector = 0,
+        /// Uses the `sum_of_weights` `selector_size_semantics` for this group.
         SumOfWeights = 1,
+        /// Uses the `sum_of_members` `selector_size_semantics` for this group.
         SumOfMembers = 2,
     }
     impl SizeSemantics {

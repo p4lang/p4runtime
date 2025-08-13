@@ -222,14 +222,17 @@ func (Update_Type) EnumDescriptor() ([]byte, []int) {
 	return file_p4_v1_p4runtime_proto_rawDescGZIP(), []int{4, 0}
 }
 
-// Support per-group hash modes and resource usage modes.
 // Added in v1.5.0.
 type ActionProfileActionSet_ActionSelectionMode int32
 
 const (
+	// Uses the mode specified by the action selector.
 	ActionProfileActionSet_DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR ActionProfileActionSet_ActionSelectionMode = 0
-	ActionProfileActionSet_HASH                                       ActionProfileActionSet_ActionSelectionMode = 1
-	ActionProfileActionSet_RANDOM                                     ActionProfileActionSet_ActionSelectionMode = 2
+	// Uses the hash mode specified by the action selector or a target-defined
+	// hash mode if there is none.
+	ActionProfileActionSet_HASH ActionProfileActionSet_ActionSelectionMode = 1
+	// Picks the action randomly.
+	ActionProfileActionSet_RANDOM ActionProfileActionSet_ActionSelectionMode = 2
 )
 
 // Enum value maps for ActionProfileActionSet_ActionSelectionMode.
@@ -277,9 +280,12 @@ func (ActionProfileActionSet_ActionSelectionMode) EnumDescriptor() ([]byte, []in
 type ActionProfileActionSet_SizeSemantics int32
 
 const (
+	// Uses the mode specified by the action selector.
 	ActionProfileActionSet_DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR ActionProfileActionSet_SizeSemantics = 0
-	ActionProfileActionSet_SUM_OF_WEIGHTS                             ActionProfileActionSet_SizeSemantics = 1
-	ActionProfileActionSet_SUM_OF_MEMBERS                             ActionProfileActionSet_SizeSemantics = 2
+	// Uses the `sum_of_weights` `selector_size_semantics` for this group.
+	ActionProfileActionSet_SUM_OF_WEIGHTS ActionProfileActionSet_SizeSemantics = 1
+	// Uses the `sum_of_members` `selector_size_semantics` for this group.
+	ActionProfileActionSet_SUM_OF_MEMBERS ActionProfileActionSet_SizeSemantics = 2
 )
 
 // Enum value maps for ActionProfileActionSet_SizeSemantics.
@@ -1574,9 +1580,9 @@ type ActionProfileActionSet struct {
 	unknownFields protoimpl.UnknownFields
 
 	ActionProfileActions []*ActionProfileAction `protobuf:"bytes,1,rep,name=action_profile_actions,json=actionProfileActions,proto3" json:"action_profile_actions,omitempty"`
-	// Added in v1.5.0.
+	// Determines how the group selects a per-packet action.
 	ActionSelectionMode ActionProfileActionSet_ActionSelectionMode `protobuf:"varint,2,opt,name=action_selection_mode,json=actionSelectionMode,proto3,enum=p4.v1.ActionProfileActionSet_ActionSelectionMode" json:"action_selection_mode,omitempty"`
-	// Added in v1.5.0.
+	// Determines the resources used by the group.
 	SizeSemantics ActionProfileActionSet_SizeSemantics `protobuf:"varint,3,opt,name=size_semantics,json=sizeSemantics,proto3,enum=p4.v1.ActionProfileActionSet_SizeSemantics" json:"size_semantics,omitempty"`
 }
 

@@ -3876,32 +3876,6 @@ One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `SizeSemantics` enum. The `ActionSelectionMode` and `SizeSemantics` enums
 override the existing action selector settings.
 
-Each `ActionSelectionMode` enum can take on the following values:
-* `DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR`: uses the action specified by the
-action selector, ensuring backward compatibility.
-
-* `HASH`: selects an action based on the hash mode from the action selector.
-
-* `RANDOM`: selects an action at random.
-
-Each `SizeSemantics` enum can take on the following values:
-* `DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR`: uses the size specified by the
-action selector, ensuring backward compatibility.
-
-* `SUM_OF_WEIGHTS`: the group's size is the sum of the individual weights of
-all its members.
-
-* `SUM_OF_MEMBERS`: the group's size is the total count of its members.
-
-All servers and targets must support the
-DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR and
-DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR values for BucketSelectionMode and
-SizeSemantics respectively. Servers must also support the specific value
-combination that corresponds to that default. Otherwise, if the target does not
-support per-group hash settings, the server should return UNIMPLEMENTED. If the
-target supports per-group hash settings, but not the specific combination given,
-the server should return INVALID_ARGUMENT.
-
 The `ActionProfileAction` set should have cardinality no greater than
 `max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
 is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`.
@@ -3927,6 +3901,42 @@ Each `ActionProfileAction` message has the following fields:
   on the `watch_port` field, which also apply for one shot action selector
   programming.
 
+Each `ActionSelectionMode` enum can take on the following values:
+
+* `DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR`: uses the action specified by the
+  action selector, ensuring backward compatibility. In a SAI-based switch, this
+  would correspond to setting `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM` to
+  `SAI_HASH_ALGORITHM_NONE`, using the default action selector mode.
+
+* `HASH`: selects an action based on the hash mode from the action selector. In
+  a SAI-based switch, this would correspond to setting
+  `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM` to `SAI_HASH_ALGORITHM_CRC`,
+  `SAI_HASH_ALGORITHM_XOR`, `SAI_HASH_ALGORITHM_CRC_32LO`,
+  `SAI_HASH_ALGORITHM_CRC_32HI`, `SAI_HASH_ALGORITHM_CRC_CCITT`, or
+  `SAI_HASH_ALGORITHM_CRC_XOR`.
+
+* `RANDOM`: selects an action at random. In a SAI-based switch, this would
+  correspond to setting `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM` to
+  `SAI_HASH_ALGORITHM_RANDOM`.
+
+Each `SizeSemantics` enum can take on the following values:
+
+* `DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR`: uses the size semantics
+  specified by the action selector, ensuring backward compatibility.
+
+* `SUM_OF_WEIGHTS`: the group's size is the sum of the individual weights of
+  all its members.
+
+* `SUM_OF_MEMBERS`: the group's size is the total count of its members.
+
+All servers and targets must support the
+`DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR` and
+`DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR` values for `ActionSelectionMode`
+and `SizeSemantics` respectively. Servers must also support the specific value
+combination that corresponds to that default. Otherwise, if the target does not
+support per-group hash settings, the server should return `UNIMPLEMENTED`. If
+the target supports per-group hash settings, but not the specific combination
+given, the server should return `INVALID_ARGUMENT`.
 
 Semantically, one shots are equivalent to programming the table entry, group,
 and members individually; with the necessary group id and member ids bound to
