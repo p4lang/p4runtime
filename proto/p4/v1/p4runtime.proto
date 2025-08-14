@@ -296,7 +296,7 @@ message ActionProfileActionSet {
   }
   // Added in v1.5.0.
   enum SizeSemantics {
-    // Uses the mode specified by the action selector.
+    // Uses the `selector_size_semantics` specified by the action selector.
     DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR = 0;
     // Uses the `sum_of_weights` `selector_size_semantics` for this group.
     SUM_OF_WEIGHTS = 1;

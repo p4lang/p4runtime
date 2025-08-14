@@ -546,7 +546,7 @@ pub mod action_profile_action_set {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum SizeSemantics {
-        /// Uses the mode specified by the action selector.
+        /// Uses the `selector_size_semantics` specified by the action selector.
         DefaultSizeDeterminedByActionSelector = 0,
         /// Uses the `sum_of_weights` `selector_size_semantics` for this group.
         SumOfWeights = 1,
