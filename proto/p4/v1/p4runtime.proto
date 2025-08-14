@@ -284,6 +284,29 @@ message Action {
 
 message ActionProfileActionSet {
   repeated ActionProfileAction action_profile_actions = 1;
+  // Added in v1.5.0.
+  enum ActionSelectionMode {
+    // Uses the mode specified by the action selector.
+    DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR = 0;
+    // Uses the hash mode specified by the action selector or a target-defined
+    // hash mode if there is none.
+    HASH = 1;
+    // Picks the action randomly.
+    RANDOM = 2;
+  }
+  // Added in v1.5.0.
+  enum SizeSemantics {
+    // Uses the `selector_size_semantics` specified by the action selector.
+    DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR = 0;
+    // Uses the `sum_of_weights` `selector_size_semantics` for this group.
+    SUM_OF_WEIGHTS = 1;
+    // Uses the `sum_of_members` `selector_size_semantics` for this group.
+    SUM_OF_MEMBERS = 2;
+  }
+  // Determines how the group selects a per-packet action.
+  ActionSelectionMode action_selection_mode = 2;
+  // Determines the resources used by the group.
+  SizeSemantics size_semantics = 3;
 }
 
 message ActionProfileAction {

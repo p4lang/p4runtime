@@ -499,6 +499,82 @@ pub mod action {
 pub struct ActionProfileActionSet {
     #[prost(message, repeated, tag="1")]
     pub action_profile_actions: ::prost::alloc::vec::Vec<ActionProfileAction>,
+    /// Determines how the group selects a per-packet action.
+    #[prost(enumeration="action_profile_action_set::ActionSelectionMode", tag="2")]
+    pub action_selection_mode: i32,
+    /// Determines the resources used by the group.
+    #[prost(enumeration="action_profile_action_set::SizeSemantics", tag="3")]
+    pub size_semantics: i32,
+}
+/// Nested message and enum types in `ActionProfileActionSet`.
+pub mod action_profile_action_set {
+    /// Added in v1.5.0.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ActionSelectionMode {
+        /// Uses the mode specified by the action selector.
+        DefaultModeDeterminedByActionSelector = 0,
+        /// Uses the hash mode specified by the action selector or a target-defined
+        /// hash mode if there is none.
+        Hash = 1,
+        /// Picks the action randomly.
+        Random = 2,
+    }
+    impl ActionSelectionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ActionSelectionMode::DefaultModeDeterminedByActionSelector => "DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR",
+                ActionSelectionMode::Hash => "HASH",
+                ActionSelectionMode::Random => "RANDOM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR" => Some(Self::DefaultModeDeterminedByActionSelector),
+                "HASH" => Some(Self::Hash),
+                "RANDOM" => Some(Self::Random),
+                _ => None,
+            }
+        }
+    }
+    /// Added in v1.5.0.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SizeSemantics {
+        /// Uses the `selector_size_semantics` specified by the action selector.
+        DefaultSizeDeterminedByActionSelector = 0,
+        /// Uses the `sum_of_weights` `selector_size_semantics` for this group.
+        SumOfWeights = 1,
+        /// Uses the `sum_of_members` `selector_size_semantics` for this group.
+        SumOfMembers = 2,
+    }
+    impl SizeSemantics {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SizeSemantics::DefaultSizeDeterminedByActionSelector => "DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR",
+                SizeSemantics::SumOfWeights => "SUM_OF_WEIGHTS",
+                SizeSemantics::SumOfMembers => "SUM_OF_MEMBERS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR" => Some(Self::DefaultSizeDeterminedByActionSelector),
+                "SUM_OF_WEIGHTS" => Some(Self::SumOfWeights),
+                "SUM_OF_MEMBERS" => Some(Self::SumOfMembers),
+                _ => None,
+            }
+        }
+    }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
