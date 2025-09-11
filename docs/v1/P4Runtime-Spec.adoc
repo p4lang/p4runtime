@@ -1504,6 +1504,9 @@ The `ActionProfile` message includes the following fields:
       maximum weight of each individual member. If unset, any 32-bit integer is
       allowed for weight.
 
+* `weights_determined_by_switch`, a boolean flag indicating whether the switch
+  determines the weights based on the switch's internal hash algorithm.
+
 
 PSA programs can use the `@selector_size_semantics` annotation with one of
 `sum_of_weights` or `sum_of_members` to specify this value for Action Selectors. In the `sum_of_members` case, the `@max_member_weight` annotation
