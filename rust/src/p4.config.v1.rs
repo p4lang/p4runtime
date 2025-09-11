@@ -1017,10 +1017,10 @@ pub struct ActionProfile {
     pub max_group_size: i32,
     /// dictates whether the controller can specify weights for groups programmed
     /// in this ActionProfile. If `weights_determined_by_switch`, then all weights
-    /// must be absent.
+    /// must be absent and will instead be determined internally by the switch.
     /// Added in v1.5.0.
     #[prost(bool, tag="8")]
-    pub weights_determine_by_switch: bool,
+    pub weights_determined_by_switch: bool,
     /// specifies the semantics of `size` and `max_group_size` above.
     #[prost(oneof="action_profile::SelectorSizeSemantics", tags="6, 7")]
     pub selector_size_semantics: ::core::option::Option<action_profile::SelectorSizeSemantics>,
