@@ -455,11 +455,9 @@ func (x GetForwardingPipelineConfigRequest_ResponseType) String() string {
 
 func (GetForwardingPipelineConfigRequest_ResponseType) Descriptor() protoreflect.EnumDescriptor {
 	return file_p4_v1_p4runtime_proto_enumTypes[6].Descriptor()
-	return file_p4_v1_p4runtime_proto_enumTypes[6].Descriptor()
 }
 
 func (GetForwardingPipelineConfigRequest_ResponseType) Type() protoreflect.EnumType {
-	return &file_p4_v1_p4runtime_proto_enumTypes[6]
 	return &file_p4_v1_p4runtime_proto_enumTypes[6]
 }
 
@@ -5543,37 +5541,6 @@ var file_p4_v1_p4runtime_proto_rawDesc = []byte{
 	0x43, 0x54, 0x4f, 0x52, 0x10, 0x00, 0x12, 0x12, 0x0a, 0x0e, 0x53, 0x55, 0x4d, 0x5f, 0x4f, 0x46,
 	0x5f, 0x57, 0x45, 0x49, 0x47, 0x48, 0x54, 0x53, 0x10, 0x01, 0x12, 0x12, 0x0a, 0x0e, 0x53, 0x55,
 	0x4d, 0x5f, 0x4f, 0x46, 0x5f, 0x4d, 0x45, 0x4d, 0x42, 0x45, 0x52, 0x53, 0x10, 0x02, 0x22, 0x9f,
-	0x22, 0xeb, 0x03, 0x0a, 0x16, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x66, 0x69,
-	0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x12, 0x50, 0x0a, 0x16, 0x61,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x5f, 0x61, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x70, 0x34,
-	0x2e, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c,
-	0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x14, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50,
-	0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x65, 0x0a,
-	0x15, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x31, 0x2e, 0x70,
-	0x34, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x66, 0x69,
-	0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x2e, 0x41, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x52,
-	0x13, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x4d, 0x6f, 0x64, 0x65, 0x12, 0x52, 0x0a, 0x0e, 0x73, 0x69, 0x7a, 0x65, 0x5f, 0x73, 0x65, 0x6d,
-	0x61, 0x6e, 0x74, 0x69, 0x63, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x2b, 0x2e, 0x70,
-	0x34, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x66, 0x69,
-	0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x2e, 0x53, 0x69, 0x7a, 0x65,
-	0x53, 0x65, 0x6d, 0x61, 0x6e, 0x74, 0x69, 0x63, 0x73, 0x52, 0x0d, 0x73, 0x69, 0x7a, 0x65, 0x53,
-	0x65, 0x6d, 0x61, 0x6e, 0x74, 0x69, 0x63, 0x73, 0x22, 0x5b, 0x0a, 0x13, 0x41, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x12,
-	0x2e, 0x0a, 0x2a, 0x44, 0x45, 0x46, 0x41, 0x55, 0x4c, 0x54, 0x5f, 0x4d, 0x4f, 0x44, 0x45, 0x5f,
-	0x44, 0x45, 0x54, 0x45, 0x52, 0x4d, 0x49, 0x4e, 0x45, 0x44, 0x5f, 0x42, 0x59, 0x5f, 0x41, 0x43,
-	0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x53, 0x45, 0x4c, 0x45, 0x43, 0x54, 0x4f, 0x52, 0x10, 0x00, 0x12,
-	0x08, 0x0a, 0x04, 0x48, 0x41, 0x53, 0x48, 0x10, 0x01, 0x12, 0x0a, 0x0a, 0x06, 0x52, 0x41, 0x4e,
-	0x44, 0x4f, 0x4d, 0x10, 0x02, 0x22, 0x67, 0x0a, 0x0d, 0x53, 0x69, 0x7a, 0x65, 0x53, 0x65, 0x6d,
-	0x61, 0x6e, 0x74, 0x69, 0x63, 0x73, 0x12, 0x2e, 0x0a, 0x2a, 0x44, 0x45, 0x46, 0x41, 0x55, 0x4c,
-	0x54, 0x5f, 0x53, 0x49, 0x5a, 0x45, 0x5f, 0x44, 0x45, 0x54, 0x45, 0x52, 0x4d, 0x49, 0x4e, 0x45,
-	0x44, 0x5f, 0x42, 0x59, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x53, 0x45, 0x4c, 0x45,
-	0x43, 0x54, 0x4f, 0x52, 0x10, 0x00, 0x12, 0x12, 0x0a, 0x0e, 0x53, 0x55, 0x4d, 0x5f, 0x4f, 0x46,
-	0x5f, 0x57, 0x45, 0x49, 0x47, 0x48, 0x54, 0x53, 0x10, 0x01, 0x12, 0x12, 0x0a, 0x0e, 0x53, 0x55,
-	0x4d, 0x5f, 0x4f, 0x46, 0x5f, 0x4d, 0x45, 0x4d, 0x42, 0x45, 0x52, 0x53, 0x10, 0x02, 0x22, 0x9f,
 	0x01, 0x0a, 0x13, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65,
 	0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x25, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x41,
@@ -6332,25 +6299,8 @@ var file_p4_v1_p4runtime_proto_rawDesc = []byte{
 	0x67, 0x12, 0x29, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x6f, 0x72,
 	0x77, 0x61, 0x72, 0x64, 0x69, 0x6e, 0x67, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x43,
 	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e, 0x70,
-	0x67, 0x12, 0x29, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x6f, 0x72,
-	0x77, 0x61, 0x72, 0x64, 0x69, 0x6e, 0x67, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x43,
-	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e, 0x70,
 	0x34, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x6f, 0x72, 0x77, 0x61, 0x72, 0x64, 0x69,
 	0x6e, 0x67, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x50, 0x0a, 0x0d, 0x53, 0x74,
-	0x72, 0x65, 0x61, 0x6d, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x1b, 0x2e, 0x70, 0x34,
-	0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31,
-	0x2e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x28, 0x01, 0x30, 0x01, 0x12, 0x49, 0x0a, 0x0c,
-	0x43, 0x61, 0x70, 0x61, 0x62, 0x69, 0x6c, 0x69, 0x74, 0x69, 0x65, 0x73, 0x12, 0x1a, 0x2e, 0x70,
-	0x34, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x70, 0x61, 0x62, 0x69, 0x6c, 0x69, 0x74, 0x69, 0x65,
-	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x70, 0x34, 0x2e, 0x76, 0x31,
-	0x2e, 0x43, 0x61, 0x70, 0x61, 0x62, 0x69, 0x6c, 0x69, 0x74, 0x69, 0x65, 0x73, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x29, 0x5a, 0x24, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x70, 0x34, 0x6c, 0x61, 0x6e, 0x67, 0x2f, 0x70, 0x34, 0x72,
-	0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65, 0x2f, 0x67, 0x6f, 0x2f, 0x70, 0x34, 0x2f, 0x76, 0x31, 0xf8,
-	0x01, 0x01, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x50, 0x0a, 0x0d, 0x53, 0x74,
 	0x72, 0x65, 0x61, 0x6d, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x1b, 0x2e, 0x70, 0x34,
 	0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
@@ -6380,86 +6330,14 @@ func file_p4_v1_p4runtime_proto_rawDescGZIP() []byte {
 }
 
 var file_p4_v1_p4runtime_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
-var file_p4_v1_p4runtime_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
 var file_p4_v1_p4runtime_proto_msgTypes = make([]protoimpl.MessageInfo, 65)
 var file_p4_v1_p4runtime_proto_goTypes = []interface{}{
 	(SdnPort)(0),                // 0: p4.v1.SdnPort
 	(WriteRequest_Atomicity)(0), // 1: p4.v1.WriteRequest.Atomicity
 	(Update_Type)(0),            // 2: p4.v1.Update.Type
-	(ActionProfileActionSet_ActionSelectionMode)(0),      // 3: p4.v1.ActionProfileActionSet.ActionSelectionMode
-	(ActionProfileActionSet_SizeSemantics)(0),            // 4: p4.v1.ActionProfileActionSet.SizeSemantics
-	(SetForwardingPipelineConfigRequest_Action)(0),       // 5: p4.v1.SetForwardingPipelineConfigRequest.Action
-	(GetForwardingPipelineConfigRequest_ResponseType)(0), // 6: p4.v1.GetForwardingPipelineConfigRequest.ResponseType
-	(*WriteRequest)(nil),                                 // 7: p4.v1.WriteRequest
-	(*WriteResponse)(nil),                                // 8: p4.v1.WriteResponse
-	(*ReadRequest)(nil),                                  // 9: p4.v1.ReadRequest
-	(*ReadResponse)(nil),                                 // 10: p4.v1.ReadResponse
-	(*Update)(nil),                                       // 11: p4.v1.Update
-	(*Entity)(nil),                                       // 12: p4.v1.Entity
-	(*ExternEntry)(nil),                                  // 13: p4.v1.ExternEntry
-	(*TableEntry)(nil),                                   // 14: p4.v1.TableEntry
-	(*FieldMatch)(nil),                                   // 15: p4.v1.FieldMatch
-	(*TableAction)(nil),                                  // 16: p4.v1.TableAction
-	(*Action)(nil),                                       // 17: p4.v1.Action
-	(*ActionProfileActionSet)(nil),                       // 18: p4.v1.ActionProfileActionSet
-	(*ActionProfileAction)(nil),                          // 19: p4.v1.ActionProfileAction
-	(*ActionProfileMember)(nil),                          // 20: p4.v1.ActionProfileMember
-	(*ActionProfileGroup)(nil),                           // 21: p4.v1.ActionProfileGroup
-	(*Index)(nil),                                        // 22: p4.v1.Index
-	(*MeterEntry)(nil),                                   // 23: p4.v1.MeterEntry
-	(*DirectMeterEntry)(nil),                             // 24: p4.v1.DirectMeterEntry
-	(*MeterConfig)(nil),                                  // 25: p4.v1.MeterConfig
-	(*CounterEntry)(nil),                                 // 26: p4.v1.CounterEntry
-	(*DirectCounterEntry)(nil),                           // 27: p4.v1.DirectCounterEntry
-	(*CounterData)(nil),                                  // 28: p4.v1.CounterData
-	(*MeterCounterData)(nil),                             // 29: p4.v1.MeterCounterData
-	(*PacketReplicationEngineEntry)(nil),                 // 30: p4.v1.PacketReplicationEngineEntry
-	(*BackupReplica)(nil),                                // 31: p4.v1.BackupReplica
-	(*Replica)(nil),                                      // 32: p4.v1.Replica
-	(*MulticastGroupEntry)(nil),                          // 33: p4.v1.MulticastGroupEntry
-	(*CloneSessionEntry)(nil),                            // 34: p4.v1.CloneSessionEntry
-	(*ValueSetMember)(nil),                               // 35: p4.v1.ValueSetMember
-	(*ValueSetEntry)(nil),                                // 36: p4.v1.ValueSetEntry
-	(*RegisterEntry)(nil),                                // 37: p4.v1.RegisterEntry
-	(*DigestEntry)(nil),                                  // 38: p4.v1.DigestEntry
-	(*StreamMessageRequest)(nil),                         // 39: p4.v1.StreamMessageRequest
-	(*PacketOut)(nil),                                    // 40: p4.v1.PacketOut
-	(*DigestListAck)(nil),                                // 41: p4.v1.DigestListAck
-	(*StreamMessageResponse)(nil),                        // 42: p4.v1.StreamMessageResponse
-	(*PacketIn)(nil),                                     // 43: p4.v1.PacketIn
-	(*DigestList)(nil),                                   // 44: p4.v1.DigestList
-	(*PacketMetadata)(nil),                               // 45: p4.v1.PacketMetadata
-	(*MasterArbitrationUpdate)(nil),                      // 46: p4.v1.MasterArbitrationUpdate
-	(*Role)(nil),                                         // 47: p4.v1.Role
-	(*IdleTimeoutNotification)(nil),                      // 48: p4.v1.IdleTimeoutNotification
-	(*StreamError)(nil),                                  // 49: p4.v1.StreamError
-	(*PacketOutError)(nil),                               // 50: p4.v1.PacketOutError
-	(*DigestListAckError)(nil),                           // 51: p4.v1.DigestListAckError
-	(*StreamOtherError)(nil),                             // 52: p4.v1.StreamOtherError
-	(*Uint128)(nil),                                      // 53: p4.v1.Uint128
-	(*SetForwardingPipelineConfigRequest)(nil),           // 54: p4.v1.SetForwardingPipelineConfigRequest
-	(*SetForwardingPipelineConfigResponse)(nil),          // 55: p4.v1.SetForwardingPipelineConfigResponse
-	(*ForwardingPipelineConfig)(nil),                     // 56: p4.v1.ForwardingPipelineConfig
-	(*GetForwardingPipelineConfigRequest)(nil),           // 57: p4.v1.GetForwardingPipelineConfigRequest
-	(*GetForwardingPipelineConfigResponse)(nil),          // 58: p4.v1.GetForwardingPipelineConfigResponse
-	(*Error)(nil),                                        // 59: p4.v1.Error
-	(*CapabilitiesRequest)(nil),                          // 60: p4.v1.CapabilitiesRequest
-	(*CapabilitiesResponse)(nil),                         // 61: p4.v1.CapabilitiesResponse
-	(*TableEntry_IdleTimeout)(nil),                       // 62: p4.v1.TableEntry.IdleTimeout
-	(*FieldMatch_Exact)(nil),                             // 63: p4.v1.FieldMatch.Exact
-	(*FieldMatch_Ternary)(nil),                           // 64: p4.v1.FieldMatch.Ternary
-	(*FieldMatch_LPM)(nil),                               // 65: p4.v1.FieldMatch.LPM
-	(*FieldMatch_Range)(nil),                             // 66: p4.v1.FieldMatch.Range
-	(*FieldMatch_Optional)(nil),                          // 67: p4.v1.FieldMatch.Optional
-	(*Action_Param)(nil),                                 // 68: p4.v1.Action.Param
-	(*ActionProfileGroup_Member)(nil),                    // 69: p4.v1.ActionProfileGroup.Member
-	(*DigestEntry_Config)(nil),                           // 70: p4.v1.DigestEntry.Config
-	(*ForwardingPipelineConfig_Cookie)(nil),              // 71: p4.v1.ForwardingPipelineConfig.Cookie
-	(*anypb.Any)(nil),                                    // 72: google.protobuf.Any
-	(*P4Data)(nil),                                       // 73: p4.v1.P4Data
-	(*status.Status)(nil),                                // 74: google.rpc.Status
-	(*v1.P4Info)(nil),                                    // 75: p4.config.v1.P4Info
-	(ActionProfileActionSet_ActionSelectionMode)(0),      // 3: p4.v1.ActionProfileActionSet.ActionSelectionMode
+	
+  
+  // 3: p4.v1.ActionProfileActionSet.ActionSelectionMode
 	(ActionProfileActionSet_SizeSemantics)(0),            // 4: p4.v1.ActionProfileActionSet.SizeSemantics
 	(SetForwardingPipelineConfigRequest_Action)(0),       // 5: p4.v1.SetForwardingPipelineConfigRequest.Action
 	(GetForwardingPipelineConfigRequest_ResponseType)(0), // 6: p4.v1.GetForwardingPipelineConfigRequest.ResponseType
@@ -6544,114 +6422,6 @@ var file_p4_v1_p4runtime_proto_depIdxs = []int32{
 	12,  // 3: p4.v1.ReadRequest.entities:type_name -> p4.v1.Entity
 	12,  // 4: p4.v1.ReadResponse.entities:type_name -> p4.v1.Entity
 	2,   // 5: p4.v1.Update.type:type_name -> p4.v1.Update.Type
-	12,  // 6: p4.v1.Update.entity:type_name -> p4.v1.Entity
-	13,  // 7: p4.v1.Entity.extern_entry:type_name -> p4.v1.ExternEntry
-	14,  // 8: p4.v1.Entity.table_entry:type_name -> p4.v1.TableEntry
-	20,  // 9: p4.v1.Entity.action_profile_member:type_name -> p4.v1.ActionProfileMember
-	21,  // 10: p4.v1.Entity.action_profile_group:type_name -> p4.v1.ActionProfileGroup
-	23,  // 11: p4.v1.Entity.meter_entry:type_name -> p4.v1.MeterEntry
-	24,  // 12: p4.v1.Entity.direct_meter_entry:type_name -> p4.v1.DirectMeterEntry
-	26,  // 13: p4.v1.Entity.counter_entry:type_name -> p4.v1.CounterEntry
-	27,  // 14: p4.v1.Entity.direct_counter_entry:type_name -> p4.v1.DirectCounterEntry
-	30,  // 15: p4.v1.Entity.packet_replication_engine_entry:type_name -> p4.v1.PacketReplicationEngineEntry
-	36,  // 16: p4.v1.Entity.value_set_entry:type_name -> p4.v1.ValueSetEntry
-	37,  // 17: p4.v1.Entity.register_entry:type_name -> p4.v1.RegisterEntry
-	38,  // 18: p4.v1.Entity.digest_entry:type_name -> p4.v1.DigestEntry
-	72,  // 19: p4.v1.ExternEntry.entry:type_name -> google.protobuf.Any
-	15,  // 20: p4.v1.TableEntry.match:type_name -> p4.v1.FieldMatch
-	16,  // 21: p4.v1.TableEntry.action:type_name -> p4.v1.TableAction
-	25,  // 22: p4.v1.TableEntry.meter_config:type_name -> p4.v1.MeterConfig
-	28,  // 23: p4.v1.TableEntry.counter_data:type_name -> p4.v1.CounterData
-	29,  // 24: p4.v1.TableEntry.meter_counter_data:type_name -> p4.v1.MeterCounterData
-	62,  // 25: p4.v1.TableEntry.time_since_last_hit:type_name -> p4.v1.TableEntry.IdleTimeout
-	63,  // 26: p4.v1.FieldMatch.exact:type_name -> p4.v1.FieldMatch.Exact
-	64,  // 27: p4.v1.FieldMatch.ternary:type_name -> p4.v1.FieldMatch.Ternary
-	65,  // 28: p4.v1.FieldMatch.lpm:type_name -> p4.v1.FieldMatch.LPM
-	66,  // 29: p4.v1.FieldMatch.range:type_name -> p4.v1.FieldMatch.Range
-	67,  // 30: p4.v1.FieldMatch.optional:type_name -> p4.v1.FieldMatch.Optional
-	72,  // 31: p4.v1.FieldMatch.other:type_name -> google.protobuf.Any
-	17,  // 32: p4.v1.TableAction.action:type_name -> p4.v1.Action
-	18,  // 33: p4.v1.TableAction.action_profile_action_set:type_name -> p4.v1.ActionProfileActionSet
-	68,  // 34: p4.v1.Action.params:type_name -> p4.v1.Action.Param
-	19,  // 35: p4.v1.ActionProfileActionSet.action_profile_actions:type_name -> p4.v1.ActionProfileAction
-	3,   // 36: p4.v1.ActionProfileActionSet.action_selection_mode:type_name -> p4.v1.ActionProfileActionSet.ActionSelectionMode
-	4,   // 37: p4.v1.ActionProfileActionSet.size_semantics:type_name -> p4.v1.ActionProfileActionSet.SizeSemantics
-	17,  // 38: p4.v1.ActionProfileAction.action:type_name -> p4.v1.Action
-	17,  // 39: p4.v1.ActionProfileMember.action:type_name -> p4.v1.Action
-	69,  // 40: p4.v1.ActionProfileGroup.members:type_name -> p4.v1.ActionProfileGroup.Member
-	22,  // 41: p4.v1.MeterEntry.index:type_name -> p4.v1.Index
-	25,  // 42: p4.v1.MeterEntry.config:type_name -> p4.v1.MeterConfig
-	29,  // 43: p4.v1.MeterEntry.counter_data:type_name -> p4.v1.MeterCounterData
-	14,  // 44: p4.v1.DirectMeterEntry.table_entry:type_name -> p4.v1.TableEntry
-	25,  // 45: p4.v1.DirectMeterEntry.config:type_name -> p4.v1.MeterConfig
-	29,  // 46: p4.v1.DirectMeterEntry.counter_data:type_name -> p4.v1.MeterCounterData
-	22,  // 47: p4.v1.CounterEntry.index:type_name -> p4.v1.Index
-	28,  // 48: p4.v1.CounterEntry.data:type_name -> p4.v1.CounterData
-	14,  // 49: p4.v1.DirectCounterEntry.table_entry:type_name -> p4.v1.TableEntry
-	28,  // 50: p4.v1.DirectCounterEntry.data:type_name -> p4.v1.CounterData
-	28,  // 51: p4.v1.MeterCounterData.green:type_name -> p4.v1.CounterData
-	28,  // 52: p4.v1.MeterCounterData.yellow:type_name -> p4.v1.CounterData
-	28,  // 53: p4.v1.MeterCounterData.red:type_name -> p4.v1.CounterData
-	33,  // 54: p4.v1.PacketReplicationEngineEntry.multicast_group_entry:type_name -> p4.v1.MulticastGroupEntry
-	34,  // 55: p4.v1.PacketReplicationEngineEntry.clone_session_entry:type_name -> p4.v1.CloneSessionEntry
-	31,  // 56: p4.v1.Replica.backup_replicas:type_name -> p4.v1.BackupReplica
-	32,  // 57: p4.v1.MulticastGroupEntry.replicas:type_name -> p4.v1.Replica
-	32,  // 58: p4.v1.CloneSessionEntry.replicas:type_name -> p4.v1.Replica
-	15,  // 59: p4.v1.ValueSetMember.match:type_name -> p4.v1.FieldMatch
-	35,  // 60: p4.v1.ValueSetEntry.members:type_name -> p4.v1.ValueSetMember
-	22,  // 61: p4.v1.RegisterEntry.index:type_name -> p4.v1.Index
-	73,  // 62: p4.v1.RegisterEntry.data:type_name -> p4.v1.P4Data
-	70,  // 63: p4.v1.DigestEntry.config:type_name -> p4.v1.DigestEntry.Config
-	46,  // 64: p4.v1.StreamMessageRequest.arbitration:type_name -> p4.v1.MasterArbitrationUpdate
-	40,  // 65: p4.v1.StreamMessageRequest.packet:type_name -> p4.v1.PacketOut
-	41,  // 66: p4.v1.StreamMessageRequest.digest_ack:type_name -> p4.v1.DigestListAck
-	72,  // 67: p4.v1.StreamMessageRequest.other:type_name -> google.protobuf.Any
-	45,  // 68: p4.v1.PacketOut.metadata:type_name -> p4.v1.PacketMetadata
-	46,  // 69: p4.v1.StreamMessageResponse.arbitration:type_name -> p4.v1.MasterArbitrationUpdate
-	43,  // 70: p4.v1.StreamMessageResponse.packet:type_name -> p4.v1.PacketIn
-	44,  // 71: p4.v1.StreamMessageResponse.digest:type_name -> p4.v1.DigestList
-	48,  // 72: p4.v1.StreamMessageResponse.idle_timeout_notification:type_name -> p4.v1.IdleTimeoutNotification
-	72,  // 73: p4.v1.StreamMessageResponse.other:type_name -> google.protobuf.Any
-	49,  // 74: p4.v1.StreamMessageResponse.error:type_name -> p4.v1.StreamError
-	45,  // 75: p4.v1.PacketIn.metadata:type_name -> p4.v1.PacketMetadata
-	73,  // 76: p4.v1.DigestList.data:type_name -> p4.v1.P4Data
-	47,  // 77: p4.v1.MasterArbitrationUpdate.role:type_name -> p4.v1.Role
-	53,  // 78: p4.v1.MasterArbitrationUpdate.election_id:type_name -> p4.v1.Uint128
-	74,  // 79: p4.v1.MasterArbitrationUpdate.status:type_name -> google.rpc.Status
-	72,  // 80: p4.v1.Role.config:type_name -> google.protobuf.Any
-	14,  // 81: p4.v1.IdleTimeoutNotification.table_entry:type_name -> p4.v1.TableEntry
-	50,  // 82: p4.v1.StreamError.packet_out:type_name -> p4.v1.PacketOutError
-	51,  // 83: p4.v1.StreamError.digest_list_ack:type_name -> p4.v1.DigestListAckError
-	52,  // 84: p4.v1.StreamError.other:type_name -> p4.v1.StreamOtherError
-	40,  // 85: p4.v1.PacketOutError.packet_out:type_name -> p4.v1.PacketOut
-	41,  // 86: p4.v1.DigestListAckError.digest_list_ack:type_name -> p4.v1.DigestListAck
-	72,  // 87: p4.v1.StreamOtherError.other:type_name -> google.protobuf.Any
-	53,  // 88: p4.v1.SetForwardingPipelineConfigRequest.election_id:type_name -> p4.v1.Uint128
-	5,   // 89: p4.v1.SetForwardingPipelineConfigRequest.action:type_name -> p4.v1.SetForwardingPipelineConfigRequest.Action
-	56,  // 90: p4.v1.SetForwardingPipelineConfigRequest.config:type_name -> p4.v1.ForwardingPipelineConfig
-	75,  // 91: p4.v1.ForwardingPipelineConfig.p4info:type_name -> p4.config.v1.P4Info
-	71,  // 92: p4.v1.ForwardingPipelineConfig.cookie:type_name -> p4.v1.ForwardingPipelineConfig.Cookie
-	6,   // 93: p4.v1.GetForwardingPipelineConfigRequest.response_type:type_name -> p4.v1.GetForwardingPipelineConfigRequest.ResponseType
-	56,  // 94: p4.v1.GetForwardingPipelineConfigResponse.config:type_name -> p4.v1.ForwardingPipelineConfig
-	72,  // 95: p4.v1.Error.details:type_name -> google.protobuf.Any
-	72,  // 96: p4.v1.CapabilitiesResponse.experimental:type_name -> google.protobuf.Any
-	7,   // 97: p4.v1.P4Runtime.Write:input_type -> p4.v1.WriteRequest
-	9,   // 98: p4.v1.P4Runtime.Read:input_type -> p4.v1.ReadRequest
-	54,  // 99: p4.v1.P4Runtime.SetForwardingPipelineConfig:input_type -> p4.v1.SetForwardingPipelineConfigRequest
-	57,  // 100: p4.v1.P4Runtime.GetForwardingPipelineConfig:input_type -> p4.v1.GetForwardingPipelineConfigRequest
-	39,  // 101: p4.v1.P4Runtime.StreamChannel:input_type -> p4.v1.StreamMessageRequest
-	60,  // 102: p4.v1.P4Runtime.Capabilities:input_type -> p4.v1.CapabilitiesRequest
-	8,   // 103: p4.v1.P4Runtime.Write:output_type -> p4.v1.WriteResponse
-	10,  // 104: p4.v1.P4Runtime.Read:output_type -> p4.v1.ReadResponse
-	55,  // 105: p4.v1.P4Runtime.SetForwardingPipelineConfig:output_type -> p4.v1.SetForwardingPipelineConfigResponse
-	58,  // 106: p4.v1.P4Runtime.GetForwardingPipelineConfig:output_type -> p4.v1.GetForwardingPipelineConfigResponse
-	42,  // 107: p4.v1.P4Runtime.StreamChannel:output_type -> p4.v1.StreamMessageResponse
-	61,  // 108: p4.v1.P4Runtime.Capabilities:output_type -> p4.v1.CapabilitiesResponse
-	103, // [103:109] is the sub-list for method output_type
-	97,  // [97:103] is the sub-list for method input_type
-	97,  // [97:97] is the sub-list for extension type_name
-	97,  // [97:97] is the sub-list for extension extendee
-	0,   // [0:97] is the sub-list for field type_name
 	12,  // 6: p4.v1.Update.entity:type_name -> p4.v1.Entity
 	13,  // 7: p4.v1.Entity.extern_entry:type_name -> p4.v1.ExternEntry
 	14,  // 8: p4.v1.Entity.table_entry:type_name -> p4.v1.TableEntry
@@ -7618,7 +7388,6 @@ func file_p4_v1_p4runtime_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_p4_v1_p4runtime_proto_rawDesc,
-			NumEnums:      7,
 			NumEnums:      7,
 			NumMessages:   65,
 			NumExtensions: 0,
