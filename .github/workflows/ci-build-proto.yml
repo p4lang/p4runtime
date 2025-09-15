@@ -27,7 +27,7 @@ jobs:
 
     # The default name would be "build (ubuntu-<version>, <version>)".
     # We use a custom name to make it clearer that the second version refers to Bazel.
-    name: ${{ matrix.os }}, bazel-${{ matrix.bazel-version }}
+    name: ${{ matrix.os }}, bazel-${{ matrix.bazel_version }}
 
     runs-on: ${{ matrix.os }}
 
