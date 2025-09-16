@@ -25,6 +25,10 @@ jobs:
       # Don't abort other runs when one of them fails, to ease debugging.
       fail-fast: false
 
+    # The default name would be "build (ubuntu-<version>, <version>)".
+    # We use a custom name to make it clearer that the second version refers to Bazel.
+    name: ${{ matrix.os }}, bazel-${{ matrix.bazel_version }}
+
     runs-on: ${{ matrix.os }}
 
     env:
