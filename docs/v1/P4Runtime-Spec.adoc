@@ -1517,7 +1517,7 @@ Profiles, this value must be unset.
 * `weights_disallowed`, programs the weights (false) or the switch determines
   them through some other mechanism (true). One such mechanism is dynamic load
   balancing or adaptive routing (See e.g. link:https://sonic.software/sai/group__SAIARS.html[SAI API]).
-  The @weights_disallowed annotation can be added to action selectors in P4
+  The `@weights_disallowed` annotation can be added to action selectors in P4
   programs to set this value to true.
 
 ==== `Counter` & `DirectCounter`
