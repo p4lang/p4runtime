@@ -3872,10 +3872,14 @@ does not need to keep track of group ids and member ids.
 
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
-`ActionProfileAction` messages. This set should have cardinality no greater than
+`ActionProfileAction` messages, a `ActionSelectionMode` enum, and a
+`SizeSemantics` enum. The `ActionSelectionMode` and `SizeSemantics` enums
+override the existing action selector settings.
+
+The `ActionProfileAction` set should have cardinality no greater than
 `max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
-is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
-`ActionProfileAction` message has the following fields:
+is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`.
+Each `ActionProfileAction` message has the following fields:
 
 * `action` is one of the actions specified by the table that is being
   programmed.
@@ -3897,6 +3901,43 @@ is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
   on the `watch_port` field, which also apply for one shot action selector
   programming.
 
+Each `ActionSelectionMode` enum can take on the following values:
+
+* `DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR`: uses the action specified by the
+  action selector, ensuring backward compatibility. In a
+  [SAI-based](https://github.com/opencomputeproject/SAI/blob/master/inc/sainexthopgroup.h#L291)
+  switch, this would correspond to setting the per-group
+  `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM` attribute to
+  `SAI_HASH_ALGORITHM_NONE`, using the default action selector mode.
+
+* `HASH`: selects an action based on the default hashing algorithm used by the
+  switch.
+
+* `RANDOM`: selects an action at random. In a SAI-based switch, this would
+  correspond to setting the per-group `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM`
+  attribute to `SAI_HASH_ALGORITHM_RANDOM`.
+
+Each `SizeSemantics` enum can take on the following values:
+
+* `DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR`: uses the size semantics
+  specified by the action selector, ensuring backward compatibility.
+
+* `SUM_OF_WEIGHTS`: the group's size is the sum of the individual weights of
+  all its members. In a
+  [SAI-based](https://github.com/opencomputeproject/SAI/blob/master/inc/sainexthopgroup.h#L350)
+  switch, this would correspond to setting the per-group
+  `SAI_NEXT_HOP_GROUP_MEMBER_ATTR_WEIGHT` attribute.
+
+* `SUM_OF_MEMBERS`: the group's size is the total count of its members.
+
+All servers and targets must support the
+`DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR` and
+`DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR` values for `ActionSelectionMode`
+and `SizeSemantics` respectively. Servers must also support the specific value
+combination that corresponds to that default. Otherwise, if the target does not
+support per-group hash settings for this action profile, the server should
+return `UNIMPLEMENTED`. If the target supports per-group hash settings, but not
+the specific combination given, the server should return `INVALID_ARGUMENT`.
 
 Semantically, one shots are equivalent to programming the table entry, group,
 and members individually; with the necessary group id and member ids bound to
