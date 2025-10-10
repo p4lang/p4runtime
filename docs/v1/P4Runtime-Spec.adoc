@@ -1506,7 +1506,7 @@ The `ActionProfile` message includes the following fields:
 
 
 PSA programs can use the `@selector_size_semantics` annotation with one of
-`sum_of_weights` or `sum_of_members` to specify this value for Action Selectors. 
+`sum_of_weights` or `sum_of_members` to specify this value for Action Selectors.
 In the `sum_of_members` case, the `@max_member_weight` annotation
 can be used to specify `max_member_weight`. Unless otherwise specified, the
 value of `selector_size_semantics` should default to `sum_of_weights`.
