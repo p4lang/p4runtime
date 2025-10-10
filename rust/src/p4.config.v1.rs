@@ -1017,7 +1017,7 @@ pub struct ActionProfile {
     pub max_group_size: i32,
     /// dictates whether the controller can specify weights for groups programmed
     /// in this ActionProfile. If `weights_disallowed` is true, then all weights
-    /// must be absent.
+    /// must be absent. Unset (false) in action profiles.
     /// Added in v1.5.0.
     #[prost(bool, tag="8")]
     pub weights_disallowed: bool,

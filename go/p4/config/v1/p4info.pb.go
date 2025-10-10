@@ -1697,7 +1697,7 @@ type ActionProfile struct {
 	SelectorSizeSemantics isActionProfile_SelectorSizeSemantics `protobuf_oneof:"selector_size_semantics"`
 	// dictates whether the controller can specify weights for groups programmed
 	// in this ActionProfile. If `weights_disallowed` is true, then all weights
-	// must be absent.
+	// must be absent. Unset (false) in action profiles.
 	// Added in v1.5.0.
 	WeightsDisallowed bool `protobuf:"varint,8,opt,name=weights_disallowed,json=weightsDisallowed,proto3" json:"weights_disallowed,omitempty"`
 }

@@ -3895,13 +3895,14 @@ is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
   If `weights_disallowed` is set to true, then 0 (unset) is the only valid
   `weight`. If `weights_disallowed` is false, then 0 is not a valid `weight`.
   The server must return `INVALID_ARGUMENT` if the client attempts to use invalid
-  `weight`s. If `selector_size_semantics` is `sum_of_weights`, then the sum of
-  all weights across all `ActionProfileAction` messages for that
-  `ActionProfileActionSet` message must not exceed the `max_group_size` specified
-  in the P4Info (if greater than 0), or the server must return `INVALID_ARGUMENT`.
-  If `selector_size_semantics` is `sum_of_members`, the individual weight of each
-  member must not exceed`max_member_weight` (if greater than 0), or the server
-  must return `INVALID_ARGUMENT`.
+  `weight`s.
+  If `selector_size_semantics` is `sum_of_weights`, then the sum of all weights
+  across all `ActionProfileAction` messages for that `ActionProfileActionSet`
+  message must not exceed the `max_group_size` specified in the P4Info
+  (if greater than 0), or the server must return `INVALID_ARGUMENT`.
+  If `selector_size_semantics` is `sum_of_members`, the individual weight of
+  each member must not exceed`max_member_weight` (if greater than 0), or the
+  server must return `INVALID_ARGUMENT`.
 
 * `watch_port` is the controller-defined port that the action's liveness depends
   on. At runtime, the action must be excluded from selection if the watch port
