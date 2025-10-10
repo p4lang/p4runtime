@@ -1519,7 +1519,7 @@ Profiles, this value must be unset.
   mechanism (true). One such mechanism is dynamic load balancing or adaptive
   routing (See e.g. link:https://sonic.software/sai/group__SAIARS.html[SAI API]).
   The `@weights_disallowed` annotation can be added to action selectors in P4
-  programs to set this value to true. In Action Profiles, this value must be unset 
+  programs to set this value to true. In Action Profiles, this value must be unset
   (i.e. false).
 
 ==== `Counter` & `DirectCounter`
