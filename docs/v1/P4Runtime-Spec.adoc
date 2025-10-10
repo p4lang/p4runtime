@@ -1504,18 +1504,21 @@ The `ActionProfile` message includes the following fields:
       maximum weight of each individual member. If unset, any 32-bit integer is
       allowed for weight.
 
-* `weights_disallowed`, a boolean flag indicating whether the controller
-   programs the weights or the switch determines the weights based on dynamic
-   load balancing.
-
 
 PSA programs can use the `@selector_size_semantics` annotation with one of
-`sum_of_weights` or `sum_of_members` to specify this value for Action Selectors. In the `sum_of_members` case, the `@max_member_weight` annotation
+`sum_of_weights` or `sum_of_members` to specify this value for Action Selectors. 
+In the `sum_of_members` case, the `@max_member_weight` annotation
 can be used to specify `max_member_weight`. Unless otherwise specified, the
 value of `selector_size_semantics` should default to `sum_of_weights`.
 However, an unset `selector_size_semantics` should also be treated as
 `sum_of_weights` for backwards compatibility in Action Selectors. In Action
 Profiles, this value must be unset.
+
+* `weights_disallowed`, programs the weights (false) or the switch determines
+  them through some other mechanism (true). One such mechanism is dynamic load
+  balancing or adaptive routing (See e.g. link:https://sonic.software/sai/group__SAIARS.html[SAI API]).
+  The @weights_disallowed annotation can be added to action selectors in P4
+  programs to set this value to true.
 
 ==== `Counter` & `DirectCounter`
 
@@ -3782,7 +3785,8 @@ An `ActionProfileGroup` entity update message has the following fields:
   fields:
     ** `member_id` for looking up the member table in the selector.
     ** `weight` specifying the probability of the member's selection at
-      runtime. 0 is not a valid `weight` value and the server must return
+      runtime. The `weight` is 0 iff `weights_disallowed` is set to true.
+      Otherwise, 0 is not a valid `weight` value and the server must return
       `INVALID_ARGUMENT` if the client attempts to use it.
     ** `watch_port` is the controller-defined port that the member's
       liveness depends on. At runtime, the member must be excluded from
