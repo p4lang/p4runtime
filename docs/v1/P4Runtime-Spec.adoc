@@ -1514,11 +1514,13 @@ However, an unset `selector_size_semantics` should also be treated as
 `sum_of_weights` for backwards compatibility in Action Selectors. In Action
 Profiles, this value must be unset.
 
-* `weights_disallowed`, programs the weights (false) or the switch determines
-  them through some other mechanism (true). One such mechanism is dynamic load
-  balancing or adaptive routing (See e.g. link:https://sonic.software/sai/group__SAIARS.html[SAI API]).
+* `weights_disallowed`,  a boolean flag indicating whether the controller
+  programs the weights (false) or the switch determines them through some other
+  mechanism (true). One such mechanism is dynamic load balancing or adaptive
+  routing (See e.g. link:https://sonic.software/sai/group__SAIARS.html[SAI API]).
   The `@weights_disallowed` annotation can be added to action selectors in P4
-  programs to set this value to true.
+  programs to set this value to true. In Action Profiles, this value must be unset 
+  (i.e. false).
 
 ==== `Counter` & `DirectCounter`
 
@@ -3784,10 +3786,11 @@ An `ActionProfileGroup` entity update message has the following fields:
   group. For each member in a group, the controller must define the following
   fields:
     ** `member_id` for looking up the member table in the selector.
-    ** `weight` specifying the probability of the member's selection at
-      runtime. The `weight` is 0 iff `weights_disallowed` is set to true.
-      Otherwise, 0 is not a valid `weight` value and the server must return
-      `INVALID_ARGUMENT` if the client attempts to use it.
+    ** `weight` specifying the probability of the member's selection at runtime.
+       If `weights_disallowed` is set to true, then 0 (unset) is the only valid
+       `weight`. If `weights_disallowed` is false, then 0 is not a valid
+       `weight`. The server must return `INVALID_ARGUMENT` if the client attempts
+       to use invalid `weight`s.
     ** `watch_port` is the controller-defined port that the member's
       liveness depends on. At runtime, the member must be excluded from
       selection if the watch port is down.  See <<#action-selector-constraints>> for notes on the behavior if all members in
@@ -3888,16 +3891,17 @@ is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
 * `action` is one of the actions specified by the table that is being
   programmed.
 
-* `weight` specifying the probability of the action's selection at runtime. 0 is
-  not a valid `weight` value and the server must return `INVALID_ARGUMENT` if
-  the client attempts to use it. If `selector_size_semantics` is
-  `sum_of_weights`, then the sum of all weights across all `ActionProfileAction`
-  messages for that `ActionProfileActionSet` message must not exceed the
-  `max_group_size` specified in the P4Info (if greater than 0), or the server
-  must return `INVALID_ARGUMENT`. If `selector_size_semantics` is
-  `sum_of_members`, the individual weight of each member must not exceed
-  `max_member_weight` (if greater than 0), or the server must return
-  `INVALID_ARGUMENT`.
+* `weight` specifying the probability of the action's selection at runtime.
+  If `weights_disallowed` is set to true, then 0 (unset) is the only valid
+  `weight`. If `weights_disallowed` is false, then 0 is not a valid `weight`.
+  The server must return `INVALID_ARGUMENT` if the client attempts to use invalid
+  `weight`s. If `selector_size_semantics` is `sum_of_weights`, then the sum of
+  all weights across all `ActionProfileAction` messages for that
+  `ActionProfileActionSet` message must not exceed the `max_group_size` specified
+  in the P4Info (if greater than 0), or the server must return `INVALID_ARGUMENT`.
+  If `selector_size_semantics` is `sum_of_members`, the individual weight of each
+  member must not exceed`max_member_weight` (if greater than 0), or the server
+  must return `INVALID_ARGUMENT`.
 
 * `watch_port` is the controller-defined port that the action's liveness depends
   on. At runtime, the action must be excluded from selection if the watch port
