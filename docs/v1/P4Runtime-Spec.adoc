@@ -3901,7 +3901,7 @@ is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
   message must not exceed the `max_group_size` specified in the P4Info
   (if greater than 0), or the server must return `INVALID_ARGUMENT`.
   If `selector_size_semantics` is `sum_of_members`, the individual weight of
-  each member must not exceed`max_member_weight` (if greater than 0), or the
+  each member must not exceed `max_member_weight` (if greater than 0), or the
   server must return `INVALID_ARGUMENT`.
 
 * `watch_port` is the controller-defined port that the action's liveness depends
