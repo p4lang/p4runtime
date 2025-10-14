@@ -985,10 +985,10 @@ pub mod action {
         pub annotation_locations: ::prost::alloc::vec::Vec<super::SourceLocation>,
         #[prost(int32, tag="4")]
         pub bitwidth: i32,
-        /// Documentation of the Param
+        /// Documentation of the Param.
         #[prost(message, optional, tag="5")]
         pub doc: ::core::option::Option<super::Documentation>,
-        /// unset if not user-defined type
+        /// unset if not user-defined type.
         #[prost(message, optional, tag="6")]
         pub type_name: ::core::option::Option<super::P4NamedType>,
         #[prost(message, repeated, tag="7")]
@@ -1015,7 +1015,13 @@ pub struct ActionProfile {
     /// specified by `selector_size_semantics` below.
     #[prost(int32, tag="5")]
     pub max_group_size: i32,
-    /// specifies the semantics of `size` and `max_group_size` above
+    /// dictates whether the controller can specify weights for groups programmed
+    /// in this ActionProfile. If `weights_disallowed` is true, then all weights
+    /// must be absent. Unset (false) in action profiles.
+    /// Added in v1.5.0.
+    #[prost(bool, tag="8")]
+    pub weights_disallowed: bool,
+    /// specifies the semantics of `size` and `max_group_size` above.
     #[prost(oneof="action_profile::SelectorSizeSemantics", tags="6, 7")]
     pub selector_size_semantics: ::core::option::Option<action_profile::SelectorSizeSemantics>,
 }
@@ -1024,7 +1030,7 @@ pub mod action_profile {
     /// indicates that `size` and `max_group_size` represent the maximum sum of
     /// weights that can be present across all selector groups and within a
     /// single selector group respectively.
-    /// Added in v1.4.0
+    /// Added in v1.4.0.
     #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SumOfWeights {
@@ -1032,7 +1038,7 @@ pub mod action_profile {
     /// indicates that `size` and `max_group_size` represent the maximum number
     /// of members that can be present across all selector groups and within a
     /// single selector group respectively.
-    /// Added in v1.4.0
+    /// Added in v1.4.0.
     #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SumOfMembers {
@@ -1040,16 +1046,16 @@ pub mod action_profile {
         #[prost(int32, tag="1")]
         pub max_member_weight: i32,
     }
-    /// specifies the semantics of `size` and `max_group_size` above
+    /// specifies the semantics of `size` and `max_group_size` above.
     #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SelectorSizeSemantics {
         /// group size is the sum of the group's weights.
-        /// Added in v1.4.0
+        /// Added in v1.4.0.
         #[prost(message, tag="6")]
         SumOfWeights(SumOfWeights),
         /// group size is the sum of the group's members.
-        /// Added in v1.4.0
+        /// Added in v1.4.0.
         #[prost(message, tag="7")]
         SumOfMembers(SumOfMembers),
     }

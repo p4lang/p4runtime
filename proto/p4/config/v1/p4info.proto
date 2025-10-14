@@ -297,9 +297,9 @@ message Action {
     // `annotation_locations[i]`.
     repeated SourceLocation annotation_locations = 8;
     int32 bitwidth = 4;
-    // Documentation of the Param
+    // Documentation of the Param.
     Documentation doc = 5;
-    // unset if not user-defined type
+    // unset if not user-defined type.
     P4NamedType type_name = 6;
     repeated StructuredAnnotation structured_annotations = 7;
   }
@@ -323,27 +323,33 @@ message ActionProfile {
   // indicates that `size` and `max_group_size` represent the maximum sum of
   // weights that can be present across all selector groups and within a
   // single selector group respectively.
-  // Added in v1.4.0
+  // Added in v1.4.0.
   message SumOfWeights {}
 
   // indicates that `size` and `max_group_size` represent the maximum number
   // of members that can be present across all selector groups and within a
   // single selector group respectively.
-  // Added in v1.4.0
+  // Added in v1.4.0.
   message SumOfMembers {
     // the maximum weight of each individual member in a group.
     int32 max_member_weight = 1;
   }
 
-  // specifies the semantics of `size` and `max_group_size` above
+  // specifies the semantics of `size` and `max_group_size` above.
   oneof selector_size_semantics {
     // group size is the sum of the group's weights.
-    // Added in v1.4.0
+    // Added in v1.4.0.
     SumOfWeights sum_of_weights = 6;
     // group size is the sum of the group's members.
-    // Added in v1.4.0
+    // Added in v1.4.0.
     SumOfMembers sum_of_members = 7;
   }
+
+  // dictates whether the controller can specify weights for groups programmed
+  // in this ActionProfile. If `weights_disallowed` is true, then all weights
+  // must be absent. Unset (false) in action profiles.
+  // Added in v1.5.0.
+  bool weights_disallowed = 8;
 }
 
 message CounterSpec {
