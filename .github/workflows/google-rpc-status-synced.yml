@@ -1,0 +1,21 @@
+name: Ensure google/rpc/status.proto is synced with upstream.
+
+on:
+  pull_request:
+
+jobs:
+  check-google-rpc-status-synced:
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v5
+    - run: ./proto/update_google_rpc_status.sh
+    - run: |
+        DIFF=$(git diff proto/google/rpc/status.proto)
+        if [ -n "$DIFF" ]; then
+          echo "$DIFF"
+          echo ""
+          echo "ERROR: proto/google/rpc/status.proto is not synced with upstream."
+          echo "Please run ./proto/update_google_rpc_status.sh to fix it."
+          exit 1
+        fi
+        echo "SUCCESS: proto/google/rpc/status.proto is synced with upstream."

@@ -1,4 +1,4 @@
-name: "build protobufs"
+name: "Bazel build of protobufs"
 
 on:
   push:

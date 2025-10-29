@@ -179,13 +179,7 @@ pip3 install p4runtime==1.3.0
 
 ### Rust
 
-To include the P4Runtime Rust crate to your project, add this repository url to
-your `Cargo.toml` file:
-
-```toml
-[dependencies]
-p4runtime = { git = "https://github.com/p4lang/p4runtime.git" }
-```
+See the [rust/README.md](rust/README.md).
 
 ## Guidelines for using Protocol Buffers (protobuf) in backwards-compatible ways
 
