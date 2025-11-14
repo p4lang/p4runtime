@@ -3989,7 +3989,7 @@ first, then the group needs to be created, and finally the match entry can be
 inserted. Therefore, 3 distinct `WriteRequest` batches are required.
 
 It is possible to include several `ActionProfileAction` messages with the same
-exact `action` specification in one `ActionProfileActionSet` message. For 
+exact `action` specification in one `ActionProfileActionSet` message. For
 `sum_of_members`, this allows clients to specify weights greater than the
 `max_member_weight` set. E.g. modifying the example above, we can weight
 nexthop 1 to be 2x100 (if `max_member_weight` is 100 as follows:
@@ -4021,8 +4021,8 @@ table_entry {
 ----
 
 For `sum_of_weights`, this is still allowed, but discouraged since it offers
-no additional expressive power over combining the weights into a single member. 
-For example, if the example above was using `sum_of_weights` mode, it could be 
+no additional expressive power over combining the weights into a single member.
+For example, if the example above was using `sum_of_weights` mode, it could be
 rewritten without using any additional resources as:
 [source,protobuf]
 ----
