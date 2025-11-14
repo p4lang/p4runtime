@@ -3992,7 +3992,7 @@ It is possible to include several `ActionProfileAction` messages with the same
 exact `action` specification in one `ActionProfileActionSet` message. For
 `sum_of_members`, this allows clients to specify weights greater than the
 `max_member_weight` set. E.g. modifying the example above, we can weight
-nexthop 1 to be 2x100 (if `max_member_weight` is 100 as follows:
+nexthop 1 to be 2x100 (if `max_member_weight` is 100) as follows:
 [source,protobuf]
 ----
 table_entry {
