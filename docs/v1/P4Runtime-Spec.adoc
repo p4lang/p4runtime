@@ -3989,10 +3989,64 @@ first, then the group needs to be created, and finally the match entry can be
 inserted. Therefore, 3 distinct `WriteRequest` batches are required.
 
 It is possible to include several `ActionProfileAction` messages with the same
-exact `action` specification in one `ActionProfileActionSet` message. However,
-when using the `sum_of_weights` group size calculation, the P4Runtime client is
-encouraged not to do so, as the same can be achieved by
-using the `weight` field. Note that to preserve read-write symmetry, the server
+exact `action` specification in one `ActionProfileActionSet` message. For 
+`sum_of_members`, this allows clients to specify weights greater than the
+`max_member_weight` set. E.g. modifying the example above, we can weight
+nexthop 1 to be 2x100 (if `max_member_weight` is 100 as follows:
+[source,protobuf]
+----
+table_entry {
+  table_id: 0x0212ab34
+  match { /* lpm match */ }
+  action {
+    action_profile_action_set {
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 100
+        watch_port: "\x01"
+      }
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 100
+        watch_port: "\x01"
+      }
+      action_profile_actions {
+        action { /* set nexthop 2 */ }
+        weight: 2
+        watch_port: "\x02"
+      }
+    }
+  }
+}
+----
+
+For `sum_of_weights`, this is still allowed, but discouraged since it offers
+no additional expressive power over combining the weights into a single member. 
+For example, if the example above was using `sum_of_weights` mode, it could be 
+rewritten without using any additional resources as:
+[source,protobuf]
+----
+table_entry {
+  table_id: 0x0212ab34
+  match { /* lpm match */ }
+  action {
+    action_profile_action_set {
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 200
+        watch_port: "\x01"
+      }
+      action_profile_actions {
+        action { /* set nexthop 2 */ }
+        weight: 2
+        watch_port: "\x02"
+      }
+    }
+  }
+}
+----
+
+Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
 a separate member for the purposes of e.g. the `sum_of_members` group size
