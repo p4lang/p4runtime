@@ -6,7 +6,7 @@ LABEL description="Dockerfile used for CI testing of p4lang/p4runtime"
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends software-properties-common git curl build-essential
+    apt-get install -y --no-install-recommends software-properties-common git curl
 
 ARG GO_VERSION=1.20.5
 
@@ -25,12 +25,6 @@ ENV PATH="${PATH}:/usr/local/go/bin:/root/go/bin"
 
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.31
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3
-
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.81.0 --profile minimal; \
-    . $HOME/.cargo/env; \
-    cargo install --locked protoc-gen-prost@0.4.0 protoc-gen-prost-crate@0.4.1 protoc-gen-tonic@0.4.1
-
-ENV PATH="${PATH}:/root/.cargo/bin"
 
 COPY . /p4runtime/
 WORKDIR /p4runtime/

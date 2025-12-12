@@ -1,0 +1,25 @@
+[package]
+name = "p4runtime-tonic"
+version = "1.4.0"
+edition = "2021"
+authors = ["P4 API Working Group <p4-api@lists.p4.org>"]
+description = "P4Runtime Specification - gRPC service definitions"
+categories = ["network-programming"]
+keywords = ["p4runtime", "grpc", "tonic"]
+license = "Apache-2.0"
+repository = "https://github.com/p4lang/p4runtime"
+
+[dependencies]
+p4runtime-prost = { path = "../p4runtime-prost" }
+prost = "0.14"
+prost-types = "0.14"
+tonic = "0.14"
+tonic-prost = "0.14"
+
+[build-dependencies]
+# To obtain `protoc` binary (the Protobuf compiler).
+protoc-prebuilt = "0.3"
+# To generate client/server code for grpc services.
+tonic-prost-build = "0.14"
+# To find proto files.
+walkdir = "2"
