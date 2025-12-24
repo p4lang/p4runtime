@@ -16,7 +16,7 @@ exports_files(["LICENSE", "p4runtime_deps.bzl"])
 
 # Aliases for backward compatibility with the old workspace structure
 # where proto/ was the root.
-
+# TODO(https://github.com/p4lang/p4runtime/issues/576): Remove in 2.0.
 alias(name = "p4types_proto", actual = "//proto/p4/config/v1:p4types_proto")
 alias(name = "p4info_proto", actual = "//proto/p4/config/v1:p4info_proto")
 alias(name = "p4data_proto", actual = "//proto/p4/v1:p4data_proto")
@@ -38,4 +38,10 @@ alias(name = "p4runtime_go_proto", actual = "//proto/p4/v1:p4runtime_go_proto")
 alias(name = "p4runtime_cc_grpc", actual = "//proto/p4/v1:p4runtime_cc_grpc")
 alias(name = "p4runtime_py_grpc", actual = "//proto/p4/v1:p4runtime_py_grpc")
 
-test_suite(name = "proto_build_test", tests = ["//proto:proto_build_test"])
+test_suite(
+    name = "proto_build_test",
+    tests = [
+        "//proto/p4/config/v1:proto_build_test",
+        "//proto/p4/v1:proto_build_test",
+    ],
+)

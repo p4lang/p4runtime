@@ -1,6 +1,7 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 load("@com_github_grpc_grpc//bazel:python_rules.bzl", "py_proto_library")
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
 
 package(
     default_visibility = ["//visibility:public"],
@@ -49,5 +50,18 @@ go_proto_library(
     protos = [
         ":p4info_proto",
         ":p4types_proto",
+    ],
+)
+
+build_test(
+    name = "proto_build_test",
+    targets = [
+        ":p4info_proto",
+        ":p4types_proto",
+        ":p4types_cc_proto",
+        ":p4info_cc_proto",
+        ":p4types_py_proto",
+        ":p4info_py_proto",
+        ":p4info_go_proto",
     ],
 )
