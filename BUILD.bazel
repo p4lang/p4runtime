@@ -1,1 +1,41 @@
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@rules_license//rules:license.bzl", "license")
+
+package(
+    default_visibility = ["//visibility:public"],
+    default_applicable_licenses = [":license"],
+)
+
+license(
+    name = "license",
+    license_kinds = ["@rules_license//licenses/spdx:Apache-2.0"],
+    license_text = "LICENSE",
+)
+
 exports_files(["LICENSE", "p4runtime_deps.bzl"])
+
+# Aliases for backward compatibility with the old workspace structure
+# where proto/ was the root.
+
+alias(name = "p4types_proto", actual = "//proto/p4/config/v1:p4types_proto")
+alias(name = "p4info_proto", actual = "//proto/p4/config/v1:p4info_proto")
+alias(name = "p4data_proto", actual = "//proto/p4/v1:p4data_proto")
+alias(name = "p4runtime_proto", actual = "//proto/p4/v1:p4runtime_proto")
+
+alias(name = "p4types_cc_proto", actual = "//proto/p4/config/v1:p4types_cc_proto")
+alias(name = "p4info_cc_proto", actual = "//proto/p4/config/v1:p4info_cc_proto")
+alias(name = "p4data_cc_proto", actual = "//proto/p4/v1:p4data_cc_proto")
+alias(name = "p4runtime_cc_proto", actual = "//proto/p4/v1:p4runtime_cc_proto")
+
+alias(name = "p4types_py_proto", actual = "//proto/p4/config/v1:p4types_py_proto")
+alias(name = "p4info_py_proto", actual = "//proto/p4/config/v1:p4info_py_proto")
+alias(name = "p4data_py_proto", actual = "//proto/p4/v1:p4data_py_proto")
+alias(name = "p4runtime_py_proto", actual = "//proto/p4/v1:p4runtime_py_proto")
+
+alias(name = "p4info_go_proto", actual = "//proto/p4/config/v1:p4info_go_proto")
+alias(name = "p4runtime_go_proto", actual = "//proto/p4/v1:p4runtime_go_proto")
+
+alias(name = "p4runtime_cc_grpc", actual = "//proto/p4/v1:p4runtime_cc_grpc")
+alias(name = "p4runtime_py_grpc", actual = "//proto/p4/v1:p4runtime_py_grpc")
+
+test_suite(name = "proto_build_test", tests = ["//proto:proto_build_test"])
