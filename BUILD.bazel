@@ -1,3 +1,4 @@
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@rules_license//rules:license.bzl", "license")
 
 package(
@@ -11,7 +12,10 @@ license(
     license_text = "LICENSE",
 )
 
-exports_files(["LICENSE"])
+exports_files([
+    "LICENSE",
+    "p4runtime_deps.bzl",
+])
 
 # -- Aliases for backward compatibility --------------------------------------
 # TODO(https://github.com/p4lang/p4runtime/issues/576): Remove in 2.0.
