@@ -1,4 +1,3 @@
-load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@rules_license//rules:license.bzl", "license")
 
 package(

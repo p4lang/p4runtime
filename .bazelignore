@@ -1,0 +1,2 @@
+# Exclude bazel sub-projects so `bazel build //...` works.
+bazel/example
