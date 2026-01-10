@@ -66,11 +66,6 @@ jobs:
     - name: Build bazel/example/using-bzlmod/
       run: cd bazel/example/using-bzlmod && bazel build //...
 
-    - name: Build bazel/example/using-workspace/
-      run: cd bazel/example/using-workspace && bazel build //...
-      # This is a legacy example that doesn't work beyond Bazel 7.x.
-      if: ${{ env.USE_BAZEL_VERSION == '7.x' }}
-
     - name: Save end time
       # Always save the end time so we can calculate the build duration.
       if: always()
