@@ -1,6 +1,6 @@
 [package]
 name = "p4runtime-prost"
-version = "1.4.0"
+version = "1.5.0"
 edition = "2021"
 authors = ["P4 API Working Group <p4-api@lists.p4.org>"]
 description = "P4Runtime Specification - Protobuf message API (Prost)"

@@ -1,6 +1,6 @@
 = P4Runtime Specification : The P4.org API Working Group
 :doctype: book
-:revnumber: version 1.5.0-dev
+:revnumber: 1.5.0
 :imagesdir: resources/figs
 :font-size: 10
 :sectnums: 5
@@ -52,7 +52,7 @@ protocol-independent runtime APIs for P4-defined or P4-described data
 planes. This document specifies one such API, called *P4Runtime*. It is meant to
 disambiguate and augment the programmatic API definition expressed in Protobuf
 format and available at
-link:https://github.com/p4lang/p4runtime/tree/main/proto[https://github.com/p4lang/p4runtime/tree/main/proto].
+link:https://github.com/p4lang/p4runtime/tree/v1.5.0/proto[https://github.com/p4lang/p4runtime/tree/v1.5.0/proto].
 
 === P4 Language Version Applicability
 
@@ -60,7 +60,7 @@ P4Runtime is designed to be implemented in conjunction with the P4~16~ language
 version or later. P4~14~ programs should be translated into P4~16~ to be made
 compatible with P4Runtime. This version of P4Runtime utilizes features which are
 not in P4~16~ 1.0, but were introduced in P4~16~ 1.2.4 cite:[P4Revisions124]. For
-this version of P4Runtime, we recommend using P4~16~ 1.2.4 cite:[P4Revisions124].
+this version of P4Runtime, we recommend using P4~16~ 1.2.5 cite:[P4Revisions125].
 
 This version of the P4Runtime specification does not yet explicitly
 address compatibility with the following P4~16~ language features
@@ -6658,6 +6658,37 @@ properties, but we may include on in future versions of the API.
 = Appendix
 
 === Revision History
+
+==== Changes in v1.5.0
+
+* Action Profiles / Load Balancing
+  ** Added `weights_disallowed` field to `ActionProfile` in P4Info.
+    If this field is set to true, the server will reject any attempt to program weights for this action profile. This is intended to be used for action profiles whose weights are controlled by the switch, i.e. when the switch implements dynamic load balancing/adaptive routing.
+  ** Added `action_selection_mode` and `size_semantics` to `ActionProfileActionSet`.
+    These fields provide per-group control over the action selection algorithm and resource allocation scheme. Previous versions of P4Runtime only allowed a single action selection algorithm and resource allocation scheme for all groups in an action profile.
+  ** Clarified that `ActionProfile` members with duplicate actions are allowed and why a client might want to program them.
+
+* Capabilities
+  ** Added `device_id` field to `CapabilitiesRequest`.
+    This enables clients to query capabilities specific to a particular device when a P4Runtime server manages multiple devices.
+  ** Added `Any` protobuf message to `CapabilitiesResponse` for experimental features.
+    This provides a mechanism to expose experimental or proprietary capabilities without modifying the core P4Runtime protocol.
+
+* Controller Sessions, Roles, Arbitration
+  ** Clarified that `device_id` can never be 0.
+    Since 0 is the default value for integers in Protobuf, explicit prohibition avoids ambiguity between "unset" and "device 0".
+
+* Multicast / Replication
+  ** Added support for "backup replicas" to multicast groups.
+    This enables fast failover for multicast traffic by allowing backup ports to be specified for each replica.
+
+* Miscellaneous
+  ** Fixed broken reference to P4 language spec.
+  ** Switched from Madoko to AsciiDoc for P4Runtime specification.
+  ** [Bazel] Added support for Bzlmod and Bazel 7 and 8.
+  ** [Rust] Redesigned Crates to be more idiomatic, future-proof, and maintainable.
+
+
 ==== Changes in v1.4.1
 No content changes; tag was incremented only.
 
