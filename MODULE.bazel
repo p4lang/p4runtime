@@ -1,7 +1,8 @@
 module(
     name = "p4runtime",
     bazel_compatibility = [">=7.4.1"],
-    version = "1.5.0",
+    # Fill in concrete versions only on release branches/in the BCR.
+    version = "head",
 )
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
@@ -23,7 +24,7 @@ switched_rules.use_languages(
 )
 use_repo(switched_rules, googleapis_imports = "com_google_googleapis_imports")
 
-# Including this allows us to autoformat all Bazel files by running
+# Including this allows us to auto-format all Bazel files by running
 # ```
 # bazel run -- @buildifier_prebuilt//:buildifier -lint=fix -r $(bazel info workspace)
 # ```
