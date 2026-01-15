@@ -11,7 +11,7 @@ local_path_override(
 
 # git_override(
 #     module_name = "p4runtime",
-#     strip_prefix = "p4runtime-1.4.1",
-#     urls = ["https://github.com/p4lang/p4runtime/archive/v1.4.1.tar.gz"],
+#     strip_prefix = "p4runtime-1.5.0",
+#     urls = ["https://github.com/p4lang/p4runtime/archive/v1.5.0.tar.gz"],
 #     # sha256 = "<insert hash value here>",
 # )
