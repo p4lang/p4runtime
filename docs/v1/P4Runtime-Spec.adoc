@@ -1,6 +1,6 @@
 = P4Runtime Specification : The P4.org API Working Group
 :doctype: book
-:revnumber: 1.5.0
+:revnumber: 1.5.1-dev
 :imagesdir: resources/figs
 :font-size: 10
 :sectnums: 5
@@ -52,7 +52,7 @@ protocol-independent runtime APIs for P4-defined or P4-described data
 planes. This document specifies one such API, called *P4Runtime*. It is meant to
 disambiguate and augment the programmatic API definition expressed in Protobuf
 format and available at
-link:https://github.com/p4lang/p4runtime/tree/v1.5.0/proto[https://github.com/p4lang/p4runtime/tree/v1.5.0/proto].
+link:https://github.com/p4lang/p4runtime/tree/main/proto[https://github.com/p4lang/p4runtime/tree/main/proto].
 
 === P4 Language Version Applicability
 
