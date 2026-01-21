@@ -1,6 +1,7 @@
 module(
     name = "p4runtime",
-    bazel_compatibility = [">=7.4.1"],
+    # TODO(#582): Remove upper bound once we support Bazel 9.x.
+    bazel_compatibility = [">=7.0.0", "<9.0.0"],
 )
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
