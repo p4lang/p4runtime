@@ -1,0 +1,170 @@
+diff --git a/bazel/cc_grpc_library.bzl b/bazel/cc_grpc_library.bzl
+index 5886673..1234567 100644
+--- a/bazel/cc_grpc_library.bzl
++++ b/bazel/cc_grpc_library.bzl
+@@ -19,6 +19,7 @@ load("@com_google_protobuf//bazel:cc_proto_library.bzl", "cc_proto_library")
+ load("@rules_proto//proto:defs.bzl", "proto_library")
+ load("//bazel:generate_cc.bzl", "generate_cc")
+ load("//bazel:protobuf.bzl", "well_known_proto_libs")
++load("@rules_cc//cc:defs.bzl", "cc_library")
+
+ def cc_grpc_library(
+         name,
+@@ -112,7 +113,7 @@ def cc_grpc_library(
+             **kwargs
+         )
+
+-        native.cc_library(
++        cc_library(
+             name = name,
+             srcs = [":" + codegen_grpc_target],
+             hdrs = [":" + codegen_grpc_target],
+diff --git a/bazel/cython_library.bzl b/bazel/cython_library.bzl
+index 5886673..1234567 100644
+--- a/bazel/cython_library.bzl
++++ b/bazel/cython_library.bzl
+@@ -14,6 +14,7 @@
+ """Custom rules for gRPC Python"""
+
+ load("@rules_python//python:defs.bzl", "py_library")
++load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+ # Adapted with modifications from
+ # tensorflow/tensorflow/core/platform/default/build_config.bzl
+@@ -69,7 +70,7 @@ def pyx_library(name, deps = [], py_deps = [], srcs = [], **kwargs):
+     for src in pyx_srcs:
+         stem = src.split(".")[0]
+         shared_object_name = stem + ".so"
+-        native.cc_binary(
++        cc_binary(
+             name = shared_object_name,
+             srcs = [stem + ".cpp"],
+             deps = deps + [
+diff --git a/src/core/util/glob.cc b/src/core/util/glob.cc
+index 5886673..1234567 100644
+--- a/src/core/util/glob.cc
++++ b/src/core/util/glob.cc
+@@ -15,6 +15,7 @@
+ // limitations under the License.
+
+ #include "absl/strings/string_view.h"
++#include <algorithm>
+
+ namespace grpc_core {
+
+diff --git a/bazel/grpc_build_system.bzl b/bazel/grpc_build_system.bzl
+index 5886673..1234567 100644
+--- a/bazel/grpc_build_system.bzl
++++ b/bazel/grpc_build_system.bzl
+@@ -34,6 +34,7 @@ load("@rules_python//python:defs.bzl", "py_binary")
+ load("//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+ load("//bazel:copts.bzl", "GRPC_DEFAULT_COPTS")
++load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+ load("//bazel:experiments.bzl", "EXPERIMENTS", "EXPERIMENT_ENABLES", "EXPERIMENT_POLLERS")
+ load("//bazel:test_experiments.bzl", "TEST_EXPERIMENTS", "TEST_EXPERIMENT_ENABLES", "TEST_EXPERIMENT_POLLERS")
+
+@@ -131,7 +132,7 @@ def grpc_cc_library(
+     # See b/391433873.
+     if "fuzztest" in external_deps and "grpc-fuzztest" not in tags:
+         tags = tags + ["grpc-fuzztest"]
+-    native.cc_library(
++    cc_library(
+         name = name,
+         srcs = srcs,
+         defines = defines +
+@@ -172,7 +173,7 @@ def grpc_cc_library(
+     )
+
+ def grpc_proto_plugin(name, srcs = [], deps = []):
+-    native.cc_binary(
++    cc_binary(
+         name = name + "_native",
+         srcs = srcs,
+         deps = deps,
+@@ -218,7 +219,7 @@ def grpc_cc_binary(name, srcs = [], deps = [], external_deps = [], args = [], da
+     """
+     visibility = _update_visibility(visibility)
+     copts = []
+-    native.cc_binary(
++    cc_binary(
+         name = name,
+         srcs = srcs,
+         args = args,
+@@ -262,7 +263,7 @@ def grpc_cc_test(name, srcs = [], deps = [], external_deps = [], args = [], data
+             **test_args
+         )
+
+-    native.cc_library(
++    cc_library(
+         name = "%s_TEST_LIBRARY" % name,
+         testonly = 1,
+         srcs = srcs,
+@@ -276,6 +277,6 @@ def grpc_cc_test(name, srcs = [], deps = [], external_deps = [], args = [], data
+         if poller_config["deps"] != core_deps:
+             fail("deps changed: %r --> %r" % (deps, poller_config["deps"]))
+-        native.cc_test(
++        cc_test(
+             name = poller_config["name"],
+             deps = ["%s_TEST_LIBRARY" % name],
+             tags = poller_config["tags"],
+diff --git a/MODULE.bazel b/MODULE.bazel
+index 5886673..1234567 100644
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -53,7 +53,7 @@ PYTHON_VERSIONS = [
+     "3.11",
+     "3.12",
+     "3.13",
+-    "3.14.0b2",
++    "3.14",
+ ]
+
+ python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+diff --git a/third_party/address_sorting/address_sorting.bzl b/third_party/address_sorting/address_sorting.bzl
+index 5886673..1234567 100644
+--- a/third_party/address_sorting/address_sorting.bzl
++++ b/third_party/address_sorting/address_sorting.bzl
+@@ -24,7 +24,9 @@
+ # SUCH DAMAGE.
+
++load("@rules_cc//cc:defs.bzl", "cc_library")
++
+ def address_sorting_cc_library(name, srcs, hdrs, copts, includes, linkopts=[]):
+-    native.cc_library(
++    cc_library(
+         name = name,
+         srcs = srcs,
+         hdrs = hdrs,
+diff --git a/third_party/xxhash/BUILD b/third_party/xxhash/BUILD
+index 5886673..1234567 100644
+--- a/third_party/xxhash/BUILD
++++ b/third_party/xxhash/BUILD
+@@ -1,4 +1,5 @@
+ # TODO(donnadionne): describe this package.
++load("@rules_cc//cc:defs.bzl", "cc_library")
+ cc_library(
+     name = "xxhash",
+     hdrs = [
+diff --git a/src/core/channelz/v2tov1/property_list.cc b/src/core/channelz/v2tov1/property_list.cc
+index 5886673..1234567 100644
+--- a/src/core/channelz/v2tov1/property_list.cc
++++ b/src/core/channelz/v2tov1/property_list.cc
+@@ -16,6 +16,7 @@
+
+ #include <cstdint>
+ #include <optional>
++#include <limits>
+ #include <string>
+
+ #include "google/protobuf/any.upb.h"
+diff --git a/include/grpc/event_engine/memory_request.h b/include/grpc/event_engine/memory_request.h
+index 5886673..1234567 100644
+--- a/include/grpc/event_engine/memory_request.h
++++ b/include/grpc/event_engine/memory_request.h
+@@ -15,6 +15,7 @@
+
+ #include <grpc/support/port_platform.h>
+ #include <stddef.h>
++#include <string>
+
+ #include "absl/strings/string_view.h"
