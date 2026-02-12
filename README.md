@@ -71,12 +71,9 @@ files stay semantically valid.
 
 ## Build Using Bazel
 
-The protobufs can also be built using [Bazel](https://bazel.build/).
-The Bazel WORKSPACE and BUILD files are located in the [proto folder](proto/).
-
-To build, run
+The protobufs can also be built using [Bazel](https://bazel.build/):
 ```sh
-cd proto && bazel build //...
+bazel build //...
 ```
 
 We run [continuous integration](.github/workflows/ci-build-proto.yml) to ensure
