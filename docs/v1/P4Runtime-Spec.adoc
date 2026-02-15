@@ -431,7 +431,7 @@ practical to have a hybrid use-case as described in subsequent sections.
 
 .Use-Case: Single Remote Controller
 [#fig-single-remote-controller]
-image::single-embedded-controller.png[width=400,align="center"]
+image::single-remote-controller.png[width=400,align="center"]
 
 
 === Embedded + Single Remote Controller
