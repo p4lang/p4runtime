@@ -1,6 +1,16 @@
-# P4Runtime Specification
+# P4Runtime
 
-This directory contains protobuf files, specifications and related artifacts for
+P4 is a language for programming the data plane of network devices. 
+P4Runtime is a control plane protocol for controlling the data plane
+elements of a device or program defined by a P4 program. This repository
+provides a precise definition of the P4Runtime API via protobuf (.proto) files
+and accompanying specification. The target audience for this includes system
+architects and developers who want to write controller applications for P4
+devices or switches.
+
+## Code Organization
+
+This repository contains protobuf files, specifications, and related artifacts for
 all versions of the P4Runtime API. Documentation and protobuf definitions are
 placed into two distinct top-level directories. In each of these directories,
 files are organized based on the P4Runtime major version number (e.g. v1) as
@@ -8,52 +18,54 @@ follows:
 ```
 .
 ├── docs
-│   └── v1  # documentation for P4Runtime v1
+│   └── v1          # documentation for P4Runtime v1
 ├── proto
 │   └── p4
 │       ├── config
 │       │   └── v1  # p4.config.v1 protobuf package (P4Info message definition)
-│       └── v1  # p4.v1 protobuf package (P4Runtime service definition)
+│       └── v1      # p4.v1 protobuf package (P4Runtime service definition)
 ```
 
-Git tags are used to mark minor and patch release versions.
+## Releases
 
-## Reading the latest version of the documentation
+P4Runtime follows [semantic versioning](https://semver.org/).
+We use git tags of them form `v1.4.1` to mark all releases.  
+Starting from `v1.5.0`, we also use release branches of the form `v1.5.x` to track minor releases.
 
-The latest version of the P4Runtime v1 specification is available:
-* [here](https://p4.org/wp-content/uploads/sites/53/p4-spec/docs/p4runtime-spec-working-draft-html-version.html)
-  in **HTML** format
-* [here](https://p4.org/wp-content/uploads/sites/53/p4-spec/docs/p4runtime-spec-working-draft-pdf-version.html)
-  in **PDF** format
+## Github Pages
 
+We maintain a `gh-pages` [branch](https://github.com/p4lang/p4runtime/tree/gh-pages) to host all releases of the specification, available at https://p4lang.github.io/p4runtime/.
+
+This website also hosts **the latest, unreleased version of the P4Runtime specification** [ [HTML](https://p4lang.github.io/p4runtime/spec/main/P4Runtime-Spec.html) | [PDF](https://p4lang.github.io/p4runtime/spec/main/P4Runtime-Spec.pdf) ].
 It is updated every time a new commit is pushed to the main branch.
 
-## Overview
+## Community
 
-P4 is a language for programming the data plane of network devices. The
-P4Runtime API is a control plane specification for controlling the data plane
-elements of a device or program defined by a P4 program. This repository
-provides a precise definition of the P4Runtime API via protobuf (.proto) files
-and accompanying documentation. The target audience for this includes system
-architects and developers who want to write controller applications for P4
-devices or switches.
-
-# Community
-
- * **Meetings**: the P4.org API Working Group meets every other Friday at
-   9:30AM (Pacific Time). Please see the [P4 Working Groups Calendar](https://calendar.google.com/calendar/u/0/embed?src=j4to42rsjqtfks0qb7iah8gous@group.calendar.google.com&ctz=America/Los_Angeles)
-   for meeting details.
- * **Email**: join our [mailing
-   list](https://lists.p4.org/mailman/listinfo/p4-dev_lists.p4.org) to receive
+ * **Meetings**: The P4 API Working Group meets the second Friday of each month at
+   9:30AM (Pacific Time). Please join our meetings via the [P4 Working Group Calendar](https://zoom-lfx.platform.linuxfoundation.org/meetings/p4-project?view=list).
+ * **Email**: Join our [mailing list](https://lists.p4.org/g/p4-api) to receive
    announcements and stay up-to-date with Working Group activities.
- * **Slack**: ask to join the [P4 Slack Workspace] to get (or provide!)
-   interactive help.
 
-# Compiling P4Runtime Protobuf files
+Please consult https://p4.org for other ways to get in touch (e.g., chat or forum) and for up to date information should the above info go stale.
 
-## Build Using Docker
+## Compiling P4Runtime Protobuf files
 
-You can use Docker to run the protoc compiler on the P4Runtime Protobuf files
+### Build Using Bazel
+
+The protobufs can be built using [Bazel](https://bazel.build/):
+```sh
+bazel build //...
+```
+
+We run [continuous integration](.github/workflows/ci-build-proto.yml) to ensure
+this works with the latest versions of Bazel and Ubuntu.
+
+For an example of how to include P4Runtime in your own Bazel project, see
+[bazel/example](bazel/example).
+
+### Build Using Docker
+
+You can also use Docker to run the protoc compiler on the P4Runtime Protobuf files
 and generate the Protobuf & gRPC bindings for C++, Python and Go:
 
 ```
@@ -69,20 +81,7 @@ may need to change the permissions manually for the generated files after the
 These commands are the ones used by our CI system to ensure that the Protobuf
 files stay semantically valid.
 
-## Build Using Bazel
-
-The protobufs can also be built using [Bazel](https://bazel.build/):
-```sh
-bazel build //...
-```
-
-We run [continuous integration](.github/workflows/ci-build-proto.yml) to ensure
-this works with the latest version of Bazel.
-
-For an example of how to include P4Runtime in your own Bazel project, see
-[bazel/example](bazel/example).
-
-# Modification Policy
+## Modification Policy
 
 We use the following processes when making changes to the P4Runtime
 specification and associated documents. These processes are designed to be
@@ -90,7 +89,7 @@ lightweight, to encourage active participation by members of the P4.org
 community, while also ensuring that all proposed changes are properly vetted
 before they are incorporated into the repository and released to the community.
 
-## Core Processes
+### Core Processes
 
 * Only members of the P4.org community may propose changes to the P4Runtime
   specification, and all contributed changes will be governed by the
@@ -103,7 +102,7 @@ before they are incorporated into the repository and released to the community.
   group co-chairs will typically batch together multiple changes into a single
   release, as appropriate.
 
-## Detailed Processes
+### Detailed Processes
 
 We now identify detailed processes for three classes of changes. The text below
 refers to [key
