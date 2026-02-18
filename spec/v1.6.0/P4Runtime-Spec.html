@@ -659,7 +659,7 @@ h2 { color: #030303; border-bottom: 1px solid #dddddd; }
 <h1>P4Runtime Specification : The P4.org API Working Group</h1>
 <div class="details">
 <span id="revnumber">version 1.6.0,</span>
-<span id="revdate">2026-10-09</span>
+<span id="revdate">2026-10-08</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Contents</div>
@@ -7103,14 +7103,6 @@ counter. The <code>MeterConfig</code> P4Runtime message represents meter configu
 </div>
 </div>
 <div class="paragraph">
-<p>The unit of each rate and burst-size field is determined by the
-<code>MeterSpec.Unit</code> of the P4Info <code>Meter</code> or <code>DirectMeter</code>. For <code>BYTES</code>, rates are
-expressed in bytes per second and burst sizes in bytes; for <code>PACKETS</code>, rates are
-expressed in packets per second and burst sizes in packets. See the
-<a href="#sec-meter-directmeter">Meter &amp; DirectMeter section</a> for the definition of
-<code>MeterSpec.Unit</code>.</p>
-</div>
-<div class="paragraph">
 <p>A MeterConfig for a trTCM typed meter must only be accepted if <code>eburst</code> is
 unset. Otherwise, the server should return an <code>INVALID_ARGUMENT</code> error.</p>
 </div>
@@ -10891,7 +10883,7 @@ described in <a href="#sec-table-entry">Section 9.1</a>.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.6.0<br>
-Last updated 2026-10-09 17:30:07 UTC
+Last updated 2026-10-08 19:05:58 UTC
 </div>
 </div>
 </body>
