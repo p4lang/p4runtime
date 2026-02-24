@@ -475,7 +475,7 @@ role-based client arbitration scheme supports it.
 
 .Use-Case: Embedded Plus Two Remote High-Availability Controllers
 [#fig-embedded-plus-two-remote-ha-controllers]
-image::embedded-plus-two-remote-controllers.png[width=400,align="center"]
+image::embedded-plus-two-remote-ha-controllers.png[width=400,align="center"]
 
 [#sec-client-arbitration-and-controller-replication]
 == Client Arbitration and Controller Replication
