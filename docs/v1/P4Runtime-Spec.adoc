@@ -1355,15 +1355,15 @@ control plane. This message contains the following fields:
        `scope` of the action is determined by the use of the P4 standard
        annotations `@tableonly`, `@globalonly`, and `@defaultonly`
        cite:[P4ActionAnnotations]. `TABLE_ONLY` (`@tableonly` annotation) means
-       that the action can only appear within the table, and never as the default
-       action. `GLOBAL_ONLY` (`@globalonly` annotation) means that the action can
-       can only appear within the table, but only used in the `global_action`
-       parameter in `ActionProfileActionSet`. `DEFAULT_ONLY`
+       that the action can only appear within the table, and never as the
+       default action. `GLOBAL_ONLY` (`@globalonly` annotation) means that
+       the action can only appear within the table, but only used in the
+       `global_action` parameter in `ActionProfileActionSet`. `DEFAULT_ONLY`
        (`@defaultonly` annotation) means that the action can only be used as the
        default action. `TABLE_AND_DEFAULT` is the default value for the enum and
        means that no annotation was used in P4 and that the action can be
-       used both within the table and as the default action, but not as a global
-       action.
+       used both within the table and as the default action, but not as a
+       global action.
     ** `annotations`, a repeated string field, each one representing a P4
       annotation associated to the action *reference* in this table.
 
@@ -3888,8 +3888,9 @@ does not need to keep track of group ids and member ids.
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
 `ActionProfileAction` messages, an `Action` for the global action, a
-`ActionSelectionMode` enum, and a `SizeSemantics` enum. The `ActionSelectionMode`
-and `SizeSemantics` enums override the existing action selector settings.
+`ActionSelectionMode` enum, and a `SizeSemantics` enum. The 
+`ActionSelectionMode` and `SizeSemantics` enums override the existing
+action selector settings.
 
 The `ActionProfileAction` set should have cardinality no greater than
 `max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
