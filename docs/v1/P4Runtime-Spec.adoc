@@ -1350,16 +1350,20 @@ control plane. This message contains the following fields:
   actions for this table. The `ActionRef` message is used to reference an action
   specified in the same P4Info message and it includes the following fields:
     ** `id`, the `uint32` identifier of the action.
-    ** `scope`, an enum value which can take one of three values:
-       `TABLE_AND_DEFAULT`, `TABLE_ONLY` and `DEFAULT_ONLY`. The `scope` of the
-       action is determined by the use of the P4 standard annotations
-       `@tableonly` and `@defaultonly` cite:[P4ActionAnnotations]. `TABLE_ONLY`
-       (`@tableonly` annotation) means that the action can only appear within
-       the table, and never as the default action. `DEFAULT_ONLY`
+    ** `scope`, an enum value which can take one of four values:
+       `TABLE_AND_DEFAULT`, `TABLE_ONLY`, `GLOBAL_ONLY` and `DEFAULT_ONLY`. The
+       `scope` of the action is determined by the use of the P4 standard
+       annotations `@tableonly`, `@globalonly`, and `@defaultonly`
+       cite:[P4ActionAnnotations]. `TABLE_ONLY` (`@tableonly` annotation) means
+       that the action can only appear within the table, and never as the default
+       action. `GLOBAL_ONLY` (`@globalonly` annotation) means that the action can
+       can only appear within the table, but only used in the `global_action`
+       parameter in `ActionProfileActionSet`. `DEFAULT_ONLY`
        (`@defaultonly` annotation) means that the action can only be used as the
        default action. `TABLE_AND_DEFAULT` is the default value for the enum and
-       means that neither annotation was used in P4 and that the action can be
-       used both within the table and as the default action.
+       means that no annotation was used in P4 and that the action can be
+       used both within the table and as the default action, but not as a global
+       action.
     ** `annotations`, a repeated string field, each one representing a P4
       annotation associated to the action *reference* in this table.
 
