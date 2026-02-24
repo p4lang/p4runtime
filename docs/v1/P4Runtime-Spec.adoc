@@ -3888,7 +3888,7 @@ does not need to keep track of group ids and member ids.
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
 `ActionProfileAction` messages, an `Action` for the global action, a
-`ActionSelectionMode` enum, and a `SizeSemantics` enum. The 
+`ActionSelectionMode` enum, and a `SizeSemantics` enum. The
 `ActionSelectionMode` and `SizeSemantics` enums override the existing
 action selector settings.
 
