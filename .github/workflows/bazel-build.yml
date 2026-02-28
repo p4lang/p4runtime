@@ -21,7 +21,7 @@ jobs:
         # We trust that things also work for versions in the middle.
         os: [ubuntu-22.04, ubuntu-latest]
         # See Bazelisk README for legal values.
-        bazel_version: [7.x, 8.x, 9.x]
+        bazel_version: [7.x, 9.x]
       # Don't abort other runs when one of them fails, to ease debugging.
       fail-fast: false
 
