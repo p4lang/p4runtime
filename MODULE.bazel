@@ -2,11 +2,7 @@ module(
     name = "p4runtime",
     # Fill in concrete versions only on release branches/in the BCR.
     version = "head",
-    # TODO(#582): Remove upper bound once we support Bazel 9.x.
-    bazel_compatibility = [
-        ">=7.0.0",
-        "<9.0.0",
-    ],
+    bazel_compatibility = [">=7.0.0"],
 )
 
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
@@ -19,6 +15,7 @@ bazel_dep(name = "grpc", version = "1.76.0")
 bazel_dep(name = "protobuf", version = "33.5")
 bazel_dep(name = "rules_cc", version = "0.2.17")
 bazel_dep(name = "rules_go", version = "0.60.0")
+bazel_dep(name = "re2", version = "2025-11-05.bcr.1")
 bazel_dep(name = "rules_license", version = "1.0.0")
 
 # Including this allows us to auto-format all Bazel files by running

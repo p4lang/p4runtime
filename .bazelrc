@@ -5,3 +5,15 @@ common --noenable_workspace
 # Use C++17 (required for recent gRPC versions).
 build --cxxopt=-std=c++17
 build --host_cxxopt=-std=c++17
+
+# In Bazel 9, native C++ rules (cc_library, cc_binary, …) are no longer
+# injected into the global namespace by default.  Some gRPC bundled sources
+# (third_party/address_sorting/address_sorting.bzl) still use
+# `native.cc_library`, so we restore the autoload until that is fixed
+# upstream.  The flag is a no-op in Bazel 7/8 where these rules remain
+# native.
+build --incompatible_autoload_externally=+cc_library,+cc_binary
+
+# Extra flags needed to build on macOS.
+build --repo_env=CC=/usr/bin/clang
+build --macos_minimum_os=10.13
