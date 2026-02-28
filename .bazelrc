@@ -5,3 +5,7 @@ common --noenable_workspace
 # Use C++17 (required for recent gRPC versions).
 build --cxxopt=-std=c++17
 build --host_cxxopt=-std=c++17
+
+# Extra flags needed to build on macOS.
+build --repo_env=CC=/usr/bin/clang
+build --macos_minimum_os=10.13
