@@ -12,6 +12,7 @@ build:
 
 ${SPEC}.pdf: ${SPEC}.adoc images folder
 	time asciidoctor-pdf -v \
+	--failure-level ERROR \
 	-a pdf-fontsdir=resources/fonts \
 	-r asciidoctor-mathematical \
 	-r asciidoctor-bibtex \
@@ -21,6 +22,7 @@ ${SPEC}.pdf: ${SPEC}.adoc images folder
 
 ${SPEC}.html: ${SPEC}.adoc images folder
 	time asciidoctor -v \
+	--failure-level ERROR \
 	-r asciidoctor-mathematical \
 	-r asciidoctor-bibtex \
 	-r asciidoctor-lists \
@@ -28,8 +30,8 @@ ${SPEC}.html: ${SPEC}.adoc images folder
 	-D build $<
 
 images:
-	soffice --convert-to svg --outdir resources/figs resources/figs/*.odg > /dev/null 2>&1
-	soffice --convert-to png --outdir resources/figs resources/figs/*.odg > /dev/null 2>&1
+	soffice --convert-to svg --outdir resources/figs resources/figs/*.odg
+	soffice --convert-to png --outdir resources/figs resources/figs/*.odg
 
 build_spec_with_images: images all
 
