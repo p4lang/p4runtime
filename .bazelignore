@@ -1,2 +1,8 @@
 # Exclude bazel sub-projects so `bazel build //...` works.
 bazel/example
+
+# Exclude Bazel output symlinks to avoid gnarly errors.
+bazel-bin
+bazel-out
+bazel-testlogs
+bazel-p4runtime
