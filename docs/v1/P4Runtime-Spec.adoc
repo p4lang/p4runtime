@@ -4109,15 +4109,17 @@ Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
 a separate member for the purposes of e.g. the `sum_of_members` group size
-calculation for Action Selectors.
+calculation for Action Selectors
 
-The `global_action` is a native global parameter mechanism that behaves as a
-"base" action that is logically composed with the selected member action.
-Semantically, this functions as a pre-action to the existing member-specific
-logic, effectively providing a shared context needed for the pipeline to
-process any selected `ActionProfileAction`. Here, the global action that sets
-the route metadata would occur first and then the nexthop gets set for each
-`ActionProfileAction`.
+The `global_action` is a native global metadata setting mechanism for
+`ActionProfileActionSet`s. This behaves as a "base" action that is logically
+composed with the selected member action. Semantically, this functions acts as
+a pre-action to the existing member-specific logic, effectively providing a
+shared context needed for the pipeline to process any selected
+`ActionProfileAction`. For example, the global action that sets the route
+metadata would occur first and then the nexthop is set for each
+`ActionProfileAction`. Note that this functionality can only be used with
+the one shot method.
 
 P4Runtime-Spec.adoc
 ----
