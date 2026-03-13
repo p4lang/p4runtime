@@ -1351,19 +1351,19 @@ control plane. This message contains the following fields:
   specified in the same P4Info message and it includes the following fields:
     ** `id`, the `uint32` identifier of the action.
     ** `scope`, an enum value which can take one of four values:
-       `TABLE_AND_DEFAULT`, `TABLE_ONLY`, `GLOBAL_ONLY` and `DEFAULT_ONLY`. The
+       `TABLE_AND_DEFAULT`, `TABLE_ONLY`, `PER_GROUP_ONLY` and `DEFAULT_ONLY`. The
        `scope` of the action is determined by the use of the P4 standard
        annotations `@tableonly`, and `@defaultonly` cite:[P4ActionAnnotations].
-       `@globalonly` is currently not a P4 standard annotation. `TABLE_ONLY`
+       `@pergrouponly` is currently not a P4 standard annotation. `TABLE_ONLY`
        (`@tableonly` annotation) means that the action can only appear within
        the table, and never as the default action. `GLOBAL_ONLY`
-       (`@globalonly` annotation) means that the action can only be used in as
-       a `global_action` in an `ActionProfileActionSet`. `DEFAULT_ONLY`
+       (`@pergrouponly` annotation) means that the action can only be used in as
+       a `per_group_action` in an `ActionProfileActionSet`. `DEFAULT_ONLY`
        (`@defaultonly` annotation) means that the action can only be used as the
        default action. `TABLE_AND_DEFAULT` is the default value for the enum and
        means that no annotation was used in P4 and that the action can be
        used both within the table and as the default action, but not as a
-       global action.
+       per group action.
     ** `annotations`, a repeated string field, each one representing a P4
       annotation associated to the action *reference* in this table.
 
@@ -3887,7 +3887,7 @@ does not need to keep track of group ids and member ids.
 
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
-`ActionProfileAction` messages, an `Action` for the global action, a
+`ActionProfileAction` messages, an `Action` for the per group action, a
 `ActionSelectionMode` enum, and a `SizeSemantics` enum. The
 `ActionSelectionMode` and `SizeSemantics` enums override the existing
 action selector settings.
@@ -4111,7 +4111,7 @@ specification into one. Additionally, each `action` specification would count as
 a separate member for the purposes of e.g. the `sum_of_members` group size
 calculation for Action Selectors.
 
-The `global_action` behaves as a "base" action that is logically composed with
+The `per_group_action` behaves as a "base" action that is logically composed with
 the selected member action. Semantically, this acts as a pre-action to the
 existing member-specific logic. For example, you might use it to set metadata
 for every packet that hits a particular group, irrespective of the member that
@@ -4125,7 +4125,7 @@ table_entry {
   match { /* lpm match */ }
   action {
     action_profile_action_set {
-      global_action: {
+      per_group_action: {
         /* set route metadata */
       }
       action_profile_actions {
