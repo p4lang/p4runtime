@@ -1,6 +1,6 @@
 bazel_dep(name = "p4runtime")
-bazel_dep(name = "protobuf", version = "29.1")
-bazel_dep(name = "rules_cc", version = "0.2.16")
+bazel_dep(name = "protobuf", version = "33.5")
+bazel_dep(name = "rules_cc", version = "0.2.17")
 
 # In your own project, you will likely want to use `git_override` instead
 # of `local_repository` to load p4runtime.

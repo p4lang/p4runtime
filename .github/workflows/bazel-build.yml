@@ -21,8 +21,7 @@ jobs:
         # We trust that things also work for versions in the middle.
         os: [ubuntu-22.04, ubuntu-latest]
         # See Bazelisk README for legal values.
-        # TODO(#582): Add back "latest" once we support Bazel 9.
-        bazel_version: [7.x, 8.x]
+        bazel_version: [7.x, latest]
       # Don't abort other runs when one of them fails, to ease debugging.
       fail-fast: false
 
@@ -62,10 +61,12 @@ jobs:
         format: X
 
     - name: Build proto/
-      run: cd proto && bazel build //... && bazel test //...
+      run: bazel build //... && bazel test //...
 
     - name: Build bazel/example/using-bzlmod/
-      run: cd bazel/example/using-bzlmod && bazel build //...
+      run: |
+        cd bazel/example/using-bzlmod
+        bazel build @p4runtime//... //...
 
     - name: Save end time
       # Always save the end time so we can calculate the build duration.
