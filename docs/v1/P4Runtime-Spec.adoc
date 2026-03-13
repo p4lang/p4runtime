@@ -4125,7 +4125,7 @@ table_entry {
   match { /* lpm match */ }
   action {
     action_profile_action_set {
-      per_group_action: {
+      per_group_action {
         /* set route metadata */
       }
       action_profile_actions {
