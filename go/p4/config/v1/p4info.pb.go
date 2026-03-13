@@ -245,7 +245,8 @@ const (
 	ActionRef_TABLE_AND_DEFAULT ActionRef_Scope = 0
 	ActionRef_TABLE_ONLY        ActionRef_Scope = 1
 	ActionRef_DEFAULT_ONLY      ActionRef_Scope = 2
-	ActionRef_GLOBAL_ONLY       ActionRef_Scope = 3
+	// Added in v1.6.0.
+	ActionRef_GLOBAL_ONLY ActionRef_Scope = 3
 )
 
 // Enum value maps for ActionRef_Scope.
