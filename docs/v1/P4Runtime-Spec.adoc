@@ -1350,16 +1350,20 @@ control plane. This message contains the following fields:
   actions for this table. The `ActionRef` message is used to reference an action
   specified in the same P4Info message and it includes the following fields:
     ** `id`, the `uint32` identifier of the action.
-    ** `scope`, an enum value which can take one of three values:
-       `TABLE_AND_DEFAULT`, `TABLE_ONLY` and `DEFAULT_ONLY`. The `scope` of the
-       action is determined by the use of the P4 standard annotations
-       `@tableonly` and `@defaultonly` cite:[P4ActionAnnotations]. `TABLE_ONLY`
+    ** `scope`, an enum value which can take one of four values:
+       `TABLE_AND_DEFAULT`, `TABLE_ONLY`, `PER_GROUP_ONLY` and `DEFAULT_ONLY`. The
+       `scope` of the action is determined by the use of the P4 standard
+       annotations `@tableonly`, and `@defaultonly` cite:[P4ActionAnnotations].
+       `@pergrouponly` is currently not a P4 standard annotation. `TABLE_ONLY`
        (`@tableonly` annotation) means that the action can only appear within
-       the table, and never as the default action. `DEFAULT_ONLY`
+       the table, and never as the default action. `PER_GROUP_ONLY`
+       (`@pergrouponly` annotation) means that the action can only be used in as
+       a `per_group_action` in an `ActionProfileActionSet`. `DEFAULT_ONLY`
        (`@defaultonly` annotation) means that the action can only be used as the
        default action. `TABLE_AND_DEFAULT` is the default value for the enum and
-       means that neither annotation was used in P4 and that the action can be
-       used both within the table and as the default action.
+       means that no annotation was used in P4 and that the action can be
+       used both within the table and as the default action, but not as a
+       per group action.
     ** `annotations`, a repeated string field, each one representing a P4
       annotation associated to the action *reference* in this table.
 
@@ -3883,9 +3887,10 @@ does not need to keep track of group ids and member ids.
 
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
-`ActionProfileAction` messages, a `ActionSelectionMode` enum, and a
-`SizeSemantics` enum. The `ActionSelectionMode` and `SizeSemantics` enums
-override the existing action selector settings.
+`ActionProfileAction` messages, an `Action` for the per group action, a
+`ActionSelectionMode` enum, and a `SizeSemantics` enum. The
+`ActionSelectionMode` and `SizeSemantics` enums override the existing
+action selector settings.
 
 The `ActionProfileAction` set should have cardinality no greater than
 `max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
@@ -4105,6 +4110,38 @@ must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
 a separate member for the purposes of e.g. the `sum_of_members` group size
 calculation for Action Selectors.
+
+The `per_group_action` behaves as a "base" action that is logically composed with
+the selected member action. Semantically, this acts as a pre-action to the
+existing member-specific logic. For example, you might use it to set metadata
+for every packet that hits a particular group, irrespective of the member that
+then gets selected. Note that this functionality can only be used with one
+shot action selector programming.
+
+P4Runtime-Spec.adoc
+----
+table_entry {
+  table_id: 0x0212ab34
+  match { /* lpm match */ }
+  action {
+    action_profile_action_set {
+      per_group_action {
+        /* set route metadata */
+      }
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 200
+        watch_port: "\x01"
+      }
+      action_profile_actions {
+        action { /* set nexthop 2 */ }
+        weight: 2
+        watch_port: "\x02"
+      }
+    }
+  }
+}
+----
 
 All the tables associated with an action selector may either be programmed
 exclusively with one shots, or exclusively with `ActionProfileMember` and
