@@ -1357,7 +1357,7 @@ control plane. This message contains the following fields:
        `@pergrouponly` is currently not a P4 standard annotation, but planned.
        `TABLE_ONLY` (`@tableonly` annotation) means that the action can only
        appear within the table, and never as the default action. `PER_GROUP_ONLY`
-       (`@pergrouponly` annotation) means that the action can only be used in as
+       (`@pergrouponly` annotation) means that the action can only be used as
        a `group_action` in an `ActionProfileActionSet`. `DEFAULT_ONLY`
        (`@defaultonly` annotation) means that the action can only be used as the
        default action. `TABLE_AND_DEFAULT` is the default value for the enum and
