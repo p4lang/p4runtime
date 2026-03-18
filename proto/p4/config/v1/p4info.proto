@@ -278,6 +278,8 @@ message ActionRef {
     TABLE_AND_DEFAULT = 0;
     TABLE_ONLY = 1;
     DEFAULT_ONLY = 2;
+    // Added in v1.6.0.
+    PER_GROUP_ONLY = 3;
   }
   Scope scope = 3;
   repeated string annotations = 2;
