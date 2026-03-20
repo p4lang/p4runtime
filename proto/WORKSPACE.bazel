@@ -4,6 +4,16 @@ load("//:p4runtime_deps.bzl", "p4runtime_deps")
 
 p4runtime_deps()
 
+# -- Load Go rules (before grpc to use our pinned version) --------------------
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
+
+go_rules_dependencies()
+
+load("@bazel_features//:deps.bzl", "bazel_features_deps")
+
+bazel_features_deps()
+
 # -- Load gRPC (before protobuf to get correct transitive dep versions) --------
 
 load("@com_google_googleapis//:repository_rules.bzl", "switched_rules_by_language")
@@ -11,6 +21,7 @@ load("@com_google_googleapis//:repository_rules.bzl", "switched_rules_by_languag
 switched_rules_by_language(
     name = "com_google_googleapis_imports",
     cc = True,
+    go = True,
     grpc = True,
 )
 

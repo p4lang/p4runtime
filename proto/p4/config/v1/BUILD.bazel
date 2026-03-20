@@ -1,4 +1,5 @@
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(
@@ -8,13 +9,11 @@ package(
 proto_library(
     name = "p4types_proto",
     srcs = ["p4types.proto"],
-    strip_import_prefix = "/proto",
 )
 
 proto_library(
     name = "p4info_proto",
     srcs = ["p4info.proto"],
-    strip_import_prefix = "/proto",
     deps = [
         ":p4types_proto",
         "@com_google_protobuf//:any_proto",
@@ -32,6 +31,15 @@ cc_proto_library(
     deps = [":p4info_proto"],
 )
 
+go_proto_library(
+    name = "p4info_go_proto",
+    importpath = "github.com/p4lang/p4runtime/go/p4/config/v1",
+    protos = [
+        ":p4info_proto",
+        ":p4types_proto",
+    ],
+)
+
 build_test(
     name = "proto_build_test",
     targets = [
@@ -39,5 +47,6 @@ build_test(
         ":p4types_proto",
         ":p4types_cc_proto",
         ":p4info_cc_proto",
+        ":p4info_go_proto",
     ],
 )
