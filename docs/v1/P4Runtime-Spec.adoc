@@ -1351,12 +1351,12 @@ control plane. This message contains the following fields:
   specified in the same P4Info message and it includes the following fields:
     ** `id`, the `uint32` identifier of the action.
     ** `scope`, an enum value which can take one of four values:
-       `TABLE_AND_DEFAULT`, `TABLE_ONLY`, `PER_GROUP` and `DEFAULT_ONLY`. The
+       `TABLE_AND_DEFAULT`, `TABLE_ONLY`, `GROUP_ACTION` and `DEFAULT_ONLY`. The
        `scope` of the action is determined by the use of the P4 standard
        annotations `@tableonly`, and `@defaultonly` cite:[P4ActionAnnotations].
        `@groupaction` is currently not a P4 standard annotation, but planned.
        `TABLE_ONLY` (`@tableonly` annotation) means that the action can only
-       appear within the table, and never as the default action. `PER_GROUP`
+       appear within the table, and never as the default action. `GROUP_ACTION`
        (`@groupaction` annotation) means that the action can only be used as
        a `group_action` in an `ActionProfileActionSet`. `DEFAULT_ONLY`
        (`@defaultonly` annotation) means that the action can only be used as the
