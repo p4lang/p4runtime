@@ -1380,9 +1380,20 @@ control plane. This message contains the following fields:
    the id of the `NoAction` action.
 * `implementation_id`, the `uint32` identifier of the "implementation" of this
   table. 0 (default value) means that the table is a regular (direct) match
-  table. Otherwise, this field will carry the ID of an extern instance specified
-  in the same P4Info message (e.g. a PSA `ActionProfile` or `ActionSelector`
-  instance). The table is then referred to as an indirect match table.
+  table. Otherwise, this field carries the ID of an
+  xref:sec-p4info-action-profile[`ActionProfile`] message declared in the
+  same `P4Info`, which describes the PSA extern (Action Profile or
+  Action Selector) that implements this table.
++
+--
+[#group-table]
+When the implementation is an Action Selector, such a table is called a
+*group table*.
+
+[#indirect-table]
+More generally, any table with a non-direct implementation is an *indirect
+table*.
+--
 
 * `direct_resource_ids`, repeated `uint32` identifiers for all the direct
   resources attached to this table, such as `DirectMeter` and `DirectCounter`
@@ -1447,31 +1458,35 @@ The `Action` message defines the following fields:
     ** `type_name`, which indicates whether the action parameter has a xref:sec-user-defined-types[user-defined type]; this is useful for xref:sec-psa-metadata-translation[translation].
 
 [#sec-p4info-action-profile]
-==== `ActionProfile`
+==== `ActionProfile` (for group tables and indirect tables)
 
-`ActionProfile` messages are used to specify all available instances of Action
-Profile and Action Selector PSA externs.
+`ActionProfile` messages are used to specify all available
+xref:group-table[group tables] and other xref:indirect-table[indirect tables]
+in the `P4Info`. More precisely, they describe the PSA Action Selector and
+Action Profile extern instances that such tables use as their implementation.
 
-PSA Action Profiles are used to describe implementations of match-action tables
-where multiple table entries can share the same action instance. Indeed,
-differently from a regular match-action table where each entry contains the
-action specification, when using Action Profile-based tables, the control plane
-can insert entries pointing to an Action Profile *member*, where each member
-then points to an action instance. The control plane is responsible for
-creating, modifying, or deleting members at runtime.
-
-PSA Action Selectors extend Action Profiles with the capability of bundling
-together multiple members into *groups*. Match-action table entries can point to
-a member or group. When processing a packet, if the table entry points to a
-group, a dynamic selection algorithm is used to select a member from the group
-and apply the corresponding action to the packet. The dynamic selection
-algorithm is typically specified in the P4 program when instantiating the Action
-Selector, however it is not specified in the P4Info. The control plane is
-responsible for creating, modifying, or deleting both members and groups at
+In the common case, a *group table* is a match-action table whose
+implementation is a PSA Action Selector. Its entries can point to either an
+individual *member* or a *group* of members. When processing a packet, if the
+entry points to a group, a dynamic selection algorithm picks a member from the
+group and the corresponding action is applied to the packet. The default
+selection algorithm is specified in the P4 program when instantiating the
+Action Selector and is not captured in the `P4Info`; one-shot programming can
+override it per group via the `ActionSelectionMode` enum, see
+xref:sec-oneshot[One Shot Action Selector Programming]. The control plane is
+responsible for creating, modifying, and deleting both members and groups at
 runtime.
 
-While PSA defines Action Profile and Action Selector as two different externs,
-P4Info uses the same `ActionProfile` message to describe both.
+The simpler variant is an *indirect table* whose implementation is a PSA
+Action Profile *without* a selector. Such a table's entries may only point to
+individual members (never groups), and the extern provides just the
+shared-action indirection: multiple table entries can bind to the same action
+instance without duplicating its parameters. The control plane is responsible
+for creating, modifying, and deleting members at runtime.
+
+NOTE: Although PSA defines Action Profile and Action Selector as two distinct
+externs, P4Info uses the same `ActionProfile` message to describe both,
+distinguishing them via the `with_selector` field (see below).
 
 The `ActionProfile` message includes the following fields:
 
@@ -3650,16 +3665,14 @@ For more information about idle timeout, in particular regarding
 `IdleTimeoutNotification`, please refer to the xref:sec-table-idle-timeout-notification[Table idle timeout notifications] section.
 
 [#sec-action-profile-member-and-group]
-=== `ActionProfileMember` & `ActionProfileGroup`
+=== `ActionProfileMember` ("member") & `ActionProfileGroup` ("group")
 
-P4Runtime defines an API for programming a PSA ActionProfile extern using
-`ActionProfileMember` messages. A PSA ActionSelector extern can be programmed
-using both `ActionProfileMember` and `ActionProfileGroup` messages. PSA supports
-tables that can be implemented with an action profile or selector instance. Such
-tables are referred to as indirect tables, in contrast to direct tables, whose
-entries are directly bound to an action instance. The following P4 snippet
-illustrates an indirect table `t` for L3 routing, implemented with an action
-selector `as`.
+This section describes the P4Runtime API for installing members and groups in
+a xref:group-table[group table]'s or xref:indirect-table[indirect table]'s
+underlying `ActionProfile` at runtime. For the corresponding P4Info representation, see
+xref:sec-p4info-action-profile[`ActionProfile` in the `P4Info`]. The following
+P4 snippet illustrates such a table, `t`, for L3 routing, implemented with an
+action selector `as`.
 
 [source,p4]
 ----
@@ -3706,7 +3719,67 @@ The obtained member id is used to look up the member table in the selector and
 obtain the action specification, which is then used to modify the packet or its
 metadata.
 
-==== Action Profile Member Programming
+[#sec-member-and-group-terminology]
+.Terminology: "member" and "group"
+[NOTE]
+====
+Throughout this spec, *member* and *group* refer to `ActionProfileMember`
+and `ActionProfileGroup` entries respectively. These are the common terms
+used across the industry — e.g., SAI uses the same vocabulary for members
+and groups (see e.g. the SAI
+link:https://sonic.software/sai/group__SAINEXTHOPGROUP.html[Next Hop Group]
+API), and OpenFlow formalized the *group table* terminology. The longer
+P4Runtime names exist because they must unambiguously name specific
+protobuf messages and fields in the API surface, but the shorter common
+terms are used interchangeably with them in this spec's prose.
+====
+
+The following table maps these common terms to their representation in the
+P4Runtime API.
+
+[cols="1,2,3",options="header"]
+|===
+| Common term | P4Runtime representation | Description
+
+| group table
+| `Table` whose `implementation_id` references an
+  xref:sec-p4info-action-profile[`ActionProfile`] with a selector
+| A match-action table whose implementation is an Action Selector. Its
+  entries may point to an individual member or a group of members.
+
+| indirect table
+| `Table` whose `implementation_id` references an
+  xref:sec-p4info-action-profile[`ActionProfile`]
+| Any match-action table whose implementation is an `ActionProfile`. Group
+  tables are the common case; tables backed by an Action Profile *without* a
+  selector are simpler and can only reference members, never groups.
+
+| member
+| xref:sec-action-profile-member-programming[`ActionProfileMember`]
+| An entry in an Action Profile or Action Selector, bound to a P4 action
+  specification.
+
+| group
+| xref:sec-action-profile-group-programming[`ActionProfileGroup`]
+| A weighted set of members in an Action Selector. When a xref:group-table[group
+  table] entry points to a group, the selector picks one member from the group
+  per packet using a dynamic selection algorithm.
+
+| member id
+| `ActionProfileMember.member_id`, `ActionProfileGroup.members[].member_id`
+| A `uint32` that uniquely identifies a member within a single Action Profile
+  or Action Selector. Used both as a member's own identifier and as a
+  reference to it from a group.
+
+| group id
+| `ActionProfileGroup.group_id`
+| A `uint32` that uniquely identifies a group within a single Action
+  Selector. Member ids and group ids live in separate scopes: the same
+  integer may refer to a member *and* a group within one selector.
+|===
+
+[#sec-action-profile-member-programming]
+==== Member Programming
 
 Action profile members are entries in the ActionProfile or ActionSelector and
 are referenced by a `uint32` identifier that is bound to an action
@@ -3760,7 +3833,7 @@ an existing ActionProfile or ActionSelector object, and a `member_id` equal to
 0, will read all members of that specified object.
 
 [#sec-action-profile-group-programming]
-==== Action Profile Group Programming
+==== Group Programming
 
 Action profile groups are entries in an ActionSelector and are referenced by a
 `uint32` identifier that is bound to a set of action profile members already
@@ -3879,11 +3952,10 @@ in the P4Info message:
 [#sec-oneshot]
 ==== One Shot Action Selector Programming
 
-P4Runtime supports syntactic sugar to program a table, which is implemented with
-an action selector, in one shot. One shot means that a table entry, an action
-profile group, and a set of action profile members can be programmed with a
-single update message. Using one shots has the advantage that the controller
-does not need to keep track of group ids and member ids.
+P4Runtime supports syntactic sugar for programming a xref:group-table[group
+table] in *one shot*: a table entry, a group, and the group's members can all be
+programmed with a single update message. This frees the controller from
+having to track group ids and member ids.
 
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
@@ -6681,7 +6753,7 @@ properties, but we may include on in future versions of the API.
 * P4Info does not include information about which of a table's actions execute
   which direct resource(s).
 
-* The default action for indirect match tables is restricted to a `const
+* The default action for indirect tables is restricted to a `const
   NoAction` known at compile-time.
 
 * There is no mechanism for changing the value of the `psa_empty_group_action`
@@ -6704,6 +6776,7 @@ properties, but we may include on in future versions of the API.
   ** Added `action_selection_mode` and `size_semantics` to `ActionProfileActionSet`.
     These fields provide per-group control over the action selection algorithm and resource allocation scheme. Previous versions of P4Runtime only allowed a single action selection algorithm and resource allocation scheme for all groups in an action profile.
   ** Clarified that `ActionProfile` members with duplicate actions are allowed and why a client might want to program them.
+  ** Introduced the common industry terms "member" and "group" for `ActionProfileMember` and `ActionProfileGroup` entries, and added a terminology table mapping the P4Runtime names to these terms. No behavioral changes; documentation only. Addresses p4lang/p4runtime#599.
 
 * Capabilities
   ** Added `device_id` field to `CapabilitiesRequest`.
