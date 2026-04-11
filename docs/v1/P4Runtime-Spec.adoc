@@ -1,6 +1,6 @@
 = P4Runtime Specification : The P4.org API Working Group
 :doctype: book
-:revnumber: version 1.5.0-dev
+:revnumber: 1.5.1-dev
 :imagesdir: resources/figs
 :font-size: 10
 :sectnums: 5
@@ -60,7 +60,7 @@ P4Runtime is designed to be implemented in conjunction with the P4~16~ language
 version or later. P4~14~ programs should be translated into P4~16~ to be made
 compatible with P4Runtime. This version of P4Runtime utilizes features which are
 not in P4~16~ 1.0, but were introduced in P4~16~ 1.2.4 cite:[P4Revisions124]. For
-this version of P4Runtime, we recommend using P4~16~ 1.2.4 cite:[P4Revisions124].
+this version of P4Runtime, we recommend using P4~16~ 1.2.5 cite:[P4Revisions125].
 
 This version of the P4Runtime specification does not yet explicitly
 address compatibility with the following P4~16~ language features
@@ -431,7 +431,7 @@ practical to have a hybrid use-case as described in subsequent sections.
 
 .Use-Case: Single Remote Controller
 [#fig-single-remote-controller]
-image::single-embedded-controller.png[width=400,align="center"]
+image::single-remote-controller.png[width=400,align="center"]
 
 
 === Embedded + Single Remote Controller
@@ -475,7 +475,7 @@ role-based client arbitration scheme supports it.
 
 .Use-Case: Embedded Plus Two Remote High-Availability Controllers
 [#fig-embedded-plus-two-remote-ha-controllers]
-image::embedded-plus-two-remote-controllers.png[width=400,align="center"]
+image::embedded-plus-two-remote-ha-controllers.png[width=400,align="center"]
 
 [#sec-client-arbitration-and-controller-replication]
 == Client Arbitration and Controller Replication
@@ -601,13 +601,16 @@ their write requests. gRPC provides authentication methods cite:[gRPCAuth] that
 should be deployed to prevent untrusted clients from creating channels, and thus
 from making changes or even reading the state of the server.
 
-=== Default Role
+=== Default Role and Default Device ID
 
 A controller can omit the role message in `MasterArbitrationUpdate`. This
 implies the "default role", which corresponds to "full pipeline access".
 This also implies that a default role has a `role_id` of `""` (default).
 If using a default role, all RPCs from the controller (e.g. `Write`) must
 leave the `role` unset.
+
+As per section [Default-Valued Fields](#sec-default-valued-fields), default values are invalid for all
+scalar P4 object IDs. This includes `device_i`, which must be non-zero.
 
 [#sec-arbitration-role-config]
 === Role Config
@@ -1347,16 +1350,20 @@ control plane. This message contains the following fields:
   actions for this table. The `ActionRef` message is used to reference an action
   specified in the same P4Info message and it includes the following fields:
     ** `id`, the `uint32` identifier of the action.
-    ** `scope`, an enum value which can take one of three values:
-       `TABLE_AND_DEFAULT`, `TABLE_ONLY` and `DEFAULT_ONLY`. The `scope` of the
-       action is determined by the use of the P4 standard annotations
-       `@tableonly` and `@defaultonly` cite:[P4ActionAnnotations]. `TABLE_ONLY`
-       (`@tableonly` annotation) means that the action can only appear within
-       the table, and never as the default action. `DEFAULT_ONLY`
+    ** `scope`, an enum value which can take one of four values:
+       `TABLE_AND_DEFAULT`, `TABLE_ONLY`, `GROUP_ACTION` and `DEFAULT_ONLY`. The
+       `scope` of the action is determined by the use of the P4 standard
+       annotations `@tableonly`, and `@defaultonly` cite:[P4ActionAnnotations].
+       `@groupaction` is currently not a P4 standard annotation, but planned.
+       `TABLE_ONLY` (`@tableonly` annotation) means that the action can only
+       appear within the table, and never as the default action. `GROUP_ACTION`
+       (`@groupaction` annotation) means that the action can only be used as
+       a `group_action` in an `ActionProfileActionSet`. `DEFAULT_ONLY`
        (`@defaultonly` annotation) means that the action can only be used as the
        default action. `TABLE_AND_DEFAULT` is the default value for the enum and
-       means that neither annotation was used in P4 and that the action can be
-       used both within the table and as the default action.
+       means that no annotation was used in P4 and that the action can be
+       used both within the table and as the default action, but not as a
+       per-group action.
     ** `annotations`, a repeated string field, each one representing a P4
       annotation associated to the action *reference* in this table.
 
@@ -1503,12 +1510,21 @@ The `ActionProfile` message includes the following fields:
 
 
 PSA programs can use the `@selector_size_semantics` annotation with one of
-`sum_of_weights` or `sum_of_members` to specify this value for Action Selectors. In the `sum_of_members` case, the `@max_member_weight` annotation
+`sum_of_weights` or `sum_of_members` to specify this value for Action Selectors.
+In the `sum_of_members` case, the `@max_member_weight` annotation
 can be used to specify `max_member_weight`. Unless otherwise specified, the
 value of `selector_size_semantics` should default to `sum_of_weights`.
 However, an unset `selector_size_semantics` should also be treated as
 `sum_of_weights` for backwards compatibility in Action Selectors. In Action
 Profiles, this value must be unset.
+
+* `weights_disallowed`,  a boolean flag indicating whether the controller
+  programs the weights (false) or the switch determines them through some other
+  mechanism (true). One such mechanism is dynamic load balancing or adaptive
+  routing (See e.g. link:https://sonic.software/sai/group__SAIARS.html[SAI API]).
+  The `@weights_disallowed` annotation can be added to action selectors in P4
+  programs to set this value to true. In Action Profiles, this value must be unset
+  (i.e. false).
 
 ==== `Counter` & `DirectCounter`
 
@@ -2138,6 +2154,8 @@ preserved, it will be explicitly stated in this document. The
 C++ API supports comparing messages while treating repeated fields as sets, so
 that different orderings of the same elements are considered equal. This method
 of comparing Protobuf messages may come at a cost in performance.
+The `backup_replicas` must be returned in order when read to preserve the
+sequence of highest-preferred backup replicas.
 
 [#sec-data-plane-volatile-objects]
 ==== Data plane volatile objects
@@ -3772,9 +3790,11 @@ An `ActionProfileGroup` entity update message has the following fields:
   group. For each member in a group, the controller must define the following
   fields:
     ** `member_id` for looking up the member table in the selector.
-    ** `weight` specifying the probability of the member's selection at
-      runtime. 0 is not a valid `weight` value and the server must return
-      `INVALID_ARGUMENT` if the client attempts to use it.
+    ** `weight` specifying the probability of the member's selection at runtime.
+       If `weights_disallowed` is set to true, then 0 (unset) is the only valid
+       `weight`. If `weights_disallowed` is false, then 0 is not a valid
+       `weight`. The server must return `INVALID_ARGUMENT` if the client attempts
+       to use invalid `weight`s.
     ** `watch_port` is the controller-defined port that the member's
       liveness depends on. At runtime, the member must be excluded from
       selection if the watch port is down.  See <<#action-selector-constraints>> for notes on the behavior if all members in
@@ -3867,24 +3887,31 @@ does not need to keep track of group ids and member ids.
 
 One shots are programmed by choosing the `ActionProfileActionSet` message as the
 `TableAction`. The `ActionProfileActionSet` message consists of a set of
-`ActionProfileAction` messages. This set should have cardinality no greater than
+`ActionProfileAction` messages, an `Action` for the per group action, a
+`ActionSelectionMode` enum, and a `SizeSemantics` enum. The
+`ActionSelectionMode` and `SizeSemantics` enums override the existing
+action selector settings.
+
+The `ActionProfileAction` set should have cardinality no greater than
 `max_group_size` (if `max_group_size` is nonzero) if `selector_size_semantics`
-is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
-`ActionProfileAction` message has the following fields:
+is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`.
+Each `ActionProfileAction` message has the following fields:
 
 * `action` is one of the actions specified by the table that is being
   programmed.
 
-* `weight` specifying the probability of the action's selection at runtime. 0 is
-  not a valid `weight` value and the server must return `INVALID_ARGUMENT` if
-  the client attempts to use it. If `selector_size_semantics` is
-  `sum_of_weights`, then the sum of all weights across all `ActionProfileAction`
-  messages for that `ActionProfileActionSet` message must not exceed the
-  `max_group_size` specified in the P4Info (if greater than 0), or the server
-  must return `INVALID_ARGUMENT`. If `selector_size_semantics` is
-  `sum_of_members`, the individual weight of each member must not exceed
-  `max_member_weight` (if greater than 0), or the server must return
-  `INVALID_ARGUMENT`.
+* `weight` specifying the probability of the action's selection at runtime.
+  If `weights_disallowed` is set to true, then 0 (unset) is the only valid
+  `weight`. If `weights_disallowed` is false, then 0 is not a valid `weight`.
+  The server must return `INVALID_ARGUMENT` if the client attempts to use invalid
+  `weight`s.
+  If `selector_size_semantics` is `sum_of_weights`, then the sum of all weights
+  across all `ActionProfileAction` messages for that `ActionProfileActionSet`
+  message must not exceed the `max_group_size` specified in the P4Info
+  (if greater than 0), or the server must return `INVALID_ARGUMENT`.
+  If `selector_size_semantics` is `sum_of_members`, the individual weight of
+  each member must not exceed `max_member_weight` (if greater than 0), or the
+  server must return `INVALID_ARGUMENT`.
 
 * `watch_port` is the controller-defined port that the action's liveness depends
   on. At runtime, the action must be excluded from selection if the watch port
@@ -3892,6 +3919,43 @@ is `sum_of_members`, or else the server must return `INVALID_ARGUMENT`. Each
   on the `watch_port` field, which also apply for one shot action selector
   programming.
 
+Each `ActionSelectionMode` enum can take on the following values:
+
+* `DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR`: uses the action specified by the
+  action selector, ensuring backward compatibility. In a
+  [SAI-based](https://github.com/opencomputeproject/SAI/blob/master/inc/sainexthopgroup.h#L291)
+  switch, this would correspond to setting the per-group
+  `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM` attribute to
+  `SAI_HASH_ALGORITHM_NONE`, using the default action selector mode.
+
+* `HASH`: selects an action based on the default hashing algorithm used by the
+  switch.
+
+* `RANDOM`: selects an action at random. In a SAI-based switch, this would
+  correspond to setting the per-group `SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM`
+  attribute to `SAI_HASH_ALGORITHM_RANDOM`.
+
+Each `SizeSemantics` enum can take on the following values:
+
+* `DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR`: uses the size semantics
+  specified by the action selector, ensuring backward compatibility.
+
+* `SUM_OF_WEIGHTS`: the group's size is the sum of the individual weights of
+  all its members. In a
+  [SAI-based](https://github.com/opencomputeproject/SAI/blob/master/inc/sainexthopgroup.h#L350)
+  switch, this would correspond to setting the per-group
+  `SAI_NEXT_HOP_GROUP_MEMBER_ATTR_WEIGHT` attribute.
+
+* `SUM_OF_MEMBERS`: the group's size is the total count of its members.
+
+All servers and targets must support the
+`DEFAULT_MODE_DETERMINED_BY_ACTION_SELECTOR` and
+`DEFAULT_SIZE_DETERMINED_BY_ACTION_SELECTOR` values for `ActionSelectionMode`
+and `SizeSemantics` respectively. Servers must also support the specific value
+combination that corresponds to that default. Otherwise, if the target does not
+support per-group hash settings for this action profile, the server should
+return `UNIMPLEMENTED`. If the target supports per-group hash settings, but not
+the specific combination given, the server should return `INVALID_ARGUMENT`.
 
 Semantically, one shots are equivalent to programming the table entry, group,
 and members individually; with the necessary group id and member ids bound to
@@ -3984,13 +4048,100 @@ first, then the group needs to be created, and finally the match entry can be
 inserted. Therefore, 3 distinct `WriteRequest` batches are required.
 
 It is possible to include several `ActionProfileAction` messages with the same
-exact `action` specification in one `ActionProfileActionSet` message. However,
-the P4Runtime client is encouraged not to do so, as the same can be achieved by
-using the `weight` field. Note that to preserve read-write symmetry, the server
+exact `action` specification in one `ActionProfileActionSet` message. For
+`sum_of_members`, this allows clients to specify weights greater than the
+`max_member_weight` set. E.g. modifying the example above, we can weight
+nexthop 1 to be 2x100 (if `max_member_weight` is 100) as follows:
+[source,protobuf]
+----
+table_entry {
+  table_id: 0x0212ab34
+  match { /* lpm match */ }
+  action {
+    action_profile_action_set {
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 100
+        watch_port: "\x01"
+      }
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 100
+        watch_port: "\x01"
+      }
+      action_profile_actions {
+        action { /* set nexthop 2 */ }
+        weight: 2
+        watch_port: "\x02"
+      }
+    }
+  }
+}
+----
+
+For `sum_of_weights`, this is still allowed, but discouraged since it offers
+no additional expressive power over combining the weights into a single member.
+For example, if the example above was using `sum_of_weights` mode, it could be
+rewritten without using any additional resources as:
+[source,protobuf]
+----
+table_entry {
+  table_id: 0x0212ab34
+  match { /* lpm match */ }
+  action {
+    action_profile_action_set {
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 200
+        watch_port: "\x01"
+      }
+      action_profile_actions {
+        action { /* set nexthop 2 */ }
+        weight: 2
+        watch_port: "\x02"
+      }
+    }
+  }
+}
+----
+
+Note that to preserve read-write symmetry, the server
 must not coalesce multiple `ActionProfileAction` messages with the same `action`
 specification into one. Additionally, each `action` specification would count as
 a separate member for the purposes of e.g. the `sum_of_members` group size
 calculation for Action Selectors.
+
+The `group_action` behaves as a "base" action that is logically composed with
+the selected member action. Semantically, this acts as a pre-action to the
+existing member-specific logic. For example, you might use it to set metadata
+for every packet that hits a particular group, irrespective of the member that
+then gets selected. Note that this functionality can only be used with one
+shot action selector programming.
+
+P4Runtime-Spec.adoc
+----
+table_entry {
+  table_id: 0x0212ab34
+  match { /* lpm match */ }
+  action {
+    action_profile_action_set {
+      group_action {
+        /* set route metadata */
+      }
+      action_profile_actions {
+        action { /* set nexthop 1 */ }
+        weight: 200
+        watch_port: "\x01"
+      }
+      action_profile_actions {
+        action { /* set nexthop 2 */ }
+        weight: 2
+        watch_port: "\x02"
+      }
+    }
+  }
+}
+----
 
 All the tables associated with an action selector may either be programmed
 exclusively with one shots, or exclusively with `ActionProfileMember` and
@@ -6025,14 +6176,36 @@ error {
 }
 ----
 
+[#sec-capabilities-rpc]
 == `Capabilities` RPC
 
 The `Capabilities` RPC offers a mechanism through which a P4Runtime client can
-discover the capabilities of the P4Runtime server implementation. At the moment,
-the `CapabilitiesRequest` message is empty and the `CapabilitiesResponse`
-message only includes the `p4runtime_api_version` string field. This field must
-be set to the full semantic version string cite:[SemVer] corresponding to the
-version of the P4Runtime API implemented by the server, e.g. "1.1.0-rc.1".
+discover the capabilities of the P4Runtime server implementation and the devices
+the server controls.
+
+The `CapabilitiesRequest` message contains a single optional field `device_id`.
+
+`device_id` is an optional filter to limit the capabilities in the response to
+those applicable to the target P4 device. A `NOT_FOUND` error is returned if
+the `device_id` is not recognized by the P4Runtime server. If `device_id` is
+unset (i.e. 0), the response should only include capabilities that are
+server-wide (those which are applicable across all devices). Note that if
+`device_id` is set to a valid id, both server-wide and device-specific
+capabilities will be returned.
+
+The `CapabilitiesResponse` message includes the `p4runtime_api_version` string
+field and the `experimental` field, which has type `Any` Protobuf message cite:[ProtoAny].
+
+The `p4runtime_api_version` field must be set to the full semantic version
+string cite:[SemVer] corresponding to the version of the P4Runtime API implemented by the
+server, e.g. "1.1.0-rc.1". This is a server-wide capability.
+
+The ` experimental` field is intended to allow parties to experiment with
+features before proposing them for standardization. This field may contain
+server-wide and/or device-specific capabilities. NOTE: This field will be
+deprecated after `p4runtime.proto` is migrated from `proto3` to proto
+`editions`. Proto `extensions` cite:[ProtoExtension] will be introduced as the standard way
+to support experimental use cases.
 
 Future versions of P4Runtime may introduce more advanced capability discovery
 features. For example, P4Runtime supports three xref:sec-batch-atomicity[atomicity
@@ -6522,6 +6695,37 @@ properties, but we may include on in future versions of the API.
 = Appendix
 
 === Revision History
+
+==== Changes in v1.5.0
+
+* Action Profiles / Load Balancing
+  ** Added `weights_disallowed` field to `ActionProfile` in P4Info.
+    If this field is set to true, the server will reject any attempt to program weights for this action profile. This is intended to be used for action profiles whose weights are controlled by the switch, i.e. when the switch implements dynamic load balancing/adaptive routing.
+  ** Added `action_selection_mode` and `size_semantics` to `ActionProfileActionSet`.
+    These fields provide per-group control over the action selection algorithm and resource allocation scheme. Previous versions of P4Runtime only allowed a single action selection algorithm and resource allocation scheme for all groups in an action profile.
+  ** Clarified that `ActionProfile` members with duplicate actions are allowed and why a client might want to program them.
+
+* Capabilities
+  ** Added `device_id` field to `CapabilitiesRequest`.
+    This enables clients to query capabilities specific to a particular device when a P4Runtime server manages multiple devices.
+  ** Added `Any` protobuf message to `CapabilitiesResponse` for experimental features.
+    This provides a mechanism to expose experimental or proprietary capabilities without modifying the core P4Runtime protocol.
+
+* Controller Sessions, Roles, Arbitration
+  ** Clarified that `device_id` can never be 0.
+    Since 0 is the default value for integers in Protobuf, explicit prohibition avoids ambiguity between "unset" and "device 0".
+
+* Multicast / Replication
+  ** Added support for "backup replicas" to multicast groups.
+    This enables fast failover for multicast traffic by allowing backup ports to be specified for each replica.
+
+* Miscellaneous
+  ** Fixed broken reference to P4 language spec.
+  ** Switched from Madoko to AsciiDoc for P4Runtime specification.
+  ** [Bazel] Added support for Bzlmod and Bazel 7 and 8.
+  ** [Rust] Redesigned Crates to be more idiomatic, future-proof, and maintainable.
+
+
 ==== Changes in v1.4.1
 No content changes; tag was incremented only.
 
