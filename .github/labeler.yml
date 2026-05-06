@@ -1,0 +1,57 @@
+bazel:
+  - changed-files:
+      - any-glob-to-any-file:
+          - BUILD.bazel
+          - MODULE.bazel
+          - WORKSPACE.bzlmod
+          - .bazelrc
+          - .bazelversion
+          - '**/BUILD.bazel'
+          - 'bazel/**'
+
+protobuf:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'proto/**'
+
+specification:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'docs/**'
+
+python:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'py/**'
+
+rust:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'rust/**'
+
+go:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'go/**'
+
+codegen:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'codegen/**'
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .gitmodules
+          - .github/dependabot.yml
+
+github_actions:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/workflows/**'
+          - '.github/actions/**'
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '*.md'
