@@ -7,6 +7,9 @@ syntax = "proto3";
 package p4.v1;
 
 option go_package = "github.com/p4lang/p4runtime/go/p4/v1";
+option java_package = "org.p4.v1";
+option java_outer_classname = "P4DataProto";
+option java_multiple_files = true;
 
 message P4Data {
   oneof data {

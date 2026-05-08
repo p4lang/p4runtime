@@ -1,6 +1,7 @@
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@grpc//bazel:python_rules.bzl", "py_proto_library")
 load("@protobuf//bazel:cc_proto_library.bzl", "cc_proto_library")
+load("@protobuf//bazel:java_proto_library.bzl", "java_proto_library")
 load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_go//proto:def.bzl", "go_proto_library")
 
@@ -35,6 +36,16 @@ cc_proto_library(
     deps = [":p4info_proto"],
 )
 
+java_proto_library(
+    name = "p4types_java_proto",
+    deps = [":p4types_proto"],
+)
+
+java_proto_library(
+    name = "p4info_java_proto",
+    deps = [":p4info_proto"],
+)
+
 py_proto_library(
     name = "p4types_py_proto",
     deps = [":p4types_proto"],
@@ -61,6 +72,8 @@ build_test(
         ":p4types_proto",
         ":p4types_cc_proto",
         ":p4info_cc_proto",
+        ":p4types_java_proto",
+        ":p4info_java_proto",
         ":p4types_py_proto",
         ":p4info_py_proto",
         ":p4info_go_proto",
