@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2018 Antonin Bas
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # P4Runtime specification documents
 
 ## Inline code with backticks

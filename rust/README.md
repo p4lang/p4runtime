@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2024 Campbell He <kp.campbell.he@duskmoon314.com>
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # P4Runtime Rust Crates
 
 This directory contains Rust crates for the P4Runtime API specification.

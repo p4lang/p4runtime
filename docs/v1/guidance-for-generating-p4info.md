@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2019 Andy Fingerhut
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Guidance for generating P4Info messages
 
 
