@@ -15,6 +15,9 @@ package p4.v1;
 
 option go_package = "github.com/p4lang/p4runtime/go/p4/v1";
 option cc_enable_arenas = true;
+option java_package = "org.p4.v1";
+option java_outer_classname = "P4RuntimeProto";
+option java_multiple_files = true;
 
 service P4Runtime {
   // Update one or more P4 entities on the target.
