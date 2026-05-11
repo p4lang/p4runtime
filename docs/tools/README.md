@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2018 Antonin Bas
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 Dockerfile.asciidoc  is used to build a Docker image which we use to render the
 P4Runtime specification (HTML & PDF) in CI. The image can also be used locally
 to build the specification without having to worry about installing all the

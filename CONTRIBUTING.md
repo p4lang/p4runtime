@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2019 Antonin Bas
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 You can fork the repo and submit a pull request in Github.
 
 ### Apache CLA

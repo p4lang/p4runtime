@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2020 Andy Fingerhut
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # P4Runtime numeric id notes
 
 There are many kinds of numeric identifiers used in the P4Runtime API

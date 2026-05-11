@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2018 Antonin Bas
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # P4Runtime Specification Version 1
 
 This directory contains the sources for generating the official P4Runtime
