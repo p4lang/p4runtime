@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 Steffen Smolka
+#
+# SPDX-License-Identifier: Apache-2.0
+
 name: Ensure google/rpc/status.proto is synced with upstream.
 
 on:

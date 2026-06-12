@@ -1,4 +1,8 @@
 ---
+# SPDX-FileCopyrightText: 2018 Antonin Bas
+#
+# SPDX-License-Identifier: Apache-2.0
+
 name: Bug report
 about: Create a report an issue with the code / documents hosted in this repository
 

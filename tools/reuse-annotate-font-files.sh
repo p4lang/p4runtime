@@ -2,7 +2,7 @@
 
 # SPDX-FileCopyrightText: 2026 Andy Fingerhut
 #
-# SPDX-License-Identifier: apache
+# SPDX-License-Identifier: Apache-2.0
 
 # This is a simple Bash script that demonstrates one way to add
 # copyright and license information for files using the `reuse

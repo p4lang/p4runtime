@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2018 The P4 Language Consortium
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # P4Runtime
 
 P4 is a language for programming the data plane of network devices. 

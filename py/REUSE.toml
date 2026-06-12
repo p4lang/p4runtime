@@ -1,0 +1,8 @@
+version = 1
+
+[[annotations]]
+path = [
+    "p4/**"
+]
+SPDX-FileCopyrightText = "2020 The P4 Language Consortium"
+SPDX-License-Identifier = "Apache-2.0"
