@@ -1,6 +1,6 @@
 module github.com/p4lang/p4runtime
 
-go 1.20
+go 1.25.0
 
 require (
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1
@@ -10,7 +10,7 @@ require (
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect
-	golang.org/x/net v0.38.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 )
