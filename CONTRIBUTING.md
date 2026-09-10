@@ -6,9 +6,9 @@ SPDX-License-Identifier: Apache-2.0
 
 You can fork the repo and submit a pull request in GitHub.
 
-### Apache CLA
+### Contributing License
 
-All developers must have signed the [P4.org](http://p4.org) CLA.
+The P4 organizations uses [DCO](https://en.wikipedia.org/wiki/Developer_Certificate_of_Origin) for contributions. Please take a look at our [guidelines](https://github.com/p4lang/governance/wiki/P4-DCO-Guidelines).
 
 ### AsciiDoc style checker
 
