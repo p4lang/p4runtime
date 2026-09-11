@@ -128,10 +128,27 @@ class ContextSkipBlocks(Context):
     Block = namedtuple('Block', ['num_tildes', 'name'])
 
     def __init__(self):
-        self.p_block = re.compile('^ *(?P<tildes>~+) *(?:(?P<cmd>Begin|End)(?: +))?(?P<name>\w+)?')
+        self.p_block = re.compile(r'^ *(?P<tildes>~+) *(?:(?P<cmd>Begin|End)(?: +))?(?P<name>\w+)?')
+        self.p_listing = re.compile(r'^-{4,}\s*$')
+        self.p_table = re.compile(r'^\|={3,}\s*$')
+        self.p_block_attr = re.compile(r'^\[.*\]\s*$')
         self.blocks_stack = []
+        self.in_listing = False
+        self.in_table = False
 
     def enter(self, line, filename, lineno):
+        if self.p_listing.match(line):
+            self.in_listing = not self.in_listing
+            return False
+        if self.in_listing:
+            return False
+        if self.p_table.match(line):
+            self.in_table = not self.in_table
+            return False
+        if self.in_table:
+            return False
+        if self.p_block_attr.match(line):
+            return False
         m = self.p_block.match(line)
         if m:
             num_tildes = len(m.group("tildes"))
@@ -169,12 +186,12 @@ class ContextSkipBlocks(Context):
 
 # TODO: would "skip metadata" be more generic?
 class ContextAfterTitle(Context):
-    """A context used to visit only Asciidoc code after the [TITLE] block element.
+    """A context used to visit only Asciidoc code after the AsciiDoc document title (^= ...).
     """
 
     def __init__(self, *args):
         self.title_found = False
-        self.p_title = re.compile('^ *\[TITLE\] *$')
+        self.p_title = re.compile(r'^ *=+ ')
 
     def enter(self, line, filename, lineno):
         if self.title_found:
@@ -184,10 +201,10 @@ class ContextAfterTitle(Context):
 
 
 class ContextSkipHeadings(Context):
-    """A context used to skip headings (lines starting with #)."""
+    """A context used to skip AsciiDoc headings (lines starting with =)."""
 
     def __init__(self, *args):
-        self.p_headings = re.compile('^ *#')
+        self.p_headings = re.compile(r'^ *=+')
 
     def enter(self, line, filename, lineno):
         return self.p_headings.match(line) is None
@@ -239,7 +256,8 @@ def check_line_wraps(path):
 
 def check_trailing_whitespace(path):
     def check(line, lineno):
-        if len(line) >= 2 and line[-2].isspace():
+        stripped = line.rstrip('\n')
+        if stripped and stripped[-1].isspace():
             lint_state.error(path, lineno, line, "trailing whitespace")
 
     foreach_line(path, Context(), check)

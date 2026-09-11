@@ -31,6 +31,9 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v3
+    - name: Run linter unit tests
+      run: |
+        python3 tools/test_asciidoclint.py -v
     - name: Run linter
       run: |
         ./tools/asciidoclint.py docs/v1/P4Runtime-Spec.adoc
