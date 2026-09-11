@@ -24,6 +24,14 @@ pushd "$THIS_DIR/.." >/dev/null
 
 docker build -t p4runtime-ci -f codegen/Dockerfile .
 
+# Read the Go version from the Dockerfile so this script and the CI image
+# can't drift out of sync with each other.
+GO_VERSION="$(sed -n 's/^ARG GO_VERSION=//p' codegen/Dockerfile)"
+if [ -z "$GO_VERSION" ]; then
+    echo "Could not determine GO_VERSION from codegen/Dockerfile" >&2
+    exit 1
+fi
+
 tmpdir="$(mktemp -d /tmp/p4rt.XXXXXX)"
 
 docker run --rm \
@@ -47,7 +55,7 @@ docker run --rm -u "$(id -u):$(id -g)" \
        -e "GOPATH=/tmp/gopath" \
        -v "$(pwd):/p4runtime" \
        -w /p4runtime \
-       golang:1.20 bash -c "go mod tidy"
+       "golang:${GO_VERSION}" bash -c "go mod tidy"
 
 rm -rf "$tmpdir"
 
