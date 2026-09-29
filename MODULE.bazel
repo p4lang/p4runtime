@@ -1,7 +1,7 @@
 module(
     name = "p4runtime",
     # Fill in concrete versions only on release branches/in the BCR.
-    version = "head",
+    version = "1.6.0",
     bazel_compatibility = [">=7.0.0"],
 )
 
