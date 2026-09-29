@@ -6839,10 +6839,6 @@ properties, but we may include on in future versions of the API.
   ** Added `GROUP_ACTION` value to the `ActionRef.Scope` enum in P4Info,
      corresponding to the planned `@groupaction` annotation. Actions with this
      scope can only be used as a `group_action` in an `ActionProfileActionSet`.
-  ** Introduced the common industry terms "member" and "group" for
-     `ActionProfileMember` and `ActionProfileGroup` entries, and added a
-     terminology table mapping the P4Runtime names to these terms. No behavioral
-     changes; documentation only. Addresses p4lang/p4runtime#599.
 
 * Miscellaneous
   ** [Bazel] Added support for Bazel 9 and fixed build issues for downstream
@@ -6869,6 +6865,10 @@ properties, but we may include on in future versions of the API.
     allocation scheme for all groups in an action profile.
   ** Clarified that `ActionProfile` members with duplicate actions are allowed
      and why a client might want to program them.
+  ** Introduced the common industry terms "member" and "group" for
+     `ActionProfileMember` and `ActionProfileGroup` entries, and added a
+     terminology table mapping the P4Runtime names to these terms. No behavioral
+     changes; documentation only. Addresses p4lang/p4runtime#599.
 
 * Capabilities
   ** Added `device_id` field to `CapabilitiesRequest`. This enables clients to
