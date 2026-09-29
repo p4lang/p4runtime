@@ -4,7 +4,7 @@
 
 = P4Runtime Specification : The P4.org API Working Group
 :doctype: book
-:revnumber: 1.5.1-dev
+:revnumber: 1.6.0
 :imagesdir: resources/figs
 :font-size: 10
 :sectnums: 5
@@ -56,7 +56,7 @@ protocol-independent runtime APIs for P4-defined or P4-described data
 planes. This document specifies one such API, called *P4Runtime*. It is meant to
 disambiguate and augment the programmatic API definition expressed in Protobuf
 format and available at
-link:https://github.com/p4lang/p4runtime/tree/main/proto[https://github.com/p4lang/p4runtime/tree/main/proto].
+link:https://github.com/p4lang/p4runtime/tree/v1.6.0/proto[https://github.com/p4lang/p4runtime/tree/v1.6.0/proto].
 
 === P4 Language Version Applicability
 
@@ -6828,6 +6828,32 @@ properties, but we may include on in future versions of the API.
 
 === Revision History
 
+==== Changes in v1.6.0
+
+* Action Profiles / Load Balancing
+  ** Added `group_action` field to `ActionProfileActionSet`. The group action
+     acts as a "base" action that is logically composed with (i.e., executed
+     before) the selected member action, e.g. to set metadata for every packet
+     that hits a particular group irrespective of the selected member. Only
+     supported with one shot action selector programming.
+  ** Added `GROUP_ACTION` value to the `ActionRef.Scope` enum in P4Info,
+     corresponding to the planned `@groupaction` annotation. Actions with this
+     scope can only be used as a `group_action` in an `ActionProfileActionSet`.
+  ** Introduced the common industry terms "member" and "group" for
+     `ActionProfileMember` and `ActionProfileGroup` entries, and added a
+     terminology table mapping the P4Runtime names to these terms. No behavioral
+     changes; documentation only. Addresses p4lang/p4runtime#599.
+
+* Miscellaneous
+  ** [Bazel] Added support for Bazel 9 and fixed build issues for downstream
+     users depending on P4Runtime via the Bazel Central Registry (BCR).
+  ** [Bazel] Added support for building on macOS.
+  ** [Java] Added `java_proto_library` Bazel targets and set `java_package`,
+     `java_outer_classname`, and `java_multiple_files` options on all protos.
+  ** [Python] Raised minimum supported Python, protobuf, and grpcio versions.
+  ** Added SPDX copyright and license annotations to all files, using the REUSE
+     tooling, and added a CI check to enforce their presence.
+
 ==== Changes in v1.5.0
 
 * Action Profiles / Load Balancing
@@ -6843,10 +6869,6 @@ properties, but we may include on in future versions of the API.
     allocation scheme for all groups in an action profile.
   ** Clarified that `ActionProfile` members with duplicate actions are allowed
      and why a client might want to program them.
-  ** Introduced the common industry terms "member" and "group" for
-     `ActionProfileMember` and `ActionProfileGroup` entries, and added a
-     terminology table mapping the P4Runtime names to these terms. No behavioral
-     changes; documentation only. Addresses p4lang/p4runtime#599.
 
 * Capabilities
   ** Added `device_id` field to `CapabilitiesRequest`. This enables clients to
