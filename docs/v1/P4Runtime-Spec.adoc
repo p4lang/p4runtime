@@ -6846,9 +6846,13 @@ properties, but we may include on in future versions of the API.
   ** [Bazel] Added support for building on macOS.
   ** [Java] Added `java_proto_library` Bazel targets and set `java_package`,
      `java_outer_classname`, and `java_multiple_files` options on all protos.
-  ** [Python] Raised minimum supported Python, protobuf, and grpcio versions.
+  ** [Python] Raised minimum supported versions to Python 3.8, protobuf
+     4.21.6, and grpcio 1.49.1.
   ** Added SPDX copyright and license annotations to all files, using the REUSE
      tooling, and added a CI check to enforce their presence.
+  ** Fixed the AsciiDoc linter and cleaned up the resulting markup issues
+     throughout the specification (no content changes).
+  ** Various documentation, tooling, and CI robustness improvements.
 
 ==== Changes in v1.5.0
 
