@@ -42,6 +42,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     println!("cargo:rerun-if-changed={}", proto_root);
+    // WalkDir does not guarantee iteration order, so sort for reproducible builds.
+    proto_files.sort();
 
     // Compile the `.proto` files into Rust code.
     prost_build::Config::new()
