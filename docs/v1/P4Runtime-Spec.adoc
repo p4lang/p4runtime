@@ -4495,6 +4495,13 @@ message MeterConfig {
 }
 ----
 
+The unit of each rate and burst-size field is determined by the
+`MeterSpec.Unit` of the P4Info `Meter` or `DirectMeter`. For `BYTES`, rates are
+expressed in bytes per second and burst sizes in bytes; for `PACKETS`, rates are
+expressed in packets per second and burst sizes in packets. See the
+xref:sec-meter-directmeter[Meter & DirectMeter section] for the definition of
+`MeterSpec.Unit`.
+
 A MeterConfig for a trTCM typed meter must only be accepted if `eburst` is
 unset. Otherwise, the server should return an `INVALID_ARGUMENT` error.
 
