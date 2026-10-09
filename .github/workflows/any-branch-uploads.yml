@@ -14,7 +14,7 @@ jobs:
     if: ${{ github.repository == 'p4lang/p4runtime' }}
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Build spec
       run: |
         make -C docs/tools/

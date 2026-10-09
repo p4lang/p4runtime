@@ -30,7 +30,7 @@ jobs:
   asciidoc-lint:
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Run linter unit tests
       run: |
         python3 tools/test_asciidoclint.py -v
@@ -41,7 +41,7 @@ jobs:
   build-spec:
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Build spec
       run: |
         make -C docs/tools/

@@ -18,7 +18,7 @@ jobs:
   check-codegen:
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Compile protobufs
       run: |
         docker build -t p4runtime-ci -f codegen/Dockerfile .

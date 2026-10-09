@@ -11,7 +11,7 @@ jobs:
   check-google-rpc-status-synced:
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: ./proto/update_google_rpc_status.sh
     - run: |
         DIFF=$(git diff proto/google/rpc/status.proto)
