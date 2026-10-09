@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2026 The P4 Language Consortium
+#
+# SPDX-License-Identifier: Apache-2.0
+
+@PACKAGE_INIT@
+
+# Resolve this before finding dependencies, which can change PACKAGE_PREFIX_DIR
+# with older versions of CMake.
+set_and_check(p4runtime_PROTO_DIR "@PACKAGE_p4runtime_INSTALL_PROTO_DIR@")
+include("${CMAKE_CURRENT_LIST_DIR}/p4runtimeSchemas.cmake")
+set(p4runtime_schemas_FOUND TRUE)
+set(p4runtime_cpp_FOUND @P4RUNTIME_BUILD_CPP@)
+set(p4runtime_grpc_FOUND @P4RUNTIME_BUILD_GRPC@)
+
+# The default is schema-only, even if this installation contains libraries.
+# C++ consumers request COMPONENTS cpp or grpc explicitly.
+if("cpp" IN_LIST p4runtime_FIND_COMPONENTS OR "grpc" IN_LIST p4runtime_FIND_COMPONENTS)
+  if(p4runtime_cpp_FOUND)
+    include(CMakeFindDependencyMacro)
+    if(NOT TARGET protobuf::libprotobuf)
+      find_package(Protobuf CONFIG QUIET)
+      if(NOT Protobuf_FOUND)
+        find_dependency(Protobuf MODULE)
+      endif()
+    endif()
+    include("${CMAKE_CURRENT_LIST_DIR}/p4runtimeCpp.cmake")
+  endif()
+endif()
+if("grpc" IN_LIST p4runtime_FIND_COMPONENTS AND p4runtime_grpc_FOUND)
+  if(NOT TARGET gRPC::grpc++)
+    find_dependency(gRPC CONFIG)
+  endif()
+  include("${CMAKE_CURRENT_LIST_DIR}/p4runtimeGrpc.cmake")
+endif()
+check_required_components(p4runtime)

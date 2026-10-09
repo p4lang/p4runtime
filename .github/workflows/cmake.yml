@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2026 The P4 Language Consortium
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: CMake
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - CMakeLists.txt
+      - cmake/**
+      - proto/**
+      - .github/workflows/cmake.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        mode: [schemas, cpp, grpc]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install C++ dependencies
+        if: matrix.mode != 'schemas'
+        run: sudo apt-get update && sudo apt-get install -y libprotobuf-dev protobuf-compiler libgrpc++-dev protobuf-compiler-grpc
+      - name: Test build, install, relocation, and subproject use
+        run: cmake -DMODE=${{ matrix.mode }} -DTEST_BINARY_DIR="$RUNNER_TEMP/p4runtime-cmake" -P cmake/tests/check.cmake
