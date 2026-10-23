@@ -58,69 +58,69 @@ Please consult https://p4.org for other ways to get in touch (e.g., chat or foru
 
 ### Build Using CMake
 
-CMake 3.16 or later can install a relocatable package containing the schemas:
+CMake 3.16 or later can install the `.proto` files and optionally build C++ bindings.
+
+#### Installing Schemas
+
+The default installation includes only the `.proto` files. It does not need any compiler, Protobuf, or gRPC:
 
 ```sh
 cmake -S . -B build -DCMAKE_INSTALL_PREFIX=/your/prefix
 cmake --install build
 ```
 
-This default does not require a compiler, Protobuf, or gRPC. Consumers can use:
+In your project's CMake configuration, load the package with:
 
 ```cmake
-find_package(p4runtime CONFIG REQUIRED) # Use CMAKE_PREFIX_PATH to select the prefix.
-# p4runtime_PROTO_DIR contains p4/ and google/rpc/status.proto for protoc imports.
-# p4runtime::schemas exposes the same directory as an interface include path.
+find_package(p4runtime CONFIG REQUIRED)
 ```
 
-To generate and compile C++ bindings, install Protobuf (including `protoc`) and
-optionally gRPC (including `grpc_cpp_plugin`), then configure:
+Set `CMAKE_PREFIX_PATH` to your installation prefix to make sure CMake can find it.
+`p4runtime_PROTO_DIR` is the schema directory that is passed to `protoc`.
+The `p4runtime::schemas` target exposes it as an include directory.
+
+#### Building C++ Bindings
+
+Install Protobuf and its `protoc` compiler, then run:
 
 ```sh
-cmake -S . -B build -DP4RUNTIME_BUILD_CPP=ON -DP4RUNTIME_BUILD_GRPC=ON
+cmake -S . -B build -DP4RUNTIME_BUILD_CPP=ON
 cmake --build build --parallel
 cmake --install build --prefix /your/prefix
 ```
 
-`P4RUNTIME_BUILD_CPP` builds the `p4runtime::cpp` static library with the P4Runtime
-messages and bundled `google.rpc.Status`. `P4RUNTIME_BUILD_GRPC` additionally
-builds `p4runtime::grpc` with the service bindings and requires the C++ option.
-Both default to `OFF`. Generated headers preserve the schema paths, for example
-`<p4/v1/p4runtime.pb.h>` and `<p4/v1/p4runtime.grpc.pb.h>`.
+This builds the `p4runtime::cpp` static library for P4Runtime messages, including
+`google.rpc.Status`. To also build service bindings, install gRPC and
+`grpc_cpp_plugin`, and add `-DP4RUNTIME_BUILD_GRPC=ON` to the configure command.
 
-Installed C++ consumers request the component they need:
+Link the installed library from your project:
 
 ```cmake
-find_package(p4runtime CONFIG REQUIRED COMPONENTS grpc) # Or cpp for messages only.
-target_link_libraries(my_controller PRIVATE p4runtime::grpc)
+find_package(p4runtime CONFIG REQUIRED COMPONENTS cpp)
+target_link_libraries(my_controller PRIVATE p4runtime::cpp)
 ```
 
-The targets carry their Protobuf and gRPC dependencies. Use matching Protobuf
-versions when generating and consuming C++ bindings. Schema-only consumers can
-still load this installation without either dependency. Requesting a component
-that was not built fails at configure time.
+For service bindings, use `grpc` and `p4runtime::grpc` instead. These targets
+also link the required Protobuf and gRPC libraries. Use the same Protobuf version
+to build the bindings and your application.
 
-For `add_subdirectory()` or CPM, set the options before adding P4Runtime and use
-the same namespaced targets. Dependencies already supplied by the parent are
-reused; otherwise CMake searches installed packages. P4Runtime does not download
-dependencies or set global compiler flags. `P4RUNTIME_INSTALL` defaults to `ON`
-for standalone builds and `OFF` as a subproject. To locate schemas in either a
-source or installed package, read the `INTERFACE_INCLUDE_DIRECTORIES` property
-of `p4runtime::schemas` (the source value includes build/install generator
-expressions).
+Include generated headers by their schema path, such as `<p4/v1/p4runtime.pb.h>`
+or `<p4/v1/p4runtime.grpc.pb.h>`. You can still use just the schemas from an
+installation that includes C++ libraries.
 
-Cross-compiling C++ bindings requires `P4RUNTIME_PROTOC_EXECUTABLE` to name a
-host `protoc` matching the target Protobuf library. For gRPC, also set
-`P4RUNTIME_GRPC_CPP_PLUGIN` to a host plugin. These overrides can also be used in
-native builds.
+#### Other Build Setups
 
-The CMake integration tests build and run consumers against a relocated install
-and an `add_subdirectory()` build:
+With `add_subdirectory()` or CPM, set the build options before adding P4Runtime,
+then link the same targets. P4Runtime reuses dependencies your project provides
+or looks for installed packages. Installation is off by default in this setup;
+set `P4RUNTIME_INSTALL=ON` to enable it.
 
-```sh
-cmake -DMODE=grpc -DTEST_BINARY_DIR=/tmp/p4runtime-cmake-test -P cmake/tests/check.cmake
-# MODE can also be schemas or cpp.
-```
+When cross-compiling, set `P4RUNTIME_PROTOC_EXECUTABLE` to a `protoc` that runs on
+the build machine and matches the target Protobuf version. For gRPC, also set
+`P4RUNTIME_GRPC_CPP_PLUGIN` to a plugin that runs on the build machine.
+
+See [the CMake integration tests](cmake/tests/check.cmake) for examples that build,
+install, move, and use the package.
 
 ### Build Using Bazel
 
