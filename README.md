@@ -56,6 +56,72 @@ Please consult https://p4.org for other ways to get in touch (e.g., chat or foru
 
 ## Compiling P4Runtime Protobuf files
 
+### Build Using CMake
+
+CMake 3.16 or later can install the `.proto` files and optionally build C++ bindings.
+
+#### Installing Schemas
+
+The default installation includes only the `.proto` files. It does not need any compiler, Protobuf, or gRPC:
+
+```sh
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX=/your/prefix
+cmake --install build
+```
+
+In your project's CMake configuration, load the package with:
+
+```cmake
+find_package(p4runtime CONFIG REQUIRED)
+```
+
+Set `CMAKE_PREFIX_PATH` to your installation prefix to make sure CMake can find it.
+`p4runtime_PROTO_DIR` is the schema directory that is passed to `protoc`.
+The `p4runtime::schemas` target exposes it as an include directory.
+
+#### Building C++ Bindings
+
+Install Protobuf and its `protoc` compiler, then run:
+
+```sh
+cmake -S . -B build -DP4RUNTIME_BUILD_CPP=ON
+cmake --build build --parallel
+cmake --install build --prefix /your/prefix
+```
+
+This builds the `p4runtime::cpp` static library for P4Runtime messages, including
+`google.rpc.Status`. To also build service bindings, install gRPC and
+`grpc_cpp_plugin`, and add `-DP4RUNTIME_BUILD_GRPC=ON` to the configure command.
+
+Link the installed library from your project:
+
+```cmake
+find_package(p4runtime CONFIG REQUIRED COMPONENTS cpp)
+target_link_libraries(my_controller PRIVATE p4runtime::cpp)
+```
+
+For service bindings, use `grpc` and `p4runtime::grpc` instead. These targets
+also link the required Protobuf and gRPC libraries. Use the same Protobuf version
+to build the bindings and your application.
+
+Include generated headers by their schema path, such as `<p4/v1/p4runtime.pb.h>`
+or `<p4/v1/p4runtime.grpc.pb.h>`. You can still use just the schemas from an
+installation that includes C++ libraries.
+
+#### Other Build Setups
+
+With `add_subdirectory()` or CPM, set the build options before adding P4Runtime,
+then link the same targets. P4Runtime reuses dependencies your project provides
+or looks for installed packages. Installation is off by default in this setup;
+set `P4RUNTIME_INSTALL=ON` to enable it.
+
+When cross-compiling, set `P4RUNTIME_PROTOC_EXECUTABLE` to a `protoc` that runs on
+the build machine and matches the target Protobuf version. For gRPC, also set
+`P4RUNTIME_GRPC_CPP_PLUGIN` to a plugin that runs on the build machine.
+
+See [the CMake integration tests](cmake/tests/check.cmake) for examples that build,
+install, move, and use the package.
+
 ### Build Using Bazel
 
 The protobufs can be built using [Bazel](https://bazel.build/):
