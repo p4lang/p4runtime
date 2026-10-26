@@ -1,6 +1,6 @@
 module github.com/p4lang/p4runtime
 
-go 1.20
+go 1.23.0
 
 require (
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1

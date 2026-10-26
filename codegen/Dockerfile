@@ -24,7 +24,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends software-properties-common git curl
 
-ARG GO_VERSION=1.20.5
+ARG GO_VERSION=1.27.3
 
 RUN set -eux; \
     dpkgArch="$(dpkg --print-architecture)"; \

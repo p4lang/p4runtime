@@ -48,13 +48,13 @@ type P4RuntimeClient interface {
 	// Represents the bidirectional stream between the controller and the
 	// switch (initiated by the controller), and is managed for the following
 	// purposes:
-	//   - connection initiation through client arbitration
-	//   - indicating switch session liveness: the session is live when switch
-	//     sends a positive client arbitration update to the controller, and is
-	//     considered dead when either the stream breaks or the switch sends a
-	//     negative update for client arbitration
-	//   - the controller sending/receiving packets to/from the switch
-	//   - streaming of notifications from the switch
+	// - connection initiation through client arbitration
+	// - indicating switch session liveness: the session is live when switch
+	//   sends a positive client arbitration update to the controller, and is
+	//   considered dead when either the stream breaks or the switch sends a
+	//   negative update for client arbitration
+	// - the controller sending/receiving packets to/from the switch
+	// - streaming of notifications from the switch
 	StreamChannel(ctx context.Context, opts ...grpc.CallOption) (P4Runtime_StreamChannelClient, error)
 	Capabilities(ctx context.Context, in *CapabilitiesRequest, opts ...grpc.CallOption) (*CapabilitiesResponse, error)
 }
@@ -181,13 +181,13 @@ type P4RuntimeServer interface {
 	// Represents the bidirectional stream between the controller and the
 	// switch (initiated by the controller), and is managed for the following
 	// purposes:
-	//   - connection initiation through client arbitration
-	//   - indicating switch session liveness: the session is live when switch
-	//     sends a positive client arbitration update to the controller, and is
-	//     considered dead when either the stream breaks or the switch sends a
-	//     negative update for client arbitration
-	//   - the controller sending/receiving packets to/from the switch
-	//   - streaming of notifications from the switch
+	// - connection initiation through client arbitration
+	// - indicating switch session liveness: the session is live when switch
+	//   sends a positive client arbitration update to the controller, and is
+	//   considered dead when either the stream breaks or the switch sends a
+	//   negative update for client arbitration
+	// - the controller sending/receiving packets to/from the switch
+	// - streaming of notifications from the switch
 	StreamChannel(P4Runtime_StreamChannelServer) error
 	Capabilities(context.Context, *CapabilitiesRequest) (*CapabilitiesResponse, error)
 	mustEmbedUnimplementedP4RuntimeServer()

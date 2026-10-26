@@ -133,7 +133,6 @@ type P4DataTypeSpec struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to TypeSpec:
-	//
 	//	*P4DataTypeSpec_Bitstring
 	//	*P4DataTypeSpec_Bool
 	//	*P4DataTypeSpec_Tuple
@@ -479,7 +478,6 @@ type P4BitstringLikeTypeSpec struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to TypeSpec:
-	//
 	//	*P4BitstringLikeTypeSpec_Bit
 	//	*P4BitstringLikeTypeSpec_Int
 	//	*P4BitstringLikeTypeSpec_Varbit
@@ -1223,7 +1221,6 @@ type Expression struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Value:
-	//
 	//	*Expression_StringValue
 	//	*Expression_Int64Value
 	//	*Expression_BoolValue
@@ -1366,7 +1363,6 @@ type StructuredAnnotation struct {
 
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Types that are assignable to Body:
-	//
 	//	*StructuredAnnotation_ExpressionList
 	//	*StructuredAnnotation_KvPairList
 	Body isStructuredAnnotation_Body `protobuf_oneof:"body"`
@@ -1745,7 +1741,6 @@ type P4NewTypeTranslation struct {
 	// `sdn_bitwidth`, or as a string.
 	//
 	// Types that are assignable to SdnType:
-	//
 	//	*P4NewTypeTranslation_SdnBitwidth
 	//	*P4NewTypeTranslation_SdnString_
 	SdnType isP4NewTypeTranslation_SdnType `protobuf_oneof:"sdn_type"`
@@ -1834,7 +1829,6 @@ type P4NewTypeSpec struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Representation:
-	//
 	//	*P4NewTypeSpec_OriginalType
 	//	*P4NewTypeSpec_TranslatedType
 	Representation isP4NewTypeSpec_Representation `protobuf_oneof:"representation"`
