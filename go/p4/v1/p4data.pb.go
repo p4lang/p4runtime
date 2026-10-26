@@ -30,7 +30,6 @@ type P4Data struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Data:
-	//
 	//	*P4Data_Bitstring
 	//	*P4Data_Varbit
 	//	*P4Data_Bool

@@ -767,7 +767,6 @@ type Entity struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Entity:
-	//
 	//	*Entity_ExternEntry
 	//	*Entity_TableEntry
 	//	*Entity_ActionProfileMember
@@ -1085,7 +1084,6 @@ type TableEntry struct {
 	//     meter (if any) to its default configuration, while leaving counter_data
 	//     or meter_counter_data unset means that the counter (if any) will not be
 	//     updated.
-	//
 	// Table read:
 	//   - If the table does not contain a direct resource, then the corresponding
 	//     field will not be set in the read table entry.
@@ -1113,13 +1111,12 @@ type TableEntry struct {
 	Metadata []byte `protobuf:"bytes,11,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// True if and only if the entry cannot be deleted or modified,
 	// i.e. any of the following:
-	//   - Any entry read from a table declared with `const entries`
-	//   - The default entry read from a table declared with `const
-	//     default_action`
-	//   - Any entry declared with `entries` without the `const` qualifier
-	//     before `entries`, where the individual entry has the `const`
-	//     qualifier on it in the P4 source code.
-	//
+	// + Any entry read from a table declared with `const entries`
+	// + The default entry read from a table declared with `const
+	//   default_action`
+	// + Any entry declared with `entries` without the `const` qualifier
+	//   before `entries`, where the individual entry has the `const`
+	//   qualifier on it in the P4 source code.
 	// Note: Older P4Runtime API servers before the `is_const` field was
 	// added to this message will not return a value for `is_const` in
 	// the first two cases above, but newer P4Runtime API servers will.
@@ -1259,7 +1256,6 @@ type FieldMatch struct {
 
 	FieldId uint32 `protobuf:"varint,1,opt,name=field_id,json=fieldId,proto3" json:"field_id,omitempty"`
 	// Types that are assignable to FieldMatchType:
-	//
 	//	*FieldMatch_Exact_
 	//	*FieldMatch_Ternary_
 	//	*FieldMatch_Lpm
@@ -1406,7 +1402,6 @@ type TableAction struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Type:
-	//
 	//	*TableAction_Action
 	//	*TableAction_ActionProfileMemberId
 	//	*TableAction_ActionProfileGroupId
@@ -1648,7 +1643,6 @@ type ActionProfileAction struct {
 	Action *Action `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
 	Weight int32   `protobuf:"varint,2,opt,name=weight,proto3" json:"weight,omitempty"`
 	// Types that are assignable to WatchKind:
-	//
 	//	*ActionProfileAction_Watch
 	//	*ActionProfileAction_WatchPort
 	WatchKind isActionProfileAction_WatchKind `protobuf_oneof:"watch_kind"`
@@ -2452,7 +2446,6 @@ type PacketReplicationEngineEntry struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Type:
-	//
 	//	*PacketReplicationEngineEntry_MulticastGroupEntry
 	//	*PacketReplicationEngineEntry_CloneSessionEntry
 	Type isPacketReplicationEngineEntry_Type `protobuf_oneof:"type"`
@@ -2591,7 +2584,6 @@ type Replica struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to PortKind:
-	//
 	//	*Replica_EgressPort
 	//	*Replica_Port
 	PortKind isReplica_PortKind `protobuf_oneof:"port_kind"`
@@ -3093,7 +3085,6 @@ type StreamMessageRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Update:
-	//
 	//	*StreamMessageRequest_Arbitration
 	//	*StreamMessageRequest_Packet
 	//	*StreamMessageRequest_DigestAck
@@ -3320,7 +3311,6 @@ type StreamMessageResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Update:
-	//
 	//	*StreamMessageResponse_Arbitration
 	//	*StreamMessageResponse_Packet
 	//	*StreamMessageResponse_Digest
@@ -3888,7 +3878,6 @@ type StreamError struct {
 	// default value.
 	//
 	// Types that are assignable to Details:
-	//
 	//	*StreamError_PacketOut
 	//	*StreamError_DigestListAck
 	//	*StreamError_Other
@@ -5079,7 +5068,6 @@ type ActionProfileGroup_Member struct {
 	MemberId uint32 `protobuf:"varint,1,opt,name=member_id,json=memberId,proto3" json:"member_id,omitempty"`
 	Weight   int32  `protobuf:"varint,2,opt,name=weight,proto3" json:"weight,omitempty"`
 	// Types that are assignable to WatchKind:
-	//
 	//	*ActionProfileGroup_Member_Watch
 	//	*ActionProfileGroup_Member_WatchPort
 	WatchKind isActionProfileGroup_Member_WatchKind `protobuf_oneof:"watch_kind"`
