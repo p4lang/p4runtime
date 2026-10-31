@@ -43,6 +43,8 @@ cp -r "$tmpdir"/go_out/github.com/p4lang/p4runtime/go/* go/
 
 # Python
 cp -r "$tmpdir"/py_out/p4 py/
+mkdir -p py/version-info
+cp -r "$tmpdir"/py_out/version-info/* py/version-info/
 find py/p4 -type d -exec touch {}/__init__.py \;
 
 # Cleanup files owned by root user

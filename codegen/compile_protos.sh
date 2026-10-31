@@ -68,15 +68,14 @@ echo "Recording version info about $PROTOC and $GRPC_PY_PLUGIN in directory $BUI
 
 apt-get install --yes binutils
 
-$PROTOC --version > "$BUILD_DIR/py_out/protoc-version.txt"
-cp -p /etc/os-release "$BUILD_DIR/py_out/os-release"
-strings - `which $GRPC_PY_PLUGIN` > "$BUILD_DIR/py_out/grpc_py_plugin-strings.txt"
+mkdir -p "$BUILD_DIR/py_out/version-info"
+$PROTOC --version > "$BUILD_DIR/py_out/version-info/protoc-version.txt"
+cp -p /etc/os-release "$BUILD_DIR/py_out/version-info/os-release"
+strings - `which $GRPC_PY_PLUGIN` > "$BUILD_DIR/py_out/version-info/grpc_py_plugin-strings.txt"
 echo "----------------------------------------"
 $PROTOC --version
 echo "----------------------------------------"
 cat /etc/os-release
-echo "----------------------------------------"
-strings - `which $GRPC_PY_PLUGIN`
 echo "----------------------------------------"
 
 $PROTOC $PROTOS --go_out="$BUILD_DIR/go_out" --go-grpc_out="$BUILD_DIR/go_out" $PROTOFLAGS

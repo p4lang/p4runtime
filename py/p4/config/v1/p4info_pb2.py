@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\020org.p4.config.v1B\013P4InfoProtoP\001Z+github.com/p4lang/p4runtime/go/p4/config/v1',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x19p4/config/v1/p4info.proto\x12\x0cp4.config.v1\x1a\x19google/protobuf/any.proto\x1a\x1ap4/config/v1/p4types.proto\"\x88\x05\n\x06P4Info\x12\'\n\x08pkg_info\x18\x01 \x01(\x0b\x32\x15.p4.config.v1.PkgInfo\x12#\n\x06tables\x18\x02 \x03(\x0b\x32\x13.p4.config.v1.Table\x12%\n\x07\x61\x63tions\x18\x03 \x03(\x0b\x32\x14.p4.config.v1.Action\x12\x34\n\x0f\x61\x63tion_profiles\x18\x04 \x03(\x0b\x32\x1b.p4.config.v1.ActionProfile\x12\'\n\x08\x63ounters\x18\x05 \x03(\x0b\x32\x15.p4.config.v1.Counter\x12\x34\n\x0f\x64irect_counters\x18\x06 \x03(\x0b\x32\x1b.p4.config.v1.DirectCounter\x12#\n\x06meters\x18\x07 \x03(\x0b\x32\x13.p4.config.v1.Meter\x12\x30\n\rdirect_meters\x18\x08 \x03(\x0b\x32\x19.p4.config.v1.DirectMeter\x12J\n\x1a\x63ontroller_packet_metadata\x18\t \x03(\x0b\x32&.p4.config.v1.ControllerPacketMetadata\x12*\n\nvalue_sets\x18\n \x03(\x0b\x32\x16.p4.config.v1.ValueSet\x12)\n\tregisters\x18\x0b \x03(\x0b\x32\x16.p4.config.v1.Register\x12%\n\x07\x64igests\x18\x0c \x03(\x0b\x32\x14.p4.config.v1.Digest\x12%\n\x07\x65xterns\x18\x64 \x03(\x0b\x32\x14.p4.config.v1.Extern\x12,\n\ttype_info\x18\xc8\x01 \x01(\x0b\x32\x18.p4.config.v1.P4TypeInfo\"3\n\rDocumentation\x12\r\n\x05\x62rief\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"\x9c\x01\n\x12PlatformProperties\x12\"\n\x1amulticast_group_table_size\x18\x01 \x01(\x05\x12,\n$multicast_group_table_total_replicas\x18\x02 \x01(\x05\x12\x34\n,multicast_group_table_max_replicas_per_entry\x18\x03 \x01(\x05\"\xe8\x02\n\x07PkgInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12(\n\x03\x64oc\x18\x03 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\n \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x0c\n\x04\x61rch\x18\x05 \x01(\t\x12\x14\n\x0corganization\x18\x06 \x01(\t\x12\x0f\n\x07\x63ontact\x18\x07 \x01(\t\x12\x0b\n\x03url\x18\x08 \x01(\t\x12\x42\n\x16structured_annotations\x18\t \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x12=\n\x13platform_properties\x18\x0b \x01(\x0b\x32 .p4.config.v1.PlatformProperties\"\x87\x02\n\x05P4Ids\"\xfd\x01\n\x06Prefix\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TION\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\r\n\tVALUE_SET\x10\x03\x12\x15\n\x11\x43ONTROLLER_HEADER\x10\x04\x12\x15\n\x11PSA_EXTERNS_START\x10\x10\x12\x12\n\x0e\x41\x43TION_PROFILE\x10\x11\x12\x0b\n\x07\x43OUNTER\x10\x12\x12\x12\n\x0e\x44IRECT_COUNTER\x10\x13\x12\t\n\x05METER\x10\x14\x12\x10\n\x0c\x44IRECT_METER\x10\x15\x12\x0c\n\x08REGISTER\x10\x16\x12\n\n\x06\x44IGEST\x10\x17\x12\x18\n\x13OTHER_EXTERNS_START\x10\x80\x01\x12\x08\n\x03MAX\x10\xff\x01\"\xf2\x01\n\x08Preamble\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x61lias\x18\x03 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"k\n\x06\x45xtern\x12\x16\n\x0e\x65xtern_type_id\x18\x01 \x01(\r\x12\x18\n\x10\x65xtern_type_name\x18\x02 \x01(\t\x12/\n\tinstances\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.ExternInstance\"^\n\x0e\x45xternInstance\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\"\n\x04info\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"\xdc\x03\n\nMatchField\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\n \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12\x38\n\nmatch_type\x18\x05 \x01(\x0e\x32\".p4.config.v1.MatchField.MatchTypeH\x00\x12\x1a\n\x10other_match_type\x18\x07 \x01(\tH\x00\x12(\n\x03\x64oc\x18\x06 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12,\n\ttype_name\x18\x08 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\t \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"V\n\tMatchType\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x45XACT\x10\x02\x12\x07\n\x03LPM\x10\x03\x12\x0b\n\x07TERNARY\x10\x04\x12\t\n\x05RANGE\x10\x05\x12\x0c\n\x08OPTIONAL\x10\x06\x42\x07\n\x05match\"\x8c\x01\n\x0fTableActionCall\x12\x11\n\taction_id\x18\x01 \x01(\r\x12\x39\n\targuments\x18\x04 \x03(\x0b\x32&.p4.config.v1.TableActionCall.Argument\x1a+\n\x08\x41rgument\x12\x10\n\x08param_id\x18\x02 \x01(\r\x12\r\n\x05value\x18\x03 \x01(\x0c\"\x9d\x04\n\x05Table\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12.\n\x0cmatch_fields\x18\x02 \x03(\x0b\x32\x18.p4.config.v1.MatchField\x12,\n\x0b\x61\x63tion_refs\x18\x03 \x03(\x0b\x32\x17.p4.config.v1.ActionRef\x12\x1f\n\x17\x63onst_default_action_id\x18\x04 \x01(\r\x12=\n\x16initial_default_action\x18\x05 \x01(\x0b\x32\x1d.p4.config.v1.TableActionCall\x12\x19\n\x11implementation_id\x18\x06 \x01(\r\x12\x1b\n\x13\x64irect_resource_ids\x18\x07 \x03(\r\x12\x0c\n\x04size\x18\x08 \x01(\x03\x12\x46\n\x15idle_timeout_behavior\x18\t \x01(\x0e\x32\'.p4.config.v1.Table.IdleTimeoutBehavior\x12\x16\n\x0eis_const_table\x18\n \x01(\x08\x12\x1b\n\x13has_initial_entries\x18\x0b \x01(\x08\x12.\n\x10other_properties\x18\x64 \x01(\x0b\x32\x14.google.protobuf.Any\"9\n\x13IdleTimeoutBehavior\x12\x0e\n\nNO_TIMEOUT\x10\x00\x12\x12\n\x0eNOTIFY_CONTROL\x10\x01\"\xae\x02\n\tActionRef\x12\n\n\x02id\x18\x01 \x01(\r\x12,\n\x05scope\x18\x03 \x01(\x0e\x32\x1d.p4.config.v1.ActionRef.Scope\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"R\n\x05Scope\x12\x15\n\x11TABLE_AND_DEFAULT\x10\x00\x12\x0e\n\nTABLE_ONLY\x10\x01\x12\x10\n\x0c\x44\x45\x46\x41ULT_ONLY\x10\x02\x12\x10\n\x0cGROUP_ACTION\x10\x03\"\x81\x03\n\x06\x41\x63tion\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.p4.config.v1.Action.Param\x1a\xa0\x02\n\x05Param\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x08 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12,\n\ttype_name\x18\x06 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\x07 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x83\x03\n\rActionProfile\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\x11\n\ttable_ids\x18\x02 \x03(\r\x12\x15\n\rwith_selector\x18\x03 \x01(\x08\x12\x0c\n\x04size\x18\x04 \x01(\x03\x12\x16\n\x0emax_group_size\x18\x05 \x01(\x05\x12\x42\n\x0esum_of_weights\x18\x06 \x01(\x0b\x32(.p4.config.v1.ActionProfile.SumOfWeightsH\x00\x12\x42\n\x0esum_of_members\x18\x07 \x01(\x0b\x32(.p4.config.v1.ActionProfile.SumOfMembersH\x00\x12\x1a\n\x12weights_disallowed\x18\x08 \x01(\x08\x1a\x0e\n\x0cSumOfWeights\x1a)\n\x0cSumOfMembers\x12\x19\n\x11max_member_weight\x18\x01 \x01(\x05\x42\x19\n\x17selector_size_semantics\"v\n\x0b\x43ounterSpec\x12,\n\x04unit\x18\x01 \x01(\x0e\x32\x1e.p4.config.v1.CounterSpec.Unit\"9\n\x04Unit\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x42YTES\x10\x01\x12\x0b\n\x07PACKETS\x10\x02\x12\x08\n\x04\x42OTH\x10\x03\"\x9e\x01\n\x07\x43ounter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x04spec\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.CounterSpec\x12\x0c\n\x04size\x18\x03 \x01(\x03\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"{\n\rDirectCounter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x04spec\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.CounterSpec\x12\x17\n\x0f\x64irect_table_id\x18\x03 \x01(\r\"\xee\x01\n\tMeterSpec\x12*\n\x04unit\x18\x01 \x01(\x0e\x32\x1c.p4.config.v1.MeterSpec.Unit\x12*\n\x04type\x18\x02 \x01(\x0e\x32\x1c.p4.config.v1.MeterSpec.Type\"/\n\x04Unit\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x42YTES\x10\x01\x12\x0b\n\x07PACKETS\x10\x02\"X\n\x04Type\x12\x18\n\x14TWO_RATE_THREE_COLOR\x10\x00\x12\x1b\n\x17SINGLE_RATE_THREE_COLOR\x10\x01\x12\x19\n\x15SINGLE_RATE_TWO_COLOR\x10\x02\"\x9a\x01\n\x05Meter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12%\n\x04spec\x18\x02 \x01(\x0b\x32\x17.p4.config.v1.MeterSpec\x12\x0c\n\x04size\x18\x03 \x01(\x03\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"w\n\x0b\x44irectMeter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12%\n\x04spec\x18\x02 \x01(\x0b\x32\x17.p4.config.v1.MeterSpec\x12\x17\n\x0f\x64irect_table_id\x18\x03 \x01(\r\"\x83\x03\n\x18\x43ontrollerPacketMetadata\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\x41\n\x08metadata\x18\x02 \x03(\x0b\x32/.p4.config.v1.ControllerPacketMetadata.Metadata\x1a\xf9\x01\n\x08Metadata\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12,\n\ttype_name\x18\x05 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"k\n\x08ValueSet\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x05match\x18\x02 \x03(\x0b\x32\x18.p4.config.v1.MatchField\x12\x0c\n\x04size\x18\x03 \x01(\x05\"\xa7\x01\n\x08Register\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\x12\x0c\n\x04size\x18\x03 \x01(\x05\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"c\n\x06\x44igest\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpecBN\n\x10org.p4.config.v1B\x0bP4InfoProtoP\x01Z+github.com/p4lang/p4runtime/go/p4/config/v1b\x06proto3'
+  serialized_pb=b'\n\x19p4/config/v1/p4info.proto\x12\x0cp4.config.v1\x1a\x19google/protobuf/any.proto\x1a\x1ap4/config/v1/p4types.proto\"\x88\x05\n\x06P4Info\x12\'\n\x08pkg_info\x18\x01 \x01(\x0b\x32\x15.p4.config.v1.PkgInfo\x12#\n\x06tables\x18\x02 \x03(\x0b\x32\x13.p4.config.v1.Table\x12%\n\x07\x61\x63tions\x18\x03 \x03(\x0b\x32\x14.p4.config.v1.Action\x12\x34\n\x0f\x61\x63tion_profiles\x18\x04 \x03(\x0b\x32\x1b.p4.config.v1.ActionProfile\x12\'\n\x08\x63ounters\x18\x05 \x03(\x0b\x32\x15.p4.config.v1.Counter\x12\x34\n\x0f\x64irect_counters\x18\x06 \x03(\x0b\x32\x1b.p4.config.v1.DirectCounter\x12#\n\x06meters\x18\x07 \x03(\x0b\x32\x13.p4.config.v1.Meter\x12\x30\n\rdirect_meters\x18\x08 \x03(\x0b\x32\x19.p4.config.v1.DirectMeter\x12J\n\x1a\x63ontroller_packet_metadata\x18\t \x03(\x0b\x32&.p4.config.v1.ControllerPacketMetadata\x12*\n\nvalue_sets\x18\n \x03(\x0b\x32\x16.p4.config.v1.ValueSet\x12)\n\tregisters\x18\x0b \x03(\x0b\x32\x16.p4.config.v1.Register\x12%\n\x07\x64igests\x18\x0c \x03(\x0b\x32\x14.p4.config.v1.Digest\x12%\n\x07\x65xterns\x18\x64 \x03(\x0b\x32\x14.p4.config.v1.Extern\x12,\n\ttype_info\x18\xc8\x01 \x01(\x0b\x32\x18.p4.config.v1.P4TypeInfo\"3\n\rDocumentation\x12\r\n\x05\x62rief\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"\x9c\x01\n\x12PlatformProperties\x12\"\n\x1amulticast_group_table_size\x18\x01 \x01(\x05\x12,\n$multicast_group_table_total_replicas\x18\x02 \x01(\x05\x12\x34\n,multicast_group_table_max_replicas_per_entry\x18\x03 \x01(\x05\"\xfc\x02\n\x07PkgInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12(\n\x03\x64oc\x18\x03 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\n \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x0c\n\x04\x61rch\x18\x05 \x01(\t\x12\x14\n\x0corganization\x18\x06 \x01(\t\x12\x0f\n\x07\x63ontact\x18\x07 \x01(\t\x12\x0b\n\x03url\x18\x08 \x01(\t\x12\x42\n\x16structured_annotations\x18\t \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\x12=\n\x13platform_properties\x18\x0b \x01(\x0b\x32 .p4.config.v1.PlatformProperties\x12\x12\n\nextra_info\x18\x0c \x01(\t\"\x87\x02\n\x05P4Ids\"\xfd\x01\n\x06Prefix\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TION\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\r\n\tVALUE_SET\x10\x03\x12\x15\n\x11\x43ONTROLLER_HEADER\x10\x04\x12\x15\n\x11PSA_EXTERNS_START\x10\x10\x12\x12\n\x0e\x41\x43TION_PROFILE\x10\x11\x12\x0b\n\x07\x43OUNTER\x10\x12\x12\x12\n\x0e\x44IRECT_COUNTER\x10\x13\x12\t\n\x05METER\x10\x14\x12\x10\n\x0c\x44IRECT_METER\x10\x15\x12\x0c\n\x08REGISTER\x10\x16\x12\n\n\x06\x44IGEST\x10\x17\x12\x18\n\x13OTHER_EXTERNS_START\x10\x80\x01\x12\x08\n\x03MAX\x10\xff\x01\"\xf2\x01\n\x08Preamble\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x61lias\x18\x03 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x04 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"k\n\x06\x45xtern\x12\x16\n\x0e\x65xtern_type_id\x18\x01 \x01(\r\x12\x18\n\x10\x65xtern_type_name\x18\x02 \x01(\t\x12/\n\tinstances\x18\x03 \x03(\x0b\x32\x1c.p4.config.v1.ExternInstance\"^\n\x0e\x45xternInstance\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\"\n\x04info\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"\xdc\x03\n\nMatchField\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\n \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12\x38\n\nmatch_type\x18\x05 \x01(\x0e\x32\".p4.config.v1.MatchField.MatchTypeH\x00\x12\x1a\n\x10other_match_type\x18\x07 \x01(\tH\x00\x12(\n\x03\x64oc\x18\x06 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12,\n\ttype_name\x18\x08 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\t \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"V\n\tMatchType\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x45XACT\x10\x02\x12\x07\n\x03LPM\x10\x03\x12\x0b\n\x07TERNARY\x10\x04\x12\t\n\x05RANGE\x10\x05\x12\x0c\n\x08OPTIONAL\x10\x06\x42\x07\n\x05match\"\x8c\x01\n\x0fTableActionCall\x12\x11\n\taction_id\x18\x01 \x01(\r\x12\x39\n\targuments\x18\x04 \x03(\x0b\x32&.p4.config.v1.TableActionCall.Argument\x1a+\n\x08\x41rgument\x12\x10\n\x08param_id\x18\x02 \x01(\r\x12\r\n\x05value\x18\x03 \x01(\x0c\"\x9d\x04\n\x05Table\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12.\n\x0cmatch_fields\x18\x02 \x03(\x0b\x32\x18.p4.config.v1.MatchField\x12,\n\x0b\x61\x63tion_refs\x18\x03 \x03(\x0b\x32\x17.p4.config.v1.ActionRef\x12\x1f\n\x17\x63onst_default_action_id\x18\x04 \x01(\r\x12=\n\x16initial_default_action\x18\x05 \x01(\x0b\x32\x1d.p4.config.v1.TableActionCall\x12\x19\n\x11implementation_id\x18\x06 \x01(\r\x12\x1b\n\x13\x64irect_resource_ids\x18\x07 \x03(\r\x12\x0c\n\x04size\x18\x08 \x01(\x03\x12\x46\n\x15idle_timeout_behavior\x18\t \x01(\x0e\x32\'.p4.config.v1.Table.IdleTimeoutBehavior\x12\x16\n\x0eis_const_table\x18\n \x01(\x08\x12\x1b\n\x13has_initial_entries\x18\x0b \x01(\x08\x12.\n\x10other_properties\x18\x64 \x01(\x0b\x32\x14.google.protobuf.Any\"9\n\x13IdleTimeoutBehavior\x12\x0e\n\nNO_TIMEOUT\x10\x00\x12\x12\n\x0eNOTIFY_CONTROL\x10\x01\"\xae\x02\n\tActionRef\x12\n\n\x02id\x18\x01 \x01(\r\x12,\n\x05scope\x18\x03 \x01(\x0e\x32\x1d.p4.config.v1.ActionRef.Scope\x12\x13\n\x0b\x61nnotations\x18\x02 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x05 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x42\n\x16structured_annotations\x18\x04 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"R\n\x05Scope\x12\x15\n\x11TABLE_AND_DEFAULT\x10\x00\x12\x0e\n\nTABLE_ONLY\x10\x01\x12\x10\n\x0c\x44\x45\x46\x41ULT_ONLY\x10\x02\x12\x10\n\x0cGROUP_ACTION\x10\x03\"\x81\x03\n\x06\x41\x63tion\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12*\n\x06params\x18\x02 \x03(\x0b\x32\x1a.p4.config.v1.Action.Param\x1a\xa0\x02\n\x05Param\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x08 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12(\n\x03\x64oc\x18\x05 \x01(\x0b\x32\x1b.p4.config.v1.Documentation\x12,\n\ttype_name\x18\x06 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\x07 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"\x83\x03\n\rActionProfile\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\x11\n\ttable_ids\x18\x02 \x03(\r\x12\x15\n\rwith_selector\x18\x03 \x01(\x08\x12\x0c\n\x04size\x18\x04 \x01(\x03\x12\x16\n\x0emax_group_size\x18\x05 \x01(\x05\x12\x42\n\x0esum_of_weights\x18\x06 \x01(\x0b\x32(.p4.config.v1.ActionProfile.SumOfWeightsH\x00\x12\x42\n\x0esum_of_members\x18\x07 \x01(\x0b\x32(.p4.config.v1.ActionProfile.SumOfMembersH\x00\x12\x1a\n\x12weights_disallowed\x18\x08 \x01(\x08\x1a\x0e\n\x0cSumOfWeights\x1a)\n\x0cSumOfMembers\x12\x19\n\x11max_member_weight\x18\x01 \x01(\x05\x42\x19\n\x17selector_size_semantics\"v\n\x0b\x43ounterSpec\x12,\n\x04unit\x18\x01 \x01(\x0e\x32\x1e.p4.config.v1.CounterSpec.Unit\"9\n\x04Unit\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x42YTES\x10\x01\x12\x0b\n\x07PACKETS\x10\x02\x12\x08\n\x04\x42OTH\x10\x03\"\x9e\x01\n\x07\x43ounter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x04spec\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.CounterSpec\x12\x0c\n\x04size\x18\x03 \x01(\x03\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"{\n\rDirectCounter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x04spec\x18\x02 \x01(\x0b\x32\x19.p4.config.v1.CounterSpec\x12\x17\n\x0f\x64irect_table_id\x18\x03 \x01(\r\"\xee\x01\n\tMeterSpec\x12*\n\x04unit\x18\x01 \x01(\x0e\x32\x1c.p4.config.v1.MeterSpec.Unit\x12*\n\x04type\x18\x02 \x01(\x0e\x32\x1c.p4.config.v1.MeterSpec.Type\"/\n\x04Unit\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05\x42YTES\x10\x01\x12\x0b\n\x07PACKETS\x10\x02\"X\n\x04Type\x12\x18\n\x14TWO_RATE_THREE_COLOR\x10\x00\x12\x1b\n\x17SINGLE_RATE_THREE_COLOR\x10\x01\x12\x19\n\x15SINGLE_RATE_TWO_COLOR\x10\x02\"\x9a\x01\n\x05Meter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12%\n\x04spec\x18\x02 \x01(\x0b\x32\x17.p4.config.v1.MeterSpec\x12\x0c\n\x04size\x18\x03 \x01(\x03\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"w\n\x0b\x44irectMeter\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12%\n\x04spec\x18\x02 \x01(\x0b\x32\x17.p4.config.v1.MeterSpec\x12\x17\n\x0f\x64irect_table_id\x18\x03 \x01(\r\"\x83\x03\n\x18\x43ontrollerPacketMetadata\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\x41\n\x08metadata\x18\x02 \x03(\x0b\x32/.p4.config.v1.ControllerPacketMetadata.Metadata\x1a\xf9\x01\n\x08Metadata\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x61nnotations\x18\x03 \x03(\t\x12:\n\x14\x61nnotation_locations\x18\x07 \x03(\x0b\x32\x1c.p4.config.v1.SourceLocation\x12\x10\n\x08\x62itwidth\x18\x04 \x01(\x05\x12,\n\ttype_name\x18\x05 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\x12\x42\n\x16structured_annotations\x18\x06 \x03(\x0b\x32\".p4.config.v1.StructuredAnnotation\"k\n\x08ValueSet\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12\'\n\x05match\x18\x02 \x03(\x0b\x32\x18.p4.config.v1.MatchField\x12\x0c\n\x04size\x18\x03 \x01(\x05\"\xa7\x01\n\x08Register\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpec\x12\x0c\n\x04size\x18\x03 \x01(\x05\x12\x32\n\x0findex_type_name\x18\x04 \x01(\x0b\x32\x19.p4.config.v1.P4NamedType\"c\n\x06\x44igest\x12(\n\x08preamble\x18\x01 \x01(\x0b\x32\x16.p4.config.v1.Preamble\x12/\n\ttype_spec\x18\x02 \x01(\x0b\x32\x1c.p4.config.v1.P4DataTypeSpecBN\n\x10org.p4.config.v1B\x0bP4InfoProtoP\x01Z+github.com/p4lang/p4runtime/go/p4/config/v1b\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,p4_dot_config_dot_v1_dot_p4types__pb2.DESCRIPTOR,])
 
@@ -112,8 +112,8 @@ _P4IDS_PREFIX = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1335,
-  serialized_end=1588,
+  serialized_start=1355,
+  serialized_end=1608,
 )
 _sym_db.RegisterEnumDescriptor(_P4IDS_PREFIX)
 
@@ -157,8 +157,8 @@ _MATCHFIELD_MATCHTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2422,
-  serialized_end=2508,
+  serialized_start=2442,
+  serialized_end=2528,
 )
 _sym_db.RegisterEnumDescriptor(_MATCHFIELD_MATCHTYPE)
 
@@ -182,8 +182,8 @@ _TABLE_IDLETIMEOUTBEHAVIOR = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3147,
-  serialized_end=3204,
+  serialized_start=3167,
+  serialized_end=3224,
 )
 _sym_db.RegisterEnumDescriptor(_TABLE_IDLETIMEOUTBEHAVIOR)
 
@@ -217,8 +217,8 @@ _ACTIONREF_SCOPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3427,
-  serialized_end=3509,
+  serialized_start=3447,
+  serialized_end=3529,
 )
 _sym_db.RegisterEnumDescriptor(_ACTIONREF_SCOPE)
 
@@ -252,8 +252,8 @@ _COUNTERSPEC_UNIT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=4350,
-  serialized_end=4407,
+  serialized_start=4370,
+  serialized_end=4427,
 )
 _sym_db.RegisterEnumDescriptor(_COUNTERSPEC_UNIT)
 
@@ -282,8 +282,8 @@ _METERSPEC_UNIT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=4350,
-  serialized_end=4397,
+  serialized_start=4370,
+  serialized_end=4417,
 )
 _sym_db.RegisterEnumDescriptor(_METERSPEC_UNIT)
 
@@ -312,8 +312,8 @@ _METERSPEC_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=4846,
-  serialized_end=4934,
+  serialized_start=4866,
+  serialized_end=4954,
 )
 _sym_db.RegisterEnumDescriptor(_METERSPEC_TYPE)
 
@@ -611,6 +611,13 @@ _PKGINFO = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='extra_info', full_name='p4.config.v1.PkgInfo.extra_info', index=11,
+      number=12, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -624,7 +631,7 @@ _PKGINFO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=962,
-  serialized_end=1322,
+  serialized_end=1342,
 )
 
 
@@ -649,8 +656,8 @@ _P4IDS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1325,
-  serialized_end=1588,
+  serialized_start=1345,
+  serialized_end=1608,
 )
 
 
@@ -723,8 +730,8 @@ _PREAMBLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1591,
-  serialized_end=1833,
+  serialized_start=1611,
+  serialized_end=1853,
 )
 
 
@@ -769,8 +776,8 @@ _EXTERN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1835,
-  serialized_end=1942,
+  serialized_start=1855,
+  serialized_end=1962,
 )
 
 
@@ -808,8 +815,8 @@ _EXTERNINSTANCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1944,
-  serialized_end=2038,
+  serialized_start=1964,
+  serialized_end=2058,
 )
 
 
@@ -909,8 +916,8 @@ _MATCHFIELD = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=2041,
-  serialized_end=2517,
+  serialized_start=2061,
+  serialized_end=2537,
 )
 
 
@@ -948,8 +955,8 @@ _TABLEACTIONCALL_ARGUMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2617,
-  serialized_end=2660,
+  serialized_start=2637,
+  serialized_end=2680,
 )
 
 _TABLEACTIONCALL = _descriptor.Descriptor(
@@ -986,8 +993,8 @@ _TABLEACTIONCALL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2520,
-  serialized_end=2660,
+  serialized_start=2540,
+  serialized_end=2680,
 )
 
 
@@ -1096,8 +1103,8 @@ _TABLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2663,
-  serialized_end=3204,
+  serialized_start=2683,
+  serialized_end=3224,
 )
 
 
@@ -1157,8 +1164,8 @@ _ACTIONREF = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3207,
-  serialized_end=3509,
+  serialized_start=3227,
+  serialized_end=3529,
 )
 
 
@@ -1238,8 +1245,8 @@ _ACTION_PARAM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3609,
-  serialized_end=3897,
+  serialized_start=3629,
+  serialized_end=3917,
 )
 
 _ACTION = _descriptor.Descriptor(
@@ -1276,8 +1283,8 @@ _ACTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3512,
-  serialized_end=3897,
+  serialized_start=3532,
+  serialized_end=3917,
 )
 
 
@@ -1301,8 +1308,8 @@ _ACTIONPROFILE_SUMOFWEIGHTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4203,
-  serialized_end=4217,
+  serialized_start=4223,
+  serialized_end=4237,
 )
 
 _ACTIONPROFILE_SUMOFMEMBERS = _descriptor.Descriptor(
@@ -1332,8 +1339,8 @@ _ACTIONPROFILE_SUMOFMEMBERS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4219,
-  serialized_end=4260,
+  serialized_start=4239,
+  serialized_end=4280,
 )
 
 _ACTIONPROFILE = _descriptor.Descriptor(
@@ -1417,8 +1424,8 @@ _ACTIONPROFILE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=3900,
-  serialized_end=4287,
+  serialized_start=3920,
+  serialized_end=4307,
 )
 
 
@@ -1450,8 +1457,8 @@ _COUNTERSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4289,
-  serialized_end=4407,
+  serialized_start=4309,
+  serialized_end=4427,
 )
 
 
@@ -1503,8 +1510,8 @@ _COUNTER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4410,
-  serialized_end=4568,
+  serialized_start=4430,
+  serialized_end=4588,
 )
 
 
@@ -1549,8 +1556,8 @@ _DIRECTCOUNTER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4570,
-  serialized_end=4693,
+  serialized_start=4590,
+  serialized_end=4713,
 )
 
 
@@ -1590,8 +1597,8 @@ _METERSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4696,
-  serialized_end=4934,
+  serialized_start=4716,
+  serialized_end=4954,
 )
 
 
@@ -1643,8 +1650,8 @@ _METER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4937,
-  serialized_end=5091,
+  serialized_start=4957,
+  serialized_end=5111,
 )
 
 
@@ -1689,8 +1696,8 @@ _DIRECTMETER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5093,
-  serialized_end=5212,
+  serialized_start=5113,
+  serialized_end=5232,
 )
 
 
@@ -1763,8 +1770,8 @@ _CONTROLLERPACKETMETADATA_METADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5353,
-  serialized_end=5602,
+  serialized_start=5373,
+  serialized_end=5622,
 )
 
 _CONTROLLERPACKETMETADATA = _descriptor.Descriptor(
@@ -1801,8 +1808,8 @@ _CONTROLLERPACKETMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5215,
-  serialized_end=5602,
+  serialized_start=5235,
+  serialized_end=5622,
 )
 
 
@@ -1847,8 +1854,8 @@ _VALUESET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5604,
-  serialized_end=5711,
+  serialized_start=5624,
+  serialized_end=5731,
 )
 
 
@@ -1900,8 +1907,8 @@ _REGISTER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5714,
-  serialized_end=5881,
+  serialized_start=5734,
+  serialized_end=5901,
 )
 
 
@@ -1939,8 +1946,8 @@ _DIGEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5883,
-  serialized_end=5982,
+  serialized_start=5903,
+  serialized_end=6002,
 )
 
 _P4INFO.fields_by_name['pkg_info'].message_type = _PKGINFO
