@@ -86,6 +86,7 @@ message PkgInfo {
   // reject the P4Info when used with a SetForwardingPipelineConfigRequest.
   // Added in 1.4.0
   PlatformProperties platform_properties = 11;
+  string extra_info = 12;
 }
 
 // wrapping the enum in a message to avoid name collisions in C++, where "enum

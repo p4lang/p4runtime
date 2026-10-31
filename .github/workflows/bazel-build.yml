@@ -23,7 +23,7 @@ jobs:
       matrix:
         # We only test on the oldest version we want to support and latest.
         # We trust that things also work for versions in the middle.
-        os: [ubuntu-22.04, ubuntu-latest]
+        os: [ubuntu-22.04, ubuntu-24.04]
         # See Bazelisk README for legal values.
         bazel_version: [7.x, latest]
       # Don't abort other runs when one of them fails, to ease debugging.
