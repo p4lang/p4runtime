@@ -65,8 +65,19 @@ $PROTOC $PROTOS --grpc_out "$BUILD_DIR/grpc_out" --plugin=protoc-gen-grpc="$GRPC
 $PROTOC $PROTOS --python_out "$BUILD_DIR/py_out" $PROTOFLAGS --grpc_out "$BUILD_DIR/py_out" --plugin=protoc-gen-grpc="$GRPC_PY_PLUGIN"
 
 echo "Recording version info about $PROTOC and $GRPC_PY_PLUGIN in directory $BUID_DIR/py_out/"
+
+apt-get install --yes binutils
+
 $PROTOC --version > "$BUILD_DIR/py_out/protoc-version.txt"
+cp -p /etc/os-release "$BUILD_DIR/py_out/os-release"
 strings - `which $GRPC_PY_PLUGIN` > "$BUILD_DIR/py_out/grpc_py_plugin-strings.txt"
+echo "----------------------------------------"
+$PROTOC --version
+echo "----------------------------------------"
+cat /etc/os-release
+echo "----------------------------------------"
+strings - `which $GRPC_PY_PLUGIN`
+echo "----------------------------------------"
 
 $PROTOC $PROTOS --go_out="$BUILD_DIR/go_out" --go-grpc_out="$BUILD_DIR/go_out" $PROTOFLAGS
 
