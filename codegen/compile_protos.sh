@@ -64,6 +64,10 @@ $PROTOC $PROTOS --grpc_out "$BUILD_DIR/grpc_out" --plugin=protoc-gen-grpc="$GRPC
 # an old version of the Python plugin.
 $PROTOC $PROTOS --python_out "$BUILD_DIR/py_out" $PROTOFLAGS --grpc_out "$BUILD_DIR/py_out" --plugin=protoc-gen-grpc="$GRPC_PY_PLUGIN"
 
+echo "Recording version info about $PROTOC and $GRPC_PY_PLUGIN in directory $BUID_DIR/py_out/"
+$PROTOC --version > "$BUILD_DIR/py_out/protoc-version.txt"
+strings - `which $GRPC_PY_PLUGIN` > "$BUILD_DIR/py_out/grpc_py_plugin-strings.txt"
+
 $PROTOC $PROTOS --go_out="$BUILD_DIR/go_out" --go-grpc_out="$BUILD_DIR/go_out" $PROTOFLAGS
 
 echo "SUCCESS"
