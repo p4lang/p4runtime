@@ -1168,7 +1168,6 @@ type MatchField struct {
 	AnnotationLocations []*SourceLocation `protobuf:"bytes,10,rep,name=annotation_locations,json=annotationLocations,proto3" json:"annotation_locations,omitempty"`
 	Bitwidth            int32             `protobuf:"varint,4,opt,name=bitwidth,proto3" json:"bitwidth,omitempty"`
 	// Types that are assignable to Match:
-	//
 	//	*MatchField_MatchType_
 	//	*MatchField_OtherMatchType
 	Match isMatchField_Match `protobuf_oneof:"match"`
@@ -1685,7 +1684,6 @@ type ActionProfile struct {
 	// specifies the semantics of `size` and `max_group_size` above.
 	//
 	// Types that are assignable to SelectorSizeSemantics:
-	//
 	//	*ActionProfile_SumOfWeights_
 	//	*ActionProfile_SumOfMembers_
 	SelectorSizeSemantics isActionProfile_SelectorSizeSemantics `protobuf_oneof:"selector_size_semantics"`
