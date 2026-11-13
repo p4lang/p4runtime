@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2018 Antonin Bas
 
-SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: CC-BY-4.0
 -->
 
 Dockerfile.asciidoc  is used to build a Docker image which we use to render the
